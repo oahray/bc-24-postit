@@ -38,7 +38,9 @@
         <div class="row">
           <div class="col-sm-3">
             <nav class="nav-sidebar nav-fixed-left">
+
               <ul class="nav tabs">
+
                 <li class="active others"><a href="#createMessage" data-toggle="tab"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Post New Message</a></li>
                 <li class="others"><a href="#myMessages" data-toggle="tab"><i class="fa fa-envelope" aria-hidden="true"></i> My Messages</a></li>
                 <li class="others"><a href="#myGroups" data-toggle="tab"><i class="fa fa-users" aria-hidden="true"></i> My groups</a></li>
@@ -50,30 +52,36 @@
           <!-- tab content -->
           <div class="tab-content col-sm-8">
             <div class="tab-pane active text-style" id="createMessage">
-              <h2>Post New Message</h2>
+              <div class="tab-pane-header text-center">
+                <h2 class:"text-center">Post New Message</h2>
+              </div>
               <form id="signup-form" method="post" action="" class="form-horizontal">
                 <fieldset>
                   <div class="form-group">
-                    <label for="inputlg">Message</label>
-                    <input class="form-control input-lg" id="newMessageText" type="text" placeholder="Type message here">
+                    <label for="newMessageText">Message:</label>
+                    <textarea class="form-control" rows="2" id="newMessageText"></textarea>
                   </div>
-                  <br>
+                  <br> <br>
 
-                  <div class="input-append btn-group">
-                    <input class="span2" id="appendedInputButton" size="16" type="text">
-                    <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
-                        <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                      <li><a href="#"><i class="icon-pencil"></i> Edit</a></li>
-                      <li><a href="#"><i class="icon-trash"></i> Delete</a></li>
-                      <li><a href="#"><i class="icon-ban-circle"></i> Ban</a></li>
-                      <li class="divider"></li>
-                      <li><a href="#"><i class="i"></i> Make admin</a></li>
-                    </ul>
+                  <div class="col-xs-12">
+                    <div class="input-group">
+                      <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder: write>
+                      <div class="input-group-btn">
+                        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Action
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                          <a class="dropdown-item" href="#">Action</a>
+                          <a class="dropdown-item" href="#">Another action</a>
+                          <a class="dropdown-item" href="#">Something else here</a>
+                          <div role="separator" class="dropdown-divider"></div>
+                          <a class="dropdown-item" href="#">Separated link</a>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <br>
 
+                  <br> <br>
                   <div class="form-group">
                     <label for="sel1">Priority Level:</label>
                     <select class="form-control" id="howCritical">
@@ -93,8 +101,38 @@
 
             <div class="tab-pane text-style" id="myMessages">
               <h2>My Messages</h2>
-              <p>Dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt 
-                ut labore et dolore magna aliquyam erat</p>
+              <form>
+                <div class="row">
+                  <div class="col-xs-12 col-sm-8">
+                    <div class="row list-group">
+                      <div class="myListItems col-xs-8 col-xs-offset-2 list-group-item">
+                        <h4>
+                          <a href="groupmessages.html">Family</a>
+                          <span class="badge pull-right badge-default">14</span>
+                        </h4>
+                        <p class="groupNumber">4 Members</p>
+                      </div>
+
+                      <div class="myListItems col-xs-8 col-xs-offset-2 list-group-item">
+                        <h4>
+                          <a href="groupmessages.html">Book Club</a>
+                          <span class="badge pull-right badge-default">21</span>
+                        </h4>
+                        <p class="groupNumber">52 Members</p>
+                      </div>
+
+                      <div class="myListItems col-xs-8 col-xs-offset-2 list-group-item">
+                        <h4>
+                          <a href="groupmessages.html">Bootcamp24-Shalom</a>
+                          <span class="badge pull-right badge-default">3</span>
+                        </h4>
+                        <p class="groupNumber">8 members</p>
+                      </div>
+                      
+                    </div>
+                  </div>
+                </div>
+              </form>
             </div>
 
             <div class="tab-pane text-style" id="myGroups">

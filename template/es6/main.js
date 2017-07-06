@@ -16,11 +16,11 @@ chooseSignup.on('click', () => {
 });
 
 loginSubmit.on('click', () => {
-  window.location = "messageboard.html";
+  window.location = "userboard.html";
 });
 
 signupSubmit.on('click', () => {
-  window.location = "messageboard.html";
+  window.location = "userboard.html";
 });
 
 resetSubmit.on('click', () => {

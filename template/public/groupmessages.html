@@ -1,0 +1,175 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+  <head>     
+    <meta charset="UTF-8">     
+    <title>My Board | Postit</title>     
+    <meta name="viewport" content="width=device-width, initial-scale=1">     
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">     
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.3.0/css/material.min.css">     
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.3.0/css/ripples.min.css">     
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.3.0/fonts/Material-Design-Icons.svg">     
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">     
+    <link href="https://fonts.googleapis.com/css?family=Merienda|Julee|Quintessential|Pacifico" rel="stylesheet">      
+    <link rel="stylesheet" href="css/main.css"> 
+    <link rel="stylesheet" href="css/message.css"> 
+  </head>
+  
+  <body>     <!-- main container div for body -->     
+    <div class="container-fluid" id="main">       <!-- navbar -->       
+      <div class="navbar navbar-default navbar-fixed-top" style="background-color : brown">         
+        <div class="navbar-header"> <!-- navbar header-->           
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-warning-collapse">             
+            <span class="icon-bar"></span>             <span class="icon-bar"></span>             
+            <span class="icon-bar"></span>          
+          </button>           
+          <a class="navbar-brand" href="index.html">Postit</a>         
+        </div> <!-- close navbar header -->         
+        <div class="navbar-collapse collapse navbar-warning-collapse">           
+          <ul class="nav navbar-nav navbar-right">  
+            <li><a href="userboard.html">My User Board</a></li>
+            <li><a href="index.html">Logout</a></li>  
+            <li><a target="_blank" href="https://github.com/oahray/bc-24-postit">View project on github</a></li>           
+          </ul>         
+        </div>       
+      </div> <!-- closing tag for navbar -->       <!-- Container div for body content -->       
+      
+      <br> <br> <br>
+      <div id="main">
+        <div class="row">
+          <div class="col-sm-3">
+            <nav class="nav-sidebar nav-fixed-left">
+              <div class="chatList">
+                <ul class="nav tabs"><ul>
+                  <h2> Users (5)</h2>
+                  <li>Me</li>
+                  <li>Dad</li>      
+                  <li>Mum</li>      
+                  <li>Brother</li>      
+                  <li>Sister</li>    
+                </ul> </ul>
+              </div>             
+            </nav>
+          </div>
+
+          <!-- tab content -->
+          <div class="tab-content col-sm-8">
+            <div class="tab-pane active text-style" id="family">
+              <div class="tab-pane-header text-center">
+                <h2 class:"text-center">Family</h2>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-8 col-sm-offset-2">
+                  <div class="row list-group">
+                    <div class="myListItems col-xs-8 col-xs-offset-2 list-group-item">
+                      <h4>Me <span class="pull-right"><small> 2hrs ago </small> </span>
+                      </h4>
+                      <p class="userMessage">Hello</p>
+                    </div>
+                  </div> 
+
+                  <div class="myListItems col-xs-8 col-xs-offset-2 list-group-item">
+                    <h4>Me <span class="pull-right"><small> 2hrs ago </small> </span>
+                    </h4>
+                    <p class="userMessage">Hello</p>
+                  </div> 
+
+                  <div class="myListItems col-xs-8 col-xs-offset-2 list-group-item">
+                    <h4>Me <span class="pull-right"><small> 2hrs ago </small> </span>
+                    </h4>
+                    <p class="userMessage">Hello</p>
+                  </div> 
+
+                  <div class="myListItems col-xs-8 col-xs-offset-2 list-group-item">
+                    <h4>Me <span class="pull-right"><small> 2hrs ago </small> </span>
+                    </h4>
+                    <p class="userMessage">Hello</p>
+                  </div> 
+                </div>
+              </div>
+            </div>
+
+
+            <div class="tab-pane text-style" id="myMessages">
+              <h2>My Messages</h2>
+              <form>
+                <div class="row">
+                  <div class="col-xs-12 col-sm-8">
+                    <div class="row list-group">
+                      <div class="myListItems col-xs-8 col-xs-offset-2 list-group-item">
+                        <h4>
+                          <a href="/location">Family</a>
+                          <span class="badge pull-right badge-default">14</span>
+                        </h4>
+                        <p class="groupNumber">4 Members</p>
+                      </div>
+
+                      <div class="myListItems col-xs-8 col-xs-offset-2 list-group-item">
+                        <h4>
+                          <a href="/location">Book Club</a>
+                          <span class="badge pull-right badge-default">21</span>
+                        </h4>
+                        <p class="groupNumber">52 Members</p>
+                      </div>
+
+                      <div class="myListItems col-xs-8 col-xs-offset-2 list-group-item">
+                        <h4>
+                          <a href="/location">Bootcamp24-Shalom</a>
+                          <span class="badge pull-right badge-default">3</span>
+                        </h4>
+                        <p class="groupNumber">8 members</p>
+                      </div>
+                      
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+
+            <div class="tab-pane text-style" id="myGroups">
+              <h2>My Groups</h2>
+              <div>
+                <form>
+                  <h3>Add User to Group</h3>
+                    <div class="input-append btn-group">
+                      <input class="span2" id="appendedInputButton" size="16" type="text">
+                      <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">Add to 
+                          <span class="caret"></span>
+                      </a>
+                      <ul class="dropdown-menu">
+                        <li> Group 1 </li>
+                        <li> Group 2 </li>
+                        <li> Group 3 </li>
+                        <li> Group 4 </li>
+                      </ul>
+                    </div>
+                </form>
+                
+              </div>
+              <p>List Groups here</p>
+            </div>
+
+            <div class="tab-pane text-style" id="boardSettings">
+              <h2>Board Settings</h2>
+              <p>Add settings for user message board.</p>
+              </div>
+            </div>
+          </div>    
+        </div>
+      </div>
+              
+        
+        
+      <footer class="navbar-fixed-bottom text-center">
+        <em>           
+          <p> Just Postit!  . . . <i class="fa fa-paper-plane"></i></p>         
+        </em>       
+      </footer>     
+    </div> <!--closing tag for main container div-->   
+    
+    <script src="libs/js/jquery.min.js"></script>     
+    <script src="libs/js/bootstrap.min.js"></script>     
+    <script src="libs/js/material.min.js"></script>
+    <script src="libs/js/ripples.min.js"></script>   
+    <script src="js/main.js"></script>
+  </body>
+</html> 

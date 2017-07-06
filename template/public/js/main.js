@@ -18,11 +18,11 @@ chooseSignup.on('click', function () {
 });
 
 loginSubmit.on('click', function () {
-  window.location = "messageboard.html";
+  window.location = "userboard.html";
 });
 
 signupSubmit.on('click', function () {
-  window.location = "messageboard.html";
+  window.location = "userboard.html";
 });
 
 resetSubmit.on('click', function () {

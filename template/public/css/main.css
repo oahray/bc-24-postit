@@ -41,7 +41,8 @@ body {
             width: 250px; }
           body #main #welcome-body #welcome-message #canDo .canDoEach {
             width: 230px;
-            margin: 0 auto; }
+            margin: 0 auto;
+            font-family: 'Merienda'; }
           body #main #welcome-body #welcome-message #canDo .canDoIcon {
             margin: 0 auto;
             padding: 5px;
@@ -69,6 +70,13 @@ body {
       font-weight: bold; }
     body #main .loginOrSignup {
       color: white; }
+      body #main .loginOrSignup input {
+        color: white; }
+      body #main .loginOrSignup #resetSuccess {
+        background-color: green;
+        border: 1px solid gold;
+        border-radius: 5px;
+        padding-top: 10px; }
       body #main .loginOrSignup h3 {
         font-family: 'Pacifico'; }
       body #main .loginOrSignup label {

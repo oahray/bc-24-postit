@@ -1,3 +1,6 @@
+.myListItems {
+  background-color: #066; }
+
 .nav-sidebar {
   min-height: 100%;
   width: 100%;
@@ -27,6 +30,19 @@
   -o-text-overflow: ellipsis;
   text-overflow: ellipsis; }
 
+.chatList {
+  font-size: 1.5em;
+  margin: 0 auto;
+  padding: 20px;
+  margin-left: 20px;
+  color: white; }
+
+.badge-default {
+  background-color: green; }
+
+.badge-grey {
+  background-color: grey; }
+
 .tab-pane {
   padding: 10px;
   margin: 0 auto; }
@@ -34,11 +50,28 @@
     color: white; }
   .tab-pane p {
     color: #ddd; }
+  .tab-pane .myListItems {
+    width: 100%;
+    background-color: #066;
+    margin: 5px;
+    border: 1px solid #066; }
+  .tab-pane small {
+    color: #999; }
   .tab-pane form {
     background-color: #066;
     border-radius: 5px;
     border: 3px dotted teal;
     padding: 20px; }
+    .tab-pane form input {
+      color: white; }
+    .tab-pane form .dropdown-toggle {
+      color: white;
+      background-color: #066;
+      border: 1px solid white; }
+  .tab-pane textarea {
+    overflow-y: scroll;
+    height: 100px;
+    color: white; }
   .tab-pane .form-group {
     margin: 0 auto; }
     .tab-pane .form-group label {

@@ -2,6 +2,10 @@ $main-color: teal;
 $secondary-color: #066;
 $header-color: brown;
 
+.myListItems {
+  background-color: $secondary-color;
+}
+
 .nav-sidebar { 
     min-height: 100%;
     width: 100%;
@@ -34,6 +38,22 @@ $header-color: brown;
     text-overflow: ellipsis; 
 }
 
+.chatList {
+  font-size: 1.5em;
+  margin: 0 auto;
+  padding: 20px;
+  margin-left: 20px;
+  color: white;
+}
+
+.badge-default {
+  background-color: green;
+}
+
+.badge-grey {
+  background-color: grey;
+}
+
 .tab-pane {
   padding: 10px;
   margin: 0 auto;
@@ -44,12 +64,38 @@ $header-color: brown;
     color: #ddd;
   }
 
+  .myListItems {
+    width: 100%;
+    background-color: $secondary-color;
+    margin: 5px;
+    border: 1px solid $secondary-color;
+  }
+
+  small {
+    color: #999
+  }
+
   form {
     background-color: $secondary-color;
     border-radius: 5px;
     border: 3px dotted $main-color;
-    padding: 20px
+    padding: 20px;
+    input {
+      color: white;
+    }
+    
+    .dropdown-toggle {
+      color: white;
+      background-color: $secondary-color;
+      border: 1px solid white;
+    }
   }
+
+  textarea {
+    overflow-y: scroll;
+    height: 100px;
+    color: white;
+}
 
   .form-group {
     margin: 0 auto;

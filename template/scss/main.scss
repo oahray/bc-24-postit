@@ -58,6 +58,7 @@ body {
           .canDoEach {
             width: 230px;
             margin: 0 auto;
+            font-family: 'Merienda';
           }
           .canDoIcon {
             margin: 0 auto;
@@ -98,6 +99,15 @@ body {
 
     .loginOrSignup {
       color: white;
+      input {
+        color: white;
+      }
+      #resetSuccess {
+        background-color: green;
+        border: 1px solid gold;
+        border-radius: 5px;
+        padding-top: 10px;
+      }
       h3 {
         font-family: 'Pacifico';
       }
