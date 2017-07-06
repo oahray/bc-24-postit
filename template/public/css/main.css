@@ -1,16 +1,16 @@
 body {
   width: 100%;
   background-color: teal; }
+  body footer {
+    font-family: 'Pacifico','Merienda';
+    position: fixed-bottom;
+    background-color: brown;
+    color: white;
+    padding: 5px; }
   body #main {
     padding: 0;
     height: 100%;
     background-color: teal; }
-    body #main footer {
-      font-family: 'Pacifico','Merienda';
-      position: fixed-bottom;
-      background-color: brown;
-      color: white;
-      padding: 5px; }
     body #main .navbar-default {
       background-color: brown;
       font-family: 'Merienda'; }
@@ -75,3 +75,29 @@ body {
         color: white; }
       body #main .loginOrSignup a {
         color: gold; }
+  body .sidebar {
+    background-color: brown;
+    color: white; }
+    body .sidebar .mini-submenu {
+      display: none;
+      background-color: transparent;
+      border: 1px solid rgba(0, 0, 0, 0.9);
+      border-radius: 4px;
+      padding: 9px;
+      /*position: relative;*/
+      width: 42px; }
+    body .sidebar .mini-submenu:hover {
+      cursor: pointer; }
+    body .sidebar .mini-submenu .icon-bar {
+      background-color: white;
+      border-radius: 1px;
+      display: block;
+      height: 2px;
+      width: 22px;
+      margin-top: 3px; }
+    body .sidebar #slide-submenu {
+      background: #066;
+      display: inline-block;
+      padding: 0 8px;
+      border-radius: 4px;
+      cursor: pointer; }

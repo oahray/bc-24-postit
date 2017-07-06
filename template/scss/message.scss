@@ -1,0 +1,82 @@
+$main-color: teal;
+$secondary-color: #066;
+$header-color: brown;
+
+.nav-sidebar { 
+    min-height: 100%;
+    width: 100%;
+    padding: 30px 0; 
+    border-right: 1px solid #ddd;
+}
+.nav-sidebar a {
+    color: #ccc;
+    -webkit-transition: all 0.08s linear;
+    -moz-transition: all 0.08s linear;
+    -o-transition: all 0.08s linear;
+    transition: all 0.08s linear;
+}
+.nav-sidebar .active a { 
+    cursor: default;
+    background-color: $secondary-color !important; 
+    color: white; 
+}
+.nav-sidebar {
+  .others a:hover, .active a:hover {
+    background-color: $header-color !important;
+    color: white 
+  }  
+}
+.nav-sidebar .text-overflow a,
+.nav-sidebar .text-overflow .media-body {
+    white-space: nowrap;
+    overflow: hidden;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis; 
+}
+
+.tab-pane {
+  padding: 10px;
+  margin: 0 auto;
+  h1, h2, h3, h4, h5, h6 {
+    color: white;
+  }
+  p {
+    color: #ddd;
+  }
+
+  form {
+    background-color: $secondary-color;
+    border-radius: 5px;
+    border: 3px dotted $main-color;
+    padding: 20px
+  }
+
+  .form-group {
+    margin: 0 auto;
+    label {
+      color: white;
+    }
+    select {
+      color: white;
+      font-size: 1em;
+      option {
+        color: $secondary-color;
+      }
+      option:hover {
+        background-color: $header-color !important;
+      }
+    }
+  }
+}
+ 
+ .container .text-style
+{
+  text-align: justify;
+  line-height: 23px;
+  margin: 0 13px 0 0;
+  font-size: 19px;
+}
+
+.input-append .btn.dropdown-toggle {
+    float: none;
+}

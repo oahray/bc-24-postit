@@ -1,0 +1,61 @@
+.nav-sidebar {
+  min-height: 100%;
+  width: 100%;
+  padding: 30px 0;
+  border-right: 1px solid #ddd; }
+
+.nav-sidebar a {
+  color: #ccc;
+  -webkit-transition: all 0.08s linear;
+  -moz-transition: all 0.08s linear;
+  -o-transition: all 0.08s linear;
+  transition: all 0.08s linear; }
+
+.nav-sidebar .active a {
+  cursor: default;
+  background-color: #066 !important;
+  color: white; }
+
+.nav-sidebar .others a:hover, .nav-sidebar .active a:hover {
+  background-color: brown !important;
+  color: white; }
+
+.nav-sidebar .text-overflow a,
+.nav-sidebar .text-overflow .media-body {
+  white-space: nowrap;
+  overflow: hidden;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis; }
+
+.tab-pane {
+  padding: 10px;
+  margin: 0 auto; }
+  .tab-pane h1, .tab-pane h2, .tab-pane h3, .tab-pane h4, .tab-pane h5, .tab-pane h6 {
+    color: white; }
+  .tab-pane p {
+    color: #ddd; }
+  .tab-pane form {
+    background-color: #066;
+    border-radius: 5px;
+    border: 3px dotted teal;
+    padding: 20px; }
+  .tab-pane .form-group {
+    margin: 0 auto; }
+    .tab-pane .form-group label {
+      color: white; }
+    .tab-pane .form-group select {
+      color: white;
+      font-size: 1em; }
+      .tab-pane .form-group select option {
+        color: #066; }
+      .tab-pane .form-group select option:hover {
+        background-color: brown !important; }
+
+.container .text-style {
+  text-align: justify;
+  line-height: 23px;
+  margin: 0 13px 0 0;
+  font-size: 19px; }
+
+.input-append .btn.dropdown-toggle {
+  float: none; }

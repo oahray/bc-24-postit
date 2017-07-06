@@ -1,9 +1,9 @@
-let chooseLogin = $('#chooseLogin');
-let chooseSignup = $('#chooseSignup');
-let loginSubmit = $('#login-submit');
-let signupSubmit = $('#signup-submit');
-let resetSubmit = $('#reset-submit');
-let resetSuccess = $('#reset-success');
+let chooseLogin = jQuery('#chooseLogin');
+let chooseSignup = jQuery('#chooseSignup');
+let loginSubmit = jQuery('#loginSubmit');
+let signupSubmit = jQuery('#signupSubmit');
+let resetSubmit = jQuery('#resetSubmit');
+let resetSuccess = jQuery('#resetSuccess');
 
 resetSuccess.hide();
 
@@ -15,11 +15,11 @@ chooseSignup.on('click', () => {
   window.location = "signup.html";
 });
 
-loginBtn.on('click', () => {
+loginSubmit.on('click', () => {
   window.location = "messageboard.html";
 });
 
-signupBtn.on('click', () => {
+signupSubmit.on('click', () => {
   window.location = "messageboard.html";
 });
 
@@ -27,3 +27,13 @@ resetSubmit.on('click', () => {
   resetSuccess.show();
 });
 
+$('#slide-submenu').on('click', function() {			        
+  $(this).closest('.list-group').fadeOut('slide',function(){
+    $('.mini-submenu').fadeIn();	
+  });        
+});
+
+$('.mini-submenu').on('click',function(){		
+  $(this).next('.list-group').toggle('slide');
+  $('.mini-submenu').hide();
+})

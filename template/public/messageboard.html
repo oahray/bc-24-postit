@@ -1,0 +1,147 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+  <head>     
+    <meta charset="UTF-8">     
+    <title>My Board | Postit</title>     
+    <meta name="viewport" content="width=device-width, initial-scale=1">     
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">     
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.3.0/css/material.min.css">     
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.3.0/css/ripples.min.css">     
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.3.0/fonts/Material-Design-Icons.svg">     
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">     
+    <link href="https://fonts.googleapis.com/css?family=Merienda|Julee|Quintessential|Pacifico" rel="stylesheet">      
+    <link rel="stylesheet" href="css/main.css"> 
+    <link rel="stylesheet" href="css/message.css"> 
+  </head>
+  
+  <body>     <!-- main container div for body -->     
+    <div class="container-fluid" id="main">       <!-- navbar -->       
+      <div class="navbar navbar-default navbar-fixed-top" style="background-color : brown">         
+        <div class="navbar-header"> <!-- navbar header-->           
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-warning-collapse">             
+            <span class="icon-bar"></span>             <span class="icon-bar"></span>             
+            <span class="icon-bar"></span>          
+          </button>           
+          <a class="navbar-brand" href="index.html">Postit</a>         
+        </div> <!-- close navbar header -->         
+        <div class="navbar-collapse collapse navbar-warning-collapse">           
+          <ul class="nav navbar-nav navbar-right">  
+            <li><a href="#">My Profile</a></li>
+            <li><a href="index.html">Logout</a></li>  
+            <li><a target="_blank" href="https://github.com/oahray/bc-24-postit">View project on github</a></li>           
+          </ul>         
+        </div>       
+      </div> <!-- closing tag for navbar -->       <!-- Container div for body content -->       
+      
+      <br> <br> <br>
+      <div id="main">
+        <div class="row">
+          <div class="col-sm-3">
+            <nav class="nav-sidebar nav-fixed-left">
+              <ul class="nav tabs">
+                <li class="active others"><a href="#createMessage" data-toggle="tab"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Post New Message</a></li>
+                <li class="others"><a href="#myMessages" data-toggle="tab"><i class="fa fa-envelope" aria-hidden="true"></i> My Messages</a></li>
+                <li class="others"><a href="#myGroups" data-toggle="tab"><i class="fa fa-users" aria-hidden="true"></i> My groups</a></li>
+                <li class="others"><a href="#boardSettings" data-toggle="tab"><i class="fa fa-cog" aria-hidden="true"></i> Board Settings</a></li>       
+              </ul>
+            </nav>
+          </div>
+
+          <!-- tab content -->
+          <div class="tab-content col-sm-8">
+            <div class="tab-pane active text-style" id="createMessage">
+              <h2>Post New Message</h2>
+              <form id="signup-form" method="post" action="" class="form-horizontal">
+                <fieldset>
+                  <div class="form-group">
+                    <label for="inputlg">Message</label>
+                    <input class="form-control input-lg" id="newMessageText" type="text" placeholder="Type message here">
+                  </div>
+                  <br>
+
+                  <div class="input-append btn-group">
+                    <input class="span2" id="appendedInputButton" size="16" type="text">
+                    <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li><a href="#"><i class="icon-pencil"></i> Edit</a></li>
+                      <li><a href="#"><i class="icon-trash"></i> Delete</a></li>
+                      <li><a href="#"><i class="icon-ban-circle"></i> Ban</a></li>
+                      <li class="divider"></li>
+                      <li><a href="#"><i class="i"></i> Make admin</a></li>
+                    </ul>
+                  </div>
+                  <br>
+
+                  <div class="form-group">
+                    <label for="sel1">Priority Level:</label>
+                    <select class="form-control" id="howCritical">
+                      <option value="1">Normal</option>
+                      <option value="2">Urgent</option>
+                      <option value="3">Critical</option>
+                    </select>
+                  </div>
+                  <br>
+                  <div class="form-group text-center">
+                    <button id="chooseLogin" class="btn btn-raised darkBtn">Post it!</button>
+                  </div>
+                </fieldset>    
+              </form>
+            </div>
+
+
+            <div class="tab-pane text-style" id="myMessages">
+              <h2>My Messages</h2>
+              <p>Dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt 
+                ut labore et dolore magna aliquyam erat</p>
+            </div>
+
+            <div class="tab-pane text-style" id="myGroups">
+              <h2>My Groups</h2>
+              <div>
+                <form>
+                  <h3>Add User to Group</h3>
+                    <div class="input-append btn-group">
+                      <input class="span2" id="appendedInputButton" size="16" type="text">
+                      <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">Add to 
+                          <span class="caret"></span>
+                      </a>
+                      <ul class="dropdown-menu">
+                        <li> Group 1 </li>
+                        <li> Group 2 </li>
+                        <li> Group 3 </li>
+                        <li> Group 4 </li>
+                      </ul>
+                    </div>
+                </form>
+                
+              </div>
+              <p>List Groups here</p>
+            </div>
+
+            <div class="tab-pane text-style" id="boardSettings">
+              <h2>Board Settings</h2>
+              <p>Add settings for user message board.</p>
+              </div>
+            </div>
+          </div>    
+        </div>
+      </div>
+              
+        
+        
+      <footer class="navbar-fixed-bottom text-center">
+        <em>           
+          <p> Just Postit!  . . . <i class="fa fa-paper-plane"></i></p>         
+        </em>       
+      </footer>     
+    </div> <!--closing tag for main container div-->   
+    
+    <script src="libs/js/jquery.min.js"></script>     
+    <script src="libs/js/bootstrap.min.js"></script>     
+    <script src="libs/js/material.min.js"></script>
+    <script src="libs/js/ripples.min.js"></script>   
+    <script src="js/main.js"></script>
+  </body>
+</html> 

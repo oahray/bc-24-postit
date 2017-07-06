@@ -5,20 +5,20 @@ $header-color: brown;
 body {
   width: 100%;
   background-color: $main-color;
+
+  footer {
+    font-family: 'Pacifico','Merienda';
+    position: fixed-bottom;
+    background-color: brown;
+    color: white;
+    padding: 5px;
+  }
   
   #main {
     padding: 0;
     height: 100%;
-    background-color: $main-color;
-    
-    footer {
-      font-family: 'Pacifico','Merienda';
-      position: fixed-bottom;
-      background-color: brown;
-      color: white;
-      padding: 5px;
-    }
-    
+    background-color: $main-color;  
+  
     .navbar-default {
       background-color: brown;
       font-family: 'Merienda';
@@ -107,6 +107,41 @@ body {
       a {
         color: gold;
       }
+    }
+  }
+  .sidebar {
+    background-color: $header-color;
+    color: white;
+    .mini-submenu{
+      display:none;  
+      background-color: rgba(0, 0, 0, 0);  
+      border: 1px solid rgba(0, 0, 0, 0.9);
+      border-radius: 4px;
+      padding: 9px;  
+      /*position: relative;*/
+      width: 42px;
+
+    }
+
+    .mini-submenu:hover{
+      cursor: pointer;
+    }
+
+    .mini-submenu .icon-bar {
+      background-color: white;
+      border-radius: 1px;
+      display: block;
+      height: 2px;
+      width: 22px;
+      margin-top: 3px;
+    }
+
+     #slide-submenu{
+      background: $secondary-color;
+      display: inline-block;
+      padding: 0 8px;
+      border-radius: 4px;
+      cursor: pointer;
     }
   }
 }
