@@ -1,0 +1,90 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+  <head>     
+    <meta charset="UTF-8">     
+    <title>Postit</title>     
+    <meta name="viewport" content="width=device-width, initial-scale=1">     
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">     
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.3.0/css/material.min.css">     
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.3.0/css/ripples.min.css">     
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.3.0/fonts/Material-Design-Icons.svg">     
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">     
+    <link href="https://fonts.googleapis.com/css?family=Merienda|Julee|Quintessential|Pacifico" rel="stylesheet">     
+    <link rel="stylesheet" href="css/ihover.min.css">     <link rel="stylesheet" href="css/main.css"> </head>
+  
+<body>     <!-- main container div for body -->     
+  <div class="container-fluid" id="main">       <!-- navbar -->       
+    <div class="navbar navbar-default navbar-fixed-top" style="background-color : brown">         
+      <div class="navbar-header"> <!-- navbar header-->           
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-warning-collapse">             
+          <span class="icon-bar"></span>             <span class="icon-bar"></span>             
+          <span class="icon-bar"></span>          
+        </button>           
+        <a class="navbar-brand" href="index.html">Postit</a>         
+      </div> <!-- close navbar header -->         
+      <div class="navbar-collapse collapse navbar-warning-collapse">           
+        <ul class="nav navbar-nav navbar-right">  
+          <li><a href="#aboutme">About Postit</a></li>  
+          <li><a target="_blank" href="https://github.com/oahray/bc-24-postit">View project on github</a></li>           
+        </ul>         
+      </div>       
+    </div> <!-- closing tag for navbar -->       <!-- Container div for body content -->       
+    
+    <br> <br> <br>
+    <div class="main">
+      <div class="row loginOrSignup">
+      	<div class="col-md-6 col-md-offset-3">
+      		<h3 align="center">
+      			<strong>
+       				Sign up
+      			</strong>
+      		</h3>
+      		<br><br><br>
+      		
+          <form id="login-form" method="post" action="" class="form-horizontal">
+            <fieldset>
+              <div class="form-group label-floating is-empty">
+                <label for="inputNewName" class="control-label">Username: </label>
+                <input type="name" name="name" class="form-control" id="inputNewName">
+                <span class="help-block"> </span>  
+              </div>
+              
+              <div class="form-group label-floating is-empty">
+                <label for="inputEmail" class="control-label"> Email: </label>
+                <input type="email" name="email" class="form-control" id="inputEmail">
+                <span class="help-block"> </span>  
+              </div>
+              
+              <div class="form-group label-floating is-empty">   
+                <label for="inputNewPassword" class="control-label"> Password: </label>    
+                <input type="password" name="password" class="form-control" id="inputPassword">     
+                <span class="help-block"> </span>    
+              </div>
+      
+              <div class="form-group text-center">
+                <div class="col-md-12">
+                  <button type="button" id="signup-submit" class="btn btn-primary btn-block btn-raised darkBtn"> Sign up</button>    
+                </div>
+                <p>Have an account? <a href="signin.html">Sign in</a></p>    
+              </div>    
+            </fieldset>    
+          </form>     
+        </div>
+      </div>    
+    </div>
+            
+      
+      
+    <footer class="navbar-fixed-bottom text-center">
+      <em>           
+        <p> Just Postit!  . . . <i class="fa fa-paper-plane"></i></p>         
+      </em>       
+    </footer>     
+  </div> <!--closing tag for main container div-->   
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>     
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>     
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.3.0/js/material.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.3.0/js/ripples.js"></script>     
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/1.1.4/typed.min.js"></script>     
+  <script src="js/main.js"></script>

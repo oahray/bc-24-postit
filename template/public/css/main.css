@@ -1,0 +1,75 @@
+body {
+  width: 100%;
+  background-color: teal; }
+  body #main {
+    padding: 0;
+    height: 100%;
+    background-color: teal; }
+    body #main footer {
+      font-family: 'Pacifico','Merienda';
+      position: fixed-bottom;
+      background-color: brown;
+      color: white;
+      padding: 5px; }
+    body #main .navbar-default {
+      background-color: brown; }
+      body #main .navbar-default .navbar-brand {
+        font-family: 'Merienda';
+        font-size: 2em;
+        font-weight: bold;
+        color: white; }
+    body #main .navbar-right {
+      margin-right: 20px; }
+    body #main #welcome-body {
+      margin: 0 auto;
+      width: 100%;
+      color: white;
+      text-align: center; }
+      body #main #welcome-body #welcome-message {
+        padding: 50px 0px 0px 0px;
+        width: 100%;
+        margin: 0 auto; }
+        body #main #welcome-body #welcome-message h2 {
+          font-family: 'Pacifico','Merienda';
+          font-size: 3em; }
+        body #main #welcome-body #welcome-message #canDo {
+          width: 100%;
+          margin: 0 auto; }
+          body #main #welcome-body #welcome-message #canDo #setWidth {
+            background-color: white;
+            margin: 0 auto;
+            width: 250px; }
+          body #main #welcome-body #welcome-message #canDo .canDoEach {
+            width: 230px;
+            margin: 0 auto; }
+          body #main #welcome-body #welcome-message #canDo .canDoIcon {
+            margin: 0 auto;
+            padding: 5px;
+            width: 200px;
+            height: 200px;
+            border: 2px dotted teal;
+            border-radius: 100%;
+            margin: 0 auto;
+            background-color: #066;
+            font-size: 9em; }
+            body #main #welcome-body #welcome-message #canDo .canDoIcon i {
+              margin: 0px; }
+          body #main #welcome-body #welcome-message #canDo .canDoText {
+            font-size: 1em; }
+      body #main #welcome-body #join-options {
+        padding: 10px 0px 50px 0px;
+        margin: 0px; }
+        body #main #welcome-body #join-options #toStart {
+          margin-top: 20px;
+          font-size: 1.5em; }
+    body #main .darkBtn {
+      background-color: #066;
+      border: 1px solid white;
+      color: gold;
+      font-weight: bold; }
+    body #main .loginOrSignup {
+      color: white; }
+      body #main .loginOrSignup label {
+        color: white; }
+      body #main .loginOrSignup a {
+        color: gold; }

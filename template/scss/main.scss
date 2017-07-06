@@ -1,0 +1,109 @@
+$main-color: teal;
+$secondary-color: #066;
+$header-color: brown;
+
+body {
+  width: 100%;
+  background-color: $main-color;
+  
+  #main {
+    padding: 0;
+    height: 100%;
+    background-color: $main-color;
+    
+    footer {
+      font-family: 'Pacifico','Merienda';
+      position: fixed-bottom;
+      background-color: brown;
+      color: white;
+      padding: 5px;
+    }
+    
+    .navbar-default {
+      background-color: brown;
+      .navbar-brand {
+        font-family: 'Merienda';
+        font-size: 2em;
+        font-weight: bold;
+        color: white;
+      } 
+    }
+    
+    .navbar-right {
+      margin-right: 20px;
+    }
+
+    #welcome-body {
+      margin: 0 auto;
+      width: 100%;
+      color: white;
+      text-align: center;
+      
+      #welcome-message {
+        padding: 50px 0px 0px 0px;
+        width: 100%;
+        margin: 0 auto;
+        h2 {
+          font-family: 'Pacifico','Merienda';
+          font-size: 3em;
+        }
+        #canDo {
+          width: 100%;
+          margin: 0 auto;
+          #setWidth {
+            background-color: white;
+            margin: 0 auto;
+            width: 250px;
+          }
+          .canDoEach {
+            width: 230px;
+            margin: 0 auto;
+          }
+          .canDoIcon {
+            margin: 0 auto;
+            padding: 5px;
+            width: 200px;
+            height: 200px;
+            border: 2px dotted $main-color;
+            border-radius: 100%;
+            margin: 0 auto;
+            background-color: $secondary-color;
+            font-size: 9em;
+            i {
+              margin: 0px;
+            }
+          }
+          .canDoText {
+            font-size: 1em;
+          } 
+        }
+      } 
+      
+      #join-options {
+        padding: 10px 0px 50px 0px;
+        margin: 0px;
+        #toStart {
+          margin-top: 20px;
+          font-size: 1.5em;
+        }
+      } 
+    }
+
+    .darkBtn {
+      background-color: $secondary-color;
+      border: 1px solid white;
+      color: gold;
+      font-weight: bold;
+    } 
+
+    .loginOrSignup {
+      color: white;
+      label {
+        color: white;
+      }
+      a {
+        color: gold;
+      }
+    }
+  }
+}

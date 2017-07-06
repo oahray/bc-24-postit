@@ -1,0 +1,97 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+  <head>     
+    <meta charset="UTF-8">     
+    <title>Postit</title>     
+    <meta name="viewport" content="width=device-width, initial-scale=1">     
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">     
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.3.0/css/material.min.css">     
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.3.0/css/ripples.min.css">     
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.3.0/fonts/Material-Design-Icons.svg">     
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">     
+    <link href="https://fonts.googleapis.com/css?family=Merienda|Julee|Quintessential|Pacifico" rel="stylesheet">     
+    <link rel="stylesheet" href="css/main.css"> 
+  </head>
+
+  <body>     
+    <!-- main container div for body -->       
+    <div class="container-fluid" id="main">           
+      <!-- navbar -->           
+      <div class="navbar navbar-default navbar-fixed-top">              
+        <div class="navbar-header">                   
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-warning-collapse">    
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>                 
+          </button>             
+          <a class="navbar-brand" href="javascript:void(0)"><i class="fa fa-paper-plane" aria-hidden="true"></i> Postit</a>
+        </div> <!-- close navbar header -->              
+        <div class="navbar-collapse collapse navbar-warning-collapse">       
+          <ul class="nav navbar-nav navbar-right">  
+            <li><a href="#aboutme">About Postit</a></li>  
+            <li><a target="_blank" href="https://github.com/oahray/bc-24-postit">View project on github</a></li>  
+          </ul>         
+        </div>
+      </div> <!-- closing tag for navbar -->       
+      
+      <!-- Container div for body content -->       
+      <div id="welcome-body">
+        <div id="welcome-message" class="container-fluid">
+          <h2>Welcome to Postit!</h2>
+          <p>Postit lets you connect with friends in real time no matter where they are.</p>
+          <p>Simply...</p>
+          <div id="canDo" class="row col-xs-8 col-sm-12">
+            <div id="setWidth">
+              <!-- Icon 1 -->
+              <div class="canDoEach col-xs-12 col-md-4 row">
+                <div class="canDoIcon col-xs-12">
+                  <i class="fa fa-users" aria-hidden="true"></i> 
+                </div>
+                <div class="canDoText col-xs-12">
+                  <p>Create groups</p> 
+                </div>
+              </div>
+              <!-- Icon 2 -->
+              <div class="canDoEach col-xs-12 col-md-4 row">
+                <div class="canDoIcon col-xs-12">
+                  <i class="fa fa-user-plus" aria-hidden="true"></i> 
+                </div>
+                <div class="canDoText col-xs-12">
+                  <p>Add Friends</p> 
+                </div>
+              </div>
+              <!-- Icon 2 -->
+              <div class="canDoEach col-xs-12 col-md-4 row">
+                <div class="canDoIcon col-xs-12">
+                  <i class="fa fa-paper-plane" aria-hidden="true"></i> 
+                </div>
+                <div class="canDoText col-xs-12">
+                  <p>Post messages</p> 
+                </div>
+              </div> <!-- End of Icons list-->
+            </div>
+          </div>
+        </div>
+        
+        <div id="join-options" class="col-xs-12">
+          <div id="toStart">
+            <p>To start using Postit</p>
+          </div>
+          <button id="chooseLogin" class="btn btn-raised darkBtn">Log in</button> or <button id="chooseSignup" class="btn btn-raised darkBtn">Sign up</button>
+        </div>
+      </div>
+      
+      <footer class="navbar-fixed-bottom text-center">
+        <em>
+          <p> Just Postit!  . . . <i class="fa fa-paper-plane"></i></p>
+        </em>
+      </footer> 
+    </div> <!--closing tag for main container div-->   
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>     
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.3.0/js/material.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.3.0/js/ripples.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>
