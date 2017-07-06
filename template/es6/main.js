@@ -3,6 +3,9 @@ let chooseSignup = $('#chooseSignup');
 let loginSubmit = $('#login-submit');
 let signupSubmit = $('#signup-submit');
 let resetSubmit = $('#reset-submit');
+let resetSuccess = $('#reset-success');
+
+resetSuccess.hide();
 
 chooseLogin.on('click', () => {
   window.location = "signin.html";
@@ -21,6 +24,6 @@ signupBtn.on('click', () => {
 });
 
 resetSubmit.on('click', () => {
-  $('#reset-success').show();
+  resetSuccess.show();
 });
 

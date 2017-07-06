@@ -21,8 +21,8 @@ body {
     
     .navbar-default {
       background-color: brown;
+      font-family: 'Merienda';
       .navbar-brand {
-        font-family: 'Merienda';
         font-size: 2em;
         font-weight: bold;
         color: white;
@@ -79,7 +79,7 @@ body {
         }
       } 
       
-      #join-options {
+      .join-options {
         padding: 10px 0px 50px 0px;
         margin: 0px;
         #toStart {
@@ -98,6 +98,9 @@ body {
 
     .loginOrSignup {
       color: white;
+      h3 {
+        font-family: 'Pacifico';
+      }
       label {
         color: white;
       }
