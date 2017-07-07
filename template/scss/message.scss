@@ -54,6 +54,11 @@ $header-color: brown;
   background-color: grey;
 }
 
+.tab-content {
+  margin-bottom: 50px;
+  padding: 0;
+}
+
 .tab-pane {
   padding: 10px;
   margin: 0 auto;
@@ -64,59 +69,57 @@ $header-color: brown;
     color: #ddd;
   }
 
+  #group-messages {
+    height: 250px;
+    overflow-y: scroll;
+    padding: 0px;
+  }
+
+#addUser {
+  border: 1px solid white !important;
+    input {
+    color: white;
+  }
+}
+
   .myListItems {
     width: 100%;
     background-color: $secondary-color;
     margin: 5px;
-    border: 1px solid $secondary-color;
   }
 
   small {
     color: #999
   }
-
-  form {
-    background-color: $secondary-color;
-    border-radius: 5px;
-    border: 3px dotted $main-color;
-    padding: 20px;
-    input {
-      color: white;
-    }
-    
-    .dropdown-toggle {
-      color: white;
-      background-color: $secondary-color;
-      border: 1px solid white;
-    }
-  }
-
-  textarea {
-    overflow-y: scroll;
-    height: 100px;
-    color: white;
 }
 
-  .form-group {
-    margin: 0 auto;
-    label {
-      color: white;
-    }
-    select {
-      color: white;
-      font-size: 1em;
-      option {
-        color: $secondary-color;
-      }
-      option:hover {
-        background-color: $header-color !important;
-      }
-    }
+input {
+  color: $secondary-color;
+}
+
+form {
+  a, a:hover {
+    color: gold;
+  }
+  h4 {
+    color: white;
+  }
+  .form-control {
+    color: white !important;
+  }
+  background-color: $secondary-color;
+  border-radius: 5px;
+  border: 3px dotted $main-color;
+  padding: 20px;
+  
+  .dropdown-toggle {
+    color: white;
+    background-color: $secondary-color;
+    border: 1px solid white;
   }
 }
  
- .container .text-style
-{
+.container .text-style {
   text-align: justify;
   line-height: 23px;
   margin: 0 13px 0 0;
@@ -125,4 +128,8 @@ $header-color: brown;
 
 .input-append .btn.dropdown-toggle {
     float: none;
+}
+
+family {
+  padding-bottom: 50px;
 }

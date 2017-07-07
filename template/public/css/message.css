@@ -43,6 +43,10 @@
 .badge-grey {
   background-color: grey; }
 
+.tab-content {
+  margin-bottom: 50px;
+  padding: 0; }
+
 .tab-pane {
   padding: 10px;
   margin: 0 auto; }
@@ -50,39 +54,39 @@
     color: white; }
   .tab-pane p {
     color: #ddd; }
+  .tab-pane #group-messages {
+    height: 250px;
+    overflow-y: scroll;
+    padding: 0px; }
+  .tab-pane #addUser {
+    border: 1px solid white !important; }
+    .tab-pane #addUser input {
+      color: white; }
   .tab-pane .myListItems {
     width: 100%;
     background-color: #066;
-    margin: 5px;
-    border: 1px solid #066; }
+    margin: 5px; }
   .tab-pane small {
     color: #999; }
-  .tab-pane form {
-    background-color: #066;
-    border-radius: 5px;
-    border: 3px dotted teal;
-    padding: 20px; }
-    .tab-pane form input {
-      color: white; }
-    .tab-pane form .dropdown-toggle {
-      color: white;
-      background-color: #066;
-      border: 1px solid white; }
-  .tab-pane textarea {
-    overflow-y: scroll;
-    height: 100px;
+
+input {
+  color: #066; }
+
+form {
+  background-color: #066;
+  border-radius: 5px;
+  border: 3px dotted teal;
+  padding: 20px; }
+  form a, form a:hover {
+    color: gold; }
+  form h4 {
     color: white; }
-  .tab-pane .form-group {
-    margin: 0 auto; }
-    .tab-pane .form-group label {
-      color: white; }
-    .tab-pane .form-group select {
-      color: white;
-      font-size: 1em; }
-      .tab-pane .form-group select option {
-        color: #066; }
-      .tab-pane .form-group select option:hover {
-        background-color: brown !important; }
+  form .form-control {
+    color: white !important; }
+  form .dropdown-toggle {
+    color: white;
+    background-color: #066;
+    border: 1px solid white; }
 
 .container .text-style {
   text-align: justify;
@@ -92,3 +96,6 @@
 
 .input-append .btn.dropdown-toggle {
   float: none; }
+
+family {
+  padding-bottom: 50px; }

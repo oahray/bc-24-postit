@@ -4,14 +4,13 @@
     <meta charset="UTF-8">     
     <title>My Board | Postit</title>     
     <meta name="viewport" content="width=device-width, initial-scale=1">     
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.3.0/css/material.min.css">     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.3.0/css/ripples.min.css">     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.3.0/fonts/Material-Design-Icons.svg">     
+    <link rel="stylesheet" <link rel="stylesheet" href="libs/css/bootstrap.min.css">     
+    <link rel="stylesheet" href="libs/css/material.min.css">     
+    <link rel="stylesheet" href="libs/css/ripples.min.css">     
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">     
-    <link href="https://fonts.googleapis.com/css?family=Merienda|Julee|Quintessential|Pacifico" rel="stylesheet">      
-    <link rel="stylesheet" href="css/main.css"> 
-    <link rel="stylesheet" href="css/message.css"> 
+    <link href="https://fonts.googleapis.com/css?family=Merienda|Julee|Quintessential|Pacifico" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/message.css">
   </head>
   
   <body>     <!-- main container div for body -->     
@@ -22,7 +21,7 @@
             <span class="icon-bar"></span>             <span class="icon-bar"></span>             
             <span class="icon-bar"></span>          
           </button>           
-          <a class="navbar-brand" href="index.html">Postit</a>         
+          <a class="navbar-brand" href="index.html"><i class="fa fa-paper-plane" aria-hidden="true"></i> Postit</a>         
         </div> <!-- close navbar header -->         
         <div class="navbar-collapse collapse navbar-warning-collapse">           
           <ul class="nav navbar-nav navbar-right">  
@@ -38,6 +37,15 @@
         <div class="row">
           <div class="col-sm-3">
             <nav class="nav-sidebar nav-fixed-left">
+              <div>
+                <div id="addUser" class="input-group col-xs-10 col-xs-offset-1">
+                  <input type="text" class="form-control" placeholder="Add user with email">
+                  <span class="input-group-btn">
+                    <button class="btn btn-secondary" type="button">Add</button>
+                  </span>
+                </div>
+              </div>
+
               <div class="chatList">
                 <ul class="nav tabs"><ul>
                   <h2> Users (5)</h2>
@@ -52,113 +60,68 @@
           </div>
 
           <!-- tab content -->
-          <div class="tab-content col-sm-8">
-            <div class="tab-pane active text-style" id="family">
+          <div class="tab-content col-sm-9"> 
+            <div class="tab-pane active others chat-window text-style" id="family">
               <div class="tab-pane-header text-center">
                 <h2 class:"text-center">Family</h2>
               </div>
               <div class="row">
                 <div class="col-xs-12 col-sm-8 col-sm-offset-2">
-                  <div class="row list-group">
+                  <div id="group-messages" class="row list-group">
                     <div class="myListItems col-xs-8 col-xs-offset-2 list-group-item">
                       <h4>Me <span class="pull-right"><small> 2hrs ago </small> </span>
                       </h4>
                       <p class="userMessage">Hello</p>
-                    </div>
-                  </div> 
+                    </div> 
 
-                  <div class="myListItems col-xs-8 col-xs-offset-2 list-group-item">
-                    <h4>Me <span class="pull-right"><small> 2hrs ago </small> </span>
-                    </h4>
-                    <p class="userMessage">Hello</p>
-                  </div> 
+                    <div class="myListItems col-xs-8 col-xs-offset-2 list-group-item">
+                      <h4>Me <span class="pull-right"><small> 2hrs ago </small> </span>
+                      </h4>
+                      <p class="userMessage">I might be returning somewhat late today</p>
+                    </div> 
 
-                  <div class="myListItems col-xs-8 col-xs-offset-2 list-group-item">
-                    <h4>Me <span class="pull-right"><small> 2hrs ago </small> </span>
-                    </h4>
-                    <p class="userMessage">Hello</p>
-                  </div> 
+                    <div class="myListItems col-xs-8 col-xs-offset-2 list-group-item">
+                      <h4>Mum <span class="pull-right"><small> 12 mins ago </small> </span>
+                      </h4>
+                      <p class="userMessage">Why?</p>
+                    </div> 
 
-                  <div class="myListItems col-xs-8 col-xs-offset-2 list-group-item">
-                    <h4>Me <span class="pull-right"><small> 2hrs ago </small> </span>
-                    </h4>
-                    <p class="userMessage">Hello</p>
-                  </div> 
-                </div>
-              </div>
-            </div>
-
-
-            <div class="tab-pane text-style" id="myMessages">
-              <h2>My Messages</h2>
-              <form>
-                <div class="row">
-                  <div class="col-xs-12 col-sm-8">
-                    <div class="row list-group">
-                      <div class="myListItems col-xs-8 col-xs-offset-2 list-group-item">
-                        <h4>
-                          <a href="/location">Family</a>
-                          <span class="badge pull-right badge-default">14</span>
-                        </h4>
-                        <p class="groupNumber">4 Members</p>
-                      </div>
-
-                      <div class="myListItems col-xs-8 col-xs-offset-2 list-group-item">
-                        <h4>
-                          <a href="/location">Book Club</a>
-                          <span class="badge pull-right badge-default">21</span>
-                        </h4>
-                        <p class="groupNumber">52 Members</p>
-                      </div>
-
-                      <div class="myListItems col-xs-8 col-xs-offset-2 list-group-item">
-                        <h4>
-                          <a href="/location">Bootcamp24-Shalom</a>
-                          <span class="badge pull-right badge-default">3</span>
-                        </h4>
-                        <p class="groupNumber">8 members</p>
-                      </div>
-                      
-                    </div>
+                    <div class="myListItems col-xs-8 col-xs-offset-2 list-group-item">
+                      <h4>Me <span class="pull-right"><small> Just now </small> </span>
+                      </h4>
+                      <p class="userMessage"> Uhmm... Bootcamp ish</p>
+                    </div> 
                   </div>
                 </div>
-              </form>
-            </div>
-
-            <div class="tab-pane text-style" id="myGroups">
-              <h2>My Groups</h2>
-              <div>
-                <form>
-                  <h3>Add User to Group</h3>
-                    <div class="input-append btn-group">
-                      <input class="span2" id="appendedInputButton" size="16" type="text">
-                      <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">Add to 
-                          <span class="caret"></span>
-                      </a>
-                      <ul class="dropdown-menu">
-                        <li> Group 1 </li>
-                        <li> Group 2 </li>
-                        <li> Group 3 </li>
-                        <li> Group 4 </li>
-                      </ul>
-                    </div>
-                </form>
-                
               </div>
-              <p>List Groups here</p>
-            </div>
 
-            <div class="tab-pane text-style" id="boardSettings">
-              <h2>Board Settings</h2>
-              <p>Add settings for user message board.</p>
+              <br>
+
+              <div id="post-message" class="row">
+                <div class="form-group col-xs-6">
+                  <label for="newMessageText">Message:</label>
+                  <textarea class="form-control" rows="2" id="newMessageText"></textarea>
+                </div>
+
+                <div class="form-group col-xs-3">
+                  <label for="sel1">Priority Level:</label>
+                  <select class="form-control" id="howCritical">
+                    <option value="1">Normal</option>
+                    <option value="2">Urgent</option>
+                    <option value="3">Critical</option>
+                  </select>
+                </div>
+
+                <div class="form-group col-xs-2">
+                  <button id="chooseLogin" class="btn btn-raised darkBtn">Post it!</button>
+                </div>
               </div>
             </div>
-          </div>    
+          </div>
         </div>
       </div>
               
-        
-        
+      
       <footer class="navbar-fixed-bottom text-center">
         <em>           
           <p> Just Postit!  . . . <i class="fa fa-paper-plane"></i></p>         

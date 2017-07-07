@@ -10,19 +10,19 @@ var resetSuccess = jQuery('#resetSuccess');
 resetSuccess.hide();
 
 chooseLogin.on('click', function () {
-  window.location = "signin.html";
+  window.location = 'signin.html';
 });
 
 chooseSignup.on('click', function () {
-  window.location = "signup.html";
+  window.location = 'signup.html';
 });
 
 loginSubmit.on('click', function () {
-  window.location = "userboard.html";
+  window.location = 'userboard.html';
 });
 
 signupSubmit.on('click', function () {
-  window.location = "userboard.html";
+  window.location = 'userboard.html';
 });
 
 resetSubmit.on('click', function () {
