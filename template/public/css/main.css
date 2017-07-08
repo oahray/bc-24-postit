@@ -1,18 +1,17 @@
 body {
   width: 100%;
-  background-color: teal; }
+  background-color: white; }
   body footer {
     font-family: 'Pacifico','Merienda';
     position: fixed-bottom;
-    background-color: brown;
+    background-color: #009688;
     color: white;
     padding: 5px; }
   body #main {
-    padding: 0;
     height: 100%;
-    background-color: teal; }
+    background-color: white; }
     body #main .navbar-default {
-      background-color: brown;
+      background-color: #009688 !important;
       font-family: 'Merienda'; }
       body #main .navbar-default .navbar-brand {
         font-size: 2em;
@@ -20,10 +19,12 @@ body {
         color: white; }
     body #main .navbar-right {
       margin-right: 20px; }
+    body #main button:hover {
+      background-color: #ddd; }
     body #main #welcome-body {
       margin: 0 auto;
       width: 100%;
-      color: white;
+      color: #009688;
       text-align: center; }
       body #main #welcome-body #welcome-message {
         padding: 50px 0px 0px 0px;
@@ -45,13 +46,13 @@ body {
             font-family: 'Merienda'; }
           body #main #welcome-body #welcome-message #canDo .canDoIcon {
             margin: 0 auto;
-            padding: 5px;
+            padding: 0px;
             width: 200px;
-            height: 200px;
-            border: 2px dotted teal;
+            height: 170px;
+            color: #009688;
+            border: 2px dotted white;
             border-radius: 100%;
             margin: 0 auto;
-            background-color: #066;
             font-size: 9em; }
             body #main #welcome-body #welcome-message #canDo .canDoIcon i {
               margin: 0px; }
@@ -64,28 +65,30 @@ body {
           margin-top: 20px;
           font-size: 1.5em; }
     body #main .darkBtn {
-      background-color: #066;
-      border: 1px solid white;
-      color: gold;
+      color: #009688;
       font-weight: bold; }
     body #main .loginOrSignup {
-      color: white; }
+      padding: 60px 0px 30px 0px;
+      color: #009688; }
       body #main .loginOrSignup input {
-        color: white; }
+        color: black; }
       body #main .loginOrSignup #resetSuccess {
-        background-color: green;
-        border: 1px solid gold;
+        color: #009688;
+        font-weight: bold;
         border-radius: 5px;
         padding-top: 10px; }
       body #main .loginOrSignup h3 {
         font-family: 'Pacifico'; }
       body #main .loginOrSignup label {
-        color: white; }
+        color: #3ca; }
       body #main .loginOrSignup a {
-        color: gold; }
+        color: #37d; }
+      body #main .loginOrSignup a:hover {
+        text-decoration: none;
+        font-weight: bold; }
   body .sidebar {
-    background-color: brown;
-    color: white; }
+    background-color: white;
+    color: #009688; }
     body .sidebar .mini-submenu {
       display: none;
       background-color: transparent;
@@ -94,18 +97,5 @@ body {
       padding: 9px;
       /*position: relative;*/
       width: 42px; }
-    body .sidebar .mini-submenu:hover {
-      cursor: pointer; }
-    body .sidebar .mini-submenu .icon-bar {
-      background-color: white;
-      border-radius: 1px;
-      display: block;
-      height: 2px;
-      width: 22px;
-      margin-top: 3px; }
-    body .sidebar #slide-submenu {
-      background: #066;
-      display: inline-block;
-      padding: 0 8px;
-      border-radius: 4px;
-      cursor: pointer; }
+    body .sidebar button:hover {
+      background-color: #ddd; }

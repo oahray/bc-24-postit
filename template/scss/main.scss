@@ -1,26 +1,28 @@
-$main-color: teal;
-$secondary-color: #066;
-$header-color: brown;
+$main-background-color: white;
+$secondary-color: #3ca;
+$main-color: #009688;
+$link-color: #37d;
+$input-color: black;
+$button-hover-color: #ddd;
 
 body {
   width: 100%;
-  background-color: $main-color;
+  background-color: $main-background-color;
 
   footer {
     font-family: 'Pacifico','Merienda';
     position: fixed-bottom;
-    background-color: brown;
+    background-color: $main-color;
     color: white;
     padding: 5px;
   }
   
   #main {
-    padding: 0;
     height: 100%;
-    background-color: $main-color;  
+    background-color: $main-background-color;  
   
     .navbar-default {
-      background-color: brown;
+      background-color: $main-color !important;
       font-family: 'Merienda';
       .navbar-brand {
         font-size: 2em;
@@ -33,10 +35,14 @@ body {
       margin-right: 20px;
     }
 
+    button:hover {
+      background-color: #ddd;
+    }
+
     #welcome-body {
       margin: 0 auto;
       width: 100%;
-      color: white;
+      color: $main-color;
       text-align: center;
       
       #welcome-message {
@@ -62,13 +68,13 @@ body {
           }
           .canDoIcon {
             margin: 0 auto;
-            padding: 5px;
+            padding: 0px;
             width: 200px;
-            height: 200px;
-            border: 2px dotted $main-color;
+            height: 170px;
+            color: $main-color;
+            border: 2px dotted $main-background-color;
             border-radius: 100%;
             margin: 0 auto;
-            background-color: $secondary-color;
             font-size: 9em;
             i {
               margin: 0px;
@@ -91,20 +97,19 @@ body {
     }
 
     .darkBtn {
-      background-color: $secondary-color;
-      border: 1px solid white;
-      color: gold;
+      color: $main-color;
       font-weight: bold;
     } 
 
     .loginOrSignup {
-      color: white;
+      padding: 60px 0px 30px 0px;
+      color: $main-color;
       input {
-        color: white;
+        color: $input-color;
       }
       #resetSuccess {
-        background-color: green;
-        border: 1px solid gold;
+        color: $main-color;
+        font-weight: bold;
         border-radius: 5px;
         padding-top: 10px;
       }
@@ -112,16 +117,20 @@ body {
         font-family: 'Pacifico';
       }
       label {
-        color: white;
+        color: $secondary-color;
       }
       a {
-        color: gold;
+        color: $link-color;
+      }
+      a:hover {
+        text-decoration: none;
+        font-weight: bold;
       }
     }
   }
   .sidebar {
-    background-color: $header-color;
-    color: white;
+    background-color: $main-background-color;
+    color: $main-color;
     .mini-submenu{
       display:none;  
       background-color: rgba(0, 0, 0, 0);  
@@ -133,25 +142,9 @@ body {
 
     }
 
-    .mini-submenu:hover{
-      cursor: pointer;
+    button:hover{
+      background-color: $button-hover-color;
     }
-
-    .mini-submenu .icon-bar {
-      background-color: white;
-      border-radius: 1px;
-      display: block;
-      height: 2px;
-      width: 22px;
-      margin-top: 3px;
-    }
-
-     #slide-submenu{
-      background: $secondary-color;
-      display: inline-block;
-      padding: 0 8px;
-      border-radius: 4px;
-      cursor: pointer;
-    }
+  
   }
 }
