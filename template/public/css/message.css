@@ -1,14 +1,17 @@
 .myListItems {
-  background-color: #066; }
+  width: 100%;
+  background-color: #3ca;
+  margin: 5px; }
 
 .nav-sidebar {
+  color: #009688;
   min-height: 100%;
   width: 100%;
-  padding: 30px 0;
+  padding: 20px 0;
   border-right: 1px solid #ddd; }
 
 .nav-sidebar a {
-  color: #ccc;
+  color: #009688;
   -webkit-transition: all 0.08s linear;
   -moz-transition: all 0.08s linear;
   -o-transition: all 0.08s linear;
@@ -16,11 +19,11 @@
 
 .nav-sidebar .active a {
   cursor: default;
-  background-color: #066 !important;
+  background-color: #3ca !important;
   color: white; }
 
 .nav-sidebar .others a:hover, .nav-sidebar .active a:hover {
-  background-color: brown !important;
+  background-color: #009688 !important;
   color: white; }
 
 .nav-sidebar .text-overflow a,
@@ -31,11 +34,15 @@
   text-overflow: ellipsis; }
 
 .chatList {
-  font-size: 1.5em;
+  font-size: 1.2em;
   margin: 0 auto;
   padding: 20px;
   margin-left: 20px;
-  color: white; }
+  color: #009688; }
+  .chatList .usersList {
+    padding-left: 10px;
+    height: 300px;
+    overflow-y: scroll; }
 
 .badge-default {
   background-color: green; }
@@ -45,48 +52,41 @@
 
 .tab-content {
   margin-bottom: 50px;
-  padding: 0; }
+  padding: 10px; }
 
 .tab-pane {
   padding: 10px;
   margin: 0 auto; }
   .tab-pane h1, .tab-pane h2, .tab-pane h3, .tab-pane h4, .tab-pane h5, .tab-pane h6 {
-    color: white; }
+    color: #009688; }
   .tab-pane p {
-    color: #ddd; }
+    color: black; }
   .tab-pane #group-messages {
     height: 250px;
     overflow-y: scroll;
+    overflow-x: hidden;
     padding: 0px; }
-  .tab-pane #addUser {
-    border: 1px solid white !important; }
-    .tab-pane #addUser input {
-      color: white; }
-  .tab-pane .myListItems {
-    width: 100%;
-    background-color: #066;
-    margin: 5px; }
-  .tab-pane small {
-    color: #999; }
+
+small {
+  font-size: 0.8em;
+  color: #777; }
 
 input {
-  color: #066; }
+  color: black; }
 
 form {
-  background-color: #066;
   border-radius: 5px;
-  border: 3px dotted teal;
-  padding: 20px; }
-  form a, form a:hover {
-    color: gold; }
+  padding: 20px;
+  background-color: #eee; }
+  form a {
+    color: #009688; }
+  form a:hover {
+    text-decoration: none;
+    font-weight: bold; }
   form h4 {
     color: white; }
   form .form-control {
-    color: white !important; }
-  form .dropdown-toggle {
-    color: white;
-    background-color: #066;
-    border: 1px solid white; }
+    color: #009688 !important; }
 
 .container .text-style {
   text-align: justify;
@@ -97,5 +97,11 @@ form {
 .input-append .btn.dropdown-toggle {
   float: none; }
 
-family {
-  padding-bottom: 50px; }
+#group-messages {
+  padding-right: 10px !important; }
+
+.each-message {
+  background-color: #eee !important;
+  border: 1px solid #eee;
+  border-radius: 10px !important;
+  margin: 2px; }
