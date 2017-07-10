@@ -12,7 +12,14 @@ var signup = function signup(req, res) {
     password: req.body.password,
     email: email
   }).then(function (user) {
-    return res.status(201).send(user);
+    var createdUser = {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt
+    };
+    res.status(201).send(createdUser);
   }).catch(function (err) {
     return res.status(400).send(err);
   });

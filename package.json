@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "My postit app",
   "main": "server/dist/bin/www",
+  "engines": {
+     "node": "6.10.2"
+  },
   "scripts": {
     "start": "node server/build/bin/www.js",
     "dev:start": "nodemon --exec \"npm start\"",

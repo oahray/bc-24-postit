@@ -3,7 +3,7 @@
 var http = require('http');
 var app = require('../app');
 
-var port = parseInt(process.env.PORT, 10) || 3000;
+var port = parseInt(process.env.PORT, 10) || 8000;
 app.set('port', port);
 
 var server = http.createServer(app);

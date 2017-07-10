@@ -50,7 +50,7 @@ db.sequelize = sequelize;
 db.Sequelize = _sequelize2.default;
 
 var gracefulShutdown = function gracefulShutdown(msg, callback) {
-  db.connectorManager.disconnect(function () {
+  db.sequelize.close(function () {
     console.log('Mongoose disconnected through ' + msg);
     callback();
   });

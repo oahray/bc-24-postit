@@ -10,7 +10,16 @@ const signup = (req, res) => {
     password: req.body.password,
     email,
   })
-  .then(user => res.status(201).send(user))
+  .then((user) => {
+    const createdUser = {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt
+    };
+    res.status(201).send(createdUser);
+  })
   .catch(err => res.status(400).send(err));
 };
 
