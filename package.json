@@ -2,15 +2,16 @@
   "name": "bc-24-postit",
   "version": "1.0.0",
   "description": "My postit app",
-  "main": "index.js",
+  "main": "server/bin/www",
   "scripts": {
-    "start": "babel-node server/server.js --presets es2015,stage-2",
+    "start": "babel-node server/bin/www --presets es2015,stage-2",
+    "devserver": "nodemon --exec \"npm start\"",
     "devstart": "nodemon -e scss -x .js --ignore template/public/js --exec \"npm run build-css & npm run build-js & npm start\"",
     "devbuild": "nodemon -e scss --ignore template/public/js --exec \"npm run build-css & npm run build-js\"",
     "build-js": "babel template/es6 -d template/public/js --presets es2015,stage-2",
     "build-css": "node-sass --include-path scss template/scss/main.scss template/public/css/main.css && node-sass --include-path scss template/scss/message.scss template/public/css/message.css",
     "watch-css": "nodemon -e scss -x \"npm run build-css\"",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "export NODE_ENV=test || SET \"NODE_ENV=test\" && mocha server/**/*.test.js"
   },
   "repository": {
     "type": "git",
@@ -23,7 +24,14 @@
   },
   "homepage": "https://github.com/oahray/bc-24-postit#readme",
   "dependencies": {
-    "express": "^4.15.3"
+    "body-parser": "^1.17.2",
+    "dotenv": "^4.0.0",
+    "express": "^4.15.3",
+    "lodash": "^4.17.4",
+    "morgan": "^1.8.2",
+    "pg": "^6.4.0",
+    "pg-hstore": "^2.3.2",
+    "sequelize": "^4.2.1"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",

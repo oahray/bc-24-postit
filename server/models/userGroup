@@ -1,0 +1,11 @@
+export default (sequelize, DataTypes) => {
+  const userGroup = sequelize.define('User', {
+    userId: {
+      type: DataTypes.INTEGER,
+    },
+    groupId: {
+      type: DataTypes.INTEGER,
+    }
+  });
+  return userGroup;
+};
