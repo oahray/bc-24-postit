@@ -14,11 +14,11 @@ const createGroup = (req, res) => {
     title
   })
   .then((group) => {
-    User.findById(req.sessions.user.id).then((user) => {
-      group.addUser(user);
-      user.addGroup(group);
+    User.findById(req.session.user.id).then((user) => {
+      group.addUsers(user.id);
+      user.addGroups(group.id);
       res.status(201).send(group);
-    });
+    }).catch(err => res.status(400).send(err));
   })
   .catch(err => res.status(400).send(err));
 };
@@ -52,8 +52,9 @@ const addUserToGroup = (req, res) => {
           error: 'User does not exist with that username'
         });
       }
-      group.addUser(user);
-      user.addGroup(group);
+      group.addUser(user.id);
+      user.addGroup(group.id);
+      res.status(201);
     }).catch(err => res.status(400).send(err));
   });
 };
