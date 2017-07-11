@@ -1,7 +1,7 @@
-const _ = require('lodash');
 const bcrypt = require('bcryptjs');
 
 export default (sequelize, DataTypes) => {
+  // setup User model and its fields.
   const User = sequelize.define('User', {
     username: {
       type: DataTypes.STRING,
@@ -22,19 +22,26 @@ export default (sequelize, DataTypes) => {
     }
   });
 
-  User.prototype.toJSON = function () {
+  // Instance method to prevent password from
+  // being sent to client.
+  User.prototype.toJSON = function toJSON() {
     const values = Object.assign({}, this.get());
 
     delete values.password;
     return values;
   };
 
-  User.prototype.validPassword = function (password) {
+  // Instance method to compare password sent from client
+  // with the hashed password of user with that username
+  User.prototype.validPassword = function validPassword(password) {
     return bcrypt.compareSync(password, this.password);
   };
 
-  User.generateHash = password =>
-        bcrypt.hashSync(password, bcrypt.genSaltSync(10), null);
+  // Salt and hash passwords before creating users
+  User.beforeCreate((user) => {
+    user.password = bcrypt.hashSync(user.password,
+    bcrypt.genSaltSync(10), null);
+  });
 
   User.associate = (models) => {
     // associations can be defined here
@@ -46,19 +53,5 @@ export default (sequelize, DataTypes) => {
       as: 'userGroups',
     });
   };
-  // User.beforeCreate((user, options) => {
-  //   return bcrypt.genSalt(10, (err, salt) => {
-  //     bcrypt.hash(user.password, salt, (err, hash) => {
-  //       user.password = hash;
-  //     });
-  //   });
-  // });
-
-  // User.prototype.toJSON = function () {
-  //   const user = this;
-  //   const userObject = user.toObject();
-
-  //   return _.pick(userObject, ['id', 'username', 'email']);
-  // };
   return User;
 };

@@ -1,19 +1,75 @@
 const Group = require('../models').Group;
+const User = require('../models').User;
+const Message = require('../models').Message;
 
+// Function to add create group
 const createGroup = (req, res) => {
+  const title = req.body.title;
+  if (!title) {
+    return res.status(400).send({
+      error: 'Group title required.'
+    });
+  }
   Group.create({
-    title: req.body.title
+    title
   })
-  .then(group => res.status(201).send(group))
+  .then((group) => {
+    User.findById(req.sessions.user.id).then((user) => {
+      group.addUser(user);
+      user.addGroup(group);
+      res.status(201).send(group);
+    });
+  })
   .catch(err => res.status(400).send(err));
 };
 
+// Function to add users to groups with username
 const addUserToGroup = (req, res) => {
-  res.send({ message: 'addUserToGroup' });
+  // Grab username from request body
+  const username = req.body.username;
+  // Grab groupId from request params
+  const groupId = req.param.groupid;
+  if (!username) {
+    return res.status(400).send({
+      error: 'Username required'
+    });
+  }
+  Group.findById(groupId).then((group) => {
+    if (!group) {
+      return res.status(404).send({
+        error: 'Group does not exist'
+      });
+    }
+    // Find a user with that username from request body
+    User.findOne({
+      where: {
+        username: req.body.username.toLowerCase(),
+      }
+    })
+    .then((user) => {
+      if (!user) {
+        return res.status(404).send({
+          error: 'User does not exist with that username'
+        });
+      }
+      group.addUser(user);
+      user.addGroup(group);
+    }).catch(err => res.status(400).send(err));
+  });
 };
 
 const getGroupUsers = (req, res) => {
-  res.send({ message: 'getGroupUsers' });
+  const groupId = req.params.groupid;
+  Group.findById(groupId).then((group) => {
+    if (!group) {
+      return res.status(404).send({
+        error: 'Group does not exist'
+      });
+    }
+    const groupUsers = group.getUsers();
+    res.send({ groupUsers });
+  })
+  .catch(err => res.status(400).send(err));
 };
 
 const addMessageToGroup = (req, res) => {

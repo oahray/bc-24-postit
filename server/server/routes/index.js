@@ -1,5 +1,6 @@
 const usersController = require('../controllers').users;
 const groupsController = require('../controllers').groups;
+const authenticate = require('../middleware/authenticate');
 
 module.exports = (app) => {
   app.get('/api', (req, res) => res.status(200).send({
@@ -11,7 +12,7 @@ module.exports = (app) => {
   app.post('/api/user/signin', usersController.signin);
   app.get('/api/user/me', usersController.getMe);
   app.get('/api/user/me/groups', usersController.getMyGroups);
-  app.delete('api/users/me/token', usersController.logout);
+  app.delete('/api/user/logout', authenticate, usersController.logout);
 
   // Group routes
   app.post('/api/group', groupsController.createGroup);

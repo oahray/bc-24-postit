@@ -11,13 +11,15 @@ const signup = (req, res) => {
   }
   const username = req.body.username.toLowerCase();
   const email = req.body.email.toLowerCase();
-  const hashedPassword = User.generateHash(req.body.password);
   User.create({
     username,
-    password: hashedPassword,
+    password: req.body.password,
     email,
   })
   .then((user) => {
+    req.session.user = _.pick(user.dataValues, [
+      'id', 'username', 'email', 'createdAt', 'updatedAt'
+    ]);
     res.status(201).send(user);
   })
   .catch(err => res.status(400).send(err));
@@ -32,8 +34,9 @@ const signin = (req, res) => {
     });
   }
   User.findOne({
-    where: { username: body.username.toLowerCase(),
-    },
+    where: {
+      username: body.username.toLowerCase(),
+    }
   })
   .then((user) => {
     if (!user) {
@@ -41,19 +44,26 @@ const signin = (req, res) => {
         error: 'User not found'
       });
     }
-    console.log('password: ', body.password);
-    const valid = user.validPassword(body.password);
-    if (!valid) {
+    if (!user.validPassword(body.password)) {
       return res.status(401).send({
         error: 'Password is incorrect'
       });
     }
-    res.status(201).send(user);
+    req.session.user = _.pick(user.dataValues, [
+      'id', 'username', 'email', 'createdAt', 'updatedAt'
+    ]);
+    res.status(200).send(user);
   }).catch(err => res.status(400).send(err));
 };
 
 const getMe = (req, res) => {
-  res.send({ message: 'getMe' });
+  const user = req.session.user;
+  if (!user) {
+    return res.status(401).send({
+      error: 'Not logged in'
+    });
+  }
+  res.send({ user });
 };
 
 const getMyGroups = (req, res) => {
@@ -61,7 +71,8 @@ const getMyGroups = (req, res) => {
 };
 
 const logout = (req, res) => {
-  res.send({ message: 'logout' });
+  res.clearCookie('user_sid');
+  res.status(204).send({});
 };
 
 module.exports = {

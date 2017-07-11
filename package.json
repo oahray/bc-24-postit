@@ -2,14 +2,14 @@
   "name": "bc-24-postit",
   "version": "1.0.0",
   "description": "My postit app",
-  "main": "server/dist/bin/www",
+  "main": "server/build/bin/www",
   "engines": {
     "node": "6.10.2"
   },
   "scripts": {
     "start": "node server/build/bin/www.js",
-    "dev:start": "nodemon --exec \"npm start\"",
-    "dev:start-es6": "babel-node server/www.js --presets es2015,stage-2",
+    "dev:start": "nodemon --exec \"npm run dev:start-es6\"",
+    "dev:start-es6": "babel-node server/server/bin/www.js --presets es2015,stage-2",
     "dev:build-start": "nodemon --ignore server/build --exec \"npm run build-server & npm start\"",
     "build-server": "babel -d ./server/build ./server/server -s --presets es2015,stage-2",
     "devserver": "nodemon --exec \"npm run dev:server\"",
@@ -33,6 +33,7 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.17.2",
+    "cookie-parser": "^1.4.3",
     "dotenv": "^4.0.0",
     "express": "^4.15.3",
     "express-session": "^1.15.3",
