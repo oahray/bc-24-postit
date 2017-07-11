@@ -4,7 +4,7 @@
   "description": "My postit app",
   "main": "server/dist/bin/www",
   "engines": {
-     "node": "6.10.2"
+    "node": "6.10.2"
   },
   "scripts": {
     "start": "node server/build/bin/www.js",
@@ -31,9 +31,12 @@
   },
   "homepage": "https://github.com/oahray/bc-24-postit#readme",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.17.2",
     "dotenv": "^4.0.0",
     "express": "^4.15.3",
+    "express-session": "^1.15.3",
+    "jsonwebtoken": "^7.4.1",
     "lodash": "^4.17.4",
     "morgan": "^1.8.2",
     "pg": "^6.4.0",

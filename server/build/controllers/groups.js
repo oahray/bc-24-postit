@@ -12,7 +12,27 @@ var createGroup = function createGroup(req, res) {
   });
 };
 
+var addUserToGroup = function addUserToGroup(req, res) {
+  res.send({ message: 'addUserToGroup' });
+};
+
+var getGroupUsers = function getGroupUsers(req, res) {
+  res.send({ message: 'getGroupUsers' });
+};
+
+var addMessageToGroup = function addMessageToGroup(req, res) {
+  res.send({ message: 'addMessageToGroup' });
+};
+
+var getGroupMessages = function getGroupMessages(req, res) {
+  res.send({ message: 'getGroupMessages' });
+};
+
 module.exports = {
-  createGroup: createGroup
+  createGroup: createGroup,
+  addUserToGroup: addUserToGroup,
+  getGroupUsers: getGroupUsers,
+  addMessageToGroup: addMessageToGroup,
+  getGroupMessages: getGroupMessages
 };
 //# sourceMappingURL=groups.js.map

@@ -1,10 +1,12 @@
 const _ = require('lodash');
+const bcrypt = require('bcryptjs');
 
 export default (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
     username: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true
     },
     password: {
       type: DataTypes.STRING,
@@ -13,11 +15,27 @@ export default (sequelize, DataTypes) => {
     email: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true,
       validate: {
         isEmail: true
       }
     }
   });
+
+  User.prototype.toJSON = function () {
+    const values = Object.assign({}, this.get());
+
+    delete values.password;
+    return values;
+  };
+
+  User.prototype.validPassword = function (password) {
+    return bcrypt.compareSync(password, this.password);
+  };
+
+  User.generateHash = password =>
+        bcrypt.hashSync(password, bcrypt.genSaltSync(10), null);
+
   User.associate = (models) => {
     // associations can be defined here
     User.hasMany(models.Message, {
@@ -28,6 +46,14 @@ export default (sequelize, DataTypes) => {
       as: 'userGroups',
     });
   };
+  // User.beforeCreate((user, options) => {
+  //   return bcrypt.genSalt(10, (err, salt) => {
+  //     bcrypt.hash(user.password, salt, (err, hash) => {
+  //       user.password = hash;
+  //     });
+  //   });
+  // });
+
   // User.prototype.toJSON = function () {
   //   const user = this;
   //   const userObject = user.toObject();
