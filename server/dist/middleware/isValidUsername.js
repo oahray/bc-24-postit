@@ -1,7 +1,5 @@
 'use strict';
 
-var _models = require('../models');
-
 var isValidUsername = function isValidUsername(req, res, next) {
   var username = req.body.username;
   if (!username) {
@@ -9,7 +7,7 @@ var isValidUsername = function isValidUsername(req, res, next) {
       error: 'Username is required.'
     });
   }
-  username = req.body.username.trim().toLowerCase();
+  username = req.body.username.trim();
   var myRegExp = /\w+|-/g;
   var usernameLength = username.length;
   for (var i = 0; i < usernameLength; i += 1) {

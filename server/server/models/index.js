@@ -12,7 +12,7 @@ if (env === 'development') {
 } else if (env === 'test') {
   sequelize = new Sequelize(process.env.TEST_DB_URI);
 } else {
-  sequelize = new Sequelize(process.env.DATABASE_URI);
+  sequelize = new Sequelize(process.env.DATABASE_URL);
 }
 
 fs

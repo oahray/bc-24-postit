@@ -1,10 +1,15 @@
-// const expect = require('expect');
-// const supertest = require('supertest');
+import expect from 'expect';
+import * as  request from 'supertest';
+import app from '../app';
+import { User, Group, Message } from '../models';
 
-// const {app} = require('../server');
-// const { User, Group, Message } = require('../models');
-// const {
-//   users, populateUsers,
-//   groups, populategroups,
-//   messages, populateMessages
-// } = require('../seeders/seed');
+describe('POST /api/user/signup', () => {
+  it('should create a new User', (done) => {
+    request(app)
+      .post('/api/user.signup')
+      .send({
+        username: 'ray'
+      })
+  });
+});
+

@@ -23,9 +23,11 @@ const signup = (req, res) => {
     ]);
     res.status(201).send(user);
   })
-  .catch(err => res.status(400).send({
-    error: err.errors[0].message
-  }));
+  .catch((err) => {
+    if (err) {
+      res.status(400).send({ error: err.errors[0].message });
+    }
+  });
 };
 
 // Function to sign users in

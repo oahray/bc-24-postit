@@ -1,5 +1,3 @@
-import { User } from '../models';
-
 const isValidUsername = (req, res, next) => {
   let username = req.body.username;
   if (!username) {
@@ -7,7 +5,7 @@ const isValidUsername = (req, res, next) => {
       error: 'Username is required.'
     });
   }
-  username = req.body.username.trim().toLowerCase();
+  username = req.body.username.trim();
   const myRegExp = /\w+|-/g;
   const usernameLength = username.length;
   for (let i = 0; i < usernameLength; i += 1) {

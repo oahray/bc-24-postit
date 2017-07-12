@@ -22,9 +22,9 @@ var signup = function signup(req, res) {
     req.session.user = _.pick(user.dataValues, ['id', 'username', 'email', 'createdAt', 'updatedAt']);
     res.status(201).send(user);
   }).catch(function (err) {
-    return res.status(400).send({
-      error: err.errors[0].message
-    });
+    if (err) {
+      res.status(400).send({ error: err.errors[0].message });
+    }
   });
 };
 

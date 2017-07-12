@@ -7,7 +7,7 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var dotenv = require('dotenv');
 
-if (!process.env.NODE_ENV) {
+if (process.env.NODE_ENV !== 'production') {
   dotenv.config();
 }
 
