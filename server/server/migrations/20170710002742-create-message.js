@@ -12,7 +12,8 @@ module.exports = {
         allowNull: false,
       },
       priority: {
-        type: Sequelize.STRING,
+        type: Sequelize.ENUM,
+        value: ['normal', 'urgent', 'critical'],
         allowNull: false,
       },
       createdAt: {
@@ -27,14 +28,16 @@ module.exports = {
         type: Sequelize.INTEGER,
         references: {
           model: 'Users',
-          key: 'id'
+          key: 'id',
+          as: 'userId'
         },
       },
       groupId: {
         type: Sequelize.INTEGER,
         references: {
           model: 'Groups',
-          key: 'id'
+          key: 'id',
+          as: 'groupId'
         },
       },
     }),

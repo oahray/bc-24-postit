@@ -26,7 +26,7 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   secret: process.env.MY_SUPER_SECRET,
-  cookie: { maxAge: 60000 }
+  cookie: { maxAge: 6000000 }
 }));
 
 // If user's cookie is still saved in browser but user is not set,

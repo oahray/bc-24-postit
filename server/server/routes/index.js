@@ -12,16 +12,22 @@ module.exports = (app) => {
   app.post('/api/user/signin', usersController.signin);
   app.get('/api/user/me', authenticate, usersController.getMe);
   app.get('/api/user/me/groups', authenticate, usersController.getMyGroups);
+  app.get('/api/user/me/messages', authenticate,
+  usersController.getMySentMessages);
   app.delete('/api/user/logout', authenticate, usersController.logout);
 
   // Group routes
   app.post('/api/group', authenticate, groupsController.createGroup);
 
-  app.post('/api/group/:groupid/user', authenticate, groupsController.addUserToGroup);
+  app.post('/api/group/:groupid/user', authenticate,
+  groupsController.addUserToGroup);
 
-  app.get('/api/group/:groupid/users', authenticate, groupsController.getGroupUsers);
+  app.get('/api/group/:groupid/users', authenticate,
+  groupsController.getGroupUsers);
 
-  app.post('/api/group/:groupid/message', authenticate, groupsController.addMessageToGroup);
+  app.post('/api/group/:groupid/message', authenticate,
+  groupsController.sendMessageToGroup);
 
-  app.get('/api/group/:groupid/messages', authenticate, groupsController.getGroupMessages);
+  app.get('/api/group/:groupid/messages', authenticate,
+  groupsController.getGroupMessages);
 };

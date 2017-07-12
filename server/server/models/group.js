@@ -8,11 +8,12 @@ export default (sequelize, DataTypes) => {
   Group.associate = (models) => {
     // associations can be defined here
     Group.hasMany(models.Message, {
-      as: 'groupMessages',
+      as: 'Group',
+      foreignKey: 'groupId'
     });
     Group.belongsToMany(models.User, {
-      through: 'userGroup',
-      as: 'groupUsers',
+      through: models.UserGroup,
+      foreignKey: 'groupId'
     });
   };
   return Group;

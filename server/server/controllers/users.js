@@ -1,6 +1,7 @@
 const _ = require('lodash');
 
 const User = require('../models').User;
+const Message = require('../models').Message;
 
 // Function to signup new users
 const signup = (req, res) => {
@@ -66,8 +67,19 @@ const getMe = (req, res) => {
   res.send({ user });
 };
 
+const getMySentMessages = (req, res) => {
+  const userId = req.session.user.id;
+  Message.findAll({ where: { userId } }).then(messages =>
+    res.status(200).send({ messages })
+  ).catch(err => res.status(400).send(err));
+};
+
 const getMyGroups = (req, res) => {
-  res.send({ message: 'getMyGroups' });
+  User.findById(req.session.user.id).then((user) => {
+    user.getGroups().then(userGroups =>
+      res.status(200).send({ userGroups })
+    );
+  });
 };
 
 const logout = (req, res) => {
@@ -79,6 +91,7 @@ module.exports = {
   signup,
   signin,
   getMe,
+  getMySentMessages,
   getMyGroups,
   logout
 };

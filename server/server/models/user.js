@@ -47,10 +47,11 @@ export default (sequelize, DataTypes) => {
     // associations can be defined here
     User.hasMany(models.Message, {
       as: 'userMessages',
+      foreignKey: 'userId'
     });
     User.belongsToMany(models.Group, {
-      through: 'userGroup',
-      as: 'userGroups',
+      through: models.UserGroup,
+      foreignKey: 'userId'
     });
   };
   return User;

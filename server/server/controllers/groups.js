@@ -2,7 +2,7 @@ const Group = require('../models').Group;
 const User = require('../models').User;
 const Message = require('../models').Message;
 
-// Function to add create group
+// Function to create new group
 const createGroup = (req, res) => {
   const title = req.body.title;
   if (!title) {
@@ -15,9 +15,9 @@ const createGroup = (req, res) => {
   })
   .then((group) => {
     User.findById(req.session.user.id).then((user) => {
-      group.addUsers(user.id);
-      user.addGroups(group.id);
-      res.status(201).send(group);
+      group.addUser(user.id);
+      // user.addGroup(group.id).then(console.log('Added group to group'));
+      res.status(201).send({ group, user });
     }).catch(err => res.status(400).send(err));
   })
   .catch(err => res.status(400).send(err));
@@ -28,7 +28,7 @@ const addUserToGroup = (req, res) => {
   // Grab username from request body
   const username = req.body.username;
   // Grab groupId from request params
-  const groupId = req.param.groupid;
+  const groupId = req.params.groupid;
   if (!username) {
     return res.status(400).send({
       error: 'Username required'
@@ -53,8 +53,8 @@ const addUserToGroup = (req, res) => {
         });
       }
       group.addUser(user.id);
-      user.addGroup(group.id);
-      res.status(201);
+      // user.addGroup(group.id);
+      res.status(201).send({});
     }).catch(err => res.status(400).send(err));
   });
 };
@@ -67,24 +67,60 @@ const getGroupUsers = (req, res) => {
         error: 'Group does not exist'
       });
     }
-    const groupUsers = group.getUsers();
-    res.send({ groupUsers });
+    group.getUsers().then(groupUsers =>
+      res.send({ groupUsers }));
   })
   .catch(err => res.status(400).send(err));
 };
 
-const addMessageToGroup = (req, res) => {
-  res.send({ message: 'addMessageToGroup' });
+const sendMessageToGroup = (req, res) => {
+  const content = req.body.content;
+  const priority = req.body.priority;
+  if (!content || !priority) {
+    return res.status(400).send({
+      error: 'message must not be empty'
+    });
+  }
+  Group.findById(req.params.groupid).then((group) => {
+    if (!group) {
+      return res.status(404).send({
+        error: 'Group not found.'
+      });
+    } else if (!Message.verifyPriority(priority)) {
+      return res.status(404).send({
+        error: 'Incorrect priority option. Choose NORMAL, URGENT or CRITICAL.'
+      });
+    }
+    Message.create({
+      content, priority
+    }).then((message) => {
+      message.setGroup(group.id);
+      message.setUser(req.session.user.id);
+      res.status(201).send({ message });
+    }).catch(err => res.status(400).send(err));
+  }).catch(err => res.status(400).send(err));
 };
 
 const getGroupMessages = (req, res) => {
-  res.send({ message: 'getGroupMessages' });
+  const groupId = req.params.groupid;
+  if (!groupId) {
+    res.status(400).send({
+      error: 'GroupId must be provided'
+    });
+  }
+  Message.findAll({
+    where: { 
+      groupId
+    }
+  }).then((messages) => {
+    res.status(200).send({ messages });
+  }).catch(err => res.status(400).send(err));
 };
 
 module.exports = {
   createGroup,
   addUserToGroup,
   getGroupUsers,
-  addMessageToGroup,
+  sendMessageToGroup,
   getGroupMessages
 };

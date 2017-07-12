@@ -36,8 +36,8 @@ db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
 const gracefulShutdown = (msg, callback) => {
-  db.sequelize.close(() => {
-    console.log(`Mongoose disconnected through ${msg}`);
+  sequelize.close(() => {
+    console.log(`Sequelize disconnected through ${msg}`);
     callback();
   });
 };
