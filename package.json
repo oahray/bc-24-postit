@@ -7,11 +7,11 @@
     "node": "6.10.2"
   },
   "scripts": {
-    "start": "babel-node server/server/bin/www.js",
+    "start": "node server/dist/bin/www.js",
     "dev:start": "nodemon --exec \"npm start\"",
     "dev:start-es6": "babel-node server/server/bin/www.js",
-    "dev:build-start": "nodemon --ignore server/build --exec \"npm run build-server & npm start\"",
-    "build-server": "babel -d ./server/build ./server/server -s --presets es2015,stage-2",
+    "dev:build-start": "nodemon --ignore server/dist --exec \"npm run build-server & npm start\"",
+    "build-server": "babel -d ./server/dist ./server/server --presets es2015,stage-2",
     "devserver": "nodemon --exec \"npm run dev:server\"",
     "dev:start-template": "nodemon -e scss -x .js --ignore template/public/js --exec \"npm run build-css & npm run build-template-js & npm start\"",
     "dev:build-template": "nodemon -e scss --ignore template/public/js --exec \"npm run build-css & npm run build-template-js\"",

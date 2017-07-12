@@ -1,10 +1,13 @@
+import { User } from '../models';
+
 const isValidUsername = (req, res, next) => {
-  const username = req.body.username.trim();
+  let username = req.body.username;
   if (!username) {
     return res.status(400).send({
       error: 'Username is required.'
     });
   }
+  username = req.body.username.trim().toLowerCase();
   const myRegExp = /\w+|-/g;
   const usernameLength = username.length;
   for (let i = 0; i < usernameLength; i += 1) {

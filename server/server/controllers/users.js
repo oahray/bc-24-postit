@@ -5,13 +5,13 @@ const Message = require('../models').Message;
 
 // Function to signup new users
 const signup = (req, res) => {
-  const username = req.body.username.trim().toLowerCase();
-  const email = req.body.email.trim().toLowerCase();
   if (!req.body.username || !req.body.email || !req.body.password) {
     return res.status(400).json({
       error: 'Username, Email, and Password must not be empty'
     });
   }
+  const username = req.body.username.trim().toLowerCase();
+  const email = req.body.email.trim().toLowerCase();
   User.create({
     username,
     password: req.body.password,
@@ -23,7 +23,9 @@ const signup = (req, res) => {
     ]);
     res.status(201).send(user);
   })
-  .catch(err => res.status(400).send(err));
+  .catch(err => res.status(400).send({
+    error: err.errors[0].message
+  }));
 };
 
 // Function to sign users in
@@ -55,7 +57,9 @@ const signin = (req, res) => {
       'id', 'username', 'email', 'createdAt', 'updatedAt'
     ]);
     res.status(200).send(user);
-  }).catch(err => res.status(400).send(err));
+  }).catch(err => res.status(400).send({
+    error: err.errors[0].message
+  }));
 };
 
 const getMe = (req, res) => {
@@ -72,7 +76,9 @@ const getMySentMessages = (req, res) => {
   const userId = req.session.user.id;
   Message.findAll({ where: { userId } }).then(messages =>
     res.status(200).send({ messages })
-  ).catch(err => res.status(400).send(err));
+  ).catch(err => res.status(400).send({
+    error: err.errors[0].message
+  }));
 };
 
 const getMyGroups = (req, res) => {

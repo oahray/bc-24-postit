@@ -16,10 +16,17 @@ const createGroup = (req, res) => {
   .then((group) => {
     User.findById(req.session.user.id).then((user) => {
       group.addUser(user.id);
-      res.status(201).send({ group, user });
-    }).catch(err => res.status(400).send(err));
+      return res.status(201).send({
+        message: 'Group created',
+        group
+      });
+    }).catch(err => res.status(400).send({
+      error: err.errors[0].message
+    }));
   })
-  .catch(err => res.status(400).send(err));
+  .catch(err => res.status(400).send({
+    error: err.errors[0].message
+  }));
 };
 
 // Function to add users to groups with username
@@ -54,7 +61,9 @@ const addUserToGroup = (req, res) => {
       group.addUser(user.id);
       // user.addGroup(group.id);
       res.status(201).send({});
-    }).catch(err => res.status(400).send(err));
+    }).catch(err => res.status(400).send({
+      error: err.errors[0].message
+    }));
   });
 };
 
@@ -69,21 +78,24 @@ const getGroupUsers = (req, res) => {
     group.getUsers().then(groupUsers =>
       res.send({ groupUsers }));
   })
-  .catch(err => res.status(400).send(err));
+  .catch(err => res.status(400).send({
+    error: err.errors[0].message
+  }));
 };
 
 const sendMessageToGroup = (req, res) => {
   const content = req.body.content;
-  const priority = req.body.priority;
+  let priority = req.body.priority;
   if (!content || !priority) {
     return res.status(400).send({
-      error: 'message must not be empty'
+      error: 'Message or priority must not be empty'
     });
   }
+  priority = priority.trim().toLowerCase();
   Group.findById(req.params.groupid).then((group) => {
     if (!group) {
       return res.status(404).send({
-        error: 'Group not found.'
+        error: 'Specified group not found.'
       });
     } else if (!Message.verifyPriority(priority)) {
       return res.status(404).send({
@@ -96,8 +108,12 @@ const sendMessageToGroup = (req, res) => {
       message.setGroup(group.id);
       message.setUser(req.session.user.id);
       res.status(201).send({ message });
-    }).catch(err => res.status(400).send(err));
-  }).catch(err => res.status(400).send(err));
+    }).catch(err => res.status(400).send({
+      error: err.errors[0].message
+    }));
+  }).catch(err => res.status(400).send({
+    error: err.errors[0].message
+  }));
 };
 
 const getGroupMessages = (req, res) => {

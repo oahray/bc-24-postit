@@ -1,5 +1,11 @@
-export default (sequelize, DataTypes) => {
-  const Message = sequelize.define('Message', {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+exports.default = function (sequelize, DataTypes) {
+  var Message = sequelize.define('Message', {
     content: {
       type: DataTypes.STRING,
       allowNull: false
@@ -10,20 +16,18 @@ export default (sequelize, DataTypes) => {
       allowNull: false
     }
   });
-  Message.associate = (models) => {
+  Message.associate = function (models) {
     // associations can be defined here
     Message.belongsTo(models.User, {
-      foreignKey: 'userId',
+      foreignKey: 'userId'
     });
     Message.belongsTo(models.Group, {
-      foreignKey: 'groupId',
+      foreignKey: 'groupId'
       // onDelete: 'CASCADE',
     });
   };
-  Message.verifyPriority = (priority) => {
-    if (priority === 'normal'
-      || priority === 'urgent'
-      || priority === 'critical') {
+  Message.verifyPriority = function (priority) {
+    if (priority === 'normal' || priority === 'urgent' || priority === 'critical') {
       return true;
     }
     return false;
