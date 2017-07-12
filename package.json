@@ -7,7 +7,7 @@
     "node": "6.10.2"
   },
   "scripts": {
-    "start": "babel-node server/server/bin/www.js",
+    "start": "node server/server/bin/www.js",
     "dev:start": "nodemon --exec \"npm start\"",
     "dev:start-es6": "babel-node server/server/bin/www.js",
     "dev:build-start": "nodemon --ignore server/build --exec \"npm run build-server & npm start\"",
