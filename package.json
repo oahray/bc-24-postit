@@ -7,9 +7,9 @@
     "node": "6.10.2"
   },
   "scripts": {
-    "start": "node server/build/bin/www.js",
-    "dev:start": "nodemon --exec \"npm run dev:start-es6\"",
-    "dev:start-es6": "babel-node server/server/bin/www.js --presets es2015,stage-2",
+    "start": "babel-node server/server/bin/www.js",
+    "dev:start": "nodemon --exec \"npm start\"",
+    "dev:start-es6": "babel-node server/server/bin/www.js",
     "dev:build-start": "nodemon --ignore server/build --exec \"npm run build-server & npm start\"",
     "build-server": "babel -d ./server/build ./server/server -s --presets es2015,stage-2",
     "devserver": "nodemon --exec \"npm run dev:server\"",
@@ -42,7 +42,9 @@
     "morgan": "^1.8.2",
     "pg": "^6.4.0",
     "pg-hstore": "^2.3.2",
-    "sequelize": "^4.2.1"
+    "sequelize": "^4.2.1",
+    "expect": "^1.20.2",
+    "supertest": "^3.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
@@ -51,10 +53,8 @@
     "eslint": "^3.19.0",
     "eslint-config-airbnb-base": "^11.2.0",
     "eslint-plugin-import": "^2.2.0",
-    "expect": "^1.20.2",
     "mocha": "^3.4.2",
     "node-sass": "^4.5.3",
-    "nodemon": "^1.11.0",
-    "supertest": "^3.0.0"
+    "nodemon": "^1.11.0"
   }
 }

@@ -65,10 +65,6 @@ const getGroupUsers = (req, res) => {
       return res.status(404).send({
         error: 'Group does not exist'
       });
-    // } else if (!isGroupUser(req.sessions.user.id, group)) {
-    //   return res.status(401).send({
-    //     error: 'You must be a part of a group to view its members.'
-    //   });
     }
     group.getUsers().then(groupUsers =>
       res.send({ groupUsers }));
