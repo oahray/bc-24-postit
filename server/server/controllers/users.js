@@ -5,13 +5,13 @@ const Message = require('../models').Message;
 
 // Function to signup new users
 const signup = (req, res) => {
+  const username = req.body.username.trim().toLowerCase();
+  const email = req.body.email.trim().toLowerCase();
   if (!req.body.username || !req.body.email || !req.body.password) {
     return res.status(400).json({
       error: 'Username, Email, and Password must not be empty'
     });
   }
-  const username = req.body.username.toLowerCase();
-  const email = req.body.email.toLowerCase();
   User.create({
     username,
     password: req.body.password,
@@ -29,14 +29,15 @@ const signup = (req, res) => {
 // Function to sign users in
 const signin = (req, res) => {
   const body = _.pick(req.body, ['username', 'password']);
-  if (!body.username || !body.password) {
+  const username = body.username.trim().toLowerCase();
+  if (!username || !body.password) {
     return res.status(400).json({
       error: 'Username or Password must not be empty'
     });
   }
   User.findOne({
     where: {
-      username: body.username.toLowerCase(),
+      username
     }
   })
   .then((user) => {
