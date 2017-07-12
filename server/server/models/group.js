@@ -5,6 +5,7 @@ export default (sequelize, DataTypes) => {
       allowNull: false
     }
   });
+
   Group.associate = (models) => {
     // associations can be defined here
     Group.hasMany(models.Message, {

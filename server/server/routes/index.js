@@ -1,6 +1,7 @@
 const usersController = require('../controllers').users;
 const groupsController = require('../controllers').groups;
 const authenticate = require('../middleware/authenticate');
+const isGroupMember = require('../middleware/isGroupMember');
 
 module.exports = (app) => {
   app.get('/api', (req, res) => res.status(200).send({
@@ -20,14 +21,14 @@ module.exports = (app) => {
   app.post('/api/group', authenticate, groupsController.createGroup);
 
   app.post('/api/group/:groupid/user', authenticate,
-  groupsController.addUserToGroup);
+  isGroupMember, groupsController.addUserToGroup);
 
   app.get('/api/group/:groupid/users', authenticate,
-  groupsController.getGroupUsers);
+  isGroupMember, groupsController.getGroupUsers);
 
   app.post('/api/group/:groupid/message', authenticate,
-  groupsController.sendMessageToGroup);
+  isGroupMember, groupsController.sendMessageToGroup);
 
   app.get('/api/group/:groupid/messages', authenticate,
-  groupsController.getGroupMessages);
+  isGroupMember, groupsController.getGroupMessages);
 };

@@ -16,7 +16,6 @@ const createGroup = (req, res) => {
   .then((group) => {
     User.findById(req.session.user.id).then((user) => {
       group.addUser(user.id);
-      // user.addGroup(group.id).then(console.log('Added group to group'));
       res.status(201).send({ group, user });
     }).catch(err => res.status(400).send(err));
   })
@@ -66,6 +65,10 @@ const getGroupUsers = (req, res) => {
       return res.status(404).send({
         error: 'Group does not exist'
       });
+    // } else if (!isGroupUser(req.sessions.user.id, group)) {
+    //   return res.status(401).send({
+    //     error: 'You must be a part of a group to view its members.'
+    //   });
     }
     group.getUsers().then(groupUsers =>
       res.send({ groupUsers }));
@@ -108,8 +111,17 @@ const getGroupMessages = (req, res) => {
       error: 'GroupId must be provided'
     });
   }
+  // Check if current user is in that group and
+  // refuse request if the user isn't
+  Group.findById(req.params.id).then((group) => {
+    if (!group.isGroupUser(req.session.user.id)) {
+      res.status(401).send({
+        error: 'You must belong to a group to view its messages'
+      });
+    }
+  });
   Message.findAll({
-    where: { 
+    where: {
       groupId
     }
   }).then((messages) => {
