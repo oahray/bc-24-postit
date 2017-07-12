@@ -1,6 +1,6 @@
 {
   "name": "bc-24-postit",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "My postit app",
   "main": "server/build/bin/www",
   "engines": {
