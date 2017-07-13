@@ -1,14 +1,14 @@
 {
   "development": {
-    "username": "DB_USERNAME",
-    "password": "DB_PASSWORD",
+    "username": "postgres",
+    "password": "aite",
     "database": "postit-dev",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
   "test": {
-    "username": "DB_USERNAME",
-    "password": "DB_PASSWORD",
+    "username": "postgres",
+    "password": "aite",
     "database": "postit-test",
     "host": "127.0.0.1",
     "dialect": "postgres"

@@ -128,6 +128,6 @@ export const getGroupMessages = (req, res) => {
     where: {
       groupId
     }
-  }).then((messages) => res.status(200).send({ messages }))
+  }).then(messages => res.status(200).send({ messages }))
     .catch(err => res.status(400).send(err));
 };

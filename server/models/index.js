@@ -5,10 +5,9 @@ import Sequelize from 'sequelize';
 const basename = path.basename(module.filename);
 const env = process.env.NODE_ENV || 'development';
 const db = {};
-const config = require(__dirname + '/../config/config.json')[env];
 
 let sequelize;
-if (env === '') {
+if (env === 'development') {
   sequelize = new Sequelize(process.env.DEV_DB_URI);
 } else if (env === 'test') {
   sequelize = new Sequelize(process.env.TEST_DB_URI);
