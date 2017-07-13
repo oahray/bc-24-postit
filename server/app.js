@@ -1,18 +1,16 @@
-'use strict';
-
-var express = require('express');
-var logger = require('morgan');
-var bodyParser = require('body-parser');
-var cookieParser = require('cookie-parser');
-var session = require('express-session');
-var dotenv = require('dotenv');
+import express from 'express';
+import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
+import session from 'express-session';
+import dotenv from 'dotenv';
+import logger from 'morgan';
 
 if (process.env.NODE_ENV !== 'production') {
   dotenv.config();
 }
 
 // Set up the express app and middleware
-var app = express();
+const app = express();
 
 // set morgan to log info about our requests for development use.
 app.use(logger('dev'));
@@ -37,7 +35,7 @@ app.use(session({
 
 // If user's cookie is still saved in browser but user is not set,
 // log the user out.
-app.use(function (req, res, next) {
+app.use((req, res, next) => {
   if (req.cookies.user_sid && !req.session.user) {
     res.clearCookie('user_sid');
   }
@@ -47,4 +45,4 @@ app.use(function (req, res, next) {
 // Require our routes
 require('./routes')(app);
 
-module.exports = app;
+export default app;

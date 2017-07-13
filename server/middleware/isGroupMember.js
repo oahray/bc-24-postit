@@ -1,6 +1,6 @@
-const Group = require('../models').Group;
+import { Group } from '../models';
 
-const isGroupUser = (req, res, next) => {
+export default (req, res, next) => {
   const groupId = req.params.groupid;
   Group.findById(groupId).then((group) => {
     if (!group) {
@@ -25,5 +25,3 @@ const isGroupUser = (req, res, next) => {
     }).catch(err => res.status(400).send(err));
   });
 };
-
-module.exports = isGroupUser;

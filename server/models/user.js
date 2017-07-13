@@ -1,13 +1,8 @@
-'use strict';
+import bcrypt from 'bcryptjs';
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-var bcrypt = require('bcryptjs');
-
-exports.default = function (sequelize, DataTypes) {
+export default (sequelize, DataTypes) => {
   // setup User model and its fields.
-  var User = sequelize.define('User', {
+  const User = sequelize.define('User', {
     username: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -15,7 +10,7 @@ exports.default = function (sequelize, DataTypes) {
     },
     password: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
     },
     email: {
       type: DataTypes.STRING,
@@ -30,7 +25,7 @@ exports.default = function (sequelize, DataTypes) {
   // Instance method to prevent password from
   // being sent to client.
   User.prototype.toJSON = function toJSON() {
-    var values = Object.assign({}, this.get());
+    const values = Object.assign({}, this.get());
 
     delete values.password;
     return values;
@@ -43,11 +38,12 @@ exports.default = function (sequelize, DataTypes) {
   };
 
   // Salt and hash passwords before creating users
-  User.beforeCreate(function (user) {
-    user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(10), null);
+  User.beforeCreate((user) => {
+    user.password = bcrypt.hashSync(user.password,
+    bcrypt.genSaltSync(10), null);
   });
 
-  User.associate = function (models) {
+  User.associate = (models) => {
     // associations can be defined here
     User.hasMany(models.Message, {
       as: 'userMessages',

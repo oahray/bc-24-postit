@@ -1,8 +1,12 @@
-const http = require('http');
-const app = require('../app');
-const models = require('../models');
+import http from 'http';
+import dotenv from 'dotenv';
+import app from '../app';
 
-// models.sequelize.sync();
+if (process.env.NODE_ENV !== 'production') {
+  dotenv.config();
+}
+
+require('../models');
 
 const port = parseInt(process.env.PORT, 10) || 8000;
 app.set('port', port);

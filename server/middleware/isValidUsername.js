@@ -1,4 +1,4 @@
-const isValidUsername = (req, res, next) => {
+export default (req, res, next) => {
   let username = req.body.username;
   if (!username) {
     return res.status(400).send({
@@ -18,5 +18,3 @@ const isValidUsername = (req, res, next) => {
   }
   next();
 };
-
-module.exports = isValidUsername;

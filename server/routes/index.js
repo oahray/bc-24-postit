@@ -1,8 +1,9 @@
-const usersController = require('../controllers').users;
-const groupsController = require('../controllers').groups;
-const authenticate = require('../middleware/authenticate');
-const isGroupMember = require('../middleware/isGroupMember');
-const isValidUsername = require('../middleware/isValidUsername');
+import * as usersController from '../controllers/users';
+import * as groupsController from '../controllers/groups';
+import authenticate from '../middleware/authenticate';
+import isGroupMember from '../middleware/isGroupMember';
+import isValidUsername from '../middleware/isValidUsername';
+import isTaken from '../middleware/isTaken';
 
 module.exports = (app) => {
   app.get('/api', (req, res) => res.status(200).send({
@@ -10,12 +11,19 @@ module.exports = (app) => {
   );
 
   // User routes
-  app.post('/api/user/signup', isValidUsername, usersController.signup);
-  app.post('/api/user/signin', isValidUsername, usersController.signin);
+  app.post('/api/user/signup', isValidUsername, isTaken,
+   usersController.signup);
+
+  app.post('/api/user/signin', isValidUsername,
+    usersController.signin);
+
   app.get('/api/user/me', authenticate, usersController.getMe);
+
   app.get('/api/user/me/groups', authenticate, usersController.getMyGroups);
+
   app.get('/api/user/me/messages', authenticate,
   usersController.getMySentMessages);
+
   app.delete('/api/user/logout', authenticate, usersController.logout);
 
   // Group routes

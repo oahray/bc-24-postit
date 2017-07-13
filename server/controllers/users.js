@@ -1,10 +1,9 @@
-const _ = require('lodash');
+import * as _ from 'lodash';
 
-const User = require('../models').User;
-const Message = require('../models').Message;
+import { User, Message } from '../models';
 
 // Function to signup new users
-const signup = (req, res) => {
+export const signup = (req, res) => {
   if (!req.body.username || !req.body.email || !req.body.password) {
     return res.status(400).json({
       error: 'Username, Email, and Password must not be empty'
@@ -23,15 +22,11 @@ const signup = (req, res) => {
     ]);
     res.status(201).send(user);
   })
-  .catch((err) => {
-    if (err) {
-      res.status(400).send({ error: err.errors[0].message });
-    }
-  });
+  .catch(() => res.status(400));
 };
 
 // Function to sign users in
-const signin = (req, res) => {
+export const signin = (req, res) => {
   const body = _.pick(req.body, ['username', 'password']);
   const username = body.username.trim().toLowerCase();
   if (!username || !body.password) {
@@ -59,12 +54,10 @@ const signin = (req, res) => {
       'id', 'username', 'email', 'createdAt', 'updatedAt'
     ]);
     res.status(200).send(user);
-  }).catch(err => res.status(400).send({
-    error: err.errors[0].message
-  }));
+  }).catch(() => res.status(400));
 };
 
-const getMe = (req, res) => {
+export const getMe = (req, res) => {
   const user = req.session.user;
   if (!user) {
     return res.status(401).send({
@@ -74,7 +67,7 @@ const getMe = (req, res) => {
   res.send({ user });
 };
 
-const getMySentMessages = (req, res) => {
+export const getMySentMessages = (req, res) => {
   const userId = req.session.user.id;
   Message.findAll({ where: { userId } }).then(messages =>
     res.status(200).send({ messages })
@@ -83,7 +76,7 @@ const getMySentMessages = (req, res) => {
   }));
 };
 
-const getMyGroups = (req, res) => {
+export const getMyGroups = (req, res) => {
   User.findById(req.session.user.id).then((user) => {
     user.getGroups().then(userGroups =>
       res.status(200).send({ userGroups })
@@ -91,16 +84,7 @@ const getMyGroups = (req, res) => {
   });
 };
 
-const logout = (req, res) => {
+export const logout = (req, res) => {
   res.clearCookie('user_sid');
   res.status(204).send({});
-};
-
-module.exports = {
-  signup,
-  signin,
-  getMe,
-  getMySentMessages,
-  getMyGroups,
-  logout
 };
