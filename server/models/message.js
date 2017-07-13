@@ -5,8 +5,7 @@ export default (sequelize, DataTypes) => {
       allowNull: false
     },
     priority: {
-      type: DataTypes.ENUM,
-      values: ['normal', 'urgent', 'critical'],
+      type: DataTypes.STRING,
       allowNull: false
     }
   });
