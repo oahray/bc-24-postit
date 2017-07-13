@@ -15,7 +15,8 @@
     "build-template-js": "babel template/es6 -d template/public/js --presets es2015,stage-2",
     "build-css": "node-sass --include-path scss template/scss/main.scss template/public/css/main.css && node-sass --include-path scss template/scss/message.scss template/public/css/message.css",
     "watch-css": "nodemon -e scss -x \"npm run build-css\"",
-    "test": "export NODE_ENV=test || SET \"NODE_ENV=test\" && mocha server/**/*.test.js"
+    "test": "export NODE_ENV=test || SET \"NODE_ENV=test\" && mocha server/**/*.test.js",
+    "postinstall": "NODE_ENV=production npm run sequelize db:migrate"
   },
   "repository": {
     "type": "git",

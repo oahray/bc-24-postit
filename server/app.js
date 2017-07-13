@@ -39,8 +39,7 @@ app.use((req, res, next) => {
   if (req.cookies.user_sid && !req.session.user) {
     res.clearCookie('user_sid');
   }
-  next();
-});
+  next();5});
 
 // Require our routes
 require('./routes')(app);
