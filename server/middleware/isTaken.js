@@ -9,9 +9,7 @@ export default (req, res, next) => {
         error: 'Username already taken.'
       });
     }
-  }).catch(() => res.status(400).send({
-    error: 'Unable to process that username right now'
-  }));
+  }).catch(err => res.status(400).send(err));
 
   User.findOne({ where: { email } }).then((user) => {
     if (user) {
@@ -19,8 +17,8 @@ export default (req, res, next) => {
         error: 'Eamil already taken.'
       });
     }
-  }).catch(() =>
-      res.status(400)
+  }).catch(err =>
+      res.status(400).send(err)
   );
 
   next();

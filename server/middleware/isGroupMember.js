@@ -14,6 +14,7 @@ export default (req, res, next) => {
       for (let i = 0; i < numOfUsers; i += 1) {
         if (groupUsers[i].id === req.session.user.id) {
           isInGroup = true;
+          break;
         }
       }
       if (!isInGroup) {
