@@ -12,3 +12,6 @@ cache:
   -npm install
 services:
   - postgresql
+before_script:
+  - createdb postit_test --username=postgres
+  - sequelize db:migrate
