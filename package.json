@@ -16,6 +16,7 @@
     "build-css": "node-sass --include-path scss template/scss/main.scss template/public/css/main.css && node-sass --include-path scss template/scss/message.scss template/public/css/message.css",
     "watch-css": "nodemon -e scss -x \"npm run build-css\"",
     "test": "export NODE_ENV=test || SET \"NODE_ENV=test\" && mocha --compilers js:babel-register server/test/app-test.js",
+    "test-watch": "nodemon --exec \"npm test\"",
     "migrate-db": "sequelize db:migrate",
     "postinstall": "NODE_ENV=development npm run migrate-db"
   },
