@@ -3,7 +3,7 @@ node_js:
   - "stable"
 branches:
   only:
-    - master
+    - travis
 install:
   - npm install
 script:
