@@ -12,9 +12,3 @@ cache:
   -npm install
 services:
   - postgresql
-before_script:
-  - sequelize db:migrate
-after_success:
-- npm run coveralls
-after_script: 
-  - nyc npm test && nyc report --reporter=text-lcov | coveralls
