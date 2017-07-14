@@ -1,0 +1,22 @@
+language: node_js
+node_js:
+  - "6.10.2"
+branches:
+  only:
+    - master
+install:
+  - npm install
+script:
+  - npm test
+cache:
+  -npm install
+services:
+  - postgresql
+before_script:
+  - createuser Oahray -s -U postgres
+  - createdb postit_dev --username=Oahray
+  - sequelize db:migrate
+after_success:
+- npm run coveralls
+after_script: 
+  - nyc npm test && nyc report --reporter=text-lcov | coveralls
