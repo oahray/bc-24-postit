@@ -13,8 +13,6 @@ cache:
 services:
   - postgresql
 before_script:
-  - createuser postgres -s -U postgres
-  - createdb postit_dev --username=postgres
   - sequelize db:migrate
 after_success:
 - npm run coveralls
