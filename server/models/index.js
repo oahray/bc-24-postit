@@ -1,18 +1,19 @@
 import fs from 'fs';
 import path from 'path';
 import Sequelize from 'sequelize';
+import configs from '../config/config.json';
 
 const basename = path.basename(module.filename);
 const env = process.env.NODE_ENV || 'development';
+const config = configs[env];
 const db = {};
 
 let sequelize;
-if (env === 'development') {
-  sequelize = new Sequelize(process.env.DEV_DB_URI);
-} else if (env === 'test') {
-  sequelize = new Sequelize(process.env.TEST_DB_URI);
+if (config.use_env_variable) {
+  sequelize = new Sequelize(config.use_env_variable);
 } else {
-  sequelize = new Sequelize(process.env.DATABASE_URL);
+  sequelize = new Sequelize(config.database,
+    config.username, config.password, config);
 }
 
 fs
