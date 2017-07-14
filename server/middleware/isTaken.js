@@ -17,8 +17,8 @@ export default (req, res, next) => {
         error: 'Eamil already taken.'
       });
     }
-  }).catch(err =>
-      res.status(400).send(err)
+  }).catch(() =>
+      res.status(400)
   );
 
   next();

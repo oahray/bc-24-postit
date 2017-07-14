@@ -17,7 +17,7 @@ To view the static front-end template for this project, go [here](https://oahray
 **POSTIT API ENDPOINTS**
 The endpoints for the api are as listed below. These are paths that allow users do different things. With the exception of the signup and signin routes, users would need to be authenticated before using the other routes. At the moment, authentication is implemented with express-sessions.
   - GET  /api --->
-      Shows the list of Postit api routes. This is mostly for reference purposes.
+      Welcome message route for POSTIT api.
 
   - POST /api/user/signup 
       Sign up as a new user. Include the username, password and email you would like to use, in a request to this route.
@@ -34,7 +34,7 @@ The endpoints for the api are as listed below. These are paths that allow users 
   - GET  /api/user/me/messages
       Get a list of message you sent.
 
-  - POST /api/user/logout
+  - DELETE /api/user/logout
       Log out of your current session
 
   - POST /api/group
