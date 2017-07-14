@@ -7,8 +7,20 @@ import isTaken from '../middleware/isTaken';
 
 module.exports = (app) => {
   app.get('/api', (req, res) => res.status(200).send({
-    message: 'Welcome to the Postit API!' })
-  );
+    message: 'Welcome to the Postit API!',
+    info: 'This is a list of available end points',
+    signup: 'POST /api/user/signup',
+    signin: 'POST /api/user.signin',
+    getMe: 'GET /api/user/me',
+    myGroups: '/api/user/me/groups',
+    myMessages: '/api/user/me/messages',
+    logout: 'POST /api/user/logout',
+    createGroup: '/api/group',
+    addUserToGroup: '/api/group/:groupid/user',
+    groupUsers: '/api/group/:groupid/users',
+    sendMessage: '/api/group/:groupid/message',
+    getMessages: '/api/group/:groupid/messages'
+  }));
 
   // User routes
   app.post('/api/user/signup', isValidUsername, isTaken,
@@ -24,7 +36,7 @@ module.exports = (app) => {
   app.get('/api/user/me/messages', authenticate,
   usersController.getMySentMessages);
 
-  app.delete('/api/user/logout', authenticate, usersController.logout);
+  app.post('/api/user/logout', authenticate, usersController.logout);
 
   // Group routes
   app.post('/api/group', authenticate, groupsController.createGroup);
