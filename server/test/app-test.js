@@ -218,15 +218,13 @@ describe('Data Models:', () => {
 });
 
 describe('PostIt API routes: ', () => {
-  doBeforeAll();
-  doBeforeEach();
   describe('Can create data: ', () => {
     it('POST /api/user/signup route should create a new User', (done) => {
       request(app)
       .post('/api/user/signup')
       .send({
-        username: 'testuser1',
-        email: 'testuser1@example.com',
+        username: 'routeuser1',
+        email: 'routeuser1@example.com',
         password: 'mypassword',
       })
       .expect(201)
@@ -235,8 +233,8 @@ describe('PostIt API routes: ', () => {
           return done(err);
         }
         expect(res.body.id).toExist;
-        expect(res.body.username).toBe('testuser1');
-        expect(res.body.email).toBe('testuser1@example.com');
+        expect(res.body.username).toBe('routeuser1');
+        expect(res.body.email).toBe('routeuser1@example.com');
         done();
       });
     });
@@ -244,8 +242,8 @@ describe('PostIt API routes: ', () => {
       request(app)
       .post('/api/user/signup')
       .send({
-        username: 'testuser2',
-        email: 'testuser2@example.com',
+        username: 'routeuser2',
+        email: 'routeuser2@example.com',
         password: 'mypassword',
       })
       .expect(201)
@@ -253,7 +251,7 @@ describe('PostIt API routes: ', () => {
         if (err) {
           return done(err);
         }
-        expect(res.body.username).toBe('testuser2');
+        expect(res.body.username).toBe('routeuser2');
         expect(res.body.password).toNotExist;
         done();
       });
@@ -262,8 +260,8 @@ describe('PostIt API routes: ', () => {
       request(app)
       .post('/api/user/signup')
       .send({
-        username: 'testuser2',
-        email: 'testuser3@example.com',
+        username: 'routeuser2',
+        email: 'routeuser3@example.com',
         password: 'mypassword',
       })
       .expect(400)
@@ -280,8 +278,8 @@ describe('PostIt API routes: ', () => {
       request(app)
       .post('/api/user/signup')
       .send({
-        username: 'testuser3',
-        email: 'testuser2@example.com',
+        username: 'routeuser3',
+        email: 'routeuser2@example.com',
         password: 'mypassword',
       })
       .expect(400)
@@ -298,7 +296,7 @@ describe('PostIt API routes: ', () => {
       request(app)
       .post('/api/user/signin')
       .send({
-        username: 'testuser1',
+        username: 'routeuser1',
         password: 'mypassword',
       })
       .expect(200)
@@ -306,7 +304,7 @@ describe('PostIt API routes: ', () => {
         if (err) {
           return done(err);
         }
-        expect(res.body.username).toBe('testuser1');
+        expect(res.body.username).toBe('routeuser1');
         expect(res.body.id).toExist;
         done();
       });
@@ -315,7 +313,7 @@ describe('PostIt API routes: ', () => {
       request(app)
       .post('/api/user/signin')
       .send({
-        username: 'testuser1',
+        username: 'routeuser1',
         password: 'mypasswor',
       })
       .expect(401)
@@ -332,8 +330,8 @@ describe('PostIt API routes: ', () => {
       request(app)
       .post('/api/user/signin')
       .send({
-        username: 'testuser2',
-        email: 'testuser2@example.com',
+        username: 'routeuser2',
+        email: 'routeuser2@example.com',
         password: 'mypassword',
       })
       .expect(200)
@@ -341,7 +339,7 @@ describe('PostIt API routes: ', () => {
         if (err) {
           return done(err);
         }
-        expect(res.body.username).toBe('testuser2');
+        expect(res.body.username).toBe('routeuser2');
         expect(res.body.password).toNotExist;
         done();
       });
@@ -353,8 +351,6 @@ describe('PostIt API routes: ', () => {
 
 describe('Middleware functions:', () => {
   describe('Authenticate Middleware: ', () => {
-    doBeforeAll();
-    doBeforeEach();
     it('POST /api/user/me route should not be accessible to unauthenticated users', (done) => {
       request(app)
       .get('/api/user/me')
@@ -424,7 +420,7 @@ describe('Middleware functions:', () => {
     it('POST /api/group/:groupid/user route should not be accessible to unauthenticated users', (done) => {
       request(app)
       .post('/api/group/1/user')
-      .send({ username: 'testuser2' })
+      .send({ username: 'testuser22' })
       .expect(401)
       .end((err, res) => {
         if (err) {
