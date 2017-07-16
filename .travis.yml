@@ -13,5 +13,5 @@ cache:
 services:
   - postgresql
 before_script:
-  - createdb postit-dev --username=postgres
+  - createdb postit-test --username=postgres
   - sequelize db:migrate
