@@ -3,7 +3,7 @@ node_js:
   - "stable"
 branches:
   only:
-    - master
+    - travis
 install:
   - npm install
 script:
@@ -13,10 +13,7 @@ cache:
 services:
   - postgresql
 before_script:
-  - createuser postgres -s -U postgres
-  - createdb postit_dev --username=postgres
+  - createdb postit-dev --username=postgres
   - sequelize db:migrate
-after_success:
-- npm run coveralls
-after_script: 
-  - nyc npm test && nyc report --reporter=text-lcov | coveralls
+env:
+  - MY_SUPER_SECRET='rgfiwa7t4873qr7tr87r8'

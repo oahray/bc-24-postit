@@ -20,6 +20,7 @@ export default (sequelize, DataTypes) => {
     });
   };
   Message.verifyPriority = (priority) => {
+    priority = priority.trim().toLowerCase();
     if (priority === 'normal'
       || priority === 'urgent'
       || priority === 'critical') {
