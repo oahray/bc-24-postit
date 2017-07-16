@@ -219,6 +219,7 @@ describe('Data Models:', () => {
 
 describe('PostIt API routes: ', () => {
   doBeforeAll();
+  doBeforeEach();
   describe('Can create data: ', () => {
     it('POST /api/user/signup route should create a new User', (done) => {
       request(app)
