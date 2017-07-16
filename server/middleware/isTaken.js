@@ -14,7 +14,7 @@ export default (req, res, next) => {
   User.findOne({ where: { email } }).then((user) => {
     if (user) {
       res.status(400).send({
-        error: 'Eamil already taken.'
+        error: 'Email already taken.'
       });
     }
   }).catch(() =>
