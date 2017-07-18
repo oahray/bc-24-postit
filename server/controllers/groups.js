@@ -131,3 +131,48 @@ export const getGroupMessages = (req, res) => {
   }).then(messages => res.status(200).send({ messages }))
     .catch(err => res.status(400).send(err));
 };
+
+export const renameGroup = (req, res) => {
+  if (!req.body.title) {
+    return res.send({
+      error: 'Group name required.'
+    });
+  }
+  Group.findById(req.params.groupid).then((group) => {
+    if (!group) {
+      return res.send({
+        error: 'Group does not exist'
+      });
+    }
+    group.update({ title: req.body.title })
+    .then(update => res.status(201).send({
+      message: 'Group name succesfully changed',
+      update
+    })).catch((err) => {
+      if (err.message) {
+        return res.status(400).send({
+          error: err.message
+        });
+      }
+      return res.status(400).send({
+        error: 'Error renaming group'
+      });
+    });
+  });
+};
+
+export const deleteGroup = (req, res) => {
+  Group.findById(req.params.groupid).then((group) => {
+    if (!group) {
+      return res.send({
+        error: 'Group does not exist'
+      });
+    }
+    group.destroy({
+      cascade: true,
+      truncate: true,
+      restartIdentity: true
+    });
+    res.status(204);
+  });
+};

@@ -11,8 +11,7 @@ export default (req, res, next) => {
   for (let i = 0; i < usernameLength; i += 1) {
     if (!username[i].match(myRegExp)) {
       return res.status(400).send({
-        error: `Username should contain only alphanumeric,
-        underscore (_) or dash (-) characters.`
+        error: 'Username should contain only alphanumeric, underscore (_) or dash (-) characters.'
       });
     }
   }

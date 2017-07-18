@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-
+import bcrypt from 'bcryptjs';
 import { User, Message } from '../models';
 
 // Function to signup new users
@@ -20,7 +20,11 @@ export const signup = (req, res) => {
     req.session.user = _.pick(user.dataValues, [
       'id', 'username', 'email', 'createdAt', 'updatedAt'
     ]);
-    res.status(201).send(user);
+    const token = user.generateAuthToken();
+    res.header('x-auth', token).status(201).send({
+      message: `welcome ${user.username}`,
+      user
+    });
   })
   .catch(() => res.status(400));
 };
@@ -53,7 +57,11 @@ export const signin = (req, res) => {
     req.session.user = _.pick(user.dataValues, [
       'id', 'username', 'email', 'createdAt', 'updatedAt'
     ]);
-    res.status(200).send(user);
+    const token = user.generateAuthToken();
+    res.header('x-auth', token).status(200).send({
+      message: `welcome back, ${user.username}`,
+      user
+    });
   }).catch(() => res.status(400));
 };
 
@@ -82,6 +90,52 @@ export const getMyGroups = (req, res) => {
       res.status(200).send({ userGroups })
     );
   });
+};
+
+export const changePassword = (req, res) => {
+  const password = req.body.password;
+  if (!password) {
+    return res.status(400).send({
+      error: 'Password required'
+    });
+  }
+  User.findById(req.session.user.id).then((user) => {
+    if (user.validPassword(password)) {
+      return res.status(400).send({
+        error: 'New password is same as current password'
+      });
+    }
+    const passwordHash = bcrypt.hashSync(password,
+    bcrypt.genSaltSync(10), null);
+    user.update({ password: passwordHash })
+    .then((update) => {
+      if (update) {
+        res.status(201).send({
+          message: 'Password successfully updated'
+        });
+      }
+    }).catch(() => res.status(400).send({
+      error: 'Password could not be updated'
+    }));
+  }).catch((err) => {
+    if (!err.message) {
+      return res.status(400).send({
+        error: err.message
+      });
+    }
+  });
+};
+
+export const changeEmail = (req, res) => {
+  User.findById(req.session.user.id).then((user) => {
+    user.update({ email: req.body.email })
+    .then(updated => res.status(202).send({
+      message: 'Email successfully changed',
+      updated
+    })).catch(e => res.send(400, e));
+  }).catch(() => res.status(400).send({
+    error: 'Error changing email'
+  }));
 };
 
 export const logout = (req, res) => {

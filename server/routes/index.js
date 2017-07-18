@@ -36,6 +36,11 @@ module.exports = (app) => {
   app.get('/api/user/me/messages', authenticate,
   usersController.getMySentMessages);
 
+  app.patch('/api/user/me/password', authenticate,
+  usersController.changePassword);
+
+  app.patch('/api/user/me/email', authenticate, usersController.changeEmail);
+
   app.post('/api/user/logout', authenticate, usersController.logout);
 
   // Group routes
@@ -52,4 +57,10 @@ module.exports = (app) => {
 
   app.get('/api/group/:groupid/messages', authenticate,
   isGroupMember, groupsController.getGroupMessages);
+
+  app.patch('/api/group/:groupid/rename', authenticate,
+  isGroupMember, groupsController.renameGroup);
+
+  app.post('/api/group/:groupid/remove', authenticate,
+  isGroupMember, groupsController.deleteGroup);
 };

@@ -1,4 +1,5 @@
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
 export default (sequelize, DataTypes) => {
   // setup User model and its fields.
@@ -35,6 +36,14 @@ export default (sequelize, DataTypes) => {
   // with the hashed password of user with that username
   User.prototype.validPassword = function validPassword(password) {
     return bcrypt.compareSync(password, this.password);
+  };
+
+  User.prototype.generateAuthToken = function generateAuthToken() {
+    const user = this;
+    const access = 'auth';
+    const token = jwt.sign({ id: user.id, access },
+      process.env.MY_SUPER_SECRET, { expiresIn: 24 * 60 * 60 }).toString();
+    return token;
   };
 
   // Salt and hash passwords before creating users
