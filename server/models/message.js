@@ -16,7 +16,6 @@ export default (sequelize, DataTypes) => {
     });
     Message.belongsTo(models.Group, {
       foreignKey: 'groupId',
-      // onDelete: 'CASCADE',
     });
   };
   Message.verifyPriority = (priority) => {

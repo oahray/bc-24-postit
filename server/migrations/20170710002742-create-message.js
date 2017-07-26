@@ -15,16 +15,9 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
       userId: {
         type: Sequelize.INTEGER,
+        onDelete: 'SET NULL',
         references: {
           model: 'Users',
           key: 'id',
@@ -33,11 +26,20 @@ module.exports = {
       },
       groupId: {
         type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
         references: {
           model: 'Groups',
           key: 'id',
           as: 'groupId'
         },
+      },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE
       },
     }),
   down: queryInterface =>

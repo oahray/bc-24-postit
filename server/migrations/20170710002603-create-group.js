@@ -7,9 +7,21 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      title: {
+      name: {
         type: Sequelize.STRING,
         allowNull: false,
+      },
+      createdBy: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      description: {
+        type: Sequelize.STRING,
+      },
+      type: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        default: 'public'
       },
       createdAt: {
         allowNull: false,

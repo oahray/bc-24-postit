@@ -13,7 +13,8 @@ cache:
 services:
   - postgresql
 before_script:
-  - createdb postit-dev --username=postgres
+  - createdb postit-test --username=postgres
   - sequelize db:migrate
 env:
   - MY_SUPER_SECRET='rgfiwa7t4873qr7tr87r8'
+  - NODE_ENV='test'

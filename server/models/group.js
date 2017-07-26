@@ -1,8 +1,20 @@
 export default (sequelize, DataTypes) => {
   const Group = sequelize.define('Group', {
-    title: {
+    name: {
       type: DataTypes.STRING,
       allowNull: false
+    },
+    createdBy: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    description: {
+      type: DataTypes.STRING,
+    },
+    type: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      default: 'public'
     }
   });
 
