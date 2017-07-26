@@ -9,9 +9,9 @@ export default (req, res, next) => {
       error: 'You need to signup or login first'
     });
   }
-  jwt.verify(token, process.env.MY_SUPER_SECRET, (err, decoded) => {
+  return jwt.verify(token, process.env.MY_SUPER_SECRET, (err, decoded) => {
     if (err) {
-      return res.status(400).send({ error: err });
+      return res.status(401).send({ error: err });
     }
     User.findById(decoded.id).then((user) => {
       if (!user) {
@@ -19,8 +19,8 @@ export default (req, res, next) => {
           error: 'User could not be verifed. Signup or login first'
         });
       }
-      req.user = user;
+      req.currentUser = user;
+      next();
     });
   });
-  next();
 };

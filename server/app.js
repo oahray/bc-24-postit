@@ -45,4 +45,11 @@ app.use((req, res, next) => {
 // Require our routes
 require('./routes')(app);
 
+app.get('/api/*', (req, res) => res.status(404).send({
+  error: 'Route not found',
+}));
+app.post('/api/*', (req, res) => res.status(404).send({
+  error: 'Route not found',
+}));
+
 export default app;

@@ -5,13 +5,13 @@ export default (req, res, next) => {
       error: 'Username is required.'
     });
   }
-  username = req.body.username.trim();
+  username = req.body.username.trim().toLowerCase();
   const myRegExp = /\w+|-/g;
   const usernameLength = username.length;
   for (let i = 0; i < usernameLength; i += 1) {
     if (!username[i].match(myRegExp)) {
       return res.status(400).send({
-        error: 'Username should contain only alphanumeric, underscore (_) or dash (-) characters.'
+        error: 'Invalid Username format.'
       });
     }
   }

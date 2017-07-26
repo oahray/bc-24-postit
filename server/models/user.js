@@ -27,7 +27,6 @@ export default (sequelize, DataTypes) => {
   // being sent to client.
   User.prototype.toJSON = function toJSON() {
     const values = Object.assign({}, this.get());
-
     delete values.password;
     return values;
   };

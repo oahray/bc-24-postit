@@ -9,6 +9,7 @@ module.exports = {
       },
       userId: {
         unique: false,
+        onDelete: 'CASCADE',
         type: Sequelize.INTEGER,
         references: {
           model: 'Users',
@@ -18,11 +19,12 @@ module.exports = {
       },
       groupId: {
         unique: false,
+        onDelete: 'CASCADE',
         type: Sequelize.INTEGER,
         references: {
           model: 'Groups',
           key: 'id',
-          as: 'userId'
+          as: 'groupId'
         },
       },
       createdAt: {
