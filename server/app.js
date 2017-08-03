@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import dotenv from 'dotenv';
 import logger from 'morgan';
+import cors from 'cors';
 
 if (process.env.NODE_ENV !== 'production') {
   dotenv.config();
@@ -23,24 +24,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // the cookies stored in the browser.
 app.use(cookieParser());
 
-// initialize express-session to allow us
-// track the logged-in user across sessions.
-app.use(session({
-  key: 'user_sid',
-  resave: false,
-  saveUninitialized: false,
-  secret: process.env.MY_SUPER_SECRET,
-  cookie: { maxAge: 600000 }
-}));
-
-// If user's cookie is still saved in browser but user is not set,
-// log the user out.
-app.use((req, res, next) => {
-  if (req.cookies.user_sid && !req.session.user) {
-    res.clearCookie('user_sid');
-  }
-  next();
-});
+// Enable Cross-Origin Resource Sharing
+app.use(cors());
 
 // Require our routes
 require('./routes')(app);

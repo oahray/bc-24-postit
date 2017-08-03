@@ -1,0 +1,21 @@
+#sidenav-overlay { 
+  z-index: 1; 
+};
+
+.navbar-fixed {
+  z-index: 999;
+} 
+
+// .navbar-fixed {
+//   z-index: 998; 
+// }
+
+.carousel {
+  padding: 0px;
+
+  .carousel-item {
+    padding: 0px;
+    margin: 0 auto;
+    width: 300px;
+  }
+}
