@@ -64,12 +64,39 @@ export const getMe = (req, res) => {
   return res.status(200).send({ currentUser });
 };
 
+export const refreshToken = (req, res) => {
+  const currentUser = req.currentUser;
+  if (!currentUser) {
+    return res.status(401).send({
+      error: 'Not logged in'
+    });
+  }
+  const token = currentUser.generateAuthToken();
+  res.header('x-auth', token).status(200).send({
+    message: `Token refreshed, ${currentUser.username}`,
+    currentUser
+  });
+};
+
 export const getAllUsers = (req, res) => {
   User.findAll().then(users =>
     res.status(200).send({ users }))
   .catch(() => res.status(400).send({
     error: 'Failed to get list of all users'
   }));
+};
+
+export const searchUsers = (req, res) => {
+  const username = req.query.username;
+  User.findAll({ where : { 
+    username: { $iLike: `%${username}%` }}
+  })
+  .then((users) => {
+    return res.status(200).send({
+    users
+  })
+  })
+  .catch(err => res.status(400).send(err));
 };
 
 export const getMySentMessages = (req, res) => {
@@ -141,11 +168,6 @@ export const changeEmail = (req, res) => {
   }).catch(() => res.status(400).send({
     error: 'Error changing email'
   }));
-};
-
-export const logout = (req, res) => {
-  res.clearCookie('user_sid');
-  res.status(204).send({});
 };
 
 export const deactivate = (req, res) => {

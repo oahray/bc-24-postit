@@ -1,21 +1,52 @@
-#sidenav-overlay { 
-  z-index: 1; 
-};
+.modal {
+  min-height: 80vh;
+}
 
-.navbar-fixed {
-  z-index: 999;
-} 
+.main-body {
+  margin: 0px;
+  width: 100%;
+  padding: 0;
+}
 
-// .navbar-fixed {
-//   z-index: 998; 
-// }
+.main-container, .forms {
+  margin: 0 auto;
+}
 
-.carousel {
-  padding: 0px;
+body {
+  width: 100%
+}
 
+.page-header {
+  color: teal;
+  text-align: center;
+}
+
+#guest-carousel {
+  padding: 0 auto;
+  height: 270px !important;
+  
   .carousel-item {
-    padding: 0px;
+    display: block;
+    position: relative;
+    border-radius: 10px;
+    border: 1px solid #f0f0f0;
+    background-color: #f8f8f8 !important;
+    padding: 5px 0px;
     margin: 0 auto;
-    width: 300px;
+    width: 270px !important;
+    max-height: 270px;
+    h2 {
+      margin : 0 auto;
+    }
+    i {
+      margin: 1px auto;
+      font-size: 120px;
+    }
+    p {
+      margin: 0px 5px 0px 5px;
+      padding-bottom: 10px;
+      font-size: 1.15em;
+      font-style: italic;
+    }
   }
 }

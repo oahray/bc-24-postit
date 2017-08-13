@@ -1,36 +1,49 @@
 import React, { Component} from  'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { Redirect, Link } from 'react-router-dom';
 import { Navbar, NavItem, Icon, Carousel, Button } from 'react-materialize';
-import GuestCarousel from './GuestCarousel.jsx';
-import SignupModal from './Signup.jsx';
-import SigninModal from './Signin.jsx';
-import '../styles/App.scss'
+import GuestCarousel from './GuestCarousel';
+import { verifyAuth } from '../actions';
 
 class GuestHome extends Component {
   constructor(props) {
     super(props);
   }
+
+  componentWillMount() {
+    if (window.localStorage.getItem('x-auth')) {
+      const token = window.localStorage.getItem('x-auth');
+      this.props.verifyAuth(token);
+    }
+  }
+
   render() {
-    const normalTrigger = 'white teal-text';
-    const flatTrigger = 'white btn-flat teal-text'
+    if (this.props.isLoggedIn) { 
+      return (<Redirect to="/dashboard" />)
+    }
     return (
-      < div className='center'>
-        <Navbar className='teal lighten-1' brand='Postit' right fixed>
-          <NavItem 
-          href='#about'><Icon>search</Icon></NavItem>
-          <NavItem href='#'><Icon>view_module</Icon></NavItem>
-          <NavItem href='#'><Icon>refresh</Icon></NavItem>
-          <NavItem href='#'><Icon>more_vert</Icon></NavItem>
-        </Navbar>
-        <GuestCarousel />
+      <div className='center'>
+         {/* <GuestCarousel />  */}
         <div>
           <p> To learn more or to get started,</p>
-          <SignupModal setUser={this.props.setUser} flatTrigger= {flatTrigger} trigger={normalTrigger} /> 
+          <Link to='/signup'> Signup </Link>
           or 
-          <SigninModal setUser={this.props.setUser} flatTrigger= {flatTrigger} trigger={normalTrigger} />
+          <Link to='/signin'> Signin </Link>  
         </div>
       </div>
     )
   }
 };
 
-export default GuestHome;
+function mapStateToProps(state) {
+  return {
+    isLoggedIn: state.isAuthenticated
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ verifyAuth }, dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(GuestHome);

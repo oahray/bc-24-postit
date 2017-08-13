@@ -1,41 +1,53 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { browserHistory, Route, Switch } from 'react-router';
 import { Button } from 'react-materialize';
-import GuestHome from '../components/GuestHome.jsx';
-import UserHome from './UserHome.jsx';
+import Routes from '../routes';
+import SideNav from './SideNav';
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      isLoggedIn: false,
-      user: {}
-    }
   }
 
-  // setUser(user) {
-  //   this.setState({
-  //     user,
-  //     isLoggedIn: true
-  //   });
-  //   console.log('state: ', this.state)
-  // }
+  componentDidMount() {
+    $('.carousel').carousel();
+    $('.button-collapse').sideNav();
+    // the "href" attribute of the modal trigger must specify
+    // the modal ID that wants to be triggered
+    $('.modal').modal();
+    // Initialize material select
+    $('select').material_select();
+  }
 
-  toggleLoggedInState() {
-    this.setState({
-      isLoggedIn: !this.state.isLoggedIn
-    })
-  };
+  showState() {
+    const myProps = this.props;
+    console.log('App state: ', myProps.store.getState())
+  }
 
   render() {
+    const sideNav = () => (<SideNav isLoggedIn={this.props.isLoggedIn} groups={this.props.groupList}/>);
     return (
-      <div className='center'>
-        { this.state.isLoggedIn ? <UserHome user={this.state.user} /> : <GuestHome setUser={(user) => this.setState({user, isLoggedIn: true})}/> } 
-        <Button className='raised white teal-text' onClick={() => this.toggleLoggedInState()}>
-          toggle State
-        </Button>
+      <div class='main'>
+        {/* <Route component={SideNav} /> */}
+        <Routes nav={SideNav}/>
+        <div className='center'> 
+          <Button onClick={() => this.showState()}>
+            Show State
+          </Button>
+        </div>
       </div>
     )
   }
 }
 
-export default App;
+function mapStateToProps(state) {
+  return {
+    user: state.user,
+    isLoggedIn: state.isAuthenticated,
+    token: state.token
+  }
+}
+
+export default connect(mapStateToProps)(App);
