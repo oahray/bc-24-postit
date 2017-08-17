@@ -6,11 +6,11 @@ export default class GuestCarousel extends Component {
     super(props);
   }
 
-  // componentWillMount() {
-  //   $('.carousel.carousel-slider').carousel({fullWidth: true});
-  //   this.intervalId = setInterval(() => { 
-  //     $('.carousel').carousel('next'); }, 5000);
-  // }
+  componentDidMount() {
+    $('.carousel.carousel-slider').carousel({fullWidth: true});
+    this.intervalId = setInterval(() => { 
+      $('.carousel').carousel('next'); }, 5000);
+  }
 
   componentDidMount() {
     $('.carousel').carousel();

@@ -8,6 +8,8 @@ export default function(state = false, action) {
       return true
     case VERIFY_AUTH_SUCCESS:
       return true
+    case VERIFY_AUTH_SUCCESS:
+      return false
     case LOGOUT_USER:
       return false
     default:

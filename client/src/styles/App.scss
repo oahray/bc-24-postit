@@ -1,3 +1,10 @@
+$main-color: #26a69a;
+
+body {
+  width: 100%;
+  font-size: 13px;
+}
+
 .modal {
   min-height: 80vh;
 }
@@ -8,17 +15,81 @@
   padding: 0;
 }
 
-.main-container, .forms {
+.forms {
   margin: 0 auto;
+  .row {
+    padding: 50px;
+    .input-field {
+      margin: 0 auto;
+      padding: 10px;
+      input {
+        margin: 0 auto;
+      }
+    }
+  }
 }
 
-body {
-  width: 100%
+.side-nav {
+  .my-list-item :hover {
+    background-color: #7bb !important;
+    color: white;
+  }
+  .my-list-item :active {
+    background-color: $main-color !important;
+  }
+  .user-view {
+    background-color: $main-color;
+    padding-top: 10px;
+    .name {
+      font-size: 24px;
+      margin-bottom: 5px;
+    }
+  }
+  .sidebar-grouplist li {
+    padding: 0px 10px;
+  }
+  .search-wrapper {
+    padding: 10px;
+    margin: 0px;
+    height: 60px;
+    label {
+      font-size: 12px;
+    }
+    .search-input {
+      height: 50px;
+      padding: 0px;
+      input {
+      height: 40px;
+      padding: 0px;
+      margin: 0px;
+      }
+    }
+  }
+}
+
+.user-home-content {
+  padding: 0px 20px;
+}
+
+.group-page {
+  padding: 0px 30px;
 }
 
 .page-header {
   color: teal;
   text-align: center;
+}
+
+.message-item {
+  padding: 0px 20px !important;
+  margin-bottom: 1px !important;
+  background-color: #eee;
+}
+
+@media only screen and (min-width: 993px) {
+  .main-container {
+      padding-left: 300px;
+  }
 }
 
 #guest-carousel {

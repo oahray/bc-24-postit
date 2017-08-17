@@ -102,8 +102,8 @@ export const getGroupUsers = (req, res) => {
         error: 'Group does not exist'
       });
     }
-    group.getUsers().then(groupUsers =>
-      res.send({ groupId, groupUsers }));
+    group.getUsers().then(users =>
+      res.send({ group, users }));
   })
   .catch(err => res.status(400).send({
     error: err.errors[0].message
@@ -142,16 +142,12 @@ export const sendMessageToGroup = (req, res) => {
 
 export const getGroupMessages = (req, res) => {
   const groupId = req.params.groupid;
-  if (!groupId) {
-    res.status(400).send({
-      error: 'GroupId must be provided'
-    });
-  }
+  const group = req.currentGroup;
   Message.findAll({
     where: {
       groupId
     }
-  }).then(messages => res.status(200).send({ groupId, messages }))
+  }).then(messages => res.status(200).send({ group, messages }))
     .catch(err => res.status(400).send(err));
 };
 

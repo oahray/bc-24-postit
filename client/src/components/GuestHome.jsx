@@ -11,20 +11,10 @@ class GuestHome extends Component {
     super(props);
   }
 
-  componentWillMount() {
-    if (window.localStorage.getItem('x-auth')) {
-      const token = window.localStorage.getItem('x-auth');
-      this.props.verifyAuth(token);
-    }
-  }
-
   render() {
-    if (this.props.isLoggedIn) { 
-      return (<Redirect to="/dashboard" />)
-    }
     return (
       <div className='center'>
-         {/* <GuestCarousel />  */}
+        {/* <GuestCarousel /> */}
         <div>
           <p> To learn more or to get started,</p>
           <Link to='/signup'> Signup </Link>

@@ -10,6 +10,13 @@ import './styles/App.scss'
 import App from './containers/App';
 import store from './store';
 
+$(document).ready(function(){
+  $('ul.tabs').tabs({
+    swipeable: true,
+    responsiveThreshold: 992
+  })
+});
+
 render(
   <Provider store={store}>
     <Router history={browserHistory}>

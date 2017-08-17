@@ -19,41 +19,37 @@ class UserHome extends Component {
     }
   }
 
-  componentDidMount() {
-    console.log('token: ', this.props.token);
-  }
-
   logout() {
     this.props.logout()
   }
 
   render() {
-    if (!this.props.user) {
-      return <Redirect to="/" />
-    }
-
     let showGroups = (
       this.props.groupList ? showGroups = (this.props.groupList.map((group) => {
-        return (<li className='grey lighten-2'  
+        return (<li className='collection-item avatar'  
         key={group.id}>
-          <Link to={`/groups/${group.id}/messages`}>
-            <div>
-              <p> Name: {group.name} </p>
-              <p> Description: {group.description} </p>
-              <p> Created by: {group.createdBy} </p>
-              <p> Type: {group.type} </p>
-            </div>
-          </Link>
+          <div>
+            <span className='title'><Link to={`/groups/${group.id}/messages`}> 
+              {group.name} </Link></span>
+              <br/>
+             <span> Description: {group.description ? group.description : 'None' } </span> 
+            <br/> 
+            <span> Type: {group.type} </span>
+            <span className='right'>Created by: {group.createdBy}</span> <br/>
+          </div>
         </li>);
       })) : (<p>You do not belong to any groups. </p>) );
     
     const content = (
-      < div className='center'>
+      < div className='user-home-content'>
         <Button onClick={() => this.logout()}>
           Log out
-        </Button>
-        <p> Welcome {this.props.user.username.toUpperCase()}! You are now logged in.</p>
-        <ul> Your Groups:
+        </Button> <br/>
+        <div className='row'>
+          <h5 className='col s8'> Your Groups: </h5>
+          <span className='right'><h6>{this.props.groupList.length} {(this.props.groupList.length === 1) ? ' group' : ' groups'}</h6></span>
+        </div>
+        <ul className='collection'> 
           {showGroups}
         </ul>
       </div>

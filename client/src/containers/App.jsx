@@ -3,12 +3,20 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { browserHistory, Route, Switch } from 'react-router';
 import { Button } from 'react-materialize';
-import Routes from '../routes';
+import { GuestRoutes, UserRoutes } from '../routes';
 import SideNav from './SideNav';
+import { verifyAuth } from '../actions';
 
 class App extends Component {
   constructor(props) {
     super(props);
+  }
+
+  componentWillMount() {
+    if (window.localStorage.getItem('x-auth')) {
+      const token = window.localStorage.getItem('x-auth');
+      this.props.verifyAuth(token);
+    }
   }
 
   componentDidMount() {
@@ -28,10 +36,13 @@ class App extends Component {
 
   render() {
     const sideNav = () => (<SideNav isLoggedIn={this.props.isLoggedIn} groups={this.props.groupList}/>);
+    let appRoutes = <GuestRoutes nav={SideNav} />
+    if (this.props.isLoggedIn) {
+      appRoutes = <UserRoutes nav={SideNav} />
+    }
     return (
       <div class='main'>
-        {/* <Route component={SideNav} /> */}
-        <Routes nav={SideNav}/>
+        { appRoutes }
         <div className='center'> 
           <Button onClick={() => this.showState()}>
             Show State
@@ -50,4 +61,8 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(App);
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ verifyAuth }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

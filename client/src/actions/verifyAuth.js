@@ -21,7 +21,7 @@ const verifyAuthFailure = (response) => {
 
 export const verifyAuth = (token) => {
   return (dispatch, getState) => {
-    const FETCH_URL = `${BASE_URL}/user/token`;
+    const FETCH_URL = `${BASE_URL}/user/me`;
     axios({
       method: 'get',
       url: FETCH_URL,

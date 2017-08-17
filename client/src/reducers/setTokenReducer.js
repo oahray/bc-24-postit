@@ -7,7 +7,7 @@ export default function(state = null, action) {
     case SIGNUP_SUCCESS:
       return action.response.headers['x-auth']
     case VERIFY_AUTH_SUCCESS:
-      return action.response.headers['x-auth']
+      return window.localStorage.getItem('x-auth')
     case LOGOUT_USER:
       return null
     default:

@@ -1,16 +1,23 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { logout } from '../actions';
+import SearchBar from './SearchBar';
 
 class SideNav extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      inGroup: true
+    }
   }
 
   componentDidMount() {
-    $('.button-collapse').sideNav();
+    $('.button-collapse').sideNav({
+      closeOnClick: true
+    });
     $('.collapsible').collapsible();
   }
 
@@ -45,20 +52,31 @@ class SideNav extends Component {
       );
       sideList = (
         <ul className="side-nav fixed" id="mobile-demo">
-          <li className='center'><h4 className='teal-text'>{this.props.user.username} | POSTIT</h4></li>
-          <li><a href="#">Create New Group</a></li>
-          <li className='active'>
+          <li><div class="user-view">
+            <a href="#!name"><span class="white-text name">{this.props.user.username}</span></a>
+            <a href="#!email"><span class="white-text email">{this.props.user.email}</span></a>
+          </div>
+          </li>
+          <li className='search'> 
+            {this.state.inGroup ? <SearchBar /> : null}
+          </li>
+          <li className='my-list-item'><a href="#"
+          onClick={() => {this.setState({inGroup: !this.state.inGroup})}}>Create New Group</a></li>
+          <li className=''>
             <ul class="collapsible teal-text" data-collapsible="accordion">
-              <li>
-                <div class="collapsible-header"><i class="material-icons">filter_drama</i>My Groups</div>
-                <div class="collapsible-body"><ul>
-                  {this.props.groups.map((group) => {
-                    return (<li key={group.id}>
-                      <div className='center'>
-                        {group.name} <br/> created by {group.createdBy}
-                      </div>
-                    </li>)
-                  })} </ul>
+              <li className='my-list-item'>
+                <div class="collapsible-header"> My Groups </div>
+                <div class=" sidebar-grouplist collapsible-body">
+                  <ul>
+                    <li className='my-list-item active'><Link to='/'>All Groups</Link></li>
+                    <div> {this.props.groups.map((group) => {
+                      return (<li key={group.id}>
+                        <div className='my-list-item'>
+                          {group.name} -- created by {group.createdBy}
+                        </div>
+                      </li>)
+                    })} </div>
+                  </ul>
                 </div>
               </li>
             </ul> 
@@ -74,7 +92,7 @@ class SideNav extends Component {
         <div className='navbar-fixed'>
           <nav>
             <div className="nav-wrapper teal lighten-1">
-              <a href="#!" className="brand-logo">Postit</a>
+              <a href="#!" className="brand-logo center">Postit</a>
               <a href="#" data-activates="mobile-demo" className="button-collapse"><i className="material-icons">menu</i></a>
               {/* {navList} */}
             </div>

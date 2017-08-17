@@ -32,7 +32,8 @@ export const signupUser = (username, password, email) => {
       }
     })
     .then((response) => {
-      if (response.statusText === 'OK') {
+      console.log("signup action response", response)
+      if (response.statusText === 'Created') {
         dispatch(signupSuccess(response));
       }
     })

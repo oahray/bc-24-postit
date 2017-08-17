@@ -13,14 +13,15 @@ export default (req, res, next) => {
         error: 'Specified group does not exist'
       });
     }
-    group.getUsers({ where: { id: req.currentUser.id } })
+    return group.getUsers({ where: { id: req.currentUser.id } })
     .then((groupUsers) => {
       if (groupUsers.length < 1) {
         return res.status(401).send({
           error: 'You must belong to a group to interact with it'
         });
       }
+      req.currentGroup = group;
       next();
-    }).catch(err => res.status(400).send(err));
+    });
   });
 };
