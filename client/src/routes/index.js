@@ -6,6 +6,7 @@ import Signin from '../containers/SigninForm';
 import Signup from '../containers/SignupForm';
 import UserHome from '../containers/UserHome';
 import Group from '../containers/Group';
+import NewGroup from '../containers/NewGroup'
 import ForgotPassword from '../components/ForgotPassword';
 import NotFound from '../components/NotFound';
 
@@ -37,9 +38,11 @@ export function GuestRoutes(props) {
 export function UserRoutes(props) {
   const authRoutes = (
     <Switch>
+      <Route exact path="/" component={UserHome} />
+      <Route exact path="/groups/new" component={NewGroup} />
       <Route path='/groups/:groupid/messages' 
       component={Group} />
-      <Route path="/*" component={UserHome} />
+      <Route path="/*" component={NotFound} />
     </Switch>
   );
   return routeHandler(props, authRoutes);

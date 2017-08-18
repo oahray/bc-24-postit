@@ -4,12 +4,17 @@ import { Carousel, Icon } from 'react-materialize';
 export default class GuestCarousel extends Component {
   constructor(props) {
     super(props);
+    this.interval = null;
   }
 
   componentDidMount() {
     $('.carousel').carousel();
     this.intervalId = setInterval(() => { 
-      $('.carousel').carousel('next'); }, 5000);
+      $('.carousel').carousel('next'); }, 3000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 
   render() {

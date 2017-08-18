@@ -8,7 +8,7 @@ export default class ForgotPassword extends Component {
   render() {
     return (
       <div>
-        Forgot Password.
+        Forgot Password? Sorry, this feature is not yet functional.
       </div>
     )
   }

@@ -5,6 +5,7 @@ import { Redirect, Link } from 'react-router-dom';
 import { Button } from 'react-materialize';
 import axios from 'axios';
 import { logout, getGroupList } from '../actions';
+import Preloader from '../components/Preloader';
 
 
 class UserHome extends Component {
@@ -20,8 +21,12 @@ class UserHome extends Component {
   }
 
   render() {
+    if (this.props.groupListLoading) {
+      return <Preloader message='Loading your groups'/>
+    }
+    
     let showGroups = (
-      this.props.groupList ? showGroups = (this.props.groupList.map((group) => {
+      this.props.groupList.length > 0 ? showGroups = (this.props.groupList.map((group) => {
         return (<li className='collection-item avatar'  
         key={group.id}>
           <div>
@@ -31,10 +36,10 @@ class UserHome extends Component {
              <span> Description: {group.description ? group.description : 'None' } </span> 
             <br/> 
             <span> Type: {group.type} </span>
-            <span className='right'>Created by: {group.createdBy}</span> <br/>
+            <span className='right'>Created by: {group.createdBy === this.props.user.username ? 'You' : group.createdBy}</span> <br/>
           </div>
         </li>);
-      })) : (<p>You do not belong to any groups. </p>) );
+      })) : (<div className='center'><p>You do not belong to any groups. <br/> Create one to get started. </p></div>) );
     
     const content = (
       < div className='user-home-content'>
@@ -61,6 +66,7 @@ function mapStateToProps(state) {
     isLoggedIn: state.isAuthenticated,
     user: state.user,
     groupList: state.groupList,
+    groupListLoading: state.groupListLoading,
     token: state.token
   }
 }

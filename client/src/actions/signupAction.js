@@ -2,8 +2,15 @@ import axios from 'axios';
 
 import { BASE_URL } from './index';
 
+export const SIGNUP_LOADING = 'SIGNUP_LOADING';
 export const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS';
 export const SIGNUP_FAILURE = 'SIGNUP_FAILURE';
+
+const signupLoading = () => {
+  return {
+    type: SIGNUP_LOADING
+  }
+};
 
 const signupSuccess = (response) => {
   return {
@@ -21,6 +28,7 @@ const signupFailure = (error) => {
 
 export const signupUser = (username, password, email) => {
   return (dispatch, getState) => {
+    dispatch(signupLoading());
     const FETCH_URL = `${BASE_URL}/user/signup`;
     axios({
       method: 'post',

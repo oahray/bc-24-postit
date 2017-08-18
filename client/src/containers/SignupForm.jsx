@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import { Modal, Row, Input, Button } from 'react-materialize';
 
-import { signupUser, verifyAuth } from '../actions';
+import { signupUser, verifyAuth, clearFormError } from '../actions';
 
 class SignupForm extends Component {
   constructor(props) {
@@ -27,29 +27,40 @@ class SignupForm extends Component {
     }
   }
 
+  componentWillUnmount() {
+    this.props.clearFormError();
+  }
+
   onFormSubmit(event) {
     event.preventDefault();
     if ( this.state.confirmPassword !== this.state.password) {
-      return console.log('Passwords do not match!');
+      console.log('Passwords do not match!');
+      return $('.form-error-message').text('Passwords do not match!');
     }
     this.props.signupUser(this.state.username, this.state.password, this.state.email);
   }
 
   render() {
     const content = (
-      <div className='signupForm'>
+      <div className='signupForm forms'>
         <h3 className="page-header"> Sign up </h3>
         <form className='row' 
         onSubmit={this.onFormSubmit}>
-          <Input s={12} label="Username" onChange={event => this.setState({ username: event.target.value})}/>
-          <Input type="email" label="Email" s={12} validate onChange={event => this.setState({ email: event.target.value})}/>
-          <Input type="password" label="Password" s={12} onChange={event => this.setState({ password: event.target.value})}/>
-          <Input type="password" label="Confirm password" s={12} onChange={event => this.setState({ confirmPassword: event.target.value})}/>
+          <div className='form-error center red-text bold'>
+            <h6 className='form-error-message'>{this.props.signupFailed ? this.props.signupError : null}</h6>
+          </div>
+          <Input s={12} label="Username" autoFocus value={this.state.username} onChange={event => this.setState({ username: event.target.value})}/>
+          
+          <Input type="email" label="Email" s={12} validate value={this.state.email} onChange={event => this.setState({ email: event.target.value})}/>
+          
+          <Input type="password" label="Password" s={12} value={this.state.password} onChange={event => this.setState({ password: event.target.value})}/>
+          
+          <Input type="password" label="Confirm password" s={12} value={this.state.confirmPassword} onChange={event => this.setState({ confirmPassword: event.target.value})}/>
           <div className='center'>
             <Button className='white teal-text' waves='light' type='submit'>Submit</Button>
           </div>
-          <div className='bold teal-text'>
-            <p> Have an account? <Link to="/signin">Sign In </Link></p>
+          <div className='teal-text'>
+            <p className='center'> Have an account? <Link to="/signin">Sign In </Link></p>
           </div>
         </form>
       </div>
@@ -64,12 +75,14 @@ class SignupForm extends Component {
 
 function mapStateToProps(state) {
   return {
-    isLoggedIn: state.isAuthenticated
+    isLoggedIn: state.isAuthenticated,
+    signupFailed: state.authFormFailed,
+    signupError: state.authFormErrorMessage
   }
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ signupUser, verifyAuth }, dispatch);
+  return bindActionCreators({ signupUser, verifyAuth, clearFormError }, dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignupForm)

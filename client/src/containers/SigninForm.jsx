@@ -4,7 +4,7 @@ import { Redirect, Link } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { Modal, Row, Input, Button } from 'react-materialize';
 
-import { signinUser, verifyAuth } from '../actions'
+import { signinUser, verifyAuth, clearFormError } from '../actions'
 
 class SigninForm extends Component {
   constructor(props) {
@@ -24,6 +24,10 @@ class SigninForm extends Component {
     }
   }
 
+  componentWillUnmount() {
+    this.props.clearFormError();
+  }
+
   onFormSubmit(event) {
     event.preventDefault();
     this.props.signinUser(this.state.username, this.state.password);
@@ -31,7 +35,7 @@ class SigninForm extends Component {
 
   render() {
     if (this.props.isLoggedIn) { 
-      return (<Redirect to="/dashboard" />)
+      return (<Redirect to="/" />)
     }
 
     return (
@@ -39,8 +43,12 @@ class SigninForm extends Component {
         <h3 className="page-header"> Sign in </h3>
         <form className='row' 
         onSubmit={this.onFormSubmit}>
-          <Input s={12} label="Username" value={this.state.username} onChange={event => this.setState({ username: event.target.value})} />
-          <Input type="password" label="Password" s={12} value={this.state.password} onChange={event => this.setState({ password: event.target.value})} />
+          <div className='form-error-message center red-text bold'>
+            <h6>{this.props.signinFailed ? this.props.signinError : null}</h6>
+          </div>
+          <Input s={12} label="Username" autoFocus value={this.state.username} required onChange={event => this.setState({ username: event.target.value})} />
+          
+          <Input type="password" label="Password" s={12} value={this.state.password} required onChange={event => this.setState({ password: event.target.value})} />
           <div className='center'>
             <Button className='white teal-text' waves='teal' type='submit'> Submit </Button>
           </div>
@@ -56,12 +64,14 @@ class SigninForm extends Component {
 
 function mapStateToProps(state) {
   return {
-    isLoggedIn: state.isAuthenticated
+    isLoggedIn: state.isAuthenticated,
+    signinFailed: state.authFormFailed,
+    signinError: state.authFormErrorMessage
   }
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ signinUser, verifyAuth }, dispatch);
+  return bindActionCreators({ signinUser, verifyAuth, clearFormError }, dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SigninForm)

@@ -11,13 +11,13 @@ export default class SearchBar extends Component {
 
   onFormSubmit(event) {
     event.preventDefault();
-    if (this.state.username) {
-      this.searchUser(this.state.username);
-    }
+    this.searchUser(this.state.username);
   }
 
   searchUser(username) {
-    console.log(`User searched for ${username}`);
+    if (username) {
+      console.log(`User searched for ${username}`);
+    }
   }
 
   render() {

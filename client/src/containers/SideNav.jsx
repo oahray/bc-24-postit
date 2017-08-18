@@ -2,21 +2,28 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { NavLink, Link } from 'react-router-dom';
-import { logout } from '../actions';
+import { logout, getGroupList } from '../actions';
 import SearchBar from './SearchBar';
 
 class SideNav extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      inGroup: true
-    }
   }
 
   componentDidMount() {
     $('.button-collapse').sideNav();
     $('.collapsible').collapsible();
+    $('nav-wrapper ul li').click(function() {
+      $(this).siblings('li').removeClass('active');
+      $(this).addClass('active');
+    })
+    if (this.props.user) {
+      this.props.getGroupList(this.props.token);
+    }
+  }
+
+  openNewGroupModal() {
+    $('#newGroupModal').modal('open');
   }
 
   render() {
@@ -57,14 +64,14 @@ class SideNav extends Component {
           </div>
           </li>
           <li className='search'> 
-            {this.state.inGroup ? <SearchBar /> : null}
+            {this.props.inGroupPage ? <SearchBar /> : null}
           </li>
-          <li className='my-list-item'><a href='#'
-          onClick={() => {this.setState({inGroup: !this.state.inGroup})}}>Create New Group</a></li>
-          <li className=''>
+          <li className='my-list-item'><NavLink to='/groups/new'> Create New Group</NavLink></li>
+          <li className='my-list-item'>
             <ul class='collapsible collapsible-accordion'>
               <li className='my-list-item'>
-                <a class='collapsible-header'> My Groups </a>
+                <a class='collapsible-header'> My Groups <span className='right waves-effect waves-teal modal-trigger center' href="#newGroupModal"><i className='material-icons center'>
+                add</i></span></a>
                 <div class='sidebar-grouplist collapsible-body'>
                   <ul>
                     <li className='my-list-item'><NavLink to='/'>All Groups</NavLink></li>
@@ -87,6 +94,18 @@ class SideNav extends Component {
       );
     }
 
+    const newGroupModal = (
+      <div id='newGroupModal' className='modal'>
+        <div class="modal-content">
+          <h4>Modal Header</h4>
+          <p>A bunch of text</p>
+        </div>
+        <div class="modal-footer">
+          <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+        </div>
+      </div>
+    );
+
     return (
       <div>
         <div className='navbar-fixed'>
@@ -99,6 +118,7 @@ class SideNav extends Component {
           </nav>
         </div>
         {sideList}
+        {newGroupModal}
       </div>
     )
   }
@@ -108,12 +128,14 @@ function mapStateToProps(state) {
   return {
     user: state.user,
     isLoggedIn: state.isAuthenticated,
-    groups: state.groupList
+    token: state.token,
+    groups: state.groupList,
+    inGroupPage: state.inGroupPage
   }
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({logout}, dispatch)
+  return bindActionCreators({logout, getGroupList}, dispatch)
 } 
 
 export default connect(mapStateToProps, mapDispatchToProps)(SideNav);

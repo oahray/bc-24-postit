@@ -15,10 +15,14 @@ body {
   padding: 0;
 }
 
+.preloader {
+  margin-top: 50px;
+}
+
 .forms {
   margin: 0 auto;
   .row {
-    padding: 50px;
+    padding: 0px 50px;
     .input-field {
       margin: 0 auto;
       padding: 10px;
@@ -35,11 +39,11 @@ ul.side-nav.fixed:hover {
 
 .side-nav.fixed {
   overflow: hidden;
-  // .my-list-item :hover {
+  // li a :hover {
   //   background-color: #7bb !important;
   //   color: white;
   // }
-  // .my-list-item :active {
+  // li a :active {
   //   background-color: $main-color !important;
   // }
   .user-view {
@@ -75,6 +79,7 @@ ul.side-nav.fixed:hover {
     height: 50px;
     a {
       padding: 0px;
+      width: 40px;
       i {
       font-size: 32px;
       margin: 0px;
@@ -129,7 +134,7 @@ ul.side-nav.fixed:hover {
 
 #guest-carousel {
   padding: 0 auto;
-  height: 290px !important;
+  height: 270px !important;
   
   .carousel-item {
     border-radius: 10px;

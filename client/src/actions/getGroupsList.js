@@ -29,7 +29,7 @@ const groupsListFailure = (response) => {
 export const getGroupList = (token) => {
   const FETCH_URL = `${BASE_URL}/user/me/groups`;
   return (dispatch, getState) => {
-    dispatch(groupListLoading)
+    dispatch(groupListLoading());
     const request = axios({
       method: 'get',
       url: FETCH_URL,

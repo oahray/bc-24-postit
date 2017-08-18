@@ -3,14 +3,12 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { Tabs, Tab } from 'react-materialize';
-import { getGroupMessages, getGroupList } from '../actions';
+import { getGroupMessages, getGroupList, inGroupPage } from '../actions';
+import Preloader from '../components/Preloader';
 
 class Group extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      url: ''
-    }
   }
 
   componentWillMount() {
@@ -19,24 +17,28 @@ class Group extends Component {
   }
 
   componentDidMount() {
-    this.props.getGroupList(this.props.token);
-    console.log(this.props);
+    this.props.inGroupPage(true);
   }
 
-  componentWillReceiveProps (newProps, newContext){
+  componentWillReceiveProps (newProps){
+    this.forceUpdate();
     console.log('newProps: ', newProps.match.params.groupid);
-    if (Number(newProps.match.params.groupid) !== this.props.selectedGroup.id) {
+    if (this.props.selectedGroup && Number(newProps.match.params.groupid) !== this.props.selectedGroup.id) {
       return this.props.getGroupMessages(Number(newProps.match.params.groupid), this.props.token)
     }
   }
 
+  componentWillUnmount() {
+    this.props.inGroupPage(false);
+  }
+
   render() {
-    if (this.props.groupMessagesLoading || !this.props.selectedGroup) {
-      return <div className='center'> <h4> Loading... </h4> </div>
+    if (this.props.groupMessagesLoading | !this.props.selectedGroup) {
+      return <Preloader message='Loading Group Messages...' />
     }
 
-    const messages = (<div className='tab-content'>
-        {this.props.groupMessages ? <ul>
+    const messageList = (<div className='message-list'>
+        {this.props.groupMessages.length > 0 ? <ul>
           {this.props.groupMessages.map((message) => {
             return <li className='message-item' key={message.id}> <p>message:{message.content}</p>
             <p>sent by: user {message.userId}</p> </li>
@@ -44,6 +46,12 @@ class Group extends Component {
         </ul> : <p>This group does not have any messages</p>}
       </div>
     );
+
+    const messagesTab = (<div className='tab-content'>
+      {messageList}
+      <div>
+      </div>
+    </div>)
 
     const info = (<div className='tab-content'>
       <p>{this.props.selectedGroup.type} Group</p>
@@ -54,7 +62,7 @@ class Group extends Component {
       <div className='group-page'> 
         <h5 className='page-header'>{this.props.selectedGroup.name} </h5>
         <Tabs className='group-tab z-depth-1'>
-          <Tab title="Messages" active>{messages}</Tab>
+          <Tab title="Messages" active>{messagesTab}</Tab>
           <Tab title="Group Info">{info}</Tab>
         </Tabs>
         <div id="search-results" class="modal">
@@ -83,7 +91,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ getGroupMessages, getGroupList }, dispatch);
+  return bindActionCreators({ getGroupMessages, getGroupList, inGroupPage }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Group);

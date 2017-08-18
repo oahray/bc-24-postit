@@ -6,6 +6,7 @@ import { Button } from 'react-materialize';
 import { GuestRoutes, UserRoutes } from '../routes';
 import SideNav from './SideNav';
 import { verifyAuth } from '../actions';
+import Preloader from '../components/Preloader';
 
 class App extends Component {
   constructor(props) {
@@ -19,6 +20,10 @@ class App extends Component {
     }
   }
 
+  componentDidMount() {
+    $('.modal-trigger').modal();
+  }
+
   showState() {
     const myProps = this.props;
     console.log('App props: ', myProps);
@@ -26,6 +31,9 @@ class App extends Component {
   }
 
   render() {
+    if (this.props.userLoading) {
+      return (<Preloader message='Loading your details...'/>)
+    }
     const sideNav = () => (<SideNav isLoggedIn={this.props.isLoggedIn} groups={this.props.groupList}/>);
     let appRoutes = <GuestRoutes nav={SideNav} />
     if (this.props.isLoggedIn) {
@@ -47,6 +55,7 @@ class App extends Component {
 function mapStateToProps(state) {
   return {
     user: state.user,
+    userLoading: state.userLoading,
     isLoggedIn: state.isAuthenticated,
     token: state.token
   }
