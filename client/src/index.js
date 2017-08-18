@@ -1,25 +1,18 @@
 import React from 'react';
-import 'jquery/dist/jquery.min';
+// import 'jquery/dist/jquery.min';
 import { render } from 'react-dom';
 import { BrowserRouter as Router, browserHistory } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import 'materialize-css';
-import 'materialize-css/dist/css/materialize.css';
+// import 'materialize-css';
+// import 'materialize-css/dist/css/materialize.css';
 import './styles/App.scss'
 
 import App from './containers/App';
 import store from './store';
 
-$(document).ready(function(){
-  $('ul.tabs').tabs({
-    swipeable: true,
-    responsiveThreshold: 992
-  })
-});
-
 render(
   <Provider store={store}>
-    <Router history={browserHistory}>
+    <Router>
       <App store={store} />
     </Router>
   </Provider>, 

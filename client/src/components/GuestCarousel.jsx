@@ -7,28 +7,14 @@ export default class GuestCarousel extends Component {
   }
 
   componentDidMount() {
-    $('.carousel.carousel-slider').carousel({fullWidth: true});
+    $('.carousel').carousel();
     this.intervalId = setInterval(() => { 
       $('.carousel').carousel('next'); }, 5000);
   }
 
-  componentDidMount() {
-    $('.carousel').carousel();
-    // $(document).ready(function(){
-    //   $('.carousel').carousel();
-    //   // this.intervalId = setInterval(() => { 
-    //   //   $('.carousel').carousel('next'); }, 5000);
-    // });
-    // window.$('.carousel').carousel();
-  }
-
-  // componentWillUnmount() {
-  //   clearInterval(this.intervalId);
-  // }
-
   render() {
     return (
-      <div id="guest-carousel" className="carousel carousel-slider center">
+      <div id="guest-carousel" className="carousel">
         <div className='carousel-item white teal-text'>
           <h2><Icon>wc</Icon></h2>
           <p>Connect with your friends</p>

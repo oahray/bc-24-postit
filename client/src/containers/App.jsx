@@ -19,19 +19,10 @@ class App extends Component {
     }
   }
 
-  componentDidMount() {
-    $('.carousel').carousel();
-    $('.button-collapse').sideNav();
-    // the "href" attribute of the modal trigger must specify
-    // the modal ID that wants to be triggered
-    $('.modal').modal();
-    // Initialize material select
-    $('select').material_select();
-  }
-
   showState() {
     const myProps = this.props;
-    console.log('App state: ', myProps.store.getState())
+    console.log('App props: ', myProps);
+    console.log('App state: ', myProps.store.getState());
   }
 
   render() {

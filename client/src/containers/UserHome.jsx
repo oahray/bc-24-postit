@@ -19,10 +19,6 @@ class UserHome extends Component {
     }
   }
 
-  logout() {
-    this.props.logout()
-  }
-
   render() {
     let showGroups = (
       this.props.groupList ? showGroups = (this.props.groupList.map((group) => {
@@ -42,9 +38,6 @@ class UserHome extends Component {
     
     const content = (
       < div className='user-home-content'>
-        <Button onClick={() => this.logout()}>
-          Log out
-        </Button> <br/>
         <div className='row'>
           <h5 className='col s8'> Your Groups: </h5>
           <span className='right'><h6>{this.props.groupList.length} {(this.props.groupList.length === 1) ? ' group' : ' groups'}</h6></span>

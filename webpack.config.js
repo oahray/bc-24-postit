@@ -40,12 +40,10 @@ module.exports = {
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
-    new webpack.ProvidePlugin({
-      $: 'jquery',
-      jQuery: 'jquery',
-      'window.$': 'jquery',
-      'window.jQuery': 'jquery',
-    }),
+    // new webpack.ProvidePlugin({
+    //   $: 'window.$',
+    //   jQuery: 'window.jQuery'
+    // }),
     new webpack.optimize.ModuleConcatenationPlugin()
   ]
 };

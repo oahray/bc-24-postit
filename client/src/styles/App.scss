@@ -29,39 +29,68 @@ body {
   }
 }
 
-.side-nav {
-  .my-list-item :hover {
-    background-color: #7bb !important;
-    color: white;
-  }
-  .my-list-item :active {
-    background-color: $main-color !important;
-  }
+ul.side-nav.fixed:hover {
+    overflow-y: auto;
+}
+
+.side-nav.fixed {
+  overflow: hidden;
+  // .my-list-item :hover {
+  //   background-color: #7bb !important;
+  //   color: white;
+  // }
+  // .my-list-item :active {
+  //   background-color: $main-color !important;
+  // }
   .user-view {
     background-color: $main-color;
-    padding-top: 10px;
+    padding: 15px 0px 0px 0px;
+    margin: 0px;
+    i {
+      // border-radius: 100%;
+      border: 1px solid white;
+      margin: 0px !important;
+      font-size: 90px;
+    }
+    a, a:hover {
+      margin-top: 0px !important;
+      height: 40px !important;
+      padding-top: 0px !important;
+      background-color: $main-color;
+    }
     .name {
+      margin: 0px;
       font-size: 24px;
-      margin-bottom: 5px;
     }
   }
-  .sidebar-grouplist li {
+  a {
+  padding-left: 10px !important;
+}
+  .sidebar-grouplist {
     padding: 0px 10px;
   }
   .search-wrapper {
-    padding: 10px;
+    padding: 0px 0px 0px 15px;
     margin: 0px;
-    height: 60px;
-    label {
-      font-size: 12px;
+    height: 50px;
+    a {
+      padding: 0px;
+      i {
+      font-size: 32px;
+      margin: 0px;
+      padding: 0px;
+      }
     }
     .search-input {
       height: 50px;
       padding: 0px;
       input {
-      height: 40px;
       padding: 0px;
       margin: 0px;
+      }
+      input, input:focus {
+        border-bottom: none!important;
+        box-shadow: none!important;
       }
     }
   }
@@ -69,10 +98,16 @@ body {
 
 .user-home-content {
   padding: 0px 20px;
+  a {
+    color: $main-color;
+  }
 }
 
 .group-page {
-  padding: 0px 30px;
+  padding: 0px 5px;
+  .tab-content {
+    padding: 0px 30px;
+  }
 }
 
 .page-header {
@@ -94,11 +129,9 @@ body {
 
 #guest-carousel {
   padding: 0 auto;
-  height: 270px !important;
+  height: 290px !important;
   
   .carousel-item {
-    display: block;
-    position: relative;
     border-radius: 10px;
     border: 1px solid #f0f0f0;
     background-color: #f8f8f8 !important;

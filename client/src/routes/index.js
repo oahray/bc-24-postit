@@ -9,21 +9,6 @@ import Group from '../containers/Group';
 import ForgotPassword from '../components/ForgotPassword';
 import NotFound from '../components/NotFound';
 
-const unauthRoutes = (
-  <Switch>
-    <Route exact path="/signin" component={Signin} />
-    <Route exact path="/signup" component={Signup} />
-    <Route exact path="/forgotpassword" component={ForgotPassword} />
-    <Route path="/*" component={GuestHome} />
-  </Switch>
-);
-const authRoutes = (
-  <Switch>
-    <Route path='/groups/:groupid/messages' component={Group} />
-    <Route path="/*" component={UserHome} />
-  </Switch>
-);
-
 const routeHandler = (props, component) => {
   return (
     <BrowserRouter>
@@ -38,9 +23,24 @@ const routeHandler = (props, component) => {
 };
 
 export function GuestRoutes(props) {
+  const unauthRoutes = (
+    <Switch>
+      <Route exact path="/signin" component={Signin} />
+      <Route exact path="/signup" component={Signup} />
+      <Route exact path="/forgotpassword" component={ForgotPassword} />
+      <Route path="/*" component={GuestHome} />
+    </Switch>
+  );
   return routeHandler(props, unauthRoutes);
 }
 
 export function UserRoutes(props) {
+  const authRoutes = (
+    <Switch>
+      <Route path='/groups/:groupid/messages' 
+      component={Group} />
+      <Route path="/*" component={UserHome} />
+    </Switch>
+  );
   return routeHandler(props, authRoutes);
 }

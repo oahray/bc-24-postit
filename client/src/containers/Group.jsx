@@ -2,32 +2,40 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import 'materialize-css/dist/css/materialize.css';
 import { Tabs, Tab } from 'react-materialize';
 import { getGroupMessages, getGroupList } from '../actions';
 
 class Group extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      url: ''
+    }
   }
 
   componentWillMount() {
     const groupId = this.props.match.params.groupid;
-    console.log(groupId);
     this.props.getGroupMessages(groupId, this.props.token);
   }
 
   componentDidMount() {
     this.props.getGroupList(this.props.token);
+    console.log(this.props);
+  }
+
+  componentWillReceiveProps (newProps, newContext){
+    console.log('newProps: ', newProps.match.params.groupid);
+    if (Number(newProps.match.params.groupid) !== this.props.selectedGroup.id) {
+      return this.props.getGroupMessages(Number(newProps.match.params.groupid), this.props.token)
+    }
   }
 
   render() {
     if (this.props.groupMessagesLoading || !this.props.selectedGroup) {
-      return <h4> Loading... </h4>
+      return <div className='center'> <h4> Loading... </h4> </div>
     }
 
-    const messages = (<div> 
-        <h5> Messages </h5>
+    const messages = (<div className='tab-content'>
         {this.props.groupMessages ? <ul>
           {this.props.groupMessages.map((message) => {
             return <li className='message-item' key={message.id}> <p>message:{message.content}</p>
@@ -37,14 +45,17 @@ class Group extends Component {
       </div>
     );
 
+    const info = (<div className='tab-content'>
+      <p>{this.props.selectedGroup.type} Group</p>
+      <p> Description: {this.props.selectedGroup.description}</p>
+    </div>)
+
     return (
       <div className='group-page'> 
-        <div className='center z-depth-2'> <h4>{this.props.selectedGroup.name} </h4> </div>
-        <p>{this.props.selectedGroup.type} Groups</p>
-        <p> {this.props.selectedGroup.description}</p>
-        <Tabs className='tab-demo z-depth-4'>
-          <Tab title="Messages">{messages}</Tab>
-          <Tab title="Group Info">Test 2</Tab>
+        <h5 className='page-header'>{this.props.selectedGroup.name} </h5>
+        <Tabs className='group-tab z-depth-1'>
+          <Tab title="Messages" active>{messages}</Tab>
+          <Tab title="Group Info">{info}</Tab>
         </Tabs>
         <div id="search-results" class="modal">
           <div class="modal-content">

@@ -55,12 +55,12 @@ module.exports = {
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
     }),
     new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.ProvidePlugin({
-      _$: "jquery",
-      jQuery: "jquery",
-      'window.$': 'jquery',
-      'window.jQuery': 'jquery'
-    }),
+    // new webpack.ProvidePlugin({
+    //   _$: "jquery",
+    //   jQuery: "jquery",
+    //   'window.$': 'jquery',
+    //   'window.jQuery': 'jquery'
+    // }),
     extractSass,
     new webpack.optimize.UglifyJsPlugin({
       minimize: true,

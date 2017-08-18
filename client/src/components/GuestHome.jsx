@@ -14,7 +14,7 @@ class GuestHome extends Component {
   render() {
     return (
       <div className='center'>
-        {/* <GuestCarousel /> */}
+         <GuestCarousel /> 
         <div>
           <p> To learn more or to get started,</p>
           <Link to='/signup'> Signup </Link>
