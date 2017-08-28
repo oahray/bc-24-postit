@@ -44,7 +44,6 @@ export const getGroupMessages = (groupId, token) => {
     })
     .catch((err) => {
       if (err.response) {
-        console.log('>>>>>>>>>get messages error: ', err.response);
         dispatch(getGroupMessagesFailure(err.response.data.error));
       }
     });

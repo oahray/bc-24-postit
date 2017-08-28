@@ -2,7 +2,7 @@ $main-color: #26a69a;
 
 body {
   width: 100%;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .modal {
@@ -26,8 +26,9 @@ body {
     .input-field {
       margin: 0 auto;
       padding: 10px;
-      input {
-        margin: 0 auto;
+      input, label {
+        margin: 3px 0px ;
+        padding-left: 30px; 
       }
     }
   }
@@ -39,22 +40,16 @@ ul.side-nav.fixed:hover {
 
 .side-nav.fixed {
   overflow: hidden;
-  // li a :hover {
-  //   background-color: #7bb !important;
-  //   color: white;
-  // }
-  // li a :active {
-  //   background-color: $main-color !important;
-  // }
   .user-view {
     background-color: $main-color;
     padding: 15px 0px 0px 0px;
     margin: 0px;
+    vertical-align: middle;
     i {
       // border-radius: 100%;
-      border: 1px solid white;
+      border: 2px solid white;
       margin: 0px !important;
-      font-size: 90px;
+      font-size: 70px;
     }
     a, a:hover {
       margin-top: 0px !important;
@@ -69,9 +64,23 @@ ul.side-nav.fixed:hover {
   }
   a {
   padding-left: 10px !important;
-}
+  }
   .sidebar-grouplist {
-    padding: 0px 10px;
+    max-height: 200px;
+    width: 100%;
+    padding: 0px;
+    overflow-y: auto;
+    
+    li {
+      padding: 0px 10px;
+      a {
+        vertical-align: top;
+        padding: 0px;
+        height: 40px;
+        font-size: 12px;
+      }
+    }
+    font-size: 12px !important;
   }
   .search-wrapper {
     padding: 0px 0px 0px 15px;
@@ -113,6 +122,61 @@ ul.side-nav.fixed:hover {
   .tab-content {
     padding: 0px 30px;
   }
+  .group-tab li a {
+    color: $main-color !important;
+  }
+  .edit-group-info-text {
+    border-radius: 10px;
+  }
+  .message-input-container {
+    height: 60px;
+    padding: 0px !important;
+    border: 2px solid grey;
+    border-radius: 15px;
+    input, input:focus {
+      border-bottom: none!important;
+      box-shadow: none!important;
+    }
+    .message-input {
+      margin: 0 auto;
+      height: 58px;
+      padding-left: 10px;
+      border-right: 2px solid grey;
+      textarea, textarea:active {
+        height: 56px;
+        border: none;
+        overflow: auto;
+        outline: none;
+        
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
+      }
+    }
+    div {
+      margin: 0 auto;
+      padding-left: 3px;
+      div {
+        margin-top: 3px;
+        .message-priority-select {
+          max-height: 50px;
+          margin: 0 auto;
+          padding: 0px;
+        }
+        button {
+          margin-top: 7px;
+          i {
+            text-align: center;
+            width: 28px;
+            font-size: 32px;
+          }
+        }
+      }
+      // div {
+      //   padding: 1px;
+      // }
+    }
+  }
 }
 
 .page-header {
@@ -120,10 +184,25 @@ ul.side-nav.fixed:hover {
   text-align: center;
 }
 
-.message-item {
-  padding: 0px 20px !important;
-  margin-bottom: 1px !important;
-  background-color: #eee;
+.message-list {
+  max-height: 200px;
+  overflow-y: auto;
+  .message-item {
+    // height: 50px;
+    padding: 0px 20px !important;
+    margin-bottom: 1px !important;
+    background-color: #eee;
+  }
+  .display-linebreak {
+    // white-space: pre-line;
+    text-overflow: ellipse;
+  }
+}
+
+.search-page {
+  .add-user-icon:hover {
+    cursor: pointer;
+  }
 }
 
 @media only screen and (min-width: 993px) {
@@ -132,30 +211,41 @@ ul.side-nav.fixed:hover {
   }
 }
 
-#guest-carousel {
-  padding: 0 auto;
-  height: 270px !important;
-  
-  .carousel-item {
-    border-radius: 10px;
-    border: 1px solid #f0f0f0;
-    background-color: #f8f8f8 !important;
-    padding: 5px 0px;
-    margin: 0 auto;
-    width: 270px !important;
-    max-height: 270px;
-    h2 {
-      margin : 0 auto;
-    }
-    i {
-      margin: 1px auto;
-      font-size: 120px;
-    }
-    p {
-      margin: 0px 5px 0px 5px;
-      padding-bottom: 10px;
-      font-size: 1.15em;
-      font-style: italic;
+@media only screen and (max-width: 600px) {
+  .message-input {
+    // background-color: red;
+    border: none !important;
+  }
+}
+
+.guest-home {
+  background-color: #f8f8f8 !important;
+  padding-bottom: 20px;
+  #guest-carousel {
+    padding: 0 auto;
+    height: 270px !important;
+    
+    .carousel-item {
+      border-radius: 10px;
+      border: 1px solid #f0f0f0;
+      background-color: white !important;
+      padding: 5px 0px;
+      margin: 0 auto;
+      width: 270px !important;
+      max-height: 270px;
+      h2 {
+        margin : 0 auto;
+      }
+      i {
+        margin: 1px auto;
+        font-size: 120px;
+      }
+      p {
+        margin: 0px 5px 0px 5px;
+        padding-bottom: 10px;
+        font-size: 1.15em;
+        font-style: italic;
+      }
     }
   }
 }

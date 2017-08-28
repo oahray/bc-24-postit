@@ -11,10 +11,10 @@ import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 import webpackConfig from '../webpack.config.js';
 
-const compiler = webpack(webpackConfig);
-
 // Set up the express app and middleware
 const app = express();
+
+const compiler = webpack(webpackConfig);
 
 if (process.env.NODE_ENV !== 'production') {
   dotenv.config();
@@ -51,7 +51,7 @@ app.use(cors(corsOptions));
 const publicPath = path.join(__dirname, '../client/public/');
 const indexPath = path.resolve(__dirname, publicPath, 'index.html');
 
-app.use('/public', express.static(publicPath));
+app.use('/', express.static(publicPath));
 
 // Require our routes
 require('./routes')(app);

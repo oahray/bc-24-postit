@@ -7,8 +7,8 @@ export default class ForgotPassword extends Component {
   
   render() {
     return (
-      <div>
-        Forgot Password? Sorry, this feature is not yet functional.
+      <div className='center'>
+        <h6>Forgot Password? Sorry, this feature is not yet functional.</h6>
       </div>
     )
   }

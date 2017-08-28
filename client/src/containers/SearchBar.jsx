@@ -16,7 +16,8 @@ export default class SearchBar extends Component {
 
   searchUser(username) {
     if (username) {
-      console.log(`User searched for ${username}`);
+      const nextPath = `/groups/${this.props.selectedGroup.id}/addusers?u=${username}&p=${1}`;
+      this.props.searchUsers(username, nextPath);
     }
   }
 

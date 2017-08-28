@@ -13,7 +13,7 @@ class GuestHome extends Component {
 
   render() {
     return (
-      <div className='center'>
+      <div className='guest-home center'>
          <GuestCarousel /> 
         <div>
           <p> To learn more or to get started,</p>

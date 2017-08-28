@@ -110,6 +110,47 @@ export const getGroupUsers = (req, res) => {
   }));
 };
 
+export const searchNonMembers = (req, res) => {
+  const groupId = req.params.groupid;
+  let { username, offset, limit } = req.query;
+  if (!username) {
+    username = '';
+  }
+  const searchOptions = { 
+    where : {
+      username: { 
+        $iLike: `%${username}%` 
+      }
+    }
+  }
+  if (Number(offset) && typeof Number(offset) === 'number') {
+    searchOptions.offset = Number(offset);
+  }
+
+  if (Number(limit) && typeof Number(limit) === 'number') {
+    searchOptions.limit =   Number(limit);
+  }
+
+  Group.findById(groupId).then((group) => {
+    group.getUsers().then(groupUsers =>
+      groupUsers.map(user => user.username)
+    ) 
+    .then((usernames) => {
+      searchOptions.where.username.$notIn = usernames;
+      User.findAndCountAll(searchOptions)
+      .then((result) => {
+        return res.status(200).send({
+          count: result.count,
+          users: result.rows
+        })
+      })
+    })
+  })
+  .catch(err => res.status(400).send({
+    error: "Failed to retrieve data. Invalid request"
+  }));
+};
+
 export const sendMessageToGroup = (req, res) => {
   const content = req.body.content;
   let priority = req.body.priority;

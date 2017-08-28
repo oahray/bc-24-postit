@@ -15,7 +15,9 @@ class UserHome extends Component {
 
   componentWillMount() {
     if (this.props.user) {
-      localStorage.setItem('x-auth', this.props.token);
+      if (window.localStorage && typeof window.localStorage === 'object') {
+        localStorage.setItem('x-auth', this.props.token);
+      }
       this.props.getGroupList(this.props.token);
     }
   }
@@ -33,10 +35,10 @@ class UserHome extends Component {
             <span className='title'><Link to={`/groups/${group.id}/messages`}> 
               {group.name} </Link></span>
               <br/>
-             <span> Description: {group.description ? group.description : 'None' } </span> 
+             <span><small> Description: {group.description ? group.description : 'None' } </small></span> 
             <br/> 
-            <span> Type: {group.type} </span>
-            <span className='right'>Created by: {group.createdBy === this.props.user.username ? 'You' : group.createdBy}</span> <br/>
+            <span><small> Type: {group.type} </small></span>
+            <span className='right'><small>Created by: {group.createdBy === this.props.user.username ? 'You' : group.createdBy}</small></span> <br/>
           </div>
         </li>);
       })) : (<div className='center'><p>You do not belong to any groups. <br/> Create one to get started. </p></div>) );

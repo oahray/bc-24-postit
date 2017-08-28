@@ -87,10 +87,22 @@ export const getAllUsers = (req, res) => {
 };
 
 export const searchUsers = (req, res) => {
-  const username = req.query.username;
-  User.findAll({ where : { 
-    username: { $iLike: `%${username}%` }}
-  })
+  const { username, offset, limit } = req.query;
+  const searchOptions = { 
+    where : {
+      username: { 
+        $iLike: `%${username}%` 
+      }
+    }
+  }
+  if (offset) {
+    searchOptions.offset = offset;
+  }
+
+  if (limit) {
+    searchOptions.limit = limit;
+  }
+  User.findAll(searchOptions)
   .then((users) => {
     return res.status(200).send({
     users

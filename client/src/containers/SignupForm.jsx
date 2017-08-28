@@ -20,15 +20,10 @@ class SignupForm extends Component {
     this.onFormSubmit = this.onFormSubmit.bind(this);
   }
 
-  componentWillMount() {
-    if (window.localStorage.getItem('x-auth')) {
-      const token = window.localStorage.getItem('x-auth');
-      this.props.verifyAuth(token);
-    }
-  }
-
   componentWillUnmount() {
-    this.props.clearFormError();
+    if (this.props.signupError) {
+      this.props.clearFormError();
+    }
   }
 
   onFormSubmit(event) {
@@ -42,20 +37,36 @@ class SignupForm extends Component {
 
   render() {
     const content = (
-      <div className='signupForm forms'>
+      <div className='signupForm row forms'>
         <h3 className="page-header"> Sign up </h3>
-        <form className='row' 
+        <form className='row col s10 offset-s1' 
         onSubmit={this.onFormSubmit}>
           <div className='form-error center red-text bold'>
             <h6 className='form-error-message'>{this.props.signupFailed ? this.props.signupError : null}</h6>
           </div>
-          <Input s={12} label="Username" autoFocus value={this.state.username} onChange={event => this.setState({ username: event.target.value})}/>
+          <div className='input-field col s12'>
+            <i class="material-icons prefix">person</i>
+            <input id='sign-up-username' type='text' autoFocus value={this.state.username} onChange={event => this.setState({ username: event.target.value})}/>
+            <label for="signup-username">Username</label>
+          </div>
           
-          <Input type="email" label="Email" s={12} validate value={this.state.email} onChange={event => this.setState({ email: event.target.value})}/>
+          <div className='input-field col s12'>
+            <i class="material-icons prefix">email</i>
+            <input id='signup-email' type="email" className='validate' value={this.state.email} onChange={event => this.setState({ email: event.target.value})}/>
+            <label for="signup-email">Email</label>
+          </div>
           
-          <Input type="password" label="Password" s={12} value={this.state.password} onChange={event => this.setState({ password: event.target.value})}/>
+          <div className='input-field col s12'>
+            <i class="material-icons prefix">lock</i>
+            <input id='signup-password1' type="password" value={this.state.password} onChange={event => this.setState({ password: event.target.value})}/>
+            <label for="signup-password1">Password</label>
+          </div>
           
-          <Input type="password" label="Confirm password" s={12} value={this.state.confirmPassword} onChange={event => this.setState({ confirmPassword: event.target.value})}/>
+          <div className='input-field col s12'>
+            <i class="material-icons prefix">lock</i>
+            <input id='signup-password2' type="password" value={this.state.confirmPassword} onChange={event => this.setState({ confirmPassword: event.target.value})}/>
+            <label for="signup-password2">Confirm Password</label>
+          </div>
           <div className='center'>
             <Button className='white teal-text' waves='light' type='submit'>Submit</Button>
           </div>

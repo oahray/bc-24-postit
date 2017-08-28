@@ -17,15 +17,10 @@ class SigninForm extends Component {
     this.onFormSubmit = this.onFormSubmit.bind(this);
   }
 
-  componentWillMount() {
-    if (window.localStorage.getItem('x-auth')) {
-      const token = window.localStorage.getItem('x-auth');
-      this.props.verifyAuth(token);
-    }
-  }
-
   componentWillUnmount() {
-    this.props.clearFormError();
+    if (this.props.signinError) {
+      this.props.clearFormError();
+    }
   }
 
   onFormSubmit(event) {
@@ -39,16 +34,24 @@ class SigninForm extends Component {
     }
 
     return (
-      <div className='forms col s12 m8 l6'>
+      <div className='forms row col s12 m8 l6'>
         <h3 className="page-header"> Sign in </h3>
-        <form className='row' 
+        <form className='row col s10 offset-s1' 
         onSubmit={this.onFormSubmit}>
           <div className='form-error-message center red-text bold'>
             <h6>{this.props.signinFailed ? this.props.signinError : null}</h6>
           </div>
-          <Input s={12} label="Username" autoFocus value={this.state.username} required onChange={event => this.setState({ username: event.target.value})} />
-          
-          <Input type="password" label="Password" s={12} value={this.state.password} required onChange={event => this.setState({ password: event.target.value})} />
+          <div className='input-field col s12'>
+            <i class="material-icons prefix">person</i>
+            <input type="text" id="signin-username" class="autocomplete" autoFocus value={this.state.username} required onChange={event => this.setState({ username: event.target.value})} />
+            <label for="signin-username">Username</label>
+          </div>
+          <br/>
+          <div className='input-field col s12'>
+            <i class="material-icons prefix">lock</i>
+            <input type="password" id='signin-password' value={this.state.password} required onChange={event => this.setState({ password: event.target.value})} />
+            <label for="signin-password">Password</label>
+          </div>
           <div className='center'>
             <Button className='white teal-text' waves='teal' type='submit'> Submit </Button>
           </div>

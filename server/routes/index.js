@@ -66,6 +66,8 @@ module.exports = (app) => {
   app.get('/api/group/:groupid/messages', authenticate, 
   isGroupMember, groupsController.getGroupMessages);
 
+  app.get('/api/group/:groupid/notmembers', authenticate, isGroupMember, groupsController.searchNonMembers);
+
   app.patch('/api/group/:groupid/rename', authenticate, 
   isGroupMember, groupsController.renameGroup);
 

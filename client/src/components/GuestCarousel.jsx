@@ -20,23 +20,23 @@ export default class GuestCarousel extends Component {
   render() {
     return (
       <div id="guest-carousel" className="carousel">
-        <div className='carousel-item white teal-text'>
+        <div className='carousel-item white teal-text z-depth-4'>
           <h2><Icon>wc</Icon></h2>
           <p>Connect with your friends</p>
         </div>
-        <div className='carousel-item white teal-text'>
+        <div className='carousel-item white teal-text z-depth-4'>
           <h2><Icon>people</Icon></h2>
           <p>Create groups to suit your style</p>
         </div>
-        <div className='carousel-item white teal-text'>
+        <div className='carousel-item white teal-text z-depth-4'>
           <h2><Icon>person_add</Icon></h2>
           <p>Add friends to your groups</p>
         </div>
-        <div className='carousel-item white teal-text'>
+        <div className='carousel-item white teal-text z-depth-4'>
           <h2><Icon>mode_edit</Icon></h2>
           <p>Send messages with fitting priority level</p>
         </div>
-        <div className='carousel-item white teal-text'>
+        <div className='carousel-item white teal-text z-depth-4'>
           <h2><Icon>notifications_active</Icon></h2>
           <p>Get real-time notifications even when you are not logged in</p>
         </div>
