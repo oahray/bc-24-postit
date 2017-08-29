@@ -25,9 +25,8 @@ class App extends Component {
   }
 
   showState() {
-    const myProps = this.props;
-    console.log('App props: ', myProps);
-    console.log('App state: ', myProps.store.getState());
+    console.log('App props: ', this.props);
+    console.log('App state: ', this.props.store.getState());
   }
 
   render() {
@@ -39,13 +38,6 @@ class App extends Component {
       </div>
     );
 
-    // if (this.props.verifyAuthFailed && window.location.pathname !== '/') {
-    //   return <div>
-    //     <h5>Unverified user at {}</h5>
-    //     {stateButton}
-    //   </div>;
-    //   // return <Redirect to='/' />
-    // } else 
     if (this.props.userLoading) {
       return (<Preloader message='Preparing your space...'/>);
     } else {

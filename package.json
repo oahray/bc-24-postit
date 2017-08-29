@@ -67,6 +67,7 @@
     "eslint": "^3.19.0",
     "eslint-config-airbnb-base": "^11.2.0",
     "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-react": "^7.3.0",
     "expect": "^1.20.2",
     "favicons-webpack-plugin": "0.0.7",
     "html-webpack-plugin": "^2.29.0",
