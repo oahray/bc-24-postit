@@ -34,9 +34,6 @@ class SearchResult extends Component {
 
   componentDidMount() {
     this.props.inGroupPage(true);
-    // this.setState({
-    //   lastPage: Math.ceil(this.props.userSearchResults.count / this.state.offset)
-    // })
   }
 
   componentDidUpdate(newProps, newState) {

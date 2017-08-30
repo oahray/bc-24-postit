@@ -18,7 +18,9 @@ export const signup = (req, res) => {
       user
     });
   })
-  .catch(() => res.status(400));
+  .catch(() => res.status(400).send({
+    error: 'Error signing up'
+  }));
 };
 
 // Function to sign users in
@@ -51,7 +53,9 @@ export const signin = (req, res) => {
       message: `welcome back, ${user.username}`,
       user
     });
-  }).catch(() => res.status(400));
+  }).catch(() => res.status(400).send({
+    error: 'Error signing in'
+  }));
 };
 
 export const getMe = (req, res) => {

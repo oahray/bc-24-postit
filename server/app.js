@@ -16,6 +16,8 @@ const app = express();
 
 const compiler = webpack(webpackConfig);
 
+console.log('>>>>>> ENV: ', process.env.NODE_ENV);
+
 if (process.env.NODE_ENV !== 'production') {
   dotenv.config();
   app.use(webpackDevMiddleware(compiler, {
