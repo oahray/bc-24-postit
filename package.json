@@ -20,7 +20,7 @@
     "watch-css": "nodemon -e scss -x \"npm run build-css\"",
     "test": "export NODE_ENV=test || SET \"NODE_ENV=test\" && mocha --compilers js:babel-register server/test/app-test.js",
     "test-watch": "nodemon --exec \"npm test\"",
-    "heroku-postbuild": "webpack -p --config ./webpack.deployment.config.js",
+    "heroku-postbuild": "webpack --config ./webpack.deployment.config.js --progress --colors",
     "webpack": "webpack"
   },
   "repository": {
