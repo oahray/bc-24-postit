@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const BASE_URL = `http://${window.location.host}/api`;
+export const BASE_URL = `${window.location.origin}/api`;
 
 export * from './signinAction';
 export * from './signupAction';
