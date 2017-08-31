@@ -36,7 +36,7 @@ class SigninForm extends Component {
     return (
       <div className='forms row col s12 m8 l6'>
         <h3 className="page-header"> Sign in </h3>
-        <form className='row col s10 offset-s1' 
+        <form className='row col s12 m10 offset-m1' 
         onSubmit={this.onFormSubmit}>
           <div className='form-error-message center red-text bold'>
             <h6>{this.props.signinFailed ? this.props.signinError : null}</h6>

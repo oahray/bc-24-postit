@@ -37,9 +37,9 @@ class SignupForm extends Component {
 
   render() {
     const content = (
-      <div className='signupForm row forms'>
+      <div className='row forms col s12 m8 l6'>
         <h3 className="page-header"> Sign up </h3>
-        <form className='row col s10 offset-s1' 
+        <form className='row col s12 m10 offset-m1' 
         onSubmit={this.onFormSubmit}>
           <div className='form-error center red-text bold'>
             <h6 className='form-error-message'>{this.props.signupFailed ? this.props.signupError : null}</h6>
