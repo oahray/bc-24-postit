@@ -20,6 +20,12 @@ export default (sequelize, DataTypes) => {
       validate: {
         isEmail: true
       }
+    },
+    phone: {
+      type: DataTypes.STRING,
+      // validate: {
+        
+      // }
     }
   });
 

@@ -7,6 +7,14 @@ export default (sequelize, DataTypes) => {
     priority: {
       type: DataTypes.STRING,
       allowNull: false
+    },
+    sender: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    readBy: {
+      type: DataTypes.STRING,
+      allowNull: false
     }
   });
   Message.associate = (models) => {
