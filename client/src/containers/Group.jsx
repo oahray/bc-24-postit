@@ -98,7 +98,7 @@ class Group extends Component {
       <div className='message-input-container'>
         <div className="row">
           <div className="input-field message-input col s12 m7">
-            <textarea id="icon_prefix" type="text" className="validate" placeholder='Type Message Here' onChange={(event) => this.setState({content: event.target.value})}/>
+            <textarea id="icon_prefix" value={this.state.content} type="text" className="validate" placeholder='Type Message Here' onChange={(event) => this.setState({content: event.target.value})}/>
           </div>
           <div className="input-field col s8 m3">
             <Row>
