@@ -19,10 +19,14 @@ body {
   margin-top: 50px;
 }
 
+.timestamp {
+  padding-left: 10px;
+}
+
 .forms {
   margin: 0 auto;
   .row {
-    padding: 0px 50px;
+    padding: 0px 20px;
     .input-field {
       margin: 0 auto;
       padding: 10px;
@@ -120,7 +124,7 @@ ul.side-nav.fixed:hover {
 .group-page {
   padding: 0px 5px;
   .tab-content {
-    padding: 0px 30px;
+    padding: 0px 10px;
   }
   .group-tab li a {
     color: $main-color !important;
@@ -151,6 +155,9 @@ ul.side-nav.fixed:hover {
         -webkit-box-shadow: none;
         -moz-box-shadow: none;
         box-shadow: none;
+      }
+      button {
+
       }
     }
     div {
@@ -189,11 +196,12 @@ ul.side-nav.fixed:hover {
     padding: 0px 20px !important;
     margin-bottom: 1px !important;
     background-color: #eee;
-  }
-  .display-linebreak {
-    // white-space: pre-line;
     text-overflow: ellipse;
   }
+}
+
+.display-linebreak {
+  white-space: pre-line;
 }
 
 .search-page {
@@ -210,7 +218,6 @@ ul.side-nav.fixed:hover {
 
 @media only screen and (max-width: 600px) {
   .message-input {
-    // background-color: red;
     border: none !important;
   }
 }

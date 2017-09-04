@@ -13,14 +13,14 @@ export const signup = (req, res) => {
   })
   .then((user) => {
     const token = user.generateAuthToken();
-    res.header('x-auth', token).status(201).send({
+    return res.header('x-auth', token).status(201).send({
       message: `welcome ${user.username}`,
       user
     });
   })
-  .catch(() => res.status(400).send({
-    error: 'Error signing up'
-  }));
+  // .catch(() => res.status(400).send({
+  //   error: 'Error signing up'
+  // }));
 };
 
 // Function to sign users in
@@ -49,13 +49,14 @@ export const signin = (req, res) => {
       });
     }
     const token = user.generateAuthToken();
-    res.header('x-auth', token).status(200).send({
+    return res.header('x-auth', token).status(200).send({
       message: `welcome back, ${user.username}`,
       user
     });
-  }).catch(() => res.status(400).send({
-    error: 'Error signing in'
-  }));
+  })
+  // .catch(() => res.status(400).send({
+  //   error: 'Error signing in'
+  // }));
 };
 
 export const getMe = (req, res) => {

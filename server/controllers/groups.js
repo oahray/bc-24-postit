@@ -170,7 +170,10 @@ export const sendMessageToGroup = (req, res) => {
       });
     }
     Message.create({
-      content, priority
+      content, 
+      priority,
+      sender: req.currentUser.username,
+      readBy: req.currentUser.username
     }).then((message) => {
       message.setGroup(group.id);
       message.setUser(req.currentUser.id);

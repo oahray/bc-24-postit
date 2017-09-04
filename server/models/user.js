@@ -23,9 +23,12 @@ export default (sequelize, DataTypes) => {
     },
     phone: {
       type: DataTypes.STRING,
-      // validate: {
-        
-      // }
+      allowNull: true,
+    },
+    about: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: 'New to Postit'
     }
   });
 

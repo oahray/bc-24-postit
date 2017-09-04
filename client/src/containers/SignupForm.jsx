@@ -13,6 +13,7 @@ class SignupForm extends Component {
     this.state = {
       username: '',
       email: '',
+      phone: '',
       password: '',
       confirmPassword: ''
     }
@@ -44,31 +45,37 @@ class SignupForm extends Component {
           <div className='form-error center red-text bold'>
             <h6 className='form-error-message'>{this.props.signupFailed ? this.props.signupError : null}</h6>
           </div>
-          <div className='input-field col s12'>
+          <div className="input-field col s12">
             <i class="material-icons prefix">person</i>
-            <input id='sign-up-username' type='text' autoFocus value={this.state.username} onChange={event => this.setState({ username: event.target.value})}/>
+            <input id='sign-up-username' type='text' autoFocus required value={this.state.username} onChange={event => this.setState({ username: event.target.value})}/>
             <label for="signup-username">Username</label>
           </div>
           
           <div className='input-field col s12'>
             <i class="material-icons prefix">email</i>
-            <input id='signup-email' type="email" className='validate' value={this.state.email} onChange={event => this.setState({ email: event.target.value})}/>
+            <input id='signup-email' type="email" required className='validate' value={this.state.email} onChange={event => this.setState({ email: event.target.value})}/>
             <label for="signup-email">Email</label>
+          </div>
+
+          <div className='input-field col s12'>
+            <i class="material-icons prefix">phone</i>
+            <input id='signup-phone' type="text" className="validate" value={this.state.phone} onChange={event => this.setState({ phone: event.target.value})}/>
+            <label for="signup-email">Mobile number</label>
           </div>
           
           <div className='input-field col s12'>
             <i class="material-icons prefix">lock</i>
-            <input id='signup-password1' type="password" value={this.state.password} onChange={event => this.setState({ password: event.target.value})}/>
+            <input id='signup-password1' type="password" required value={this.state.password} onChange={event => this.setState({ password: event.target.value})}/>
             <label for="signup-password1">Password</label>
           </div>
           
           <div className='input-field col s12'>
             <i class="material-icons prefix">lock</i>
-            <input id='signup-password2' type="password" value={this.state.confirmPassword} onChange={event => this.setState({ confirmPassword: event.target.value})}/>
+            <input id='signup-password2' type="password" required value={this.state.confirmPassword} onChange={event => this.setState({ confirmPassword: event.target.value})}/>
             <label for="signup-password2">Confirm Password</label>
           </div>
           <div className='center'>
-            <Button className='white teal-text' waves='light' type='submit'>Submit</Button>
+            <Button className={`white teal-text ${this.props.setUserLoading? 'disabled' : ''}`} waves='light' type='submit'>{this.props.setUserLoading? 'Please wait...' : 'Submit'}</Button>
           </div>
           <div className='teal-text'>
             <p className='center'> Have an account? <Link to="/signin">Sign In </Link></p>
@@ -87,6 +94,7 @@ class SignupForm extends Component {
 function mapStateToProps(state) {
   return {
     isLoggedIn: state.isAuthenticated,
+    setUserLoading: state.setUserLoading,
     signupFailed: state.authFormFailed,
     signupError: state.authFormErrorMessage
   }

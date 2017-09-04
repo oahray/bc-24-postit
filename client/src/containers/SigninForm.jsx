@@ -52,8 +52,8 @@ class SigninForm extends Component {
             <input type="password" id='signin-password' value={this.state.password} required onChange={event => this.setState({ password: event.target.value})} />
             <label for="signin-password">Password</label>
           </div>
-          <div className='center'>
-            <Button className='white teal-text' waves='teal' type='submit'> Submit </Button>
+          <div className='center' >
+            <Button className={`white teal-text ${this.props.setUserLoading? 'disabled' : ''}`} waves='teal' type='submit'> {this.props.setUserLoading? 'Please wait...' : 'Submit'} </Button>
           </div>
           <div className='center'>
             <p className='center'> Forgot Password? <Link to="/forgotpassword">Get Recovery Email</Link></p>
@@ -68,6 +68,7 @@ class SigninForm extends Component {
 function mapStateToProps(state) {
   return {
     isLoggedIn: state.isAuthenticated,
+    userLoading: state.setUserLoading,
     signinFailed: state.authFormFailed,
     signinError: state.authFormErrorMessage
   }

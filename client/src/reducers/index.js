@@ -1,9 +1,10 @@
 import { combineReducers } from 'redux';
 import user from './setUserReducer';
-import userLoading from './verifyAuthLoading';
+import verifyAuthLoading from './verifyAuthLoading';
 import isAuthenticated from './authReducer';
 import verifyAuthFailed from './verifyAuthFailed';
 import token from './setTokenReducer';
+import setUserLoading from './setUserLoading';
 import authFormErrorMessage from './authFormErrorMessage';
 import authFormFailed from './authFormFailed';
 import groupList from './groupListReducer';
@@ -20,10 +21,11 @@ import userSearchResults from './searchResults';
 
 export default combineReducers({
   user,
-  userLoading,
+  verifyAuthLoading,
   isAuthenticated,
   verifyAuthFailed,
   token,
+  setUserLoading,
   authFormFailed,
   authFormErrorMessage,
   groupList,

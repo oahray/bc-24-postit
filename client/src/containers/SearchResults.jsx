@@ -98,8 +98,8 @@ class SearchResult extends Component {
         page: this.state.page + 1,
         offset: this.state.offset + 10
       });
+      this.props.history.push(`/groups/${this.props.selectedGroup.id}/addusers?u=${this.state.searchTerm}&p=${Number(this.state.page) + 1}`);
     }
-    this.props.history.push(`/groups/${this.props.selectedGroup.id}/addusers?u=${this.state.searchTerm}&p=${Number(this.state.page) + 1}`);
   }
 
   render() {
@@ -111,30 +111,31 @@ class SearchResult extends Component {
     }
     return (
       <div className='row search-page'>
-        <div className='col s9'>
+        <div className='col s12'>
           <h5 className='page-header'>Add Users to <strong>{this.props.selectedGroup.name}</strong></h5>
         </div>
-        <div className='col s3 center'>
+        <div className='col s12 center'>
           <a className='btn white teal-text' onClick={this.searchDone}>Done</a>
         </div>
         
-        <div className='search-list-container col s6 offset-s3'>
+        <div className='search-list-container col s10 offset-s1 m8 offset-m2 l6 offset-l3'>
           <h6>{this.props.userSearchResults.count} found</h6>
            <ul className='row list-group'> 
-            {this.props.userSearchResults.users?(this.props.userSearchResults.users).map((user) => <li key={user.id}><div className='col s12 list-item grey lighten-3'>{user.username} <span className='right'><a className='add-user-icon teal-text' onClick={() => this.addUser(user.username)}><i className='material-icons'>person_add</i></a></span></div><hr/></li>) : null }
+            {this.props.userSearchResults.users?(this.props.userSearchResults.users).map((user) => <li key={user.id}><div className='col s12 list-item grey lighten-3'><strong>{user.username}</strong> <br /> <small>{user.about}</small> <span className='right'><a className='add-user-icon teal-text' onClick={() => this.addUser(user.username)}><i className='material-icons'>person_add</i></a></span></div><hr/></li>) : null }
           </ul> 
         </div>
 
         <div className='col s12 center'>
           <ul class="pagination">
              <li 
-             class={this.state.page < 2 ?`disabled` : ""}
+             class={this.state.page < 2 ?"disabled" : "waves-effect"}
              onClick={this.previousPage}
              ><a href="#!"><i class="material-icons">chevron_left</i></a></li>
+             
              {Array.from({length: Math.ceil(this.props.userSearchResults.count / this.state.limit)}, (v, i) => i + 1).map(i => <li class={`waves-effect ${i === this.state.page ? 'active' : ''}`} key={i} onClick={this.onPageChange}><a href="#!" id={i}>{i}</a></li>)}
-            <li class="waves-effect" 
-            onClick={this.nextPage}
-            >
+
+            <li class={this.state.page < Math.ceil(this.props.userSearchResults.count / this.state.limit) ? 'waves-effect' : 'disabled'} 
+            onClick={this.nextPage} >
               <a href="#!">
                 <i class="material-icons">chevron_right</i>
               </a></li>

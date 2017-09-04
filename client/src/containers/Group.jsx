@@ -6,17 +6,21 @@ import moment from 'moment';
 import { Tabs, Tab, Row, Input } from 'react-materialize';
 import { getGroupMessages, getGroupUsers, getGroupList, inGroupPage, sendMessage } from '../actions';
 import Preloader from '../components/Preloader';
+import Message from '../components/Message';
 
 class Group extends Component {
   constructor(props) {
     super(props);
     this.state = {
       content: '',
-      priority: 'normal'
+      priority: 'normal',
+      messageOpen: false,
+      selectedMessage: {}
     }
 
     this.sendMessage = this.sendMessage.bind(this);
     this.newMessageAdded = this.newMessageAdded.bind(this);
+    this.closeMessage = this.closeMessage.bind(this);
   }
 
   componentWillMount() {
@@ -39,6 +43,22 @@ class Group extends Component {
 
   componentWillUnmount() {
     this.props.inGroupPage(false);
+  }
+
+  openMessage(message) {
+    console.log("Message opened");
+    this.setState({
+      messageOpen: true,
+      selectedMessage: message
+    });
+  }
+
+  closeMessage() {
+    console.log("Message closed");
+    this.setState({
+      messageOpen: false,
+      selectedMessage: {}
+    })
   }
 
   newMessageAdded(groupid) {
@@ -65,9 +85,10 @@ class Group extends Component {
         {this.props.groupMessages.length > 0 ? <ul>
           {this.props.groupMessages.map((message) => {
             return <li 
-            className='message-item display-linebreak truncate' 
+            className='message-item truncate' 
             id={`${message.groupid}${message.id}`}
-            key={message.id}> <strong>user {message.userId}</strong> <span className='grey-text'><small>{moment(message.createdAt).fromNow()}</small></span> <span className='right'><small>{message.priority} message</small></span><br />{message.content}</li>
+            key={message.id}
+            onClick={() => this.openMessage(message)}> <strong> {message.sender}</strong><span className='grey-text timestamp'><small>{moment(message.createdAt).fromNow()}</small></span> <span className='right'><small>{message.priority} message</small></span><br />{message.content}</li>
           })}
         </ul> : <p>This group does not contain any messages</p>}
       </div>
@@ -80,7 +101,7 @@ class Group extends Component {
             <textarea id="icon_prefix" type="text" className="validate" placeholder='Type Message Here' onChange={(event) => this.setState({content: event.target.value})}/>
           </div>
           <div className="input-field col s8 m3">
-             <Row>
+            <Row>
               <Input s={12} className='message-priority-select' type='select' 
               defaultValue='normal'
               onChange={(event) => this.setState({priority: event.target.value})}> 
@@ -91,18 +112,32 @@ class Group extends Component {
             </Row>  
           </div>
           <div className="input-field col s4 m2">
-            <button className="btn btn-raised white teal-text waves-effect waves-dark" type="submit" name="action" onClick={this.sendMessage}><i className="material-icons">send</i></button>
+            <button className="btn btn-flat white teal-text waves-effect waves-dark" type="submit" name="action" onClick={this.sendMessage}><i className="material-icons">send</i></button>
           </div>
         </div>
       </div>
     );
 
-    const messagesTab = (
-      <div className='tab-content'>
-        {messageList}
-        {messageInput}
-      </div> 
+    const messages = <div className='tab-content'>
+      {messageList}
+      {messageInput}
+    </div>
+
+    const openMessage = (
+      <div className="row col s12">
+        <div className="tab-content col s12 l4 push-l8">
+          <Message message={this.state.selectedMessage} 
+          closeMessage={this.closeMessage} user={this.props.user}/>
+        </div>
+        <div className="col l8 pull-l4 hide-on-med-and-down">
+          {messages}
+        </div> 
+      </div>  
     );
+
+    const messagesTab = (
+      this.state.messageOpen ? openMessage : messages
+    )
 
     const infoTab = (<div className='tab-content'>
       <div className='group-info'>
@@ -114,13 +149,13 @@ class Group extends Component {
 
     const usersTab = (
       <div>
-        <h6>Leave Group...</h6>
         <h5>Users List <span className=''><small>({this.props.groupUsers.length} {this.props.groupUsers.length === 1 ? 'member' : 'members'})</small></span></h5>
         <div>
           <ul>
-            {this.props.groupUsers.map((user) => <li key={user.id}>{user.username}</li>)}
+            {this.props.groupUsers.map((user) => <li key={user.id}>{user.username} {user.username === this.props.user.username ? '(you)' : ''}</li>)}
           </ul>
         </div>
+        <h6>Leave Group...</h6>
       </div>
     )
 
@@ -139,6 +174,7 @@ class Group extends Component {
 
 function mapStateToProps(state) {
   return {
+    user: state.user,
     token: state.token,
     isLoggedIn: state.isAuthenticated,
     groupList: state.groupList,

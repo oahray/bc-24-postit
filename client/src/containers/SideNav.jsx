@@ -14,7 +14,7 @@ class SideNav extends Component {
   componentDidMount() {
     $('.button-collapse').sideNav();
     $('.collapsible').collapsible();
-    $('.side-nav li a').on('click', function(e) {
+    $('.side-nav .my-list-item a').on('click', function(e) {
       const windowSize = $(window).width();
       if (windowSize < 993) {
         $('.button-colllapse').sideNav('hide');
@@ -70,29 +70,30 @@ class SideNav extends Component {
           <li className='search'> 
             {this.props.inGroupPage ? <SearchBar searchUsers={this.searchUsers} user={this.props.user} selectedGroup={this.props.selectedGroup} /> : null}
           </li>
-          <li className='my-list-item'><NavLink to='/groups/new'> Create New Group</NavLink></li>
-          <li className='my-list-item'>
+          <li className='my-list-item'><NavLink to='/groups/new'> Create New Group <i class="material-icons left">group_add</i></NavLink></li>
+          <li className=''>
             <ul class='collapsible collapsible-accordion'>
-              <li className='my-list-item'>
-                <span class='collapsible-header'> My Groups </span>
+              <li className=''>
+                <a class='collapsible-header'> <i class="material-icons left">group</i> My Groups </a>
                 <div class='sidebar-grouplist collapsible-body'>
                   <ul>
                     <li className='my-list-item'><NavLink to='/'>All Groups</NavLink></li>
-                    {this.props.groups.map((group) => {
-                      return (<li key={group.id}><Link to={`/groups/${group.id}/messages`}>
-                        <div className='my-list-item'>
-                          {group.name} <small>-- by {group.createdBy}</small>
-                        </div>
-                        </Link>
-                      </li>)
-                    })}
+                    {this.props.groups.map((group) =>
+                      <li key={group.id} className='my-list-item'>
+                        <NavLink to={`/groups/${group.id}/messages`}>
+                          <div>
+                            {group.name} <small> by {group.createdBy}</small> 
+                          </div>
+                        </NavLink>
+                      </li>
+                    )}
                   </ul>
                 </div>
               </li>
             </ul> 
           </li>
-          <li><a href='#'>Edit Profile</a></li>
-          <li><a href='#' onClick={() => this.props.logout()}>Logout</a></li>
+          <li className='my-list-item'><NavLink to="/edit"> My Account <i class="material-icons left">settings</i> </NavLink></li>
+          <li className='my-list-item'><a href='#' onClick={() => this.props.logout()}> Logout <i class="material-icons left">rowing</i> </a></li>
         </ul>
       );
     }

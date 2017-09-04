@@ -38,7 +38,7 @@ class App extends Component {
       </div>
     );
 
-    if (this.props.userLoading) {
+    if (this.props.verifyAuthLoading) {
       return (<Preloader message='Preparing your space...'/>);
     } else {
       const sideNav = () => (<SideNav isLoggedIn={this.props.isLoggedIn} groups={this.props.groupList}/>);
@@ -64,7 +64,7 @@ class App extends Component {
 function mapStateToProps(state) {
   return {
     user: state.user,
-    userLoading: state.userLoading,
+    verifyAuthLoading: state.verifyAuthLoading,
     isLoggedIn: state.isAuthenticated,
     verifyAuthFailed: state.verifyAuthFailed,
     token: state.token

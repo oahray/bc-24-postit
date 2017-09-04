@@ -8,14 +8,14 @@ class NotFound extends Component {
   }
 
   componentWillMount() {
-    // if (!this.props.userLoading && !this.props.isLoggedIn) {
-    //   console.log(`Page not found, redirecting from ${window.location}`);
-    // }
-    // console.log('Not Found Props: ', this.props);
+    if (!this.props.userLoading && !this.props.isLoggedIn) {
+      console.log(`Page not found, redirecting from ${window.location}`);
+    }
+    console.log('Not Found Props: ', this.props);
   }
   
   render() {
-    if (this.props.userLoading) {
+    if (this.props.verifyAuthLoading) {
       return null;
     } else if (!this.props.match.path === '*') {
       return this.props.history.goBack();
@@ -27,7 +27,7 @@ class NotFound extends Component {
 function mapStateToProps(state) {
   return {
     user: state.user,
-    userLoading: state.userLoading,
+    verifyAuthLoading: state.verifyAuthLoading,
     isLoggedIn: state.isAuthenticated,
     verifyAuthFailed: state.verifyAuthFailed,
     token: state.token

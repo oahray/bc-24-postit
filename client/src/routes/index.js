@@ -8,6 +8,7 @@ import UserHome from '../containers/UserHome';
 import Group from '../containers/Group';
 import SearchResults from '../containers/SearchResults';
 import NewGroup from '../containers/NewGroup'
+import EditProfile from '../containers/EditProfile';
 import ForgotPassword from '../components/ForgotPassword';
 import NotFound from '../components/NotFound';
 
@@ -45,6 +46,7 @@ export function UserRoutes(props) {
       <Route exact path='/groups/:groupid/messages' 
       component={Group} />
       <Route exact path='/groups/:groupid/addusers' component={SearchResults}/>
+      <Route exact path="/edit" component={EditProfile} />
       <Route exact path="*" component={NotFound} />  
     </Switch>
   );
