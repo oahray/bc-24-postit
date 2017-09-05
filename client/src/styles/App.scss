@@ -147,6 +147,7 @@ ul.side-nav.fixed:hover {
       padding-left: 10px;
       border-right: 2px solid grey;
       textarea, textarea:active {
+        position: relative !important;
         height: 56px;
         border: none;
         overflow: auto;
@@ -155,9 +156,6 @@ ul.side-nav.fixed:hover {
         -webkit-box-shadow: none;
         -moz-box-shadow: none;
         box-shadow: none;
-      }
-      button {
-
       }
     }
     div {

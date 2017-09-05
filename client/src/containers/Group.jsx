@@ -31,6 +31,7 @@ class Group extends Component {
   }
 
   componentDidMount() {
+    $('ul.tabs').tabs();
     this.props.inGroupPage(true);
   }
 
