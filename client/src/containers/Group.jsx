@@ -103,7 +103,7 @@ class Group extends Component {
       <div className='message-input-container'>
         <div className="row">
           <div className="input-field message-input col s12 m7">
-            <textarea type="text" id="textarea1" placeholder='Type Message Here' onChange={this.onTypeText} />
+            <input type="text" id="textarea1" placeholder='Type Message Here' onChange={this.onTypeText} />
           </div>
           <div className="input-field col s8 m3">
             <Row>
