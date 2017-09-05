@@ -18,6 +18,7 @@ class Group extends Component {
       selectedMessage: {}
     }
 
+    this.onTypeText = this.onTypeText.bind(this);
     this.sendMessage = this.sendMessage.bind(this);
     this.newMessageAdded = this.newMessageAdded.bind(this);
     this.closeMessage = this.closeMessage.bind(this);
@@ -43,6 +44,10 @@ class Group extends Component {
 
   componentWillUnmount() {
     this.props.inGroupPage(false);
+  }
+
+  onTypeText(event) {
+    this.setState({content: event.target.value});
   }
 
   openMessage(message) {
@@ -98,7 +103,7 @@ class Group extends Component {
       <div className='message-input-container'>
         <div className="row">
           <div className="input-field message-input col s12 m7">
-            <textarea type="text" placeholder='Type Message Here' onChange={(event) => this.setState({content: event.target.value})}/>
+            <textarea type="text" id="textarea1" placeholder='Type Message Here' onChange={this.onTypeText} />
           </div>
           <div className="input-field col s8 m3">
             <Row>
