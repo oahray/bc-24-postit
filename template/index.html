@@ -1,0 +1,122 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+  <head>     
+    <meta charset="UTF-8">     
+    <title>Postit</title>     
+    <meta name="viewport" content="width=device-width, initial-scale=1">     
+    <link rel="stylesheet" href="css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Merienda|Julee|Quintessential|Pacifico" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+  </head>
+
+  <body>
+    <nav>
+      <div class="nav-wrapper teal lighten-1">
+        <a href="#!" class="brand-logo">Postit</a>
+        <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a> 
+        <ul class="right hide-on-med-and-down">
+          <li><a href="#">About</a></li>
+          <li><a href="#">View project on Github</a></li>
+        </ul>
+        <ul class="side-nav" id="mobile-demo">
+          <li><a href="#">About</a></li>
+          <li><a href="#">View project on Github</a></li>
+        </ul> 
+      </div>
+    </nav>
+
+    <div class="carousel col s12 center" data-indicators="true">
+      <!-- <div class="carousel-fixed-item center">
+        <a class="btn waves-effect white grey-text darken-text-2">button</a>
+      </div> -->
+      <div class="carousel-item grey white-text" href="#one!">
+        <h2>First Panel</h2>
+        <p class="white-text">This is your first panel</p>
+      </div>
+      <div class="carousel-item amber white-text" href="#two!">
+        <h2>Second Panel</h2>
+        <p class="white-text">This is your second panel</p>
+      </div>
+      <div class="carousel-item green white-text" href="#three!">
+        <h2>Third Panel</h2>
+        <p class="white-text">This is your third panel</p>
+      </div>
+      <div class="carousel-item blue white-text" href="#four!">
+        <h2>Fourth Panel</h2>
+        <p class="white-text">This is your fourth panel</p>
+      </div>
+      <div class="carousel-item teal white-text" href="#five!">
+        <h2>Fifth Panel</h2>
+        <p class="white-text">This is your fifth panel</p>
+      </div>
+    </div>
+
+    <div id="loginOrSignup" class="s12 center join-options">
+      <div id="toStart">
+        <p>To learn more or to start using Postit</p>
+      </div>
+      <!-- Modal Trigger -->
+      <a id="chooseLogin" class="waves-effect waves-light btn modal-trigger" href="#signin">Sign in</a> or <a id="chooseSignup" class="waves-effect waves-light btn modal-trigger" href="#signup">Sign up</a>
+    </div>
+
+    <!-- Signin Modal -->
+    <div id="signin" class="modal">
+      <div class="modal-content">
+        <h4 class="center">Sign in</h4>
+        <p>A bunch of text</p>
+      </div>
+      <!-- <div class="modal-footer">
+        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+      </div> -->
+    </div>
+
+    <!-- Signup Modal -->
+    <div id="signup" class="modal">
+      <div class="modal-content">
+        <h4 class="center">Sign up</h4>
+        <div class="row container">
+          <form class="col s12">
+            <div class="row">
+              <div class="input-field col s12">
+                <input id="username" type="text" class="validate">
+                <label for="username">Username</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s12">
+                <input id="email" type="email" class="validate">
+                <label for="email">Email</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s12">
+                <input id="password" type="password" class="validate">
+                <label for="password">Password</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s12">
+                <input id="passwordConfirm" type="password" class="validate">
+                <label for="passwordConfirm">Confirm Password</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s16">
+                <a href="#!" class="modal-action modal-close waves-effect waves-green left btn-flat">Back</a>
+                <a class="waves-effect waves-light right btn submit" href="#">Submit</a>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <!-- <div class="modal-footer">
+        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+      </div> -->
+    </div>
+
+    <script src="js/jquery.min.js"></script>     
+    <script src="js/materialize.min.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>

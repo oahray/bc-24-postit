@@ -1,0 +1,253 @@
+$main-color: #26a69a;
+
+body {
+  width: 100%;
+  font-size: 14px;
+}
+
+.modal {
+  min-height: 80vh;
+}
+
+.main-body {
+  margin: 0px;
+  width: 100%;
+  padding: 0;
+}
+
+.preloader {
+  margin-top: 50px;
+}
+
+.timestamp {
+  padding-left: 10px;
+}
+
+.forms {
+  margin: 0 auto;
+  .row {
+    padding: 0px 20px;
+    .input-field {
+      margin: 0 auto;
+      padding: 10px;
+      input, label {
+        margin: 3px 0px ;
+        padding-left: 30px; 
+      }
+    }
+  }
+}
+
+ul.side-nav.fixed:hover {
+    overflow-y: auto;
+}
+
+.side-nav.fixed {
+  overflow: hidden;
+  .user-view {
+    background-color: $main-color;
+    padding: 15px 0px 0px 0px;
+    margin: 0px;
+    vertical-align: middle;
+    i {
+      // border-radius: 100%;
+      border: 2px solid white;
+      margin: 0px !important;
+      font-size: 70px;
+    }
+    a, a:hover {
+      margin-top: 0px !important;
+      height: 40px !important;
+      padding-top: 0px !important;
+      background-color: $main-color;
+    }
+    .name {
+      margin: 0px;
+      font-size: 24px;
+    }
+  }
+  a {
+  padding-left: 10px !important;
+  }
+  .sidebar-grouplist {
+    max-height: 200px;
+    width: 100%;
+    padding: 0px;
+    overflow-y: auto;
+    
+    li {
+      padding: 0px 10px;
+      a {
+        vertical-align: top;
+        padding: 0px;
+        height: 40px;
+        font-size: 12px;
+      }
+    }
+    font-size: 12px !important;
+  }
+  .search-wrapper {
+    padding: 0px 0px 0px 15px;
+    margin: 0px;
+    height: 50px;
+    a {
+      padding: 0px;
+      width: 40px;
+      i {
+      font-size: 32px;
+      margin: 0px;
+      padding: 0px;
+      }
+    }
+    .search-input {
+      height: 50px;
+      padding: 0px;
+      input {
+      padding: 0px;
+      margin: 0px;
+      }
+      input, input:focus {
+        border-bottom: none!important;
+        box-shadow: none!important;
+      }
+    }
+  }
+}
+
+.user-home-content {
+  padding: 0px 20px;
+  a {
+    color: $main-color;
+  }
+}
+
+.group-page {
+  padding: 0px 5px;
+  .tab-content {
+    padding: 0px 10px;
+  }
+  .group-tab li a {
+    color: $main-color !important;
+  }
+  .edit-group-info-text {
+    border-radius: 10px;
+  }
+  .message-input-container {
+    height: 60px;
+    padding: 0px !important;
+    border: 2px solid grey;
+    border-radius: 15px;
+    input, input:focus {
+      border-bottom: none!important;
+      box-shadow: none!important;
+    }
+    .message-input {
+      margin: 0 auto;
+      height: 58px;
+      padding-left: 10px;
+      border-right: 2px solid grey;
+      textarea, textarea:active {
+        position: relative !important;
+        height: 56px;
+        border: none;
+        overflow: auto;
+        outline: none;
+        
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
+      }
+    }
+    div {
+      margin: 0 auto;
+      padding-left: 3px;
+      div {
+        margin-top: 3px;
+        .message-priority-select {
+          max-height: 50px;
+          margin: 0 auto;
+          padding: 0px;
+        }
+        button {
+          margin-top: 7px;
+          i {
+            text-align: center;
+            width: 28px;
+            font-size: 32px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.page-header {
+  color: teal;
+  text-align: center;
+}
+
+.message-list {
+  max-height: 200px;
+  overflow-y: auto;
+  .message-item {
+    // height: 50px;
+    padding: 0px 20px !important;
+    margin-bottom: 1px !important;
+    background-color: #eee;
+    text-overflow: ellipse;
+  }
+}
+
+.display-linebreak {
+  white-space: pre-line;
+}
+
+.search-page {
+  .add-user-icon:hover {
+    cursor: pointer;
+  }
+}
+
+@media only screen and (min-width: 993px) {
+  .main-container {
+      padding-left: 300px;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .message-input {
+    border: none !important;
+  }
+}
+
+.guest-home {
+  background-color: #f8f8f8 !important;
+  padding-bottom: 20px;
+  #guest-carousel {
+    padding: 0 auto;
+    height: 270px !important;
+    
+    .carousel-item {
+      border-radius: 10px;
+      border: 1px solid #f0f0f0;
+      background-color: white !important;
+      padding: 5px 0px;
+      margin: 0 auto;
+      width: 270px !important;
+      max-height: 270px;
+      h2 {
+        margin : 0 auto;
+      }
+      i {
+        margin: 1px auto;
+        font-size: 120px;
+      }
+      p {
+        margin: 0px 5px 0px 5px;
+        padding-bottom: 10px;
+        font-size: 1.15em;
+        font-style: italic;
+      }
+    }
+  }
+}

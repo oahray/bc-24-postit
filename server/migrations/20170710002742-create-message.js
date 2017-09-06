@@ -14,6 +14,14 @@ module.exports = {
       priority: {
         type: Sequelize.STRING,
         allowNull: false,
+      }, 
+      sender: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      readBy: {
+        type: Sequelize.STRING,
+        allowNull: false,
       },
       userId: {
         type: Sequelize.INTEGER,

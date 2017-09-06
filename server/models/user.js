@@ -20,6 +20,15 @@ export default (sequelize, DataTypes) => {
       validate: {
         isEmail: true
       }
+    },
+    phone: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    about: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: 'New to Postit'
     }
   });
 

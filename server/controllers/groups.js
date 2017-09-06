@@ -102,11 +102,52 @@ export const getGroupUsers = (req, res) => {
         error: 'Group does not exist'
       });
     }
-    group.getUsers().then(groupUsers =>
-      res.send({ groupId, groupUsers }));
+    group.getUsers().then(users =>
+      res.send({ group, users }));
   })
   .catch(err => res.status(400).send({
     error: err.errors[0].message
+  }));
+};
+
+export const searchNonMembers = (req, res) => {
+  const groupId = req.params.groupid;
+  let { username, offset, limit } = req.query;
+  if (!username) {
+    username = '';
+  }
+  const searchOptions = { 
+    where : {
+      username: { 
+        $iLike: `%${username}%` 
+      }
+    }
+  }
+  if (Number(offset) && typeof Number(offset) === 'number') {
+    searchOptions.offset = Number(offset);
+  }
+
+  if (Number(limit) && typeof Number(limit) === 'number') {
+    searchOptions.limit =   Number(limit);
+  }
+
+  Group.findById(groupId).then((group) => {
+    group.getUsers().then(groupUsers =>
+      groupUsers.map(user => user.username)
+    ) 
+    .then((usernames) => {
+      searchOptions.where.username.$notIn = usernames;
+      User.findAndCountAll(searchOptions)
+      .then((result) => {
+        return res.status(200).send({
+          count: result.count,
+          users: result.rows
+        })
+      })
+    })
+  })
+  .catch(err => res.status(400).send({
+    error: "Failed to retrieve data. Invalid request"
   }));
 };
 
@@ -129,7 +170,10 @@ export const sendMessageToGroup = (req, res) => {
       });
     }
     Message.create({
-      content, priority
+      content, 
+      priority,
+      sender: req.currentUser.username,
+      readBy: req.currentUser.username
     }).then((message) => {
       message.setGroup(group.id);
       message.setUser(req.currentUser.id);
@@ -142,16 +186,12 @@ export const sendMessageToGroup = (req, res) => {
 
 export const getGroupMessages = (req, res) => {
   const groupId = req.params.groupid;
-  if (!groupId) {
-    res.status(400).send({
-      error: 'GroupId must be provided'
-    });
-  }
+  const group = req.currentGroup;
   Message.findAll({
     where: {
       groupId
     }
-  }).then(messages => res.status(200).send({ groupId, messages }))
+  }).then(messages => res.status(200).send({ group, messages }))
     .catch(err => res.status(400).send(err));
 };
 
