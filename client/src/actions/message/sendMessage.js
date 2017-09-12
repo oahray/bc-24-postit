@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { BASE_URL, getGroupMessages } from './index';
+import { BASE_URL, getGroupMessages } from '../index';
 
 export const SEND_MESSAGE_LOADING = 'SEND_MESSAGE_LOADING';
 export const SEND_MESSAGE_SUCCESS = 'SEND_MESSAGE_SUCCESS';
@@ -42,7 +42,7 @@ export const sendMessage = (groupId, content, priority, token, messageAdded) => 
       }
     })
     .then((response) => {
-      console.log('StatusText: ', response.statusText);
+      response.statusText;
       if (response.statusText === 'Created') {
         dispatch(sendMessageSuccess(response));
         dispatch(getGroupMessages(groupId, token))
@@ -54,5 +54,5 @@ export const sendMessage = (groupId, content, priority, token, messageAdded) => 
         dispatch(sendMessageFailure(err.response.data.error));
       }
     });
-  }
-}
+  };
+};

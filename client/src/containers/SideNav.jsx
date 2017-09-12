@@ -46,17 +46,17 @@ class SideNav extends Component {
     let sideList = (
       <ul className='side-nav fixed' id='side-nav'>
         <li className='center teal-text'><h3>Postit</h3></li>
-        <li><NavLink to='/'>About</NavLink></li>
-        <li><NavLink to='/signin'>Signin</NavLink></li>
-        <li><NavLink to='/signup'>Signup</NavLink></li>
-        <li><a target='_blank' href='https://github.com.oahray/bc-24-postit'>View Project On Github</a></li>
+        <li className='my-list-item'><NavLink to='/'>About</NavLink></li>
+        <li className='my-list-item'><NavLink to='/signin'>Signin</NavLink></li>
+        <li className='my-list-item'><NavLink to='/signup'>Signup</NavLink></li>
+        <li className='my-list-item'><a target='_blank' href='https://github.com.oahray/bc-24-postit'>View Project On Github</a></li>
       </ul>
     );
 
     if (this.props.isLoggedIn) {
       navList = (
         <ul className='right hide-on-large-only'>
-          <li><a href='#'>New Group</a></li>
+          <li className='my-list-item'><NavLink to='/groups/new'> Create New Group <i class="material-icons left">group_add</i></NavLink></li>
         </ul>
       );
       sideList = (
@@ -102,7 +102,7 @@ class SideNav extends Component {
       <div>
         <div className='navbar-fixed'>
           <nav>
-            <div className='nav-wrapper teal lighten-1'>
+            <div className='nav-wrapper lighten-1'>
               <a href='#!' className='brand-logo center'>Postit</a>
               <a href='#' data-activates='side-nav' className='button-collapse'><i className='material-icons'>menu</i></a>
               {/* {navList} */}

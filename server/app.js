@@ -2,7 +2,6 @@ import express from 'express';
 import path from 'path';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
-import session from 'express-session';
 import dotenv from 'dotenv';
 import logger from 'morgan';
 import cors from 'cors';

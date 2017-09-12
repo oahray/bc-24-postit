@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { browserHistory, Route, Switch, Redirect } from 'react-router-dom';
+import { Route, } from 'react-router-dom';
 import { Button } from 'react-materialize';
 import { GuestRoutes, UserRoutes } from '../routes';
 import SideNav from './SideNav';
@@ -22,6 +22,19 @@ class App extends Component {
 
   componentDidMount() {
     $('.modal-trigger').modal();
+    const socket = io();
+
+    socket.emit('join', (err) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log('No Error');
+      }
+    });
+
+    socket.on('group', (groups) => {
+      console.log('Received groups ', groups);
+    });
   }
 
   showState() {
@@ -42,7 +55,7 @@ class App extends Component {
       return (<Preloader message='Preparing your space...'/>);
     } else {
       const sideNav = () => (<SideNav isLoggedIn={this.props.isLoggedIn} groups={this.props.groupList}/>);
-    
+
       let appRoutes;
 
       if (this.props.isLoggedIn) {
@@ -54,9 +67,9 @@ class App extends Component {
       return (
         <div class='main'>
           { appRoutes }
-          { stateButton }
+          {/* { stateButton } */}
         </div>
-      )
+      );
     }
   }
 }
@@ -68,7 +81,7 @@ function mapStateToProps(state) {
     isLoggedIn: state.isAuthenticated,
     verifyAuthFailed: state.verifyAuthFailed,
     token: state.token
-  }
+  };
 }
 
 function mapDispatchToProps(dispatch) {

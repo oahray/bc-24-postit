@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { BASE_URL } from './index';
+import { BASE_URL } from '../index';
 
 export const SIGNIN_LOADING = 'SIGNIN_LOADING';
 export const SIGNIN_SUCCESS = 'SIGNIN_SUCCESS';
@@ -27,7 +27,7 @@ const signinFailure = (error) => {
 };
 
 export const signinUser = (username, password) => {
-  return (dispatch, getState) => {
+  return (dispatch) => {
     dispatch(signinLoading());
     const FETCH_URL = `${BASE_URL}/user/signin`;
     axios({

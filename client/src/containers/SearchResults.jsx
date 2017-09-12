@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Redirect } from 'react-router-dom';
-import { getGroupMessages, inGroupPage, clearUserSearchTerm, searchUsers, addUserToGroup} from '../actions';
+import { getGroupMessages, inGroupPage, clearUserSearchTerm,
+  searchUsers, addUserToGroup, getGroupUsers } from '../actions';
+import { UsersList } from '../components/GroupHelpers';
 
 class SearchResult extends Component {
   constructor(props) {
@@ -28,7 +30,9 @@ class SearchResult extends Component {
     if (!this.props.selectedGroup) {
       this.props.getGroupMessages(groupId, this.props.token);
     }
-    console.log('Search page state', this.state)
+    if (!this.props.groupUsers) {
+      this.props.getGroupUsers(groupId, this.props.token);
+    }
     this.updateSearchResult();
   }
 
@@ -37,7 +41,6 @@ class SearchResult extends Component {
   }
 
   componentDidUpdate(newProps, newState) {
-    console.log(newState);
     if (this.state.page !== newState.page) {
       this.updateSearchResult();
     }
@@ -55,7 +58,7 @@ class SearchResult extends Component {
       this.props.selectedGroup.id,
       this.updateSearchResult,
       this.props.token
-    )
+    );
   }
 
   updateSearchResult() {
@@ -65,7 +68,7 @@ class SearchResult extends Component {
       this.state.offset, 
       this.state.limit, 
       this.props.token
-    )
+    );
   }
 
   onPageChange(e) {
@@ -81,7 +84,7 @@ class SearchResult extends Component {
 
   previousPage() {
     console.log('Page changed!');
-    if (this.state.page > 1) {  
+    if (this.state.page > 1) {
       this.setState({
         page: this.state.page - 1,
         offset: this.state.offset - 10
@@ -110,55 +113,69 @@ class SearchResult extends Component {
       return <h5>Please wait...</h5>
     }
     return (
-      <div className='row search-page'>
-        <div className='col s12'>
-          <h5 className='page-header'>Add Users to <strong>{this.props.selectedGroup.name}</strong></h5>
-        </div>
-        <div className='col s12 center'>
-          <a className='btn white teal-text' onClick={this.searchDone}>Done</a>
-        </div>
-        
-        <div className='search-list-container col s10 offset-s1 m8 offset-m2 l6 offset-l3'>
-          <h6>{this.props.userSearchResults.count} found</h6>
-           <ul className='row list-group'> 
-            {this.props.userSearchResults.users?(this.props.userSearchResults.users).map((user) => <li key={user.id}><div className='col s12 list-item grey lighten-3'><strong>{user.username}</strong> <br /> <small>{user.about}</small> <span className='right'><a className='add-user-icon teal-text' onClick={() => this.addUser(user.username)}><i className='material-icons'>person_add</i></a></span></div><hr/></li>) : null }
-          </ul> 
-        </div>
+      <div className='row search-page col s12 m8'>
+        <div className="search-results-container col s12 m9">
+          <div className='col s12'>
+            <h5 className='page-header'>Add Users to <strong>{this.props.selectedGroup.name}</strong></h5>
+          </div>
+          <div className='col s12 center'>
+            <a className='btn white teal-text' onClick={this.searchDone}>Done</a>
+          </div>
 
-        <div className='col s12 center'>
-          <ul class="pagination">
-             <li 
-             class={this.state.page < 2 ?"disabled" : "waves-effect"}
-             onClick={this.previousPage}
-             ><a href="#!"><i class="material-icons">chevron_left</i></a></li>
-             
-             {Array.from({length: Math.ceil(this.props.userSearchResults.count / this.state.limit)}, (v, i) => i + 1).map(i => <li class={`waves-effect ${i === this.state.page ? 'active' : ''}`} key={i} onClick={this.onPageChange}><a href="#!" id={i}>{i}</a></li>)}
+          <div className='search-list-container col s10 offset-s1 m8 offset-m2 l6 offset-l3'>
+            <h6>{this.props.userSearchResults.count} found</h6>
+            <ul className='row list-group'> 
+              {this.props.userSearchResults.users?(this.props.userSearchResults.users).map((user) => <li key={user.id}><div className='col s12 list-item grey lighten-3'><strong>{user.username}</strong> <br /> <small>{user.about}</small> <span className='right'><a className='add-user-icon teal-text' onClick={() => this.addUser(user.username)}><i className='material-icons'>person_add</i></a></span></div><hr/></li>) : null }
+            </ul>
+          </div>
 
-            <li class={this.state.page < Math.ceil(this.props.userSearchResults.count / this.state.limit) ? 'waves-effect' : 'disabled'} 
-            onClick={this.nextPage} >
-              <a href="#!">
-                <i class="material-icons">chevron_right</i>
-              </a></li>
-          </ul>
+          <div className='col s12 center'>
+            <ul class="pagination">
+              <li
+              class={this.state.page < 2 ? 'disabled' : 'waves-effect'}
+              onClick={this.previousPage}
+              ><a href="#!"><i class="material-icons">chevron_left</i></a></li>
+
+              {Array.from({ length: Math.ceil(this.props.userSearchResults.count / this.state.limit) }, (v, i) => i + 1).map(i => <li class={i === this.state.page ? 'active' : 'waves-effect'} key={i} onClick={this.onPageChange}><a href="#!" id={i}>{i}</a></li>)}
+
+              <li class={this.state.page < Math.ceil(this.props.userSearchResults.count / this.state.limit) ? 'waves-effect' : 'disabled'} 
+              onClick={this.nextPage} >
+                <a href="#!">
+                  <i class="material-icons">chevron_right</i>
+                </a></li>
+            </ul>
+          </div>
+        </div>
+        <div className="users-list col s12 m3">
+          <UsersList user={this.props.user} groupUsers={this.props.groupUsers} />
         </div>
       </div>
-    )
+    );
   }
-};
+}
 
 function mapStateToProps(state) {
   return {
+    user: state.user,
     selectedGroup: state.selectedGroup,
+    groupUsers: state.groupUsers,
     groupMessagesLoading: state.groupMessagesLoading,
     groupMessagesFailed: state.groupMessagesFailed,
     token: state.token,
     userSearchResults: state.userSearchResults,
-    userSearchTerm : state.userSearchTerm
-  }
-};
+    userSearchTerm: state.userSearchTerm
+  };
+}
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ getGroupMessages, inGroupPage, clearUserSearchTerm, searchUsers, addUserToGroup }, dispatch);
-};
+  return bindActionCreators({
+    getGroupMessages,
+    inGroupPage,
+    clearUserSearchTerm,
+    searchUsers,
+    addUserToGroup,
+    getGroupUsers
+  }, dispatch);
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchResult);

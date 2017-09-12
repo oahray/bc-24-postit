@@ -21,14 +21,18 @@ module.exports = {
         allowNull: false,
         unique: true,
       },
-      phone: {
-        type: Sequelize.STRING,
-        allowNull: true,
-      },
       about: {
         type: Sequelize.STRING,
         allowNull: true,
-        defaultValue: "New to Postit"
+        defaultValue: 'New to Postit'
+      },
+      resetHash: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      resetExpiresIn: {
+        type: Sequelize.STRING,
+        allowNull: true,
       },
       createdAt: {
         allowNull: false,

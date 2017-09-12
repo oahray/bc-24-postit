@@ -13,13 +13,19 @@ export default (req, res, next) => {
         error: 'Specified group does not exist'
       });
     }
-    return group.getUsers({ where: { id: req.currentUser.id } })
+    group.getUsers(
+      { raw: true }
+    )
     .then((groupUsers) => {
-      if (groupUsers.length < 1) {
+      const groupEmails = groupUsers.map(user => user.email);
+      const groupUserIds = groupUsers.map(user => user.id);
+      if (groupUserIds.indexOf(req.currentUser.id) === -1) {
         return res.status(401).send({
           error: 'You must belong to a group to interact with it'
         });
       }
+      req.groupEmails = groupEmails;
+      req.groupUsers = groupUsers.map(user => user);
       req.currentGroup = group;
       next();
     });

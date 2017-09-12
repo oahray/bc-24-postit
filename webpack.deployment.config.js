@@ -1,18 +1,10 @@
 const path = require('path');
 const webpack = require('webpack');
-// const ExtractTextPlugin = require('extract-text-webpack-plugin');
-// let FaviconsWebpackPlugin = require('favicons-webpack-plugin')
-
-// const extractSass = new ExtractTextPlugin({
-//     filename: "style.css",
-//     disable: process.env.NODE_ENV === "development"
-// });
 
 module.exports = {
   devtool: 'source-map',
 
-  entry: './client/src/index.js'
-  ,
+  entry: './client/src/index.js',
   output: {
     path: path.resolve(__dirname, 'client/public'),
     filename: 'bundle.min.js',
@@ -20,23 +12,25 @@ module.exports = {
   },
   module: {
     loaders: [
-      { test: /\.(js|jsx)$/, 
-        loader: 'babel-loader', 
+      { test: /\.(js|jsx)$/,
+        loader: 'babel-loader',
         exclude: /node_modules\//,
         query: {
           presets: ['react', 'es2015'],
           plugins: [
-            'react-html-attrs', 
+            'react-html-attrs',
             'transform-decorators-legacy',
             'transform-class-properties'
           ],
-        } 
+        }
       },
-      { test: /\.css$/, loader: [
-        'style-loader',
-        'css-loader?importLoaders=1',
-        'font-loader?format[]=truetype&format[]=woff&format[]=embedded-opentype'
-      ]}, 
+      { test: /\.css$/,
+        loader: [
+          'style-loader',
+          'css-loader?importLoaders=1',
+          'font-loader?format[]=truetype&format[]=woff&format[]=embedded-opentype'
+        ]
+      },
       { test: /\.scss$/,
         loader: 'style-loader!css-loader!sass-loader'
       },

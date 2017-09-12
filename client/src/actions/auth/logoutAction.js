@@ -8,5 +8,5 @@ export const logout = () => {
   // return an action for reducers to set auth state
   return {
     type: LOGOUT_USER
-  }
-}
+  };
+};

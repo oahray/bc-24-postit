@@ -1,15 +1,15 @@
-{
+module.exports = {
   "development": {
-    "username": "postgres",
-    "password": "aite",
+    "username": process.env.DB_USER,
+    "password": process.env.DB_PASSWORD,
     "database": "postit-dev",
     "host": "127.0.0.1",
     "port": 5432,
     "dialect": "postgres"
   },
   "test": {
-    "username": "postgres",
-    "password": "aite",
+    "username": process.env.DB_USER,
+    "password": process.env.DB_PASSWORD,
     "database": "postit-test",
     "host": "127.0.0.1",
     "port": 5432,
