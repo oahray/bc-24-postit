@@ -8,13 +8,13 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       content: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: false,
       },
       priority: {
         type: Sequelize.STRING,
         allowNull: false,
-      }, 
+      },
       sender: {
         type: Sequelize.STRING,
         allowNull: false,

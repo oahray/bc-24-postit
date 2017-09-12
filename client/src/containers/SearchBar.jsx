@@ -32,9 +32,9 @@ export default class SearchBar extends Component {
             username: event.target.value
           }); this.searchUser(event.target.value)}}/>
         </div>
-        <a class="waves-effect waves-teal btn-flat"><i class='material-icons teal-text' 
+        <a class="waves-effect waves-teal btn-flat"><i class='material-icons main-text-color'
         onClick={this.onFormSubmit}>search</i></a>
       </form>
-    )
+    );
   }
 }

@@ -21,15 +21,19 @@ export default (sequelize, DataTypes) => {
         isEmail: true
       }
     },
-    phone: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
     about: {
       type: DataTypes.STRING,
       allowNull: false,
       defaultValue: 'New to Postit'
-    }
+    },
+    resetHash: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    resetExpiresIn: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
   });
 
   // Instance method to prevent password from
@@ -37,6 +41,8 @@ export default (sequelize, DataTypes) => {
   User.prototype.toJSON = function toJSON() {
     const values = Object.assign({}, this.get());
     delete values.password;
+    delete values.resetHash;
+    delete values.resetExpiresIn;
     return values;
   };
 
@@ -58,6 +64,13 @@ export default (sequelize, DataTypes) => {
   User.beforeCreate((user) => {
     user.password = bcrypt.hashSync(user.password,
     bcrypt.genSaltSync(10), null);
+  });
+
+  User.beforeUpdate((user) => {
+    if (user.changed('password')) {
+      user.password = bcrypt.hashSync(user.get('password'),
+      bcrypt.genSaltSync(10), null);
+    }
   });
 
   User.associate = (models) => {

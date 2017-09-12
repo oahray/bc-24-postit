@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { BASE_URL } from './index';
+import { BASE_URL } from '../index';
 
 export const GROUPS_LIST_LOADING = 'GROUPS_LIST_LOADING';
 export const GROUPS_LIST_SUCCESS = 'GROUPS_LIST_SUCCESS';

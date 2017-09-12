@@ -1,4 +1,5 @@
 import { Group, User, Message } from '../models';
+import { transporter, helperOptions } from '../config/nodemailer';
 
 // Function to create new group
 export const createGroup = (req, res) => {
@@ -66,6 +67,7 @@ export const addUserToGroup = (req, res) => {
         }
         group.addUser(user.id);
         // user.addGroup(group.id);
+
         res.status(201).send({
           message: `${user.username} added to group`
         });
@@ -112,42 +114,41 @@ export const getGroupUsers = (req, res) => {
 
 export const searchNonMembers = (req, res) => {
   const groupId = req.params.groupid;
-  let { username, offset, limit } = req.query;
+  let { username } = req.query;
+  const { offset, limit } = req.query;
   if (!username) {
     username = '';
   }
-  const searchOptions = { 
-    where : {
-      username: { 
-        $iLike: `%${username}%` 
+  const searchOptions = {
+    where: {
+      username: {
+        $iLike: `%${username}%`
       }
     }
-  }
+  };
   if (Number(offset) && typeof Number(offset) === 'number') {
     searchOptions.offset = Number(offset);
   }
 
   if (Number(limit) && typeof Number(limit) === 'number') {
-    searchOptions.limit =   Number(limit);
+    searchOptions.limit = Number(limit);
   }
 
   Group.findById(groupId).then((group) => {
     group.getUsers().then(groupUsers =>
       groupUsers.map(user => user.username)
-    ) 
+    )
     .then((usernames) => {
       searchOptions.where.username.$notIn = usernames;
       User.findAndCountAll(searchOptions)
-      .then((result) => {
-        return res.status(200).send({
-          count: result.count,
-          users: result.rows
-        })
-      })
-    })
+      .then(result => res.status(200).send({
+        count: result.count,
+        users: result.rows
+      }));
+    });
   })
-  .catch(err => res.status(400).send({
-    error: "Failed to retrieve data. Invalid request"
+  .catch(() => res.status(400).send({
+    error: 'Failed to retrieve data. Invalid request'
   }));
 };
 
@@ -165,21 +166,44 @@ export const sendMessageToGroup = (req, res) => {
   priority = priority.trim().toLowerCase();
   Group.findById(req.params.groupid).then((group) => {
     if (!Message.verifyPriority(priority)) {
-      return res.status(404).send({
+      return res.status(400).send({
         error: 'Incorrect priority option. Choose NORMAL, URGENT or CRITICAL.'
       });
     }
     Message.create({
-      content, 
+      content,
       priority,
       sender: req.currentUser.username,
       readBy: req.currentUser.username
     }).then((message) => {
       message.setGroup(group.id);
       message.setUser(req.currentUser.id);
+      console.log('heyyo!');
+      const sender = message.sender.toUpperCase();
+      console.log('sent by ', sender);
+      // set email message parameters
+      // filter out the email of sender
+      const bcc = req.groupEmails.filter(email => email !== req.currentUser.email);
+      const subject = `New ${message.priority} group message from ${sender}`;
+      const html = `<div>
+      <p>You have received a new ${message.priority} message from <strong>${sender}</strong> in your group <strong>'${group.name}'</strong></p>
+      <div style="color:brown"><h3>${message.content.replace(/\n/gi, '<br/>')}</h3></div>
+      <p>To reply ${sender}, please login to your account</p>
+      </div>`;
+      if (message.priority === 'urgent' || message.priority === 'critical') {
+        transporter.sendMail(
+          helperOptions('You', bcc, subject, html), (error, info) => {
+            if (error) {
+              return console.log({ error });
+            }
+            console.log('The message was sent', info);
+          }
+        );
+      }
       res.status(201).send({ message });
     }).catch(err => res.status(400).send({
-      error: err.errors[0].message
+      // error: 'Failed to send the message'
+      err
     }));
   }).catch(() => res.status(400));
 };
@@ -193,6 +217,25 @@ export const getGroupMessages = (req, res) => {
     }
   }).then(messages => res.status(200).send({ group, messages }))
     .catch(err => res.status(400).send(err));
+};
+
+export const markAsRead = (req, res) => {
+  const user = req.currentUser;
+  const messageId = req.params.messageid;
+  Message.findById(messageId)
+  .then((message) => {
+    const readers = message.readBy.split(',');
+    if (message && (user.username !== message.sender)
+      && (readers.indexOf(user.username)) === -1) {
+      message.update({
+        readBy: `${message.readBy},${user.username}`
+      })
+      .then(update => res.status(201).send({ update }))
+      .catch(err => res.status(400).send(err));
+    } else {
+      return res.status(201);
+    }
+  });
 };
 
 export const renameGroup = (req, res) => {

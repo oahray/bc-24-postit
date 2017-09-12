@@ -1,6 +1,7 @@
 import * as _ from 'lodash';
-import bcrypt from 'bcryptjs';
+import randomstring from 'randomstring';
 import { User, Message } from '../models';
+import { transporter, helperOptions } from '../config/nodemailer';
 
 // Function to signup new users
 export const signup = (req, res) => {
@@ -13,14 +14,12 @@ export const signup = (req, res) => {
   })
   .then((user) => {
     const token = user.generateAuthToken();
-    return res.header('x-auth', token).status(201).send({
+    res.header('x-auth', token).status(201).send({
       message: `welcome ${user.username}`,
       user
     });
   })
-  // .catch(() => res.status(400).send({
-  //   error: 'Error signing up'
-  // }));
+  .catch(() => res.status(400));
 };
 
 // Function to sign users in
@@ -49,14 +48,12 @@ export const signin = (req, res) => {
       });
     }
     const token = user.generateAuthToken();
-    return res.header('x-auth', token).status(200).send({
+    res.header('x-auth', token).status(200).send({
       message: `welcome back, ${user.username}`,
       user
     });
   })
-  // .catch(() => res.status(400).send({
-  //   error: 'Error signing in'
-  // }));
+  .catch(() => res.status(400));
 };
 
 export const getMe = (req, res) => {
@@ -93,13 +90,13 @@ export const getAllUsers = (req, res) => {
 
 export const searchUsers = (req, res) => {
   const { username, offset, limit } = req.query;
-  const searchOptions = { 
-    where : {
-      username: { 
-        $iLike: `%${username}%` 
+  const searchOptions = {
+    where: {
+      username: {
+        $iLike: `%${username}%`
       }
     }
-  }
+  };
   if (offset) {
     searchOptions.offset = offset;
   }
@@ -108,11 +105,9 @@ export const searchUsers = (req, res) => {
     searchOptions.limit = limit;
   }
   User.findAll(searchOptions)
-  .then((users) => {
-    return res.status(200).send({
+  .then(users => res.status(200).send({
     users
-  })
-  })
+  }))
   .catch(err => res.status(400).send(err));
 };
 
@@ -126,10 +121,13 @@ export const getMySentMessages = (req, res) => {
 };
 
 export const getMyGroups = (req, res) => {
+  const io = req.app.get('io');
   User.findById(req.currentUser.id).then((user) => {
-    user.getGroups().then(userGroups =>
-      res.status(200).send({ userGroups })
-    );
+    user.getGroups().then((userGroups) => {
+      io.emit('group', { userGroups });
+      console.log('User groups', userGroups);
+      res.status(200).send({ userGroups });
+    });
   });
 };
 
@@ -146,9 +144,7 @@ export const changePassword = (req, res) => {
         error: 'New password is same as current password'
       });
     }
-    const passwordHash = bcrypt.hashSync(password,
-    bcrypt.genSaltSync(10), null);
-    user.update({ password: passwordHash })
+    user.update({ password })
     .then((update) => {
       if (update) {
         res.status(201).send({
@@ -167,7 +163,117 @@ export const changePassword = (req, res) => {
   });
 };
 
+export const forgotPassword = (req, res) => {
+  const email = req.body.email;
+  if (!email) {
+    return res.status(400).send({
+      error: 'Email is required for password recovery'
+    });
+  }
+  // generate random hash
+  const resetHash = randomstring.generate(60);
+  // find user with request email
+  User.findOne({ where: { email } })
+  .then((user) => {
+    if (!user) {
+      return res.status(404).send({
+        error: 'Specified email is not linked to any account'
+      });
+    }
+    user.update({
+      resetHash,
+      resetExpiresIn: Date.now() + 3600000
+    })
+    .then((update) => {
+      if (update) {
+        const subject = 'Password reset';
+        const html = `<div><h2 style="color:brown">You requested a password reset. </h2>
+        <p style="color:black">Click the link below to reset your password, or copy and paste in your browser.</p>
+        <p>${req.protocol}://${req.headers.host}/resetpassword?t=${update.resetHash}</p>
+        <p style="color:black">If it was not you who made the request, please ignore this mail, and your password <strong>would not</strong> be changed. 
+        </p>
+        <p style="color:black">Best regards, <br/> The Postit Team</div></p>`;
+        transporter.sendMail(
+          helperOptions(user.email, null, subject, html), (error, info) => {
+            if (error) {
+              return res.send({ error });
+            }
+            res.send({
+              message: `An email with reset instructions has been sent to ${user.email}`
+            });
+          }
+        );
+      }
+    })
+    .catch(err => res.send({ err }));
+  });
+};
+
+export const resetPassword = (req, res) => {
+  const resetHash = req.query.t;
+  console.log('reset hash: ', resetHash);
+  const password = req.body.password;
+  if (!resetHash) {
+    return res.status(400).send({
+      error: 'Invalid reset link. Ensure you are using the latest one'
+    });
+  }
+  if (!password) {
+    return res.status(400).send({
+      error: 'Password is required!'
+    });
+  }
+  User.findOne({
+    where: {
+      resetHash
+    }
+  })
+  .then((user) => {
+    if (!user) {
+      return res.status(404).send({
+        error: 'Reset link is invalid. Ensure it is the last one you received.'
+      });
+    }
+    if (Number(user.resetExpiresIn) < Date.now()) {
+      return res.status(404).send({
+        error: 'Reset link has expired.'
+      });
+    }
+    user.update({
+      password,
+      resetHash: null
+    })
+    .then((update) => {
+      const token = update.generateAuthToken();
+      return res.header('x-auth', token).send({
+        message: 'Your password has been successfully updated.',
+        user: update
+      });
+    });
+  });
+};
+
 export const changeEmail = (req, res) => {
+  User.findById(req.currentUser.id).then((user) => {
+    if (req.body.email.toLowerCase() === user.email) {
+      res.status(400).send({ error: 'New email same as current email' });
+    }
+    user.update({ email: req.body.email })
+    .then(updated => res.status(202).send({
+      message: 'Email successfully changed',
+      updated
+    })).catch((err) => {
+      if (err.message) {
+        res.status(400).send({ error: err.message });
+      }
+      res.status(400).send({ error: 'Error updating email' });
+    });
+  }).catch(() => res.status(400).send({
+    error: 'Error changing email'
+  }));
+};
+
+export const editProfile = (req, res) => {
   User.findById(req.currentUser.id).then((user) => {
     if (req.body.email.toLowerCase() === user.email) {
       res.status(400).send({ error: 'New email same as current email' });

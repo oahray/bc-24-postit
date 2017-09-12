@@ -1,8 +1,17 @@
 $main-color: #26a69a;
+// $main-color: brown;
 
 body {
   width: 100%;
   font-size: 14px;
+}
+
+.main-text-color {
+  color: $main-color;
+}
+
+.main-background-color {
+  background-color: $main-color;
 }
 
 .modal {
@@ -15,12 +24,45 @@ body {
   padding: 0;
 }
 
+nav, .nav-wrapper {
+  background-color: $main-color !important;
+}
+
 .preloader {
   margin-top: 50px;
 }
 
 .timestamp {
   padding-left: 10px;
+  font-size: 14px;
+}
+
+.forgot-password {
+  padding-bottom: 20px;
+  .forgot-password-input {
+    padding: 0px 10px !important;
+    border-radius: 10px 0px 0px 10px!important;
+    border: 2px solid grey !important;
+    // border-bottom: black !important;
+    box-shadow: none!important;
+    margin-right: 0px;
+  }
+  .request-reset-btn {
+    margin-left: 0px;
+    padding: 3px 5px;
+    border-radius: 0px 10px 10px 0px;
+    height: 47px;
+    font-size: 18px;
+    background-color: white;
+    color: $main-color;
+  }
+}
+
+.reset-form-message {
+  font-size: 18px;
+  // padding: 1px 5px 1px 5px !important;
+  margin: 0 auto !important;
+  border-radius: 25px;
 }
 
 .forms {
@@ -133,6 +175,8 @@ ul.side-nav.fixed:hover {
     border-radius: 10px;
   }
   .message-input-container {
+    position: fixed;
+    bottom: 0;
     height: 60px;
     padding: 0px !important;
     border: 2px solid grey;
@@ -182,19 +226,23 @@ ul.side-nav.fixed:hover {
 }
 
 .page-header {
-  color: teal;
+  color: $main-color;
   text-align: center;
 }
 
 .message-list {
-  max-height: 200px;
-  overflow-y: auto;
+  margin: 10px 0px;
+  max-height: calc(100vh - 190px);
+  overflow-y: scroll;
   .message-item {
     // height: 50px;
     padding: 0px 20px !important;
     margin-bottom: 1px !important;
     background-color: #eee;
     text-overflow: ellipse;
+    :hover {
+      cursor: pointer;
+    }
   }
 }
 

@@ -2,42 +2,7 @@ import expect from 'expect';
 import request from 'supertest';
 import app from '../app';
 import models from '../models';
-
-const doBeforeAll = () => {
-  before((done) => {
-    models.User.destroy({
-      cascade: true,
-      truncate: true,
-      restartIdentity: true
-    });
-
-    models.Group.destroy({
-      cascade: true,
-      truncate: true,
-      restartIdentity: true
-    });
-
-    models.UserGroup.destroy({
-      cascade: true,
-      truncate: true,
-      restartIdentity: true
-    });
-
-    models.Message.destroy({
-      cascade: true,
-      truncate: true,
-      restartIdentity: true
-    });
-    done();
-  });
-};
-
-const doBeforeEach = () => {
-  beforeEach((done) => {
-    models.sequelize.sync();
-    done();
-  });
-};
+import { doBeforeAll, doBeforeEach } from './seeders/testHooks';
 
 describe('Data Models:', () => {
   doBeforeAll();
@@ -131,18 +96,23 @@ describe('Data Models:', () => {
   describe('#Group model', () => {
     it('should create a Group instance', (done) => {
       models.Group.create({
-        title: "My first test group"
+        name: "My first test group",
+        type: 'private',
+        createdBy: "User1"
       })
       .then((group) => {
         expect(group).toExist;
-        expect(group.title).toBe("My first test group");
+        expect(group.name).toBe("My first test group");
+        expect(group.type).toBe('private')
         done();
       }).catch((err) => done(err));
     });
 
     it('should be the class of the created instance', (done) => {
       models.Group.create({
-        title: "My test group"
+        name: "My test group",
+        createdBy: 'User2',
+        type: 'public'
       })
       .then((group) => {
         expect(group).toExist;
@@ -155,7 +125,9 @@ describe('Data Models:', () => {
   describe('#Message model', () => {
     const myMessage = {
       content: 'testing... testing',
-      priority: 'urgent'
+      priority: 'urgent',
+      sender: 'user1',
+      readBy: 'user1'
     };
     it('should create a Message instance', (done) => {
       models.Message.create(myMessage)
@@ -233,9 +205,9 @@ describe('PostIt API routes: ', () => {
         if (err) {
           return done(err);
         }
-        expect(res.body.id).toExist;
-        expect(res.body.username).toBe('testuser1');
-        expect(res.body.email).toBe('testuser1@example.com');
+        expect(res.body.user.id).toExist;
+        expect(res.body.user.username).toBe('testuser1');
+        expect(res.body.user.email).toBe('testuser1@example.com');
         done();
       });
     });
@@ -252,8 +224,8 @@ describe('PostIt API routes: ', () => {
         if (err) {
           return done(err);
         }
-        expect(res.body.username).toBe('testuser2');
-        expect(res.body.password).toNotExist;
+        expect(res.body.user.username).toBe('testuser2');
+        expect(res.body.user.password).toNotExist;
         done();
       });
     });
@@ -270,7 +242,7 @@ describe('PostIt API routes: ', () => {
         if (err) {
           return done(err);
         }
-        expect(res.body.id).toNotExist;
+        expect(res.body.user).toNotExist;
         expect(res.body.error).toBe("Username already taken.")
         done();
       });
@@ -288,7 +260,7 @@ describe('PostIt API routes: ', () => {
         if (err) {
           return done(err);
         }
-        expect(res.body.id).toNotExist;
+        expect(res.body.user).toNotExist;
         expect(res.body.error).toBe("Email already taken.")
         done();
       });
@@ -305,8 +277,8 @@ describe('PostIt API routes: ', () => {
         if (err) {
           return done(err);
         }
-        expect(res.body.username).toBe('testuser1');
-        expect(res.body.id).toExist;
+        expect(res.body.user.username).toBe('testuser1');
+        expect(res.body.user.id).toExist;
         done();
       });
     });
@@ -322,7 +294,7 @@ describe('PostIt API routes: ', () => {
         if (err) {
           return done(err);
         }
-        expect(res.body.username).toNotExist;
+        expect(res.body.user).toNotExist;
         expect(res.body.error).toBe("Password is incorrect");
         done();
       });
@@ -340,8 +312,8 @@ describe('PostIt API routes: ', () => {
         if (err) {
           return done(err);
         }
-        expect(res.body.username).toBe('testuser2');
-        expect(res.body.password).toNotExist;
+        expect(res.body.user.username).toBe('testuser2');
+        expect(res.body.user.password).toNotExist;
         done();
       });
     });
@@ -383,19 +355,6 @@ describe('Middleware functions:', () => {
     it('POST /api/user/me/messages route should not be accessible to unauthenticated users', (done) => {
       request(app)
       .get('/api/user/me/messages')
-      .expect(401)
-      .end((err, res) => {
-        if (err) {
-          return done(err);
-        }
-        expect(res.body.id).toExist;
-        expect(res.body.error).toBe('You need to signup or login first');
-        done();
-      });
-    });
-    it('POST /api/user/logout route should not be accessible to unauthenticated users', (done) => {
-      request(app)
-      .post('/api/user/logout')
       .expect(401)
       .end((err, res) => {
         if (err) {

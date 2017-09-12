@@ -21,12 +21,6 @@ class NewGroup extends Component {
     $('select').material_select();
   }
 
-  componentWillReceiveProps(newProps) {
-    console.log('Old list: ', this.state.myGroups);
-    console.log('New list: ', newProps);
-    
-  }
-
   componentWillUnmount() {
     this.props.resetCreateGroupStatus();
   }

@@ -39,44 +39,54 @@ module.exports = (app) => {
 
   app.get('/api/user/me/groups', authenticate, usersController.getMyGroups);
 
-  app.get('/api/user/me/messages', authenticate, usersController.getMySentMessages);
+  app.get('/api/user/me/messages', authenticate,
+  usersController.getMySentMessages);
 
-  app.patch('/api/user/me/password', authenticate, usersController.changePassword);
+  app.patch('/api/user/me/password', authenticate,
+  usersController.changePassword);
 
-  app.patch('/api/user/me/email', authenticate,  usersController.changeEmail);
+  app.patch('/api/user/me/email', authenticate, usersController.changeEmail);
 
   app.post('/api/user/deactivate', authenticate, isValidUsername,
   usersController.deactivate);
 
   // Group routes
-  app.post('/api/group', authenticate,  groupsController.createGroup);
+  app.post('/api/group', authenticate, groupsController.createGroup);
 
   app.post('/api/group/:groupid/user', authenticate, isValidUsername,
   isGroupMember, groupsController.addUserToGroup);
 
-  app.post('/api/group/:groupid/leave', authenticate, 
+  app.post('/api/group/:groupid/leave', authenticate,
   isGroupMember, groupsController.leaveGroup);
 
-  app.get('/api/group/:groupid/users', authenticate, 
+  app.get('/api/group/:groupid/users', authenticate,
   isGroupMember, groupsController.getGroupUsers);
 
-  app.post('/api/group/:groupid/message', authenticate, 
+  app.post('/api/group/:groupid/message', authenticate,
   isGroupMember, groupsController.sendMessageToGroup);
 
-  app.get('/api/group/:groupid/messages', authenticate, 
+  app.get('/api/group/:groupid/messages', authenticate,
   isGroupMember, groupsController.getGroupMessages);
 
-  app.get('/api/group/:groupid/notmembers', authenticate, isGroupMember, groupsController.searchNonMembers);
+  app.get('/api/group/:groupid/notmembers', authenticate,
+  isGroupMember, groupsController.searchNonMembers);
 
-  app.patch('/api/group/:groupid/rename', authenticate, 
+  app.patch('/api/group/:groupid/rename', authenticate,
   isGroupMember, groupsController.renameGroup);
 
-  app.patch('/api/group/:groupid/type', authenticate, 
+  app.patch('/api/group/:groupid/type', authenticate,
   isGroupMember, groupsController.changeGroupType);
 
-  app.patch('/api/group/:groupid/description', authenticate, 
+  app.patch('/api/group/:groupid/description', authenticate,
   isGroupMember, groupsController.changeGroupDescription);
 
-  app.post('/api/group/:groupid/remove', authenticate, 
+  app.post('/api/group/:groupid/remove', authenticate,
   isGroupMember, groupsController.deleteGroup);
+
+  app.post('/api/group/:groupid/message/:messageid/read', authenticate,
+  isGroupMember, groupsController.markAsRead);
+
+  // Forgot password
+  app.post('/api/forgotpassword', usersController.forgotPassword);
+  app.post('/api/resetpassword', usersController.resetPassword);
 };

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { BASE_URL } from './index';
+import { BASE_URL } from '../index';
 
 export const GET_GROUP_MESSAGES_LOADING = 'GET_GROUP_MESSAGES_LOADING';
 export const GET_GROUP_MESSAGES_SUCCESS = 'GET_GROUP_MESSAGES_SUCCESS';

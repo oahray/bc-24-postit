@@ -9,7 +9,8 @@ import Group from '../containers/Group';
 import SearchResults from '../containers/SearchResults';
 import NewGroup from '../containers/NewGroup'
 import EditProfile from '../containers/EditProfile';
-import ForgotPassword from '../components/ForgotPassword';
+import ForgotPassword from '../containers/ForgotPassword';
+import ResetPassword from '../containers/ResetPassword';
 import NotFound from '../components/NotFound';
 
 const routeHandler = (props, component) => {
@@ -21,7 +22,7 @@ const routeHandler = (props, component) => {
           { component }
         </div>
       </div>
-  </BrowserRouter> 
+  </BrowserRouter>
   )
 };
 
@@ -32,7 +33,8 @@ export function GuestRoutes(props) {
       <Route exact path="/signin" component={Signin} />
       <Route exact path="/signup" component={Signup} />
       <Route exact path="/forgotpassword" component={ForgotPassword} />
-      <Route exact path="*" component={NotFound} /> 
+      <Route exact path="/resetpassword" component={ResetPassword} />
+      <Route exact path="*" component={NotFound} />
     </Switch>
   );
   return routeHandler(props, unauthRoutes);
