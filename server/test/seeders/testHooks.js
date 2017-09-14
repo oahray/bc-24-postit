@@ -1,6 +1,12 @@
 import models from '../../models';
 import { seedUsers } from './seed'
 
+export const populateUsers = () => {
+  models.User.bulkCreate(seedUsers.registered, { fields: ['id','username', 'email', 'password']}).then(() => {
+    return
+  });
+};
+
 export const doBeforeAll = () => {
   before((done) => {
     models.User.destroy({
@@ -26,6 +32,9 @@ export const doBeforeAll = () => {
       truncate: true,
       restartIdentity: true
     });
+
+    populateUsers();
+
     done();
   });
 };
@@ -37,6 +46,3 @@ export const doBeforeEach = () => {
   });
 };
 
-export const populateUsers = () => {
-  models.User.bulkCreate(seedUsers.registered);
-}

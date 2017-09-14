@@ -2,8 +2,8 @@ import { Group } from '../models';
 
 export default (req, res, next) => {
   const groupId = req.params.groupid;
-  if (!groupId) {
-    res.status(400).send({
+  if (!Number(groupId)) {
+    return res.status(400).send({
       error: 'GroupId must be provided'
     });
   }

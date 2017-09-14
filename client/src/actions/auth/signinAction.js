@@ -48,5 +48,5 @@ export const signinUser = (username, password) => {
         dispatch(signinFailure(err.response.data.error));
       }
     });
-  }
-}
+  };
+};

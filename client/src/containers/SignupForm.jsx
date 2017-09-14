@@ -86,7 +86,7 @@ class SignupForm extends Component {
 function mapStateToProps(state) {
   return {
     isLoggedIn: state.isAuthenticated,
-    setUserLoading: state.setUserLoading,
+    signupLoading: state.authFormLoading,
     signupFailed: state.authFormFailed,
     signupError: state.authFormErrorMessage
   };

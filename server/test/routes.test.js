@@ -2,12 +2,14 @@ import expect from 'expect';
 import request from 'supertest';
 import app from '../app';
 import models from '../models';
-import { doBeforeAll, doBeforeEach } from './seeders/testHooks';
+import { doBeforeAll, doBeforeEach, populateUsers } from './seeders/testHooks';
+import { seedUsers, tokens, generateAuth } from './seeders/seed';
 
 describe('PostIt API routes: ', () => {
   doBeforeAll();
-  describe('Can create data: ', () => {
-    it('POST /api/user/signup route should create a new User', (done) => {
+  // populateUsers();
+  describe('Can signup or signin user: ', () => {
+    it('POST /api/user/signup route should create a new user', (done) => {
       request(app)
       .post('/api/user/signup')
       .send({
@@ -97,7 +99,24 @@ describe('PostIt API routes: ', () => {
         done();
       });
     });
-    it('POST /api/user/signin route should not sign user in with incorrect credentials', (done) => {
+    it('POST /api/user/signin route should not sign user with unregistered username', (done) => {
+      request(app)
+      .post('/api/user/signin')
+      .send({
+        username: 'thisOneDoesNotExist',
+        password: 'doesNotMatter'
+      })
+      .expect(401)
+      .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
+        expect(res.body.user).toNotExist;
+        expect(res.body.error).toBe('User not found');
+        done();
+      }); 
+    });
+    it('POST /api/user/signin route should not sign user in with incorrect password', (done) => {
       request(app)
       .post('/api/user/signin')
       .send({
@@ -132,6 +151,60 @@ describe('PostIt API routes: ', () => {
         done();
       });
     });
+  });
+  
+  describe('Protected User routes', () => {
+    it('GET /api/user/me route should return current user', (done) => {
+      request(app)
+      .get('/api/user/me')
+      .set('x-auth', generateAuth(102))
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
+        expect(res.body.currentUser.username).toBe('user112');
+        expect(res.body.currentUser.password).toNotExist;
+        done();
+      });
+    });
+    it('GET /api/user/me/groups should get user groups', (done) => {
+      const name = 'Test Group';
+      const description = 'Testing things';
+      const type = 'private';
+      request(app)
+      .post('/api/group')
+      .set('x-auth', generateAuth(101))
+      .send({
+        name,
+        description,
+        type
+      })
+      .expect(201)
+      .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
+        expect(res.body.group.name).toBe(name);
 
+        request(app)
+        .get('/api/user/me/groups')
+        .set('x-auth', generateAuth(101))
+        .expect(200)
+        .end((err, res) => {
+          expect(res.body.userGroups.length).toBe(1);
+          expect(res.body.userGroups[0].name).toBe(name);
+          const groupId = res.body.userGroups[0].id;
+          request(app)
+          .get(`/api/group/${groupId}/users`)
+          .set('x-auth', generateAuth(101))
+          .expect(200)
+          .end((err, res) => {
+            expect(res.body.users).toExist;
+            done();
+          })
+        })
+      });
+    })
   });
 });

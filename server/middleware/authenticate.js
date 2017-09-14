@@ -10,6 +10,7 @@ export default (req, res, next) => {
     });
   }
   return jwt.verify(token, process.env.MY_SUPER_SECRET, (err, decoded) => {
+    console.log(decoded);
     if (err) {
       return res.status(401).send({ error: err });
     }

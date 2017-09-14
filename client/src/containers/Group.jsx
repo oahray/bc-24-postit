@@ -15,6 +15,7 @@ import MessageList from '../components/MessageList';
 import { UsersList, GroupInfo } from '../components/GroupHelpers';
 import { isUserGroup } from '../helpers/groupFunctions';
 
+/** constructor */
 class Group extends Component {
   constructor(props) {
     super(props);
@@ -65,7 +66,6 @@ class Group extends Component {
   }
 
   componentWillReceiveProps(newProps) {
-    // this.forceUpdate();
     if (this.props.selectedGroup && Number(newProps.match.params.groupid) !== this.props.selectedGroup.id) {
       console.log(typeof newProps.match.params.groupid);
       return this.newMessageAdded(Number(newProps.match.params.groupid));
@@ -162,7 +162,7 @@ class Group extends Component {
                 <option value='urgent'>Urgent</option>
                 <option value='critical'>Critical</option>
               </Input>
-            </Row>  
+            </Row>
           </div>
           <div className="input-field col s4 m2">
             <button className="btn btn-flat white main-text-color waves-effect waves-dark" type="submit" name="action" onClick={this.sendMessage}><i className="material-icons">send</i></button>

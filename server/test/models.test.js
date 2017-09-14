@@ -3,6 +3,7 @@ import request from 'supertest';
 import app from '../app';
 import models from '../models';
 import { doBeforeAll, doBeforeEach, populateUsers } from './seeders/testHooks';
+import { seedUsers, tokens, generateAuth } from './seeders/seed';
 
 describe('Data Models:', () => {
   doBeforeAll();
@@ -11,16 +12,15 @@ describe('Data Models:', () => {
       models.User.create({
         username: 'testuser',
         password: 'testpass',
-        email: 'testing@example.com'
+        email: 'testing1@example.com'
       })
       .then((user) => {
         expect(user).toExist;
-        expect(user.id).toExist;
-        expect(user.id).toBeA('number');
+        expect(user.id).toExist().toBeA('number');
         expect(user.username).toBe('testuser');
-        expect(user.email).toBe('testing@example.com');
+        expect(user.email).toBe('testing1@example.com');
         done();
-      }).catch((err) => done(err));
+      });
     });
 
     it('should be the class of the created instance', (done) => {
@@ -59,7 +59,7 @@ describe('Data Models:', () => {
         const userData = user.dataValues;
         expect(userData).toExist;
         initEmail = userData.email;
-        expect(initEmail).toBe('testing@example.com');
+        expect(initEmail).toBe('testing1@example.com');
         user.update({
           email: 'newemail@example.com'
         })
@@ -240,190 +240,5 @@ describe('Data Models:', () => {
       expect(models.Message.verifyPriority('CRITICAL')).toBe(true);
       done();
     });
-  });
-});
-
-describe('Middleware functions:', () => {
-  doBeforeAll();
-  describe('isValidUsername Middleware', () => {
-    it('does not allow a user signup without a username', (done) => {
-      request(app)
-      .post('/api/user/signup')
-      .send({
-        email: 'user0@example.com',
-        password: 'user0pass'
-      })
-      .expect(400)
-      .end((err, res) => {
-        if(err) {
-          return done(err);
-        }
-        expect(res.body.error).toBe('Username is required.');
-        done();
-      });
-    });
-    it('does not allow a user signup with invalid username', (done) => {
-      request(app)
-      .post('/api/user/signup')
-      .send({
-        username: 'user0.3',
-        email: 'user0@example.com',
-        password: 'user0pass'
-      })
-      .expect(400)
-      .end((err, res) => {
-        if(err) {
-          return done(err);
-        }
-        expect(res.body.error).toBe('Invalid Username format.');
-        done();
-      });
-    });
-  });
-
-  describe('isTaken Middleware', () => {
-    it('does not allow users signup without email', (done) => {
-      request(app)
-      .post('/api/user/signup')
-      .send({
-        username: 'user0',
-        password: 'user0pass'
-      })
-      .expect(400)
-      .end((err, res) => {
-        if(err) {
-          return done(err);
-        }
-        expect(res.body.error).toBe('Email is required.');
-        done();
-      });
-    });
-    it('does not allow users signup without password', (done) => {
-      request(app)
-      .post('/api/user/signup')
-      .send({
-        username: 'user0',
-        email: 'user0@example.com'
-      })
-      .expect(400)
-      .end((err, res) => {
-        if(err) {
-          return done(err);
-        }
-        expect(res.body.error).toBe('Password is required.');
-        done();
-      });
-    });
-  });
-
-  describe('isGroupMember Middleware', () => {
-    // it('should pass along group values with request object', () => {
-
-    // });
-  });
-
-  describe('Authenticate Middleware: ', () => {
-    doBeforeEach();
-    it('POST /api/signup route should be accessaible to unauthenticated users', (done) => {
-      request(app)
-      .post('/api/user/signup')
-      .send({
-        username: 'user1',
-        password: 'mypassword',
-        email: 'user1@example.com'
-      })
-      .expect(201)
-      .end((err, res) => {
-        if (err) {
-          return done(err);
-        }
-        expect(res.body.user.id).toExist;
-        expect(res.body.user.username).toBe('user1');
-        expect(res.body.user.email).toBe('user1@example.com');
-        done();
-      });
-    });
-    it('POST /api/user/me route should not be accessible to unauthenticated users', (done) => {
-      request(app)
-      .get('/api/user/me')
-      .expect(401)
-      .end((err, res) => {
-        if (err) {
-          return done(err);
-        }
-        expect(res.body.id).toNotExist;
-        expect(res.body.error).toBe('You need to signup or login first');
-        done();
-      });
-    });
-    it('POST /api/user/me/groups route should not be accessible to unauthenticated users', (done) => {
-      request(app)
-      .get('/api/user/me/groups')
-      .expect(401)
-      .end((err, res) => {
-        if (err) {
-          return done(err);
-        }
-        expect(res.body.id).toNotExist;
-        expect(res.body.error).toBe('You need to signup or login first');
-        done();
-      });
-    });
-    it('POST /api/user/me/messages route should not be accessible to unauthenticated users', (done) => {
-      request(app)
-      .get('/api/user/me/messages')
-      .expect(401)
-      .end((err, res) => {
-        if (err) {
-          return done(err);
-        }
-        expect(res.body.id).toNotExist;
-        expect(res.body.error).toBe('You need to signup or login first');
-        done();
-      });
-    });
-    it('POST /api/group route should not be accessible to unauthenticated users', (done) => {
-      request(app)
-      .post('/api/group')
-      .send({ title: 'testGroup' })
-      .expect(401)
-      .end((err, res) => {
-        if (err) {
-          return done(err);
-        }
-        expect(res.body.id).toNotExist;
-        expect(res.body.error).toBe('You need to signup or login first');
-        done();
-      });
-    });
-    it('POST /api/group/:groupid/user route should not be accessible to unauthenticated users', (done) => {
-      request(app)
-      .post('/api/group/1/user')
-      .send({ username: 'testuser2' })
-      .expect(401)
-      .end((err, res) => {
-        if (err) {
-          return done(err);
-        }
-        expect(res.body.id).toNotExist;
-        expect(res.body.error).toBe('You need to signup or login first');
-        done();
-      });
-    });
-    it('POST /api/group/:groupid/message route should not be accessible to unauthenticated users', (done) => {
-      request(app)
-      .post('/api/group/1/message')
-      .send({ title: 'testMessage' })
-      .expect(401)
-      .end((err, res) => {
-        if (err) {
-          return done(err);
-        }
-        expect(res.body.id).toNotExist;
-        expect(res.body.error).toBe('You need to signup or login first');
-        done();
-      });
-    });
-    
   });
 });

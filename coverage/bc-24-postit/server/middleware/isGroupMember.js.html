@@ -20,28 +20,28 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">5.26% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>1/19</span>
+        <span class='fraction'>19/19</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>0/6</span>
+        <span class='fraction'>6/6</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>0/5</span>
+        <span class='fraction'>5/5</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">6.25% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>1/16</span>
+        <span class='fraction'>16/16</span>
       </div>
     </div>
   </div>
-  <div class='status-line low'></div>
+  <div class='status-line high'></div>
 <pre><table class="coverage">
 <tr><td class="line-count quiet">1
 2
@@ -79,66 +79,66 @@
 34</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Group } from '../models';
 &nbsp;
 export default (req, res, next) =&gt; {
-  const groupId = <span class="cstat-no" title="statement not covered" >req.params.groupid;</span>
-<span class="cstat-no" title="statement not covered" >  if (!groupId) {</span>
-<span class="cstat-no" title="statement not covered" >    res.status(400).send({</span>
+  const groupId = req.params.groupid;
+  if (!Number(groupId)) {
+    return res.status(400).send({
       error: 'GroupId must be provided'
     });
   }
-<span class="cstat-no" title="statement not covered" >  Group.findById(groupId).then(<span class="fstat-no" title="function not covered" >(</span>group) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (!group) {</span>
-<span class="cstat-no" title="statement not covered" >      return res.status(404).send({</span>
+  Group.findById(groupId).then((group) =&gt; {
+    if (!group) {
+      return res.status(404).send({
         error: 'Specified group does not exist'
       });
     }
-<span class="cstat-no" title="statement not covered" >    group.getUsers(</span>
+    group.getUsers(
       { raw: true }
     )
-    .then(<span class="fstat-no" title="function not covered" >(</span>groupUsers) =&gt; {
-      const groupEmails = <span class="cstat-no" title="statement not covered" >groupUsers.map(<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >user =&gt; user.email);</span></span></span>
-      const groupUserIds = <span class="cstat-no" title="statement not covered" >groupUsers.map(<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >user =&gt; user.id);</span></span></span>
-<span class="cstat-no" title="statement not covered" >      if (groupUserIds.indexOf(req.currentUser.id) === -1) {</span>
-<span class="cstat-no" title="statement not covered" >        return res.status(401).send({</span>
+    .then((groupUsers) =&gt; {
+      const groupEmails = groupUsers.map(user =&gt; user.email);
+      const groupUserIds = groupUsers.map(user =&gt; user.id);
+      if (groupUserIds.indexOf(req.currentUser.id) === -1) {
+        return res.status(401).send({
           error: 'You must belong to a group to interact with it'
         });
       }
-<span class="cstat-no" title="statement not covered" >      req.groupEmails = groupEmails;</span>
-<span class="cstat-no" title="statement not covered" >      req.groupUsernames = groupUsers.map(<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >user =&gt; user.username);</span></span></span>
-<span class="cstat-no" title="statement not covered" >      req.currentGroup = group;</span>
-<span class="cstat-no" title="statement not covered" >      next();</span>
+      req.groupEmails = groupEmails;
+      req.groupUsernames = groupUsers.map(user =&gt; user.username);
+      req.currentGroup = group;
+      next();
     });
   });
 };
@@ -148,7 +148,7 @@ export default (req, res, next) =&gt; {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Thu Sep 14 2017 08:04:27 GMT+0100 (WAT)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Thu Sep 14 2017 20:48:28 GMT+0100 (WAT)
 </div>
 </div>
 <script src="../../../prettify.js"></script>

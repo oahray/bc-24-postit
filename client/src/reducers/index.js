@@ -6,6 +6,7 @@ import verifyAuthFailed from './verifyAuthFailed';
 import token from './setTokenReducer';
 import setUserLoading from './setUserLoading';
 import authFormErrorMessage from './authFormErrorMessage';
+import authFormLoading from './authFormLoading';
 import authFormFailed from './authFormFailed';
 import groupList from './groupListReducer';
 import groupListLoading from './groupListLoading';
@@ -28,6 +29,7 @@ export default combineReducers({
   token,
   setUserLoading,
   authFormFailed,
+  authFormLoading,
   authFormErrorMessage,
   groupList,
   groupListLoading,

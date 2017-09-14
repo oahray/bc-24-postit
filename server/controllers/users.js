@@ -58,11 +58,6 @@ export const signin = (req, res) => {
 
 export const getMe = (req, res) => {
   const currentUser = req.currentUser;
-  if (!currentUser) {
-    return res.status(401).send({
-      error: 'Not logged in'
-    });
-  }
   return res.status(200).send({ currentUser });
 };
 
@@ -82,23 +77,18 @@ export const getMe = (req, res) => {
 
 export const getAllUsers = (req, res) => {
   User.findAll().then(users =>
-    res.status(200).send({ users }))
-  .catch(() => res.status(400).send({
-    error: 'Failed to get list of all users'
-  }));
+    res.status(200).send({ users })
+  );
 };
 
 export const getMySentMessages = (req, res) => {
   const userId = req.currentUser.id;
   Message.findAll({ where: { userId } }).then(messages =>
     res.status(200).send({ messages })
-  ).catch(err => res.status(400).send({
-    error: err.errors[0].message
-  }));
+  );
 };
 
 export const getMyGroups = (req, res) => {
-  const io = req.app.get('io');
   User.findById(req.currentUser.id).then((user) => {
     user.getGroups().then((userGroups) => {
       res.status(200).send({ userGroups });
