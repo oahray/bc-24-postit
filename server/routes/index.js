@@ -31,11 +31,9 @@ module.exports = (app) => {
 
   app.get('/api/user/me', authenticate, usersController.getMe);
 
-  app.get('/api/user/token', authenticate, usersController.refreshToken);
+  // app.get('/api/user/token', authenticate, usersController.refreshToken);
 
   app.get('/api/user/all', authenticate, usersController.getAllUsers);
-
-  app.get('/api/user/search', authenticate, usersController.searchUsers);
 
   app.get('/api/user/me/groups', authenticate, usersController.getMyGroups);
 
@@ -45,10 +43,10 @@ module.exports = (app) => {
   app.patch('/api/user/me/password', authenticate,
   usersController.changePassword);
 
-  app.patch('/api/user/me/email', authenticate, usersController.changeEmail);
+  // app.patch('/api/user/me/email', authenticate, usersController.changeEmail);
 
-  app.post('/api/user/deactivate', authenticate, isValidUsername,
-  usersController.deactivate);
+  // app.post('/api/user/deactivate', authenticate, isValidUsername,
+  // usersController.deactivate);
 
   // Group routes
   app.post('/api/group', authenticate, groupsController.createGroup);
@@ -71,14 +69,14 @@ module.exports = (app) => {
   app.get('/api/group/:groupid/notmembers', authenticate,
   isGroupMember, groupsController.searchNonMembers);
 
-  app.patch('/api/group/:groupid/rename', authenticate,
-  isGroupMember, groupsController.renameGroup);
+  // app.patch('/api/group/:groupid/rename', authenticate,
+  // isGroupMember, groupsController.renameGroup);
 
-  app.patch('/api/group/:groupid/type', authenticate,
-  isGroupMember, groupsController.changeGroupType);
+  // app.patch('/api/group/:groupid/type', authenticate,
+  // isGroupMember, groupsController.changeGroupType);
 
-  app.patch('/api/group/:groupid/description', authenticate,
-  isGroupMember, groupsController.changeGroupDescription);
+  // app.patch('/api/group/:groupid/description', authenticate,
+  // isGroupMember, groupsController.changeGroupDescription);
 
   app.post('/api/group/:groupid/remove', authenticate,
   isGroupMember, groupsController.deleteGroup);

@@ -18,13 +18,15 @@
     "build-template-js": "babel template/es6 -d template/public/js --presets es2015,stage-2",
     "build-css": "node-sass --include-path scss template/scss/main.scss template/public/css/main.css && node-sass --include-path scss template/scss/message.scss template/public/css/message.css",
     "watch-css": "nodemon -e scss -x \"npm run build-css\"",
-    "test": "export NODE_ENV=test || SET \"NODE_ENV=test\" && mocha --compilers js:babel-register server/test/*.test.js",
+    "test": "export NODE_ENV=test || SET \"NODE_ENV=test\" && nyc --reporter=html --reporter=text mocha --compilers js:babel-register server/test/*.test.js",
     "test-watch": "nodemon --exec \"npm test\"",
     "heroku-postbuild": "webpack --config ./webpack.deployment.config.js --progress --colors",
     "migrate": "sequelize db:migrate --config server/config/config.js",
     "migrate:undo": "sequelize db:migrate:undo --config server/config/config.js",
     "migrate:undo:all": "sequelize db:migrate:undo:all --config server/config/config.js",
-    "webpack": "webpack"
+    "webpack": "webpack",
+    "coveralls": "nyc --reporter=lcov --reporter=text-icov npm test",
+    "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "repository": {
     "type": "git",
@@ -81,6 +83,7 @@
     "socket.io": "^2.0.3",
     "socket.io-client": "^2.0.3",
     "style-loader": "^0.18.2",
+    "toastr": "^2.1.2",
     "webpack": "^3.4.1",
     "webpack-dev-middleware": "^1.12.0",
     "webpack-dev-server": "^2.6.1",

@@ -25,7 +25,7 @@ export default (req, res, next) => {
         });
       }
       req.groupEmails = groupEmails;
-      req.groupUsers = groupUsers.map(user => user);
+      req.groupUsernames = groupUsers.map(user => user.username);
       req.currentGroup = group;
       next();
     });

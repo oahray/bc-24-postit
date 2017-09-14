@@ -12,11 +12,12 @@ class SearchResult extends Component {
     this.searchQuery = $.deparam(window.location.search);
     this.state = {
       searchTerm: this.searchQuery.u,
-      page: this.searchQuery.p,
+      page: Number(this.searchQuery.p),
       offset: 10 * (this.searchQuery.p - 1),
       limit: 10,
       lastPage: 0
-    }
+    };
+    this.groupId = this.props.match.params.groupid;
     this.searchDone = this.searchDone.bind(this);
     this.addUser = this.addUser.bind(this);
     this.updateSearchResult = this.updateSearchResult.bind(this);
@@ -26,18 +27,25 @@ class SearchResult extends Component {
   }
 
   componentWillMount() {
-    const groupId = this.props.match.params.groupid;
     if (!this.props.selectedGroup) {
-      this.props.getGroupMessages(groupId, this.props.token);
+      this.props.getGroupMessages(this.groupId, this.props.token);
     }
     if (!this.props.groupUsers) {
-      this.props.getGroupUsers(groupId, this.props.token);
+      this.props.getGroupUsers(this.groupId, this.props.token);
     }
     this.updateSearchResult();
   }
 
   componentDidMount() {
+    const socket = io();
     this.props.inGroupPage(true);
+    this.props.getGroupUsers(this.groupId, this.props.token);
+    socket.on('Added to group', ({ group }) => {
+      if (group.id === this.groupId.id) {
+        this.props.getGroupUsers(this.groupId, this.props.token);
+        this.updateSearchResult();
+      }
+    });
   }
 
   componentDidUpdate(newProps, newState) {
@@ -52,7 +60,6 @@ class SearchResult extends Component {
   }
 
   addUser(username) {
-    console.log(`${username} was added to ${this.props.selectedGroup.name}`);
     this.props.addUserToGroup(
       username,
       this.props.selectedGroup.id,
@@ -63,10 +70,10 @@ class SearchResult extends Component {
 
   updateSearchResult() {
     this.props.searchUsers(
-      this.props.match.params.groupid, 
-      this.state.searchTerm, 
-      this.state.offset, 
-      this.state.limit, 
+      this.props.match.params.groupid,
+      this.state.searchTerm,
+      this.state.offset,
+      this.state.limit,
       this.props.token
     );
   }
@@ -94,7 +101,6 @@ class SearchResult extends Component {
   }
 
   nextPage() {
-    console.log('Page changed!');
     const lastPage = Math.ceil(this.props.userSearchResults.count / this.state.limit);
     if (this.state.page < lastPage) {
       this.setState({
@@ -125,7 +131,7 @@ class SearchResult extends Component {
           <div className='search-list-container col s10 offset-s1 m8 offset-m2 l6 offset-l3'>
             <h6>{this.props.userSearchResults.count} found</h6>
             <ul className='row list-group'> 
-              {this.props.userSearchResults.users?(this.props.userSearchResults.users).map((user) => <li key={user.id}><div className='col s12 list-item grey lighten-3'><strong>{user.username}</strong> <br /> <small>{user.about}</small> <span className='right'><a className='add-user-icon teal-text' onClick={() => this.addUser(user.username)}><i className='material-icons'>person_add</i></a></span></div><hr/></li>) : null }
+              {this.props.userSearchResults.users?(this.props.userSearchResults.users).map((user) => <li className="" key={user.id}><div className='col s12 list-item grey lighten-3'><strong>{user.username}</strong> <br /> <small>{user.about}</small> <span className='right'><a className='add-user-icon teal-text' onClick={() => this.addUser(user.username)}><i className='material-icons'>person_add</i></a></span></div><hr/></li>) : null }
             </ul>
           </div>
 
@@ -147,7 +153,9 @@ class SearchResult extends Component {
           </div>
         </div>
         <div className="users-list col s12 m3">
-          <UsersList user={this.props.user} groupUsers={this.props.groupUsers} />
+          <ul>
+            <UsersList user={this.props.user} groupUsers={this.props.groupUsers} />
+          </ul>
         </div>
       </div>
     );

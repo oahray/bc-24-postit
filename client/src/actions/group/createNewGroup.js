@@ -10,28 +10,28 @@ export const RESET_CREATE_GROUP_STATUS = 'RESET_CREATE_GROUP_STATUS';
 const createGroupLoading = () => {
   return {
     type: CREATE_GROUP_LOADING
-  }
+  };
 };
 
 const createGroupSuccess = (response) => {
   return {
     type: CREATE_GROUP_SUCCESS,
     response
-  }
+  };
 };
 
 const createGroupFailure = (error) => {
   return {
     type: CREATE_GROUP_FAILURE,
     error
-  }
+  };
 };
 
 export const resetCreateGroupStatus = () => {
   return {
     type: RESET_CREATE_GROUP_STATUS
-  }
-}
+  };
+};
 
 export const createNewGroup = (name, description, type, token) => {
   return (dispatch, getState) => {
@@ -60,5 +60,5 @@ export const createNewGroup = (name, description, type, token) => {
         dispatch(createGroupFailure(err.response.data.error));
       }
     });
-  }
-}
+  };
+};

@@ -1,5 +1,5 @@
 $main-color: #26a69a;
-// $main-color: brown;
+// $main-color: rgba(77, 92, 201, 0.96);
 
 body {
   width: 100%;
@@ -166,7 +166,10 @@ ul.side-nav.fixed:hover {
 .group-page {
   padding: 0px 5px;
   .tab-content {
-    padding: 0px 10px;
+    position: relative;
+    padding: 0px 5px;
+    min-height: 100px;
+    height: calc(100vh - 130px);
   }
   .group-tab li a {
     color: $main-color !important;
@@ -175,7 +178,7 @@ ul.side-nav.fixed:hover {
     border-radius: 10px;
   }
   .message-input-container {
-    position: fixed;
+    position: absolute;
     bottom: 0;
     height: 60px;
     padding: 0px !important;
@@ -237,13 +240,24 @@ ul.side-nav.fixed:hover {
   .message-item {
     // height: 50px;
     padding: 0px 20px !important;
-    margin-bottom: 1px !important;
-    background-color: #eee;
+    // margin-bottom: 1px !important;
+    // background-color: #eee;
     text-overflow: ellipse;
     :hover {
       cursor: pointer;
     }
   }
+}
+
+.close-icon {
+  color: red;
+  :hover {
+    cursor: pointer;
+  }
+}
+
+.message-container {
+  margin-top: 10px;
 }
 
 .display-linebreak {

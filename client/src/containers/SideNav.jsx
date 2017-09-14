@@ -18,47 +18,38 @@ class SideNav extends Component {
       const windowSize = $(window).width();
       if (windowSize < 993) {
         $('.button-colllapse').sideNav('hide');
-      } 
-    })
+      }
+    });
     if (this.props.user) {
       this.props.getGroupList(this.props.token);
     }
+    const socket = io();
+    socket.on('Added to group', ({ user }) => {
+      if (this.props.user && user.id === this.props.user.id) {
+        this.props.getGroupList(this.props.token);
+      }
+    });
   }
 
   searchUsers(username, resultPath) {
-    const {selectedGroup, token} = this.props;
-    console.log('Searching for ', username);
-    console.log('sidenav props: ', this.props);
+    const { selectedGroup, token } = this.props;
     this.props.searchUsers(selectedGroup.id, username, 0, 10, token);
     this.props.history.push(resultPath);
   }
 
   render() {
-    let navList = (
-      <ul className='right hide-on-med-and-down'>
-        <li><NavLink to='/'>About</NavLink></li>
-        <li><NavLink to='/signin'>Signin</NavLink></li>
-        <li><NavLink to='/signup'>Signup</NavLink></li>
-        <li><a target='_blank' href='https://github.com.oahray/bc-24-postit'>View Project On Github</a></li>
-      </ul>
-    );
-
     let sideList = (
       <ul className='side-nav fixed' id='side-nav'>
         <li className='center teal-text'><h3>Postit</h3></li>
         <li className='my-list-item'><NavLink to='/'>About</NavLink></li>
         <li className='my-list-item'><NavLink to='/signin'>Signin</NavLink></li>
         <li className='my-list-item'><NavLink to='/signup'>Signup</NavLink></li>
-        <li className='my-list-item'><a target='_blank' href='https://github.com.oahray/bc-24-postit'>View Project On Github</a></li>
+        <li className='my-list-item'><a target='_blank'
+        href='https://github.com.oahray/bc-24-postit'>View Project On Github</a></li>
       </ul>
     );
 
     if (this.props.isLoggedIn) {
-      navList = (
-        <ul className='right hide-on-large-only'>
-          <li className='my-list-item'><NavLink to='/groups/new'> Create New Group <i class="material-icons left">group_add</i></NavLink></li>
-        </ul>
-      );
       sideList = (
         <ul className='side-nav fixed' id='side-nav'>
           <li><div class='user-view center row'>
@@ -68,7 +59,8 @@ class SideNav extends Component {
           </div>
           </li>
           <li className='search'> 
-            {this.props.inGroupPage ? <SearchBar searchUsers={this.searchUsers} user={this.props.user} selectedGroup={this.props.selectedGroup} /> : null}
+            {this.props.inGroupPage ? <SearchBar searchUsers={this.searchUsers}
+            user={this.props.user} selectedGroup={this.props.selectedGroup} /> : null}
           </li>
           <li className='my-list-item'><NavLink to='/groups/new'> Create New Group <i class="material-icons left">group_add</i></NavLink></li>
           <li className=''>
@@ -82,7 +74,7 @@ class SideNav extends Component {
                       <li key={group.id} className='my-list-item'>
                         <NavLink to={`/groups/${group.id}/messages`}>
                           <div>
-                            {group.name} <small> by {group.createdBy}</small> 
+                            {group.name} <small> by {group.createdBy}</small>
                           </div>
                         </NavLink>
                       </li>
@@ -111,7 +103,7 @@ class SideNav extends Component {
         </div>
         {sideList}
       </div>
-    )
+    );
   }
 }
 
@@ -123,11 +115,11 @@ function mapStateToProps(state) {
     groups: state.groupList,
     inGroupPage: state.inGroupPage,
     selectedGroup: state.selectedGroup
-  }
+  };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({logout, getGroupList, searchUsers}, dispatch)
-} 
+  return bindActionCreators({ logout, getGroupList, searchUsers }, dispatch);
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(SideNav);

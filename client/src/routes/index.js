@@ -45,11 +45,11 @@ export function UserRoutes(props) {
     <Switch>
       <Route exact path='/' component={UserHome} />
       <Route exact path='/groups/new' component={NewGroup} />
-      <Route exact path='/groups/:groupid/messages' 
+      <Route exact path='/groups/:groupid/messages'
       component={Group} />
       <Route exact path='/groups/:groupid/addusers' component={SearchResults}/>
       <Route exact path="/edit" component={EditProfile} />
-      <Route exact path="*" component={NotFound} />  
+      <Route exact path="*" component={NotFound} /> 
     </Switch>
   );
   return routeHandler(props, authRoutes);

@@ -9,22 +9,22 @@ export const GROUPS_LIST_FAILURE = 'GROUPS_LIST_FAILURE';
 const groupListLoading = () => {
   return {
     type: GROUPS_LIST_LOADING
-  }
+  };
 };
 
 const groupListSuccess = (response) => {
   return {
     type: GROUPS_LIST_SUCCESS,
     response
-  }
+  };
 };
 
 const groupsListFailure = (response) => {
   return {
     type: GROUPS_LIST_FAILURE,
     response
-  }
-}
+  };
+};
 
 export const getGroupList = (token) => {
   const FETCH_URL = `${BASE_URL}/user/me/groups`;
@@ -47,5 +47,5 @@ export const getGroupList = (token) => {
         dispatch(groupsListFailure(err.response));
       }
     });
-  }
-}
+  };
+};

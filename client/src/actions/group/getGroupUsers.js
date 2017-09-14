@@ -9,21 +9,25 @@ export const GET_GROUP_USERS_FAILURE = 'GET_GROUP_USERS_FAILURE';
 const getGroupUsersLoading = () => {
   return {
     type: GET_GROUP_USERS_LOADING
-  }
+  };
 };
 
+/**
+ * @constructor
+ * @param  {object} response
+ */
 const getGroupUsersSuccess = (response) => {
   return {
     type: GET_GROUP_USERS_SUCCESS,
     response
-  }
+  };
 };
 
 const getGroupUsersFailure = (error) => {
   return {
     type: GET_GROUP_USERS_FAILURE,
     error
-  }
+  };
 };
 
 export const getGroupUsers = (groupId, token) => {
@@ -47,5 +51,5 @@ export const getGroupUsers = (groupId, token) => {
         dispatch(getGroupUsersFailure(err.response.data.error));
       }
     });
-  }
-}
+  };
+};

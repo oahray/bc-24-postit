@@ -15,6 +15,9 @@ services:
 before_script:
   - createdb postit-test --username=postgres
   - sequelize db:migrate
+after_success:
+  - npm run coveralls
+  - nyc npm test && report -reporter=text-lcov | coveralls
 env:
   - MY_SUPER_SECRET='rgfiwa7t4873qr7tr87r8'
   - NODE_ENV='test'

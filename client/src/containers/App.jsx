@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Route, } from 'react-router-dom';
 import { Button } from 'react-materialize';
+import toastr from 'toastr';
 import { GuestRoutes, UserRoutes } from '../routes';
 import SideNav from './SideNav';
 import { verifyAuth } from '../actions';
@@ -24,16 +25,11 @@ class App extends Component {
     $('.modal-trigger').modal();
     const socket = io();
 
-    socket.emit('join', (err) => {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log('No Error');
+    socket.on('Added to group', ({ user, group, addedBy }) => {
+      console.log({ user, group });
+      if (user.id === this.props.user.id) {
+        toastr.info(`You have just been added to ${group.name} by ${addedBy}`);
       }
-    });
-
-    socket.on('group', (groups) => {
-      console.log('Received groups ', groups);
     });
   }
 
@@ -67,7 +63,7 @@ class App extends Component {
       return (
         <div class='main'>
           { appRoutes }
-          {/* { stateButton } */}
+          { stateButton }
         </div>
       );
     }

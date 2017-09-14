@@ -37,6 +37,6 @@ export const doBeforeEach = () => {
   });
 };
 
-const populateUsers = () => {
-  User.bulkCreate(seedUsers.registered);
+export const populateUsers = () => {
+  models.User.bulkCreate(seedUsers.registered);
 }
