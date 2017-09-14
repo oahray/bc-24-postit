@@ -66,19 +66,19 @@ export const getMe = (req, res) => {
   return res.status(200).send({ currentUser });
 };
 
-export const refreshToken = (req, res) => {
-  const currentUser = req.currentUser;
-  if (!currentUser) {
-    return res.status(401).send({
-      error: 'Not logged in'
-    });
-  }
-  const token = currentUser.generateAuthToken();
-  res.header('x-auth', token).status(200).send({
-    message: `Token refreshed, ${currentUser.username}`,
-    currentUser
-  });
-};
+// export const refreshToken = (req, res) => {
+//   const currentUser = req.currentUser;
+//   if (!currentUser) {
+//     return res.status(401).send({
+//       error: 'Not logged in'
+//     });
+//   }
+//   const token = currentUser.generateAuthToken();
+//   res.header('x-auth', token).status(200).send({
+//     message: `Token refreshed, ${currentUser.username}`,
+//     currentUser
+//   });
+// };
 
 export const getAllUsers = (req, res) => {
   User.findAll().then(users =>
@@ -86,29 +86,6 @@ export const getAllUsers = (req, res) => {
   .catch(() => res.status(400).send({
     error: 'Failed to get list of all users'
   }));
-};
-
-export const searchUsers = (req, res) => {
-  const { username, offset, limit } = req.query;
-  const searchOptions = {
-    where: {
-      username: {
-        $iLike: `%${username}%`
-      }
-    }
-  };
-  if (offset) {
-    searchOptions.offset = offset;
-  }
-
-  if (limit) {
-    searchOptions.limit = limit;
-  }
-  User.findAll(searchOptions)
-  .then(users => res.status(200).send({
-    users
-  }))
-  .catch(err => res.status(400).send(err));
 };
 
 export const getMySentMessages = (req, res) => {
@@ -124,8 +101,6 @@ export const getMyGroups = (req, res) => {
   const io = req.app.get('io');
   User.findById(req.currentUser.id).then((user) => {
     user.getGroups().then((userGroups) => {
-      io.emit('group', { userGroups });
-      console.log('User groups', userGroups);
       res.status(200).send({ userGroups });
     });
   });
@@ -253,79 +228,79 @@ export const resetPassword = (req, res) => {
   });
 };
 
-export const changeEmail = (req, res) => {
-  User.findById(req.currentUser.id).then((user) => {
-    if (req.body.email.toLowerCase() === user.email) {
-      res.status(400).send({ error: 'New email same as current email' });
-    }
-    user.update({ email: req.body.email })
-    .then(updated => res.status(202).send({
-      message: 'Email successfully changed',
-      updated
-    })).catch((err) => {
-      if (err.message) {
-        res.status(400).send({ error: err.message });
-      }
-      res.status(400).send({ error: 'Error updating email' });
-    });
-  }).catch(() => res.status(400).send({
-    error: 'Error changing email'
-  }));
-};
+// export const changeEmail = (req, res) => {
+//   User.findById(req.currentUser.id).then((user) => {
+//     if (req.body.email.toLowerCase() === user.email) {
+//       res.status(400).send({ error: 'New email same as current email' });
+//     }
+//     user.update({ email: req.body.email })
+//     .then(updated => res.status(202).send({
+//       message: 'Email successfully changed',
+//       updated
+//     })).catch((err) => {
+//       if (err.message) {
+//         res.status(400).send({ error: err.message });
+//       }
+//       res.status(400).send({ error: 'Error updating email' });
+//     });
+//   }).catch(() => res.status(400).send({
+//     error: 'Error changing email'
+//   }));
+// };
 
-export const editProfile = (req, res) => {
-  User.findById(req.currentUser.id).then((user) => {
-    if (req.body.email.toLowerCase() === user.email) {
-      res.status(400).send({ error: 'New email same as current email' });
-    }
-    user.update({ email: req.body.email })
-    .then(updated => res.status(202).send({
-      message: 'Email successfully changed',
-      updated
-    })).catch((err) => {
-      if (err.message) {
-        res.status(400).send({ error: err.message });
-      }
-      res.status(400).send({ error: 'Error updating email' });
-    });
-  }).catch(() => res.status(400).send({
-    error: 'Error changing email'
-  }));
-};
+// export const editProfile = (req, res) => {
+//   User.findById(req.currentUser.id).then((user) => {
+//     if (req.body.email.toLowerCase() === user.email) {
+//       res.status(400).send({ error: 'New email same as current email' });
+//     }
+//     user.update({ email: req.body.email })
+//     .then(updated => res.status(202).send({
+//       message: 'Email successfully changed',
+//       updated
+//     })).catch((err) => {
+//       if (err.message) {
+//         res.status(400).send({ error: err.message });
+//       }
+//       res.status(400).send({ error: 'Error updating email' });
+//     });
+//   }).catch(() => res.status(400).send({
+//     error: 'Error changing email'
+//   }));
+// };
 
-export const deactivate = (req, res) => {
-  const body = _.pick(req.body, ['username', 'password']);
-  if (!body.username) {
-    return res.status(401).send({
-      error: 'You must provide your username to deactivate account'
-    });
-  }
-  const username = body.username.trim().toLowerCase();
-  if (username !== req.currentUser.username) {
-    return res.status(400).send({
-      error: 'Username is incorrect. Provide your own username to deactivate'
-    });
-  }
-  if (!body.password) {
-    return res.status(400).json({
-      error: 'You must provide your password to deactivate account'
-    });
-  }
-  User.findOne({
-    where: {
-      username
-    }
-  })
-  .then((user) => {
-    if (!user.validPassword(body.password)) {
-      return res.status(401).send({
-        error: 'Password is incorrect'
-      });
-    }
-    user.destroy().then(() => res.status(201).send({
-      message: 'Account deactivated'
-    }));
-  }).catch(() => res.status(400).send({
-    error: 'Could not deactivate account'
-  }));
-};
+// export const deactivate = (req, res) => {
+//   const body = _.pick(req.body, ['username', 'password']);
+//   if (!body.username) {
+//     return res.status(401).send({
+//       error: 'You must provide your username to deactivate account'
+//     });
+//   }
+//   const username = body.username.trim().toLowerCase();
+//   if (username !== req.currentUser.username) {
+//     return res.status(400).send({
+//       error: 'Username is incorrect. Provide your own username to deactivate'
+//     });
+//   }
+//   if (!body.password) {
+//     return res.status(400).json({
+//       error: 'You must provide your password to deactivate account'
+//     });
+//   }
+//   User.findOne({
+//     where: {
+//       username
+//     }
+//   })
+//   .then((user) => {
+//     if (!user.validPassword(body.password)) {
+//       return res.status(401).send({
+//         error: 'Password is incorrect'
+//       });
+//     }
+//     user.destroy().then(() => res.status(201).send({
+//       message: 'Account deactivated'
+//     }));
+//   }).catch(() => res.status(400).send({
+//     error: 'Could not deactivate account'
+//   }));
+// };

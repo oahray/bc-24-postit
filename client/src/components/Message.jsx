@@ -9,7 +9,7 @@ export default function Message(props) {
       <div className="col s12 grey lighten-3">
           <h5 className="col s12">{props.message.sender} 
             <span className="grey-text center timestamp"><small>{moment(props.message.createdAt).format(' hh:MMa MMMM Do YYYY')}</small></span>
-            <span className="right" onClick={props.closeMessage}><small>x</small></span>
+            <span className="right close-icon" onClick={props.closeMessage}><small><i className="material-icons">close</i></small></span>
           </h5>
       </div>
       <div className="col s12 white display-linebreak">

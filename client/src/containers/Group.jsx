@@ -6,12 +6,14 @@ import { Redirect } from 'react-router-dom';
 import moment from 'moment';
 import { Tabs, Tab, Row, Input } from 'react-materialize';
 import PropTypes from 'prop-types';
+import toastr from 'toastr';
 import { getGroupMessages, getGroupUsers, getGroupList,
   inGroupPage, sendMessage, markAsRead } from '../actions';
 import Preloader from '../components/Preloader';
 import Message from '../components/Message';
 import MessageList from '../components/MessageList';
 import { UsersList, GroupInfo } from '../components/GroupHelpers';
+import { isUserGroup } from '../helpers/groupFunctions';
 
 class Group extends Component {
   constructor(props) {
@@ -21,8 +23,9 @@ class Group extends Component {
       priority: 'normal',
       messageOpen: false,
       selectedMessage: {}
-    }
-
+    };
+    this.groupId = this.props.match.params.groupid;
+    this.messageList = document.querySelector('.message-list');
     this.onTypeText = this.onTypeText.bind(this);
     this.sendMessage = this.sendMessage.bind(this);
     this.newMessageAdded = this.newMessageAdded.bind(this);
@@ -32,17 +35,36 @@ class Group extends Component {
   }
 
   componentWillMount() {
-    const groupId = this.props.match.params.groupid;
-    this.props.getGroupMessages(groupId, this.props.token);
-    this.props.getGroupUsers(groupId, this.props.token);
+    this.props.getGroupMessages(this.groupId, this.props.token);
+    this.props.getGroupUsers(this.groupId, this.props.token);
   }
 
   componentDidMount() {
     $('ul.tabs').tabs();
+    $('.collapsible').collapsible();
+
+    // const observer = new MutationObserver(this.scrollToBottom);
+    // const config = { childList: true };
+    // observer.observe(this.messageList, config);
+
     this.props.inGroupPage(true);
+    const socket = io();
+    socket.on('Message posted', ({ message, group }) => {
+      console.log('New message details', { message, group });
+      if (message.sender !== this.props.user.username
+      && isUserGroup(this.props.groupList, group.id)
+      && group.id === this.groupId) {
+        this.newMessageAdded(this.groupId);
+      }
+    });
+    socket.on('Added to group', ({ group }) => {
+      if (group.id === this.props.selectedGroup.id) {
+        this.props.getGroupUsers(this.groupId, this.props.token);
+      }
+    });
   }
 
-  componentWillReceiveProps (newProps){
+  componentWillReceiveProps(newProps) {
     // this.forceUpdate();
     if (this.props.selectedGroup && Number(newProps.match.params.groupid) !== this.props.selectedGroup.id) {
       console.log(typeof newProps.match.params.groupid);
@@ -59,7 +81,7 @@ class Group extends Component {
   }
 
   onTypeText(event) {
-    this.setState({content: event.target.value});
+    this.setState({ content: event.target.value });
   }
 
   openMessage(message) {
@@ -72,7 +94,7 @@ class Group extends Component {
   }
 
   closeMessage() {
-    console.log("Message closed");
+    console.log('Message closed');
     this.setState({
       messageOpen: false,
       selectedMessage: {}
@@ -84,15 +106,16 @@ class Group extends Component {
   }
 
   scrollToBottom() {
-    const messageWindow = $('#message-list');
-    const messages = this.refs('#messages-ul');
-    // const newMessage = messages.children('li:last-child');
+    // this.messageList.scrollTop = this.messageList.scrollHeight;
+    // const messageWindow = $('#message-list');
+    // const messages = this.refs('#messages-ul');
+    // // const newMessage = messages.children('li:last-child');
 
-    const clientHeight = messageWindow.clientHeight;
-    const scrollHeight = messages.scrollHeight;
-    const maxScrollTop = scrollHeight - clientHeight;
+    // const clientHeight = messageWindow.clientHeight;
+    // const scrollHeight = messages.scrollHeight;
+    // const maxScrollTop = scrollHeight - clientHeight;
 
-    ReactDOM.findDOMNode(messages).scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
+    // ReactDOM.findDOMNode(messages).scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
     // const newMessageHeight = newMessage.innerHeight();
     // const lastMessageHeight = newMessage.prev().innerHeight();
     // console.log('>>>> clientHeight: ', clientHeight);
@@ -115,40 +138,26 @@ class Group extends Component {
 
   render() {
     if (!this.props.groupMessagesLoading && this.props.groupMessagesFailed) {
-      return <Redirect to='/' />
+      return (<Redirect to='/' />);
     }
 
     if (this.props.groupMessagesLoading || !this.props.selectedGroup) {
       return <Preloader message='Loading Group Messages...' />
     }
 
-    // const messageList = (
-    //   <div className='message-list'>
-    //     {this.props.groupMessages.length > 0 ? <ul>
-    //       {this.props.groupMessages.map((message) => {
-    //         return <li
-    //         className='message-item truncate'
-    //         id={`${message.groupid}${message.id}`}
-    //         key={message.id}
-    //         onClick={() => this.openMessage(message)}> <strong> {message.sender}</strong><span className='grey-text timestamp'><small>{moment(message.createdAt).fromNow()}</small></span> <span className='right'><small>{message.priority} message</small></span><br />{message.content}</li>
-    //       })}
-    //     </ul> : <p>This group does not contain any messages</p>}
-    //   </div>
-    // );
-
-    const messageList = <MessageList groupMessages={this.props.groupMessages} openMessage={this.openMessage} />
+    const messageList = (<MessageList groupMessages={this.props.groupMessages} openMessage={this.openMessage} />);
 
     const messageInput = (
-      <div className='message-input-container'>
+      <div className='message-input-container col s12'>
         <div className="row">
           <div className="input-field message-input col s12 m7">
             <textarea type="text" id="textarea1" placeholder='Type Message Here' onChange={this.onTypeText} />
           </div>
           <div className="input-field col s8 m3">
             <Row>
-              <Input s={12} className='message-priority-select' type='select' 
+              <Input s={12} className='message-priority-select' type='select'
               defaultValue='normal'
-              onChange={(event) => this.setState({priority: event.target.value})}> 
+              onChange={(event) => this.setState({ priority: event.target.value })}>
                 <option value='normal'>Normal</option>
                 <option value='urgent'>Urgent</option>
                 <option value='critical'>Critical</option>
@@ -162,7 +171,7 @@ class Group extends Component {
       </div>
     );
 
-    const messages = (<div className='tab-content'>
+    const messages = (<div className='tab-content row'>
       {messageList}
       {messageInput}
     </div>);
@@ -178,20 +187,26 @@ class Group extends Component {
 
     const messagesTab = (
       this.state.messageOpen ? showOpenMessage : messages
-    )
+    );
 
-    const infoTab = <GroupInfo selectedGroup={this.props.selectedGroup} />
+    const infoTab = (<GroupInfo selectedGroup={this.props.selectedGroup} />);
 
-    const usersList = <UsersList groupUsers={this.props.groupUsers} user={this.props.user}/>
+    const usersList = (<UsersList groupUsers={this.props.groupUsers} user={this.props.user}/>);
 
     return (
-      <div className='group-page col s12 row'> 
+      <div className='group-page col s12 row'>
         <div className="col s12 z-depth-2">
           <h5 className='page-header'>{this.props.selectedGroup.name} </h5>
         </div>
         <div className="col s12">
           <div className="col s12 m9">{messagesTab}</div>
-          <div className="col s12 m3">{usersList}</div>
+          <div className="col s12 m3 group-info-col">
+            <ul className="">
+              {infoTab}
+              <hr/>
+              {usersList}
+            </ul>
+          </div>
         </div>
       </div>
     );

@@ -9,21 +9,21 @@ export const SIGNUP_FAILURE = 'SIGNUP_FAILURE';
 const signupLoading = () => {
   return {
     type: SIGNUP_LOADING
-  }
+  };
 };
 
 const signupSuccess = (response) => {
   return {
     type: SIGNUP_SUCCESS,
     response
-  }
+  };
 };
 
 const signupFailure = (error) => {
   return {
     type: SIGNUP_FAILURE,
     error
-  }
+  };
 };
 
 export const signupUser = (username, password, email) => {
@@ -40,7 +40,6 @@ export const signupUser = (username, password, email) => {
       }
     })
     .then((response) => {
-      console.log("signup action response", response)
       if (response.statusText === 'Created') {
         dispatch(signupSuccess(response));
       }
@@ -51,5 +50,5 @@ export const signupUser = (username, password, email) => {
         dispatch(signupFailure(err.response.data.error));
       }
     });
-  }
-}
+  };
+};

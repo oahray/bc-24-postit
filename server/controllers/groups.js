@@ -60,19 +60,36 @@ export const addUserToGroup = (req, res) => {
         });
       }
       group.getUsers({ where: { username } }).then((users) => {
+        const io = req.app.get('io');
         if (users.length > 0) {
           return res.status(400).send({
             error: `${user.username} already in group`
           });
         }
         group.addUser(user.id);
-        // user.addGroup(group.id);
-
+        io.emit('Added to group', {
+          user: {
+            id: user.id,
+            name: user.name
+          },
+          group,
+          addedBy: req.currentUser.username
+        });
         res.status(201).send({
           message: `${user.username} added to group`
         });
       });
     }).catch(() => res.status(400));
+  });
+};
+
+export const removeUserFromGroup = (req, res) => {
+  Group.findById(req.params.groupid).then((group) => {
+    if (group.createdBy !== req.currentUser.username) {
+      return res.status(401).send({
+        error: 'Only a group creator can remove members'
+      });
+    }
   });
 };
 
@@ -178,9 +195,7 @@ export const sendMessageToGroup = (req, res) => {
     }).then((message) => {
       message.setGroup(group.id);
       message.setUser(req.currentUser.id);
-      console.log('heyyo!');
       const sender = message.sender.toUpperCase();
-      console.log('sent by ', sender);
       // set email message parameters
       // filter out the email of sender
       const bcc = req.groupEmails.filter(email => email !== req.currentUser.email);
@@ -190,7 +205,7 @@ export const sendMessageToGroup = (req, res) => {
       <div style="color:brown"><h3>${message.content.replace(/\n/gi, '<br/>')}</h3></div>
       <p>To reply ${sender}, please login to your account</p>
       </div>`;
-      if (message.priority === 'urgent' || message.priority === 'critical') {
+      if ((message.priority === 'urgent' || message.priority === 'critical') && bcc.length > 0) {
         transporter.sendMail(
           helperOptions('You', bcc, subject, html), (error, info) => {
             if (error) {
@@ -200,6 +215,16 @@ export const sendMessageToGroup = (req, res) => {
           }
         );
       }
+      const io = req.app.get('io');
+      io.emit('Message posted', {
+        message: {
+          sender: message.sender
+        },
+        group: {
+          id: group.id,
+          name: group.name
+        }
+      });
       res.status(201).send({ message });
     }).catch(err => res.status(400).send({
       // error: 'Failed to send the message'
@@ -238,92 +263,92 @@ export const markAsRead = (req, res) => {
   });
 };
 
-export const renameGroup = (req, res) => {
-  const name = req.body.name;
-  if (!name) {
-    return res.send({
-      error: 'Group name required.'
-    });
-  }
-  Group.findById(req.params.groupid).then((group) => {
-    group.update({ name })
-    .then(update => res.status(201).send({
-      message: 'Group name succesfully changed',
-      update
-    })).catch((err) => {
-      if (err.message) {
-        return res.status(400).send({
-          error: err.message
-        });
-      }
-      return res.status(400).send({
-        error: 'Error renaming group'
-      });
-    });
-  });
-};
+// export const renameGroup = (req, res) => {
+//   const name = req.body.name;
+//   if (!name) {
+//     return res.send({
+//       error: 'Group name required.'
+//     });
+//   }
+//   Group.findById(req.params.groupid).then((group) => {
+//     group.update({ name })
+//     .then(update => res.status(201).send({
+//       message: 'Group name succesfully changed',
+//       update
+//     })).catch((err) => {
+//       if (err.message) {
+//         return res.status(400).send({
+//           error: err.message
+//         });
+//       }
+//       return res.status(400).send({
+//         error: 'Error renaming group'
+//       });
+//     });
+//   });
+// };
 
-export const changeGroupType = (req, res) => {
-  if (!req.body.type) {
-    return res.status(400).send({
-      error: 'Group type required.'
-    });
-  }
-  let type = req.body.type.trim().toLowerCase();
-  if (type !== 'private') {
-    type = 'public';
-  }
-  Group.findById(req.params.groupid).then((group) => {
-    if (type === group.type) {
-      return res.status(400).send({
-        error: 'Group type same as current.'
-      });
-    }
-    group.update({ type })
-    .then(update => res.status(201).send({
-      message: 'Group type succesfully changed',
-      update
-    })).catch((err) => {
-      if (err.message) {
-        return res.status(400).send({
-          error: err.message
-        });
-      }
-      return res.status(400).send({
-        error: 'Error updating group type'
-      });
-    });
-  });
-};
+// export const changeGroupType = (req, res) => {
+//   if (!req.body.type) {
+//     return res.status(400).send({
+//       error: 'Group type required.'
+//     });
+//   }
+//   let type = req.body.type.trim().toLowerCase();
+//   if (type !== 'private') {
+//     type = 'public';
+//   }
+//   Group.findById(req.params.groupid).then((group) => {
+//     if (type === group.type) {
+//       return res.status(400).send({
+//         error: 'Group type same as current.'
+//       });
+//     }
+//     group.update({ type })
+//     .then(update => res.status(201).send({
+//       message: 'Group type succesfully changed',
+//       update
+//     })).catch((err) => {
+//       if (err.message) {
+//         return res.status(400).send({
+//           error: err.message
+//         });
+//       }
+//       return res.status(400).send({
+//         error: 'Error updating group type'
+//       });
+//     });
+//   });
+// };
 
-export const changeGroupDescription = (req, res) => {
-  const description = req.body.description;
-  if (!description) {
-    return res.send({
-      error: 'Group description required'
-    });
-  } else if (description.length > 75) {
-    return res.status(400).send({
-      error: 'Group description should not be more than 75 characters'
-    });
-  }
-  Group.findById(req.params.groupid).then((group) => {
-    group.update({ description })
-    .then(update => res.status(201).send({
-      message: 'Group description succesfully updated',
-      update
-    })).catch((err) => {
-      if (err.message) {
-        return res.status(400).send({
-          error: err.message
-        });
-      }
-      return res.status(400).send({
-        error: 'Error updating group description'
-      });
-    });
-  });
-};
+// export const changeGroupDescription = (req, res) => {
+//   const description = req.body.description;
+//   if (!description) {
+//     return res.send({
+//       error: 'Group description required'
+//     });
+//   } else if (description.length > 75) {
+//     return res.status(400).send({
+//       error: 'Group description should not be more than 75 characters'
+//     });
+//   }
+//   Group.findById(req.params.groupid).then((group) => {
+//     group.update({ description })
+//     .then(update => res.status(201).send({
+//       message: 'Group description succesfully updated',
+//       update
+//     })).catch((err) => {
+//       if (err.message) {
+//         return res.status(400).send({
+//           error: err.message
+//         });
+//       }
+//       return res.status(400).send({
+//         error: 'Error updating group description'
+//       });
+//     });
+//   });
+// };
 
 export const deleteGroup = (req, res) => {
   Group.findById(req.params.groupid).then((group) => {

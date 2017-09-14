@@ -23,6 +23,10 @@ export const seedUsers = {
     }
   ],
 
+  tokens: [
+    
+  ],
+
   unregistered: [
     {
       name: 'user21',
@@ -36,3 +40,5 @@ export const seedUsers = {
     }
   ]
 };
+
+// export const seedGroups

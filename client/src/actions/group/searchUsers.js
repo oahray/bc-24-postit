@@ -1,4 +1,5 @@
 import axios from 'axios';
+import toastr from 'toastr';
 
 import { BASE_URL } from '../index';
 
@@ -35,18 +36,18 @@ const searchUsersSuccess = (response) => {
   return {
     type: SEARCH_USERS_SUCCESS,
     response
-  }
+  };
 };
 
 const searchUsersFailure = (error) => {
   return {
     type: SEARCH_USERS_FAILURE,
     error
-  }
+  };
 };
 
 export const searchUsers = (groupId, username, offset, limit, token) => {
-  return (dispatch, getState) => {
+  return (dispatch) => {
     dispatch(setUserSearchTerm(username));
     dispatch(searchUsersLoading());
     const FETCH_URL = `${BASE_URL}/group/${groupId}/notmembers?username=${username}&offset=${offset}&limit=${limit}`;
@@ -67,39 +68,39 @@ export const searchUsers = (groupId, username, offset, limit, token) => {
         dispatch(searchUsersFailure(err.response.data.error));
       }
     });
-  }
-}
+  };
+};
 
 
 // ADD USER FROM SEARCH RESUKTS
 const addUserLoading = () => {
   return {
     type: ADD_USER_LOADING
-  }
+  };
 };
 
 const addUserSuccess = (response) => {
   return {
     type: ADD_USER_SUCCESS,
     response
-  }
+  };
 };
 
 const addUserFailure = (error) => {
   return {
     type: ADD_USER_FAILURE,
     error
-  }
+  };
 };
 
-export const resetaddUserStatus = () => {
-  return {
-    type: RESET_ADD_USER_STATUS
-  }
-}
+// export const resetAddUserStatus = () => {
+//   return {
+//     type: RESET_ADD_USER_STATUS
+//   };
+// };
 
 export const addUserToGroup = (username, groupid,updateSearchResult, token) => {
-  return (dispatch, getState) => {
+  return (dispatch) => {
     dispatch(addUserLoading());
     const FETCH_URL = `${BASE_URL}/group/${groupid}/user`;
     axios({
@@ -116,6 +117,7 @@ export const addUserToGroup = (username, groupid,updateSearchResult, token) => {
       if (response.statusText === 'Created') {
         dispatch(addUserSuccess(response));
         dispatch(updateSearchResult());
+        toastr.success(`${response.data.message}`);
       }
     })
     .catch((err) => {
@@ -123,5 +125,5 @@ export const addUserToGroup = (username, groupid,updateSearchResult, token) => {
         dispatch(addUserFailure(err.response.data.error));
       }
     });
-  }
-}
+  };
+};

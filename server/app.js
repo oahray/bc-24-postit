@@ -8,16 +8,17 @@ import cors from 'cors';
 import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
-import webpackConfig from '../webpack.config.js';
+import webpackConfig from '../webpack.config';
 
 // Set up the express app and middleware
 const app = express();
 
 const compiler = webpack(webpackConfig);
 
-console.log('>>>>>> ENV: ', process.env.NODE_ENV || 'development');
+const env = process.env.NODE_ENV || 'development';
+console.log('>>>>>> ENV: ', env);
 
-if (process.env.NODE_ENV !== 'production') {
+if (env === 'development') {
   dotenv.config();
   app.use(webpackDevMiddleware(compiler, {
     historyApiFallback: true,
@@ -26,7 +27,7 @@ if (process.env.NODE_ENV !== 'production') {
     publicPath: webpackConfig.output.publicPath
   }));
   app.use(webpackHotMiddleware(compiler, {
-    log:console.log
+    log: console.log
   }));
 }
 
@@ -45,8 +46,9 @@ app.use(cookieParser());
 const corsOptions = {
   allowHeaders: ['Content-Type', 'x-auth'],
   exposedHeaders: ['x-auth'],
-  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204 
-}
+  // some legacy browsers (IE11, various SmartTVs) choke on 204
+  optionsSuccessStatus: 200
+};
 app.use(cors(corsOptions));
 
 const publicPath = path.join(__dirname, '../client/public/');

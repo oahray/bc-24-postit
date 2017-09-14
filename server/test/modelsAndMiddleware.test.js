@@ -2,7 +2,7 @@ import expect from 'expect';
 import request from 'supertest';
 import app from '../app';
 import models from '../models';
-import { doBeforeAll, doBeforeEach } from './seeders/testHooks';
+import { doBeforeAll, doBeforeEach, populateUsers } from './seeders/testHooks';
 
 describe('Data Models:', () => {
   doBeforeAll();
@@ -36,7 +36,7 @@ describe('Data Models:', () => {
       }).catch((err) => done(err));
     });
 
-    it('hashPassword class method should hash passwords before they are stored', (done) => {
+    it('beforeCreate class method should hash passwords before they are stored', (done) => {
       models.User.create({
         username: 'testuser3',
         password: 'testpass',
@@ -48,6 +48,48 @@ describe('Data Models:', () => {
         expect(user.password).toNotBe('testpass');
         done();
       }).catch((err) => done(err));
+    });
+
+    it('beforeUpdate class method should not modify passwords if they are not updated', (done) => {
+      let initEmail
+      models.User.findOne({ where: {
+        username: 'testuser'
+      }})
+      .then((user) => {
+        const userData = user.dataValues;
+        expect(userData).toExist;
+        initEmail = userData.email;
+        expect(initEmail).toBe('testing@example.com');
+        user.update({
+          email: 'newemail@example.com'
+        })
+        .then((update) => {
+          expect(update.email).toNotBe(initEmail);
+          expect(update.username).toBe(user.username);
+          expect(update.password).toBe(user.password);
+          done();
+        });
+      });
+    });
+
+    it('beforeUpdate class method should modify passwords if updated by authenticated user', (done) => {
+      let initPassword;
+      models.User.findOne({ where: {
+        username: 'testuser2'
+      }})
+      .then((user) => {
+        expect(user).toExist;
+        initPassword = user.password;
+        expect(initPassword).toExist;
+        expect(user.email).toBe('testing2@example.com');
+        user.update({
+          password: 'mynewpassword'
+        })
+        .then((update) => {
+          expect(update.password).toNotBe(initPassword);
+          done();
+        })
+      });
     });
 
     it('validate Password instance method should be able to detect valid passwords', (done) => {
@@ -90,6 +132,19 @@ describe('Data Models:', () => {
         expect(user.toJSON().password).toNotExist;
         done();
       }).catch((err) => done(err));
+    });
+
+    it('generateAuthToken instance method should generate a token', (done) => {
+      models.User.create({
+        username: 'testUser7',
+        password: 'somethingelse',
+        email: 'testuser7@example.com'
+      })
+      .then((user) => {
+        const token = user.generateAuthToken()
+        expect(token).toExist().toBeA('string');
+        done();
+      });
     });
   });
 
@@ -186,146 +241,108 @@ describe('Data Models:', () => {
       done();
     });
   });
-  
-});
-
-describe('PostIt API routes: ', () => {
-  doBeforeAll();
-  describe('Can create data: ', () => {
-    it('POST /api/user/signup route should create a new User', (done) => {
-      request(app)
-      .post('/api/user/signup')
-      .send({
-        username: 'testuser1',
-        email: 'testuser1@example.com',
-        password: 'mypassword',
-      })
-      .expect(201)
-      .end((err, res) => {
-        if (err) {
-          return done(err);
-        }
-        expect(res.body.user.id).toExist;
-        expect(res.body.user.username).toBe('testuser1');
-        expect(res.body.user.email).toBe('testuser1@example.com');
-        done();
-      });
-    });
-    it('POST /api/user/signup route should not pass back user password with response', (done) => {
-      request(app)
-      .post('/api/user/signup')
-      .send({
-        username: 'testuser2',
-        email: 'testuser2@example.com',
-        password: 'mypassword',
-      })
-      .expect(201)
-      .end((err, res) => {
-        if (err) {
-          return done(err);
-        }
-        expect(res.body.user.username).toBe('testuser2');
-        expect(res.body.user.password).toNotExist;
-        done();
-      });
-    });
-    it('POST /api/user/signup route should not create user with same username twice', (done) => {
-      request(app)
-      .post('/api/user/signup')
-      .send({
-        username: 'testuser2',
-        email: 'testuser3@example.com',
-        password: 'mypassword',
-      })
-      .expect(400)
-      .end((err, res) => {
-        if (err) {
-          return done(err);
-        }
-        expect(res.body.user).toNotExist;
-        expect(res.body.error).toBe("Username already taken.")
-        done();
-      });
-    });
-    it('POST /api/user/signup route should not create user with same username twice', (done) => {
-      request(app)
-      .post('/api/user/signup')
-      .send({
-        username: 'testuser3',
-        email: 'testuser2@example.com',
-        password: 'mypassword',
-      })
-      .expect(400)
-      .end((err, res) => {
-        if (err) {
-          return done(err);
-        }
-        expect(res.body.user).toNotExist;
-        expect(res.body.error).toBe("Email already taken.")
-        done();
-      });
-    });
-    it('POST /api/user/signin route should sign user in', (done) => {
-      request(app)
-      .post('/api/user/signin')
-      .send({
-        username: 'testuser1',
-        password: 'mypassword',
-      })
-      .expect(200)
-      .end((err, res) => {
-        if (err) {
-          return done(err);
-        }
-        expect(res.body.user.username).toBe('testuser1');
-        expect(res.body.user.id).toExist;
-        done();
-      });
-    });
-    it('POST /api/user/signin route should not sign user in with incorrect credentials', (done) => {
-      request(app)
-      .post('/api/user/signin')
-      .send({
-        username: 'testuser1',
-        password: 'mypasswor',
-      })
-      .expect(401)
-      .end((err, res) => {
-        if (err) {
-          return done(err);
-        }
-        expect(res.body.user).toNotExist;
-        expect(res.body.error).toBe("Password is incorrect");
-        done();
-      });
-    });
-    it('POST /api/user/signin route should not pass back user password with response', (done) => {
-      request(app)
-      .post('/api/user/signin')
-      .send({
-        username: 'testuser2',
-        email: 'testuser2@example.com',
-        password: 'mypassword',
-      })
-      .expect(200)
-      .end((err, res) => {
-        if (err) {
-          return done(err);
-        }
-        expect(res.body.user.username).toBe('testuser2');
-        expect(res.body.user.password).toNotExist;
-        done();
-      });
-    });
-
-
-  });
 });
 
 describe('Middleware functions:', () => {
+  doBeforeAll();
+  describe('isValidUsername Middleware', () => {
+    it('does not allow a user signup without a username', (done) => {
+      request(app)
+      .post('/api/user/signup')
+      .send({
+        email: 'user0@example.com',
+        password: 'user0pass'
+      })
+      .expect(400)
+      .end((err, res) => {
+        if(err) {
+          return done(err);
+        }
+        expect(res.body.error).toBe('Username is required.');
+        done();
+      });
+    });
+    it('does not allow a user signup with invalid username', (done) => {
+      request(app)
+      .post('/api/user/signup')
+      .send({
+        username: 'user0.3',
+        email: 'user0@example.com',
+        password: 'user0pass'
+      })
+      .expect(400)
+      .end((err, res) => {
+        if(err) {
+          return done(err);
+        }
+        expect(res.body.error).toBe('Invalid Username format.');
+        done();
+      });
+    });
+  });
+
+  describe('isTaken Middleware', () => {
+    it('does not allow users signup without email', (done) => {
+      request(app)
+      .post('/api/user/signup')
+      .send({
+        username: 'user0',
+        password: 'user0pass'
+      })
+      .expect(400)
+      .end((err, res) => {
+        if(err) {
+          return done(err);
+        }
+        expect(res.body.error).toBe('Email is required.');
+        done();
+      });
+    });
+    it('does not allow users signup without password', (done) => {
+      request(app)
+      .post('/api/user/signup')
+      .send({
+        username: 'user0',
+        email: 'user0@example.com'
+      })
+      .expect(400)
+      .end((err, res) => {
+        if(err) {
+          return done(err);
+        }
+        expect(res.body.error).toBe('Password is required.');
+        done();
+      });
+    });
+  });
+
+  describe('isGroupMember Middleware', () => {
+    // it('should pass along group values with request object', () => {
+
+    // });
+  });
+
   describe('Authenticate Middleware: ', () => {
-    doBeforeAll();
     doBeforeEach();
+    it('POST /api/signup route should be accessaible to unauthenticated users', (done) => {
+      request(app)
+      .post('/api/user/signup')
+      .send({
+        username: 'user1',
+        password: 'mypassword',
+        email: 'user1@example.com'
+      })
+      .expect(201)
+      .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
+        expect(res.body.user.id).toExist;
+        expect(res.body.user.username).toBe('user1');
+        expect(res.body.user.email).toBe('user1@example.com');
+        done();
+      });
+    });
     it('POST /api/user/me route should not be accessible to unauthenticated users', (done) => {
       request(app)
       .get('/api/user/me')
@@ -334,7 +351,7 @@ describe('Middleware functions:', () => {
         if (err) {
           return done(err);
         }
-        expect(res.body.id).toExist;
+        expect(res.body.id).toNotExist;
         expect(res.body.error).toBe('You need to signup or login first');
         done();
       });
@@ -347,7 +364,7 @@ describe('Middleware functions:', () => {
         if (err) {
           return done(err);
         }
-        expect(res.body.id).toExist;
+        expect(res.body.id).toNotExist;
         expect(res.body.error).toBe('You need to signup or login first');
         done();
       });
@@ -360,7 +377,7 @@ describe('Middleware functions:', () => {
         if (err) {
           return done(err);
         }
-        expect(res.body.id).toExist;
+        expect(res.body.id).toNotExist;
         expect(res.body.error).toBe('You need to signup or login first');
         done();
       });
@@ -374,7 +391,7 @@ describe('Middleware functions:', () => {
         if (err) {
           return done(err);
         }
-        expect(res.body.id).toExist;
+        expect(res.body.id).toNotExist;
         expect(res.body.error).toBe('You need to signup or login first');
         done();
       });
@@ -388,7 +405,7 @@ describe('Middleware functions:', () => {
         if (err) {
           return done(err);
         }
-        expect(res.body.id).toExist;
+        expect(res.body.id).toNotExist;
         expect(res.body.error).toBe('You need to signup or login first');
         done();
       });
@@ -402,7 +419,7 @@ describe('Middleware functions:', () => {
         if (err) {
           return done(err);
         }
-        expect(res.body.id).toExist;
+        expect(res.body.id).toNotExist;
         expect(res.body.error).toBe('You need to signup or login first');
         done();
       });
