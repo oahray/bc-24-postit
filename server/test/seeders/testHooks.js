@@ -1,5 +1,19 @@
 import models from '../../models';
-import { seedUsers } from './seed'
+import { seedUsers , seedGroups } from './seed'
+
+export const populateUsers = () => {
+  models.User.bulkCreate(seedUsers.registered, { fields: ['id','username', 'email', 'password']}).then(() => {
+    return
+  });
+};
+
+export const populateGroups = () => {
+  models.Group.bulkCreate(seedGroups).then((groups) => {
+    groups.forEach((group) => {
+      group.addUser(seedUsers.registered[2].id);
+    });
+  })
+}
 
 export const doBeforeAll = () => {
   before((done) => {
@@ -26,6 +40,10 @@ export const doBeforeAll = () => {
       truncate: true,
       restartIdentity: true
     });
+
+    populateUsers();
+    populateGroups();
+
     done();
   });
 };
@@ -37,6 +55,3 @@ export const doBeforeEach = () => {
   });
 };
 
-export const populateUsers = () => {
-  models.User.bulkCreate(seedUsers.registered);
-}

@@ -9,21 +9,21 @@ export const SIGNIN_FAILURE = 'SIGNIN_FAILURE';
 const signinLoading = () => {
   return {
     type: SIGNIN_LOADING
-  }
+  };
 };
 
 const signinSuccess = (response) => {
   return {
     type: SIGNIN_SUCCESS,
     response
-  }
+  };
 };
 
 const signinFailure = (error) => {
   return {
     type: SIGNIN_FAILURE,
     error
-  }
+  };
 };
 
 export const signinUser = (username, password) => {
@@ -48,5 +48,5 @@ export const signinUser = (username, password) => {
         dispatch(signinFailure(err.response.data.error));
       }
     });
-  }
-}
+  };
+};

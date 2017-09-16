@@ -1,5 +1,6 @@
 $main-color: #26a69a;
 // $main-color: rgba(77, 92, 201, 0.96);
+$grey1: #E0E0E0;
 
 body {
   width: 100%;
@@ -181,6 +182,7 @@ ul.side-nav.fixed:hover {
     position: absolute;
     bottom: 0;
     height: 60px;
+    margin: 20px 30px 0px 0px !important;
     padding: 0px !important;
     border: 2px solid grey;
     border-radius: 15px;
@@ -194,6 +196,7 @@ ul.side-nav.fixed:hover {
       padding-left: 10px;
       border-right: 2px solid grey;
       textarea, textarea:active {
+        resize: none;
         position: relative !important;
         height: 56px;
         border: none;
@@ -234,8 +237,10 @@ ul.side-nav.fixed:hover {
 }
 
 .message-list {
+  border: 5px solid $grey1;
+  border-radius: 10px;
   margin: 10px 0px;
-  max-height: calc(100vh - 190px);
+  max-height: calc(100vh - 200px);
   overflow-y: scroll;
   .message-item {
     // height: 50px;
@@ -243,9 +248,10 @@ ul.side-nav.fixed:hover {
     // margin-bottom: 1px !important;
     // background-color: #eee;
     text-overflow: ellipse;
-    :hover {
-      cursor: pointer;
-    }
+  }
+  :hover {
+    background-color: $grey1;
+    cursor: pointer;
   }
 }
 

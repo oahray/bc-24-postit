@@ -15,6 +15,7 @@ import MessageList from '../components/MessageList';
 import { UsersList, GroupInfo } from '../components/GroupHelpers';
 import { isUserGroup } from '../helpers/groupFunctions';
 
+/** constructor */
 class Group extends Component {
   constructor(props) {
     super(props);
@@ -65,7 +66,6 @@ class Group extends Component {
   }
 
   componentWillReceiveProps(newProps) {
-    // this.forceUpdate();
     if (this.props.selectedGroup && Number(newProps.match.params.groupid) !== this.props.selectedGroup.id) {
       console.log(typeof newProps.match.params.groupid);
       return this.newMessageAdded(Number(newProps.match.params.groupid));
@@ -133,6 +133,9 @@ class Group extends Component {
   sendMessage() {
     if (this.state.content) {
       this.props.sendMessage(this.props.selectedGroup.id, this.state.content, this.state.priority, this.props.token, this.newMessageAdded);
+      this.setState({
+        content: ''
+      });
     }
   }
 
@@ -141,8 +144,8 @@ class Group extends Component {
       return (<Redirect to='/' />);
     }
 
-    if (this.props.groupMessagesLoading || !this.props.selectedGroup) {
-      return <Preloader message='Loading Group Messages...' />
+    if (!this.props.selectedGroup) {
+      return <Preloader message='Loading Group...' />
     }
 
     const messageList = (<MessageList groupMessages={this.props.groupMessages} openMessage={this.openMessage} />);
@@ -151,7 +154,7 @@ class Group extends Component {
       <div className='message-input-container col s12'>
         <div className="row">
           <div className="input-field message-input col s12 m7">
-            <textarea type="text" id="textarea1" placeholder='Type Message Here' onChange={this.onTypeText} />
+            <textarea type="text" value={this.state.content} id="textarea1" placeholder='Type Message Here' onChange={this.onTypeText} />
           </div>
           <div className="input-field col s8 m3">
             <Row>
@@ -162,7 +165,7 @@ class Group extends Component {
                 <option value='urgent'>Urgent</option>
                 <option value='critical'>Critical</option>
               </Input>
-            </Row>  
+            </Row>
           </div>
           <div className="input-field col s4 m2">
             <button className="btn btn-flat white main-text-color waves-effect waves-dark" type="submit" name="action" onClick={this.sendMessage}><i className="material-icons">send</i></button>
@@ -172,7 +175,7 @@ class Group extends Component {
     );
 
     const messages = (<div className='tab-content row'>
-      {messageList}
+      {this.props.groupMessagesLoading ? <Preloader message="Loading group messages..." /> : messageList}
       {messageInput}
     </div>);
 

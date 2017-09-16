@@ -22,7 +22,7 @@
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>3/3</span>
+        <span class='fraction'>6/6</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
@@ -32,12 +32,12 @@
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>0/0</span>
+        <span class='fraction'>1/1</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>3/3</span>
+        <span class='fraction'>6/6</span>
       </div>
     </div>
   </div>
@@ -87,10 +87,38 @@
 42
 43
 44
-45</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -109,6 +137,24 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -134,54 +180,77 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import jwt from 'jsonwebtoken';
 import { User } from '../../models';
 &nbsp;
+export const generateAuth = (id) =&gt; {
+  return jwt.sign({ id, access: 'auth' },
+    process.env.MY_SUPER_SECRET, { expiresIn: 24 * 60 * 60 }).toString();
+}
+&nbsp;
 export const seedUsers = {
   registered: [
     {
-      id: 1,
-      name: 'user11',
-      password: 'user11password',
-      email: 'user1@example.com'
+      id: 101,
+      username: 'user111',
+      password: 'user111password',
+      email: 'user111@example.com'
     },
     {
-      id: 2,
-      name: 'user12',
-      password: 'user12password',
-      email: 'user2@example.com'
+      id: 102,
+      username: 'user112',
+      password: 'user112password',
+      email: 'user112@example.com'
     },
     {
-      id: 3,
-      name: 'user13',
-      password: 'user13password',
-      email: 'user13@example.com'
+      id: 103,
+      username: 'user113',
+      password: 'user113password',
+      email: 'user113@example.com'
     }
-  ],
-&nbsp;
-  tokens: [
-    
   ],
 &nbsp;
   unregistered: [
     {
-      name: 'user21',
+      username: 'user21',
       password: 'user21password',
       email: 'user11@example.com'
     },
     {
-      name: 'user22',
+      username: 'user22',
       password: 'user22password',
       email: 'user22@example.com'
     }
   ]
 };
 &nbsp;
-// export const seedGroups
+export const seedGroups = [
+  {
+    id: 11,
+    name: 'Winterfell',
+    type: 'private',
+    description: 'Winter is coming',
+    createdBy: seedUsers.registered[2].username
+  },
+  {
+    id: 12,
+    name: 'Dorne',
+    type: 'public',
+    description: 'Unbroken, unbowed, unbent',
+    createdBy: seedUsers.registered[2].username
+  },
+  {
+    id: 13,
+    name: 'Dragonstone',
+    type: 'private',
+    description: 'Once home to Targaryens',
+    createdBy: seedUsers.registered[2].username
+  }
+]
 &nbsp;</pre></td></tr>
 </table></pre>
 <div class='push'></div><!-- for sticky footer -->
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Thu Sep 14 2017 08:04:27 GMT+0100 (WAT)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Fri Sep 15 2017 19:55:15 GMT+0100 (WAT)
 </div>
 </div>
 <script src="../../../../prettify.js"></script>

@@ -28,11 +28,8 @@ export const createGroup = (req, res) => {
         message: 'Group created',
         group
       });
-    }).catch(err => res.status(400).send({
-      error: err.errors[0].message
-    }));
-  })
-  .catch(() => res.status(400));
+    });
+  });
 };
 
 // Function to add users to groups with username
@@ -42,11 +39,6 @@ export const addUserToGroup = (req, res) => {
   // Grab groupId from request params
   const groupId = req.params.groupid;
   Group.findById(groupId).then((group) => {
-    if (!group) {
-      return res.status(404).send({
-        error: 'Group does not exist'
-      });
-    }
     // Find a user with that username from request body
     User.findOne({
       where: {
@@ -66,30 +58,53 @@ export const addUserToGroup = (req, res) => {
             error: `${user.username} already in group`
           });
         }
-        group.addUser(user.id);
-        io.emit('Added to group', {
-          user: {
-            id: user.id,
-            name: user.name
-          },
-          group,
-          addedBy: req.currentUser.username
-        });
-        res.status(201).send({
-          message: `${user.username} added to group`
+        group.addUser(user.id)
+        .then(() => {
+          if (process.env.NODE_ENV !== 'test') {
+            io.emit('Added to group', {
+              user: {
+                id: user.id,
+                name: user.name
+              },
+              group,
+              addedBy: req.currentUser.username
+            });
+          }
+          res.status(201).send({
+            message: `${user.username} added to group`
+          });
         });
       });
-    }).catch(() => res.status(400));
+    });
   });
 };
 
 export const removeUserFromGroup = (req, res) => {
+  const username = req.body.username.trim().toLowerCase();
+  const groupUsernames = req.groupUsernames;
   Group.findById(req.params.groupid).then((group) => {
     if (group.createdBy !== req.currentUser.username) {
       return res.status(401).send({
         error: 'Only a group creator can remove members'
       });
     }
+    if (groupUsernames && groupUsernames.indexOf(username) === -1) {
+      return res.status(400).send({
+        error: 'No such user in specified group'
+      });
+    }
+    if (username === req.currentUser.username) {
+      return res.status(400).send({
+        error: 'You cannot remove yourself from a group. Leave instead'
+      });
+    }
+    User.findOne({ where: { username } })
+    .then((user) => {
+      group.removeUser(user.id)
+      .then(() => res.status(201).send({
+        message: `${user.username} removed from group`
+      }));
+    });
   });
 };
 
@@ -97,36 +112,23 @@ export const leaveGroup = (req, res) => {
   Group.findById(req.params.groupid).then((group) => {
     group.getUsers().then((users) => {
       if (users.length > 1) {
-        group.removeUser(req.currentUser.id)
+        return group.removeUser(req.currentUser.id)
         .then(() => res.status(201).send({
           message: `${req.currentUser.username} has left the group`,
         }));
-      } else {
-        group.destroy().then(() => res.status(201).send({
-          message: `${req.currentUser.username} left, and group deleted`
-        }));
       }
-    })
-    .catch(err => res.status(400).send(err));
-  }).catch(() => res.status(400).send({
-    error: 'Error locating group with that id'
-  }));
+      group.destroy().then(() => res.status(201).send({
+        message: `${req.currentUser.username} left, and group deleted`
+      }));
+    });
+  });
 };
 
 export const getGroupUsers = (req, res) => {
-  const groupId = req.params.groupid;
-  Group.findById(groupId).then((group) => {
-    if (!group) {
-      return res.status(404).send({
-        error: 'Group does not exist'
-      });
-    }
-    group.getUsers().then(users =>
-      res.send({ group, users }));
-  })
-  .catch(err => res.status(400).send({
-    error: err.errors[0].message
-  }));
+  res.send({
+    group: req.currentGroup,
+    users: req.groupUsers
+  });
 };
 
 export const searchNonMembers = (req, res) => {

@@ -4,15 +4,15 @@ import { Redirect, Link } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { Modal, Row, Input, Button } from 'react-materialize';
 
-import { signinUser, verifyAuth, clearFormError } from '../actions'
+import { signinUser, verifyAuth, clearFormError } from '../actions';
 
 class SigninForm extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       username: '',
       password: ''
-    }
+    };
 
     this.onFormSubmit = this.onFormSubmit.bind(this);
   }
@@ -30,7 +30,7 @@ class SigninForm extends Component {
 
   render() {
     if (this.props.isLoggedIn) { 
-      return (<Redirect to="/" />)
+      return (<Redirect to="/" />);
     }
 
     return (
@@ -43,39 +43,42 @@ class SigninForm extends Component {
           </div>
           <div className='input-field col s12'>
             <i class="material-icons prefix">person</i>
-            <input type="text" id="signin-username" class="autocomplete" autoFocus value={this.state.username} required onChange={event => this.setState({ username: event.target.value})} />
+            <input type="text" id="signin-username" class="autocomplete" autoFocus value={this.state.username} required onChange={event => this.setState({ username: event.target.value })} />
             <label for="signin-username">Username</label>
           </div>
           <br/>
           <div className='input-field col s12'>
             <i class="material-icons prefix">lock</i>
-            <input type="password" id='signin-password' value={this.state.password} required onChange={event => this.setState({ password: event.target.value})} />
+            <input type="password" id='signin-password' value={this.state.password} required onChange={event => this.setState({ password: event.target.value })} />
             <label for="signin-password">Password</label>
           </div>
           <div className='center' >
-            <Button className={`white teal-text ${this.props.setUserLoading? 'disabled' : ''}`} waves='teal' type='submit'> {this.props.setUserLoading? 'Please wait...' : 'Submit'} </Button>
+            <Button className={`white teal-text ${this.props.signinLoading ? 'disabled' : ''}`} waves='teal' type='submit'> {this.props.signinLoading ? 'Please wait...' : 'Submit'} </Button>
           </div>
           <div className='center'>
             <p className='center'> Forgot Password? <Link to="/forgotpassword">Get Recovery Email</Link></p>
             <p className='center'> New to Postit? <Link to="/signup">Sign Up</Link></p>
           </div>
         </form>
-      </div> 
-    )
+      </div>
+    );
   }
 }
 
 function mapStateToProps(state) {
   return {
     isLoggedIn: state.isAuthenticated,
-    userLoading: state.setUserLoading,
+    signinLoading: state.authFormLoading,
     signinFailed: state.authFormFailed,
     signinError: state.authFormErrorMessage
-  }
+  };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ signinUser, verifyAuth, clearFormError }, dispatch);
-};
+  return bindActionCreators({ signinUser,
+    verifyAuth,
+    clearFormError
+  }, dispatch);
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(SigninForm)
+export default connect(mapStateToProps, mapDispatchToProps)(SigninForm);

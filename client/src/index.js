@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { BrowserRouter as Router, browserHistory } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import './styles/App.scss'
 
@@ -12,7 +12,7 @@ render(
     <Router>
       <App store={store} />
     </Router>
-  </Provider>, 
+  </Provider>,
   document.getElementById('root')
 );
 

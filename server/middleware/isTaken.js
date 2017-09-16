@@ -18,15 +18,13 @@ export default (req, res, next) => {
         error: 'Username already taken.'
       });
     }
+    User.findOne({ where: { email } }).then((userAgain) => {
+      if (userAgain) {
+        res.status(400).send({
+          error: 'Email already taken.'
+        });
+      }
+      next();
+    });
   });
-
-  User.findOne({ where: { email } }).then((user) => {
-    if (user) {
-      res.status(400).send({
-        error: 'Email already taken.'
-      });
-    }
-  });
-
-  next();
 };

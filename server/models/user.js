@@ -73,6 +73,13 @@ export default (sequelize, DataTypes) => {
     }
   });
 
+  User.beforeBulkCreate((users, options) =>
+    users.forEach((user) => {
+      user.password = bcrypt.hashSync(user.get('password'),
+      bcrypt.genSaltSync(10), null);
+    })
+  );
+
   User.associate = (models) => {
     // associations can be defined here
     User.hasMany(models.Message, {

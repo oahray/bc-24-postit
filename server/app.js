@@ -18,6 +18,8 @@ const compiler = webpack(webpackConfig);
 const env = process.env.NODE_ENV || 'development';
 console.log('>>>>>> ENV: ', env);
 
+dotenv.config();
+
 if (env === 'development') {
   dotenv.config();
   app.use(webpackDevMiddleware(compiler, {
