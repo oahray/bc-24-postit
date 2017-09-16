@@ -3,3 +3,5 @@ node_modules/
 playground/
 .vscode/
 .env
+bundle.min.js
+

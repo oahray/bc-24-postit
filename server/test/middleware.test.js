@@ -3,7 +3,7 @@ import request from 'supertest';
 import app from '../app';
 import models from '../models';
 import { doBeforeAll, doBeforeEach, populateUsers } from './seeders/testHooks';
-import { seedUsers, tokens, generateAuth } from './seeders/seed';
+import { seedUsers, seedGroups, generateAuth } from './seeders/seed';
 
 describe('Middleware functions:', () => {
   // doBeforeAll();
@@ -106,32 +106,14 @@ describe('Middleware functions:', () => {
       });
     });
     it('should not allow users access a groups they do not belong to', (done) => {
-      const name = 'Test Group 2';
-      const description = 'More testing things';
-      const type = 'private';
       request(app)
-      .post('/api/group')
-      .set('x-auth', generateAuth(101))
-      .send({
-        name,
-        description,
-        type
-      })
-      .expect(201)
+      .get(`/api/group/${seedGroups[1].id}/users`)
+      .set('x-auth', generateAuth(seedUsers.registered[1].id))
+      .expect(401)
       .end((err, res) => {
-        if (err) {
-          return done(err);
-        }
-        expect(res.body.group.name).toBe(name);
-        const groupId = res.body.group.id;
-        request(app)
-        .get(`/api/group/${groupId}/users`)
-        .set('x-auth', generateAuth(102))
-        .expect(401)
-        .end((err, res) => {
-          expect(res.body.error).toBe('You must belong to a group to interact with it');
-          done();
-        })
+        expect(res.body.error).toBe('You must belong to a group to interact with it');
+        done();
+      })
       });
     });
   });
@@ -199,4 +181,4 @@ describe('Middleware functions:', () => {
       })
     });
   });
-});
+

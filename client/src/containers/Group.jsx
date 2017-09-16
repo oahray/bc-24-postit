@@ -133,6 +133,9 @@ class Group extends Component {
   sendMessage() {
     if (this.state.content) {
       this.props.sendMessage(this.props.selectedGroup.id, this.state.content, this.state.priority, this.props.token, this.newMessageAdded);
+      this.setState({
+        content: ''
+      });
     }
   }
 
@@ -141,8 +144,8 @@ class Group extends Component {
       return (<Redirect to='/' />);
     }
 
-    if (this.props.groupMessagesLoading || !this.props.selectedGroup) {
-      return <Preloader message='Loading Group Messages...' />
+    if (!this.props.selectedGroup) {
+      return <Preloader message='Loading Group...' />
     }
 
     const messageList = (<MessageList groupMessages={this.props.groupMessages} openMessage={this.openMessage} />);
@@ -151,7 +154,7 @@ class Group extends Component {
       <div className='message-input-container col s12'>
         <div className="row">
           <div className="input-field message-input col s12 m7">
-            <textarea type="text" id="textarea1" placeholder='Type Message Here' onChange={this.onTypeText} />
+            <textarea type="text" value={this.state.content} id="textarea1" placeholder='Type Message Here' onChange={this.onTypeText} />
           </div>
           <div className="input-field col s8 m3">
             <Row>
@@ -172,7 +175,7 @@ class Group extends Component {
     );
 
     const messages = (<div className='tab-content row'>
-      {messageList}
+      {this.props.groupMessagesLoading ? <Preloader message="Loading group messages..." /> : messageList}
       {messageInput}
     </div>);
 

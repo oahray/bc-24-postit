@@ -17,7 +17,7 @@ export const seedUsers = {
     {
       id: 102,
       username: 'user112',
-      password: 'user12password',
+      password: 'user112password',
       email: 'user112@example.com'
     },
     {
@@ -42,10 +42,26 @@ export const seedUsers = {
   ]
 };
 
- export const tokens = [
-  generateAuth(seedUsers.registered[0].id),
-  generateAuth(seedUsers.registered[1].id),
-  generateAuth(seedUsers.registered[2].id)
+export const seedGroups = [
+  {
+    id: 11,
+    name: 'Winterfell',
+    type: 'private',
+    description: 'Winter is coming',
+    createdBy: seedUsers.registered[2].username
+  },
+  {
+    id: 12,
+    name: 'Dorne',
+    type: 'public',
+    description: 'Unbroken, unbowed, unbent',
+    createdBy: seedUsers.registered[2].username
+  },
+  {
+    id: 13,
+    name: 'Dragonstone',
+    type: 'private',
+    description: 'Once home to Targaryens',
+    createdBy: seedUsers.registered[2].username
+  }
 ]
-
-// export const seedGroups

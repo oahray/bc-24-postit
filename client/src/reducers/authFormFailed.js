@@ -3,18 +3,18 @@ import { SIGNIN_LOADING, SIGNIN_SUCCESS, SIGNIN_FAILURE, SIGNUP_LOADING, SIGNUP_
 export default function (state = false, action) {
   switch (action.type) {
     case SIGNIN_LOADING:
-      return false
+      return false;
     case SIGNIN_SUCCESS:
-      return false
+      return false;
     case SIGNIN_FAILURE:
-      return true
+      return true;
     case SIGNUP_LOADING:
-      return false
+      return false;
     case SIGNUP_SUCCESS:
-      return false
+      return false;
     case SIGNUP_FAILURE:
-      return true
-    default: 
-      return state
+      return true;
+    default:
+      return state;
   }
 }

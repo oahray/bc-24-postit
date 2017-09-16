@@ -151,9 +151,10 @@ describe('Data Models:', () => {
   describe('#Group model', () => {
     it('should create a Group instance', (done) => {
       models.Group.create({
-        name: "My first test group",
+        name: 'My first test group',
         type: 'private',
-        createdBy: "User1"
+        description: '',
+        createdBy: 'User1'
       })
       .then((group) => {
         expect(group).toExist;
@@ -165,7 +166,8 @@ describe('Data Models:', () => {
 
     it('should be the class of the created instance', (done) => {
       models.Group.create({
-        name: "My test group",
+        name: 'My test group',
+        description: '',
         createdBy: 'User2',
         type: 'public'
       })

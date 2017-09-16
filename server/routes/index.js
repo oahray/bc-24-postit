@@ -54,6 +54,9 @@ module.exports = (app) => {
   app.post('/api/group/:groupid/user', authenticate, isValidUsername,
   isGroupMember, groupsController.addUserToGroup);
 
+  app.delete('/api/group/:groupid/user', authenticate, isValidUsername,
+  isGroupMember, groupsController.removeUserFromGroup);
+
   app.post('/api/group/:groupid/leave', authenticate,
   isGroupMember, groupsController.leaveGroup);
 

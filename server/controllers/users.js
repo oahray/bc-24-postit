@@ -39,7 +39,7 @@ export const signin = (req, res) => {
   .then((user) => {
     if (!user) {
       return res.status(401).send({
-        error: 'User not found'
+        error: 'Username is incorrect'
       });
     }
     if (!user.validPassword(body.password)) {
