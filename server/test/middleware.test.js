@@ -79,10 +79,12 @@ describe('Middleware functions:', () => {
   });
 
   describe('isGroupMember Middleware', () => {
+    const creatorToken = generateAuth(seedUsers.registered[2].id);
+    const otherUserToken = generateAuth(seedUsers.registered[1].id);
     it('should not allow users access a group route without passing a group id', (done) => {
       request(app)
       .get(`/api/group/ /users`)
-      .set('x-auth', generateAuth(1))
+      .set('x-auth', creatorToken)
       // .expect(400)
       .end((err, res) => {
         if (err) {
@@ -95,7 +97,7 @@ describe('Middleware functions:', () => {
     it('should not allow users access a group route with a non-existent group id', (done) => {
       request(app)
       .get(`/api/group/56/users`)
-      .set('x-auth', generateAuth(1))
+      .set('x-auth', creatorToken)
       // .expect(400)
       .end((err, res) => {
         if (err) {
@@ -105,10 +107,10 @@ describe('Middleware functions:', () => {
         done();
       });
     });
-    it('should not allow users access a groups they do not belong to', (done) => {
+    it('should not allow users access a group they do not belong to', (done) => {
       request(app)
       .get(`/api/group/${seedGroups[1].id}/users`)
-      .set('x-auth', generateAuth(seedUsers.registered[1].id))
+      .set('x-auth', otherUserToken)
       .expect(401)
       .end((err, res) => {
         expect(res.body.error).toBe('You must belong to a group to interact with it');
