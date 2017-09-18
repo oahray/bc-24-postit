@@ -38,18 +38,36 @@ class SideNav extends Component {
   }
 
   render() {
-    let sideList = (
-      <ul className='side-nav fixed' id='side-nav'>
-        <li className='center teal-text'><h3>Postit</h3></li>
-        <li className='my-list-item'><NavLink to='/'>About</NavLink></li>
+    let navList = (
+      <ul className='right' id=''>
+        {/* <li className='teal-text'><h3>Postit</h3></li> */}
         <li className='my-list-item'><NavLink to='/signin'>Signin</NavLink></li>
         <li className='my-list-item'><NavLink to='/signup'>Signup</NavLink></li>
         <li className='my-list-item'><a target='_blank'
-        href='https://github.com.oahray/bc-24-postit'>View Project On Github</a></li>
+        href='https://github.com/oahray/bc-24-postit'>View On Github</a></li>
       </ul>
     );
+    let sideList = null;
+    //   <ul className='' id=''>
+    //     <li className='center teal-text'><h3>Postit</h3></li>
+    //     <li className='my-list-item'><NavLink to='/'>About</NavLink></li>
+    //     <li className='my-list-item'><NavLink to='/signin'>Signin</NavLink></li>
+    //     <li className='my-list-item'><NavLink to='/signup'>Signup</NavLink></li>
+    //     <li className='my-list-item'><a target='_blank'
+    //     href='https://github.com.oahray/bc-24-postit'>View Project On Github</a></li>
+    //   </ul>
+    // );
+
+    let sideListActivator = null;
 
     if (this.props.isLoggedIn) {
+      navList = null;
+
+      sideListActivator = (
+        <a href='#' data-activates='side-nav' className='button-collapse'>
+          <i className='material-icons'>menu</i>
+        </a>);
+
       sideList = (
         <ul className='side-nav fixed' id='side-nav'>
           <li><div class='user-view center row'>
@@ -58,7 +76,7 @@ class SideNav extends Component {
              <a class='white-text email'>{this.props.user.email}</a> 
           </div>
           </li>
-          <li className='search'> 
+          <li className='search'>
             {this.props.inGroupPage ? <SearchBar searchUsers={this.searchUsers}
             user={this.props.user} selectedGroup={this.props.selectedGroup} /> : null}
           </li>
@@ -95,9 +113,9 @@ class SideNav extends Component {
         <div className='navbar-fixed'>
           <nav>
             <div className='nav-wrapper lighten-1'>
-              <a href='#!' className='brand-logo center'>Postit</a>
-              <a href='#' data-activates='side-nav' className='button-collapse'><i className='material-icons'>menu</i></a>
-              {/* {navList} */}
+              <a href='/' className='brand-logo'>Postit</a>
+              {sideListActivator}
+              {navList}
             </div>
           </nav>
         </div>

@@ -63,7 +63,7 @@ class App extends Component {
       return (
         <div class='main'>
           { appRoutes }
-          { stateButton }
+          {/* { stateButton } */}
         </div>
       );
     }

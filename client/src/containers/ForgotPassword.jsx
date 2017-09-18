@@ -49,6 +49,9 @@ class ForgotPassword extends Component {
           {<div className="col s12">
             {resetResponseMessage}
           </div>}
+          <div className='teal-text'>
+            <p className='center'> Remember your password? <Link to="/signin">Sign In </Link></p>
+          </div>
         </div>
       </form>
     );

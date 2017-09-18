@@ -18,9 +18,7 @@ const routeHandler = (props, component) => {
     <BrowserRouter>
       <div className='main'>
         <Route component={props.nav} />
-        <div className='main-container'>
-          { component }
-        </div>
+        { component }
       </div>
   </BrowserRouter>
   )
@@ -28,29 +26,33 @@ const routeHandler = (props, component) => {
 
 export function GuestRoutes(props) {
   const unauthRoutes = (
-    <Switch>
-      <Route exact path="/" component={GuestHome} />
-      <Route exact path="/signin" component={Signin} />
-      <Route exact path="/signup" component={Signup} />
-      <Route exact path="/forgotpassword" component={ForgotPassword} />
-      <Route exact path="/resetpassword" component={ResetPassword} />
-      <Route exact path="*" component={NotFound} />
-    </Switch>
+    <div>
+      <Switch>
+        <Route exact path="/" component={GuestHome} />
+        <Route exact path="/signin" component={Signin} />
+        <Route exact path="/signup" component={Signup} />
+        <Route exact path="/forgotpassword" component={ForgotPassword} />
+        <Route exact path="/resetpassword" component={ResetPassword} />
+        <Route exact path="*" component={NotFound} />
+      </Switch>
+    </div>
   );
   return routeHandler(props, unauthRoutes);
 }
 
 export function UserRoutes(props) {
   const authRoutes = (
-    <Switch>
-      <Route exact path='/' component={UserHome} />
-      <Route exact path='/groups/new' component={NewGroup} />
-      <Route exact path='/groups/:groupid/messages'
-      component={Group} />
-      <Route exact path='/groups/:groupid/addusers' component={SearchResults}/>
-      <Route exact path="/edit" component={EditProfile} />
-      <Route exact path="*" component={NotFound} /> 
-    </Switch>
+    <div className='main-container'>
+      <Switch>
+        <Route exact path='/' component={UserHome} />
+        <Route exact path='/groups/new' component={NewGroup} />
+        <Route exact path='/groups/:groupid/messages'
+        component={Group} />
+        <Route exact path='/groups/:groupid/addusers' component={SearchResults}/>
+        <Route exact path="/edit" component={EditProfile} />
+        <Route exact path="*" component={NotFound} /> 
+      </Switch>
+    </div>
   );
   return routeHandler(props, authRoutes);
 }

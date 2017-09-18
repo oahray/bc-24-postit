@@ -69,7 +69,7 @@ class SignupForm extends Component {
           <div className='center'>
             <Button className={`white teal-text ${this.props.setUserLoading? 'disabled' : ''}`} waves='light' type='submit'>{this.props.setUserLoading ? 'Please wait...' : 'Submit'}</Button>
           </div>
-          <div className='teal-text'>
+          <div className='main-text-color'>
             <p className='center'> Have an account? <Link to="/signin">Sign In </Link></p>
           </div>
         </form>
