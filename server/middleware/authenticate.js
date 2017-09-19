@@ -9,7 +9,7 @@ export default (req, res, next) => {
       error: 'You need to signup or login first'
     });
   }
-  return jwt.verify(token, process.env.MY_SUPER_SECRET, (err, decoded) => {
+  jwt.verify(token, process.env.MY_SUPER_SECRET, (err, decoded) => {
     if (err) {
       return res.status(401).send({ error: err });
     }

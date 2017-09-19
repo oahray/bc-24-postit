@@ -22,7 +22,7 @@ export default (req, res, next) => {
       req.groupUsernames = groupUsers.map(user => user.username);
       req.currentGroup = group;
       const groupUserIds = groupUsers.map(user => user.id);
-      
+
       if (groupUserIds.indexOf(req.currentUser.id) === -1) {
         return res.status(401).send({
           error: 'You must belong to a group to interact with it'
