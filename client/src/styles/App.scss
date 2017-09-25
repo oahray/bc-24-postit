@@ -1,10 +1,13 @@
-$main-color: #26a69a;
-// $main-color: rgba(77, 92, 201, 0.96);
+$main-color: #0C6C85;
+$secondary-color: #107D85;
+// $main-color: 
 $grey1: #E0E0E0;
+$body-background: #f8f8f8;
 
 body {
   width: 100%;
   font-size: 14px;
+  background-color: $body-background;
 }
 
 .main-text-color {
@@ -13,10 +16,6 @@ body {
 
 .main-background-color {
   background-color: $main-color;
-}
-
-.modal {
-  min-height: 80vh;
 }
 
 .main-body {
@@ -68,8 +67,11 @@ nav, .nav-wrapper {
 
 .forms {
   margin: 0 auto;
+  max-width: 500px;
+  padding: 30px 0px;
+  vertical-align: center;
   .row {
-    padding: 0px 20px;
+    padding: 0px 20px 20px 20px;
     .input-field {
       margin: 0 auto;
       padding: 10px;
@@ -81,8 +83,16 @@ nav, .nav-wrapper {
   }
 }
 
+.nav-wrapper {
+  padding-left: 20px;
+}
+
 ul.side-nav.fixed:hover {
     overflow-y: auto;
+}
+
+.group-users-header {
+  padding-left: 10px;
 }
 
 .side-nav.fixed {
@@ -158,7 +168,7 @@ ul.side-nav.fixed:hover {
 }
 
 .user-home-content {
-  padding: 0px 20px;
+  padding: 10px 20px;
   a {
     color: $main-color;
   }
@@ -168,7 +178,7 @@ ul.side-nav.fixed:hover {
   padding: 0px 5px;
   .tab-content {
     position: relative;
-    padding: 0px 5px;
+    padding: 0px;
     min-height: 100px;
     height: calc(100vh - 130px);
   }
@@ -182,7 +192,8 @@ ul.side-nav.fixed:hover {
     position: absolute;
     bottom: 0;
     height: 60px;
-    margin: 20px 30px 0px 0px !important;
+    width: calc(100% - 35px);
+    margin: 0px !important;
     padding: 0px !important;
     border: 2px solid grey;
     border-radius: 15px;
@@ -191,11 +202,12 @@ ul.side-nav.fixed:hover {
       box-shadow: none!important;
     }
     .message-input {
-      margin: 0 auto;
+      margin: 0 auto !important;
       height: 58px;
       padding-left: 10px;
       border-right: 2px solid grey;
       textarea, textarea:active {
+        margin: 0 auto;
         resize: none;
         position: relative !important;
         height: 56px;
@@ -208,26 +220,36 @@ ul.side-nav.fixed:hover {
         box-shadow: none;
       }
     }
-    div {
-      margin: 0 auto;
-      padding-left: 3px;
-      div {
-        margin-top: 3px;
-        .message-priority-select {
-          max-height: 50px;
-          margin: 0 auto;
-          padding: 0px;
-        }
-        button {
-          margin-top: 7px;
-          i {
-            text-align: center;
-            width: 28px;
-            font-size: 32px;
-          }
+
+    .input-field {
+      margin-top: 3px;
+      .message-priority-select {
+        max-height: 50px;
+        margin: 0 auto;
+        padding: 0px;
+      }
+    }
+    .button-container {
+      padding: 0px;
+      margin-left: 0px;
+      button {
+        margin-top: 7px;
+        width: 60px;
+        padding: 0px;
+        background: $body-background !important;
+        i {
+          text-align: left;
+          width: 28px;
+          font-size: 32px;
         }
       }
     }
+  }
+}
+
+.pointer {
+  :hover {
+    cursor: pointer;
   }
 }
 
@@ -240,13 +262,10 @@ ul.side-nav.fixed:hover {
   border: 5px solid $grey1;
   border-radius: 10px;
   margin: 10px 0px;
-  max-height: calc(100vh - 200px);
+  height: calc(100vh - 200px);
   overflow-y: scroll;
   .message-item {
-    // height: 50px;
     padding: 0px 20px !important;
-    // margin-bottom: 1px !important;
-    // background-color: #eee;
     text-overflow: ellipse;
   }
   :hover {
@@ -288,9 +307,29 @@ ul.side-nav.fixed:hover {
   }
 }
 
+.confirm-modal {
+  width: 500px !important;
+  height: 200px !important;
+}
+
+.form-modal {
+  width: 600px;
+}
+
 .guest-home {
   background-color: #f8f8f8 !important;
   padding-bottom: 20px;
+  .guest-home-header {
+    color: $main-color;
+    font-weight: bold;
+    text-shadow: 5px 5px grey;
+    margin-top: 20px;
+    font-size: 5em;
+  }
+  .guest-home-text {
+    font-size: 1.4em;
+    color: $secondary-color;
+  }
   #guest-carousel {
     padding: 0 auto;
     height: 270px !important;

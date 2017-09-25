@@ -1,3 +1,4 @@
+import * as _ from 'lodash';
 import { Group, User, Message } from '../models';
 import { transporter, helperOptions } from '../config/nodemailer';
 
@@ -131,10 +132,14 @@ export const getGroupUsers = (req, res) => {
   });
 };
 
+// Get memebers that are not in the group
+// implement pagination
 export const searchNonMembers = (req, res) => {
   const groupId = req.params.groupid;
   let { username } = req.query;
-  const { offset, limit } = req.query;
+  let { offset, limit } = req.query;
+  limit = Number(limit);
+  offset = Number(offset);
   if (!username) {
     username = '';
   }
@@ -145,11 +150,11 @@ export const searchNonMembers = (req, res) => {
       }
     }
   };
-  if (Number(offset) && typeof Number(offset) === 'number') {
+  if (offset && typeof offset === 'number') {
     searchOptions.offset = Number(offset);
   }
 
-  if (Number(limit) && typeof Number(limit) === 'number') {
+  if (limit && typeof limit === 'number') {
     searchOptions.limit = Number(limit);
   }
 
@@ -160,15 +165,32 @@ export const searchNonMembers = (req, res) => {
     .then((usernames) => {
       searchOptions.where.username.$notIn = usernames;
       User.findAndCountAll(searchOptions)
-      .then(result => res.status(200).send({
-        count: result.count,
-        users: result.rows
-      }));
+      .then((result) => {
+        const totalCount = result.count;
+        let pageCount = 1;
+
+        if (!offset) {
+          offset = 0;
+        }
+
+        if (!limit) {
+          limit = totalCount;
+        }
+
+        pageCount = Math.ceil(totalCount / limit);
+        const page = Math.ceil((offset + limit) / limit);
+        const pageSize = result.rows.length;
+        res.status(200).send({
+          page,
+          pageCount,
+          pageSize,
+          totalCount,
+          users: result.rows
+        });
+      });
     });
   })
-  .catch(() => res.status(400).send({
-    error: 'Failed to retrieve data. Invalid request'
-  }));
+  .catch(() => res.status(500));
 };
 
 export const sendMessageToGroup = (req, res) => {
@@ -211,28 +233,27 @@ export const sendMessageToGroup = (req, res) => {
         transporter.sendMail(
           helperOptions('You', bcc, subject, html), (error, info) => {
             if (error) {
-              return console.log({ error });
+              return console.log('Message could not be sent');
             }
-            console.log('The message was sent', info);
+            console.log('The message was sent');
           }
         );
       }
-      const io = req.app.get('io');
-      io.emit('Message posted', {
-        message: {
-          sender: message.sender
-        },
-        group: {
-          id: group.id,
-          name: group.name
-        }
-      });
+      if (process.env.NODE_ENV !== 'test') {
+        const io = req.app.get('io');
+        io.emit('Message posted', {
+          message: {
+            sender: message.sender
+          },
+          group: {
+            id: group.id,
+            name: group.name
+          }
+        });
+      }
       res.status(201).send({ message });
-    }).catch(err => res.status(400).send({
-      // error: 'Failed to send the message'
-      err
-    }));
-  }).catch(() => res.status(400));
+    });
+  }).catch(() => res.status(500));
 };
 
 export const getGroupMessages = (req, res) => {
@@ -241,116 +262,71 @@ export const getGroupMessages = (req, res) => {
   Message.findAll({
     where: {
       groupId
-    }
+    },
+    order: [['createdAt', 'DESC']]
   }).then(messages => res.status(200).send({ group, messages }))
-    .catch(err => res.status(400).send(err));
+    .catch(err => res.status(500).send(err));
 };
 
 export const markAsRead = (req, res) => {
   const user = req.currentUser;
   const messageId = req.params.messageid;
+  if (!Number(messageId)) {
+    return res.status(400).send({
+      error: 'Valid message id is required'
+    });
+  }
   Message.findById(messageId)
   .then((message) => {
     const readers = message.readBy.split(',');
+    let readMessage = message;
     if (message && (user.username !== message.sender)
       && (readers.indexOf(user.username)) === -1) {
       message.update({
         readBy: `${message.readBy},${user.username}`
       })
-      .then(update => res.status(201).send({ update }))
-      .catch(err => res.status(400).send(err));
-    } else {
-      return res.status(201);
+      .then((update) => {
+        readMessage = update;
+      });
     }
+    return res.status(201).send({
+      update: readMessage
+    });
   });
 };
 
-// export const renameGroup = (req, res) => {
-//   const name = req.body.name;
-//   if (!name) {
-//     return res.send({
-//       error: 'Group name required.'
-//     });
-//   }
-//   Group.findById(req.params.groupid).then((group) => {
-//     group.update({ name })
-//     .then(update => res.status(201).send({
-//       message: 'Group name succesfully changed',
-//       update
-//     })).catch((err) => {
-//       if (err.message) {
-//         return res.status(400).send({
-//           error: err.message
-//         });
-//       }
-//       return res.status(400).send({
-//         error: 'Error renaming group'
-//       });
-//     });
-//   });
-// };
+export const editGroupInfo = (req, res) => {
+  const groupId = req.params.groupid;
+  const {name, description, type} = _.pick(
+    req.body, ['name', 'description', 'type']
+  );
+  if (!name) {
+    return res.status(400).send({
+      error: 'Group name is required'
+    });
+  }
+  const update = {
+    name,
+    description
+  };
+  if (!description) {
+    update.description = null;
+  }
 
-// export const changeGroupType = (req, res) => {
-//   if (!req.body.type) {
-//     return res.status(400).send({
-//       error: 'Group type required.'
-//     });
-//   }
-//   let type = req.body.type.trim().toLowerCase();
-//   if (type !== 'private') {
-//     type = 'public';
-//   }
-//   Group.findById(req.params.groupid).then((group) => {
-//     if (type === group.type) {
-//       return res.status(400).send({
-//         error: 'Group type same as current.'
-//       });
-//     }
-//     group.update({ type })
-//     .then(update => res.status(201).send({
-//       message: 'Group type succesfully changed',
-//       update
-//     })).catch((err) => {
-//       if (err.message) {
-//         return res.status(400).send({
-//           error: err.message
-//         });
-//       }
-//       return res.status(400).send({
-//         error: 'Error updating group type'
-//       });
-//     });
-//   });
-// };
+  if (type === 'public' || type === 'private') {
+    update.type = type;
+  }
 
-// export const changeGroupDescription = (req, res) => {
-//   const description = req.body.description;
-//   if (!description) {
-//     return res.send({
-//       error: 'Group description required'
-//     });
-//   } else if (description.length > 75) {
-//     return res.status(400).send({
-//       error: 'Group description should not be more than 75 characters'
-//     });
-//   }
-//   Group.findById(req.params.groupid).then((group) => {
-//     group.update({ description })
-//     .then(update => res.status(201).send({
-//       message: 'Group description succesfully updated',
-//       update
-//     })).catch((err) => {
-//       if (err.message) {
-//         return res.status(400).send({
-//           error: err.message
-//         });
-//       }
-//       return res.status(400).send({
-//         error: 'Error updating group description'
-//       });
-//     });
-//   });
-// };
+  Group.findById(groupId)
+  .then((group) => {
+    group.update(update)
+    .then(updatedGroup => res.status(201).send({
+      message: 'Group info successfully updated',
+      group: updatedGroup
+    }))
+    .catch(() => res.status(500).send());
+  });
+};
 
 export const deleteGroup = (req, res) => {
   Group.findById(req.params.groupid).then((group) => {
@@ -361,7 +337,6 @@ export const deleteGroup = (req, res) => {
     }
     group.destroy().then(() => res.status(201).send({
       message: 'Group successfully deleted'
-    }))
-    .catch(err => res.send(err));
+    }));
   });
 };

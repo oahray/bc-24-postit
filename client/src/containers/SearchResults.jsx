@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Redirect } from 'react-router-dom';
 import { getGroupMessages, inGroupPage, clearUserSearchTerm,
-  searchUsers, addUserToGroup, getGroupUsers } from '../actions';
+  searchUsers, addUserToGroup, removeUser, getGroupUsers } from '../actions';
 import { UsersList } from '../components/GroupHelpers';
 
 class SearchResult extends Component {
@@ -20,6 +20,7 @@ class SearchResult extends Component {
     this.groupId = this.props.match.params.groupid;
     this.searchDone = this.searchDone.bind(this);
     this.addUser = this.addUser.bind(this);
+    this.removeUser = this.removeUser.bind(this);
     this.updateSearchResult = this.updateSearchResult.bind(this);
     this.onPageChange = this.onPageChange.bind(this);
     this.previousPage = this.previousPage.bind(this);
@@ -37,6 +38,9 @@ class SearchResult extends Component {
   }
 
   componentDidMount() {
+    setTimeout(() => {
+      $('.modal').modal();
+    }, 500);
     const socket = io();
     this.props.inGroupPage(true);
     this.props.getGroupUsers(this.groupId, this.props.token);
@@ -68,6 +72,15 @@ class SearchResult extends Component {
     );
   }
 
+  removeUser(username) {
+    this.props.removeUser(username, this.props.selectedGroup.id,
+    this.updateUsersList, this.props.token);
+  }
+
+  updateUsersList() {
+    this.props.getGroupUsers(this.groupId, this.props.token);
+  }
+
   updateSearchResult() {
     this.props.searchUsers(
       this.props.match.params.groupid,
@@ -80,7 +93,6 @@ class SearchResult extends Component {
 
   onPageChange(e) {
     if (e.target.id !== this.state.page) {
-      console.log('Page changed!');
       this.setState({
         page: e.target.id,
         offset: 10 * (e.target.id - 1)
@@ -90,7 +102,6 @@ class SearchResult extends Component {
   }
 
   previousPage() {
-    console.log('Page changed!');
     if (this.state.page > 1) {
       this.setState({
         page: this.state.page - 1,
@@ -101,7 +112,7 @@ class SearchResult extends Component {
   }
 
   nextPage() {
-    const lastPage = Math.ceil(this.props.userSearchResults.count / this.state.limit);
+    const lastPage = Math.ceil(this.props.userSearchResults.totalCount / this.state.limit);
     if (this.state.page < lastPage) {
       this.setState({
         page: this.state.page + 1,
@@ -129,9 +140,9 @@ class SearchResult extends Component {
           </div>
 
           <div className='search-list-container col s10 offset-s1 m8 offset-m2 l6 offset-l3'>
-            <h6>{this.props.userSearchResults.count} found</h6>
-            <ul className='row list-group'> 
-              {this.props.userSearchResults.users?(this.props.userSearchResults.users).map((user) => <li className="" key={user.id}><div className='col s12 list-item grey lighten-3'><strong>{user.username}</strong> <br /> <small>{user.about}</small> <span className='right'><a className='add-user-icon teal-text' onClick={() => this.addUser(user.username)}><i className='material-icons'>person_add</i></a></span></div><hr/></li>) : null }
+            <h6>{this.props.userSearchResults.totalCount} found</h6>
+            <ul className='row list-group'>
+              {this.props.userSearchResults.users ? (this.props.userSearchResults.users).map((user) => <li className="" key={user.id}><div className='col s12 list-item grey lighten-3'><strong>{user.username}</strong> <br /> <small>{user.about}</small> <span className='right'><a className='add-user-icon teal-text' onClick={() => this.addUser(user.username)}><i className='material-icons'>person_add</i></a></span></div><hr/></li>) : null }
             </ul>
           </div>
 
@@ -142,9 +153,9 @@ class SearchResult extends Component {
               onClick={this.previousPage}
               ><a href="#!"><i class="material-icons">chevron_left</i></a></li>
 
-              {Array.from({ length: Math.ceil(this.props.userSearchResults.count / this.state.limit) }, (v, i) => i + 1).map(i => <li class={i === this.state.page ? 'active' : 'waves-effect'} key={i} onClick={this.onPageChange}><a href="#!" id={i}>{i}</a></li>)}
+              {Array.from({ length: Math.ceil(this.props.userSearchResults.totalCount / this.state.limit) }, (v, i) => i + 1).map(i => <li class={i === this.state.page ? 'active' : 'waves-effect'} key={i} onClick={this.onPageChange}><a href="#!" id={i}>{i}</a></li>)}
 
-              <li class={this.state.page < Math.ceil(this.props.userSearchResults.count / this.state.limit) ? 'waves-effect' : 'disabled'} 
+              <li class={this.state.page < Math.ceil(this.props.userSearchResults.totalCount / this.state.limit) ? 'waves-effect' : 'disabled'} 
               onClick={this.nextPage} >
                 <a href="#!">
                   <i class="material-icons">chevron_right</i>
@@ -154,7 +165,10 @@ class SearchResult extends Component {
         </div>
         <div className="users-list col s12 m3">
           <ul>
-            <UsersList user={this.props.user} groupUsers={this.props.groupUsers} />
+            <UsersList user={this.props.user}
+            groupUsers={this.props.groupUsers}
+            removeUser={this.removeUser}
+            selectedGroup={this.props.selectedGroup}/>
           </ul>
         </div>
       </div>
@@ -182,6 +196,7 @@ function mapDispatchToProps(dispatch) {
     clearUserSearchTerm,
     searchUsers,
     addUserToGroup,
+    removeUser,
     getGroupUsers
   }, dispatch);
 }

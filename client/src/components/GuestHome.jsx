@@ -14,17 +14,21 @@ class GuestHome extends Component {
   render() {
     return (
       <div className='guest-home center'>
-         <GuestCarousel /> 
         <div>
-          <p> To learn more or to get started,</p>
+          <h5 className="guest-home-header">Welcome to Postit!</h5>
+          <p className="guest-home-text"> Postit is a communication-driven community that provides a platform with which you can: </p>
+        </div>
+         <GuestCarousel />
+        <div className="guest-home-text">
+          <p> To dive right into the experience,</p>
           <Link to='/signup'> Signup </Link>
           or 
           <Link to='/signin'> Signin </Link>  
         </div>
       </div>
-    )
+    );
   }
-};
+}
 
 function mapStateToProps(state) {
   return {

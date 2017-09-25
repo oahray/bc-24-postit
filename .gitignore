@@ -4,4 +4,7 @@ playground/
 .vscode/
 .env
 bundle.min.js
+.nyc_output
+coverage/
+.DS_Store
 

@@ -2,7 +2,7 @@ import { SIGNIN_LOADING, SIGNIN_SUCCESS,
   SIGNIN_FAILURE, SIGNUP_LOADING, SIGNUP_SUCCESS,
   SIGNUP_FAILURE } from '../actions';
 
-export default function (state = false, action) {
+export default (state = false, action) => {
   switch (action.type) {
     case SIGNIN_LOADING:
       return true;
@@ -19,4 +19,4 @@ export default function (state = false, action) {
     default:
       return state;
   }
-}
+};

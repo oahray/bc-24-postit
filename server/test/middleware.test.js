@@ -3,7 +3,7 @@ import request from 'supertest';
 import app from '../app';
 import models from '../models';
 import { doBeforeAll, doBeforeEach, populateUsers } from './seeders/testHooks';
-import { seedUsers, seedGroups, generateAuth } from './seeders/seed';
+import { seedUsers, seedGroups, generateAuth, tokens } from './seeders/seed';
 
 describe('Middleware functions:', () => {
   // doBeforeAll();
@@ -78,46 +78,6 @@ describe('Middleware functions:', () => {
     });
   });
 
-  describe('isGroupMember Middleware', () => {
-    it('should not allow users access a group route without passing a group id', (done) => {
-      request(app)
-      .get(`/api/group/ /users`)
-      .set('x-auth', generateAuth(1))
-      // .expect(400)
-      .end((err, res) => {
-        if (err) {
-          return done(err);
-        }
-        expect(res.body.error).toBe('GroupId must be provided');
-        done();
-      });
-    });
-    it('should not allow users access a group route with a non-existent group id', (done) => {
-      request(app)
-      .get(`/api/group/56/users`)
-      .set('x-auth', generateAuth(1))
-      // .expect(400)
-      .end((err, res) => {
-        if (err) {
-          return done(err);
-        }
-        expect(res.body.error).toBe('Specified group does not exist');
-        done();
-      });
-    });
-    it('should not allow users access a groups they do not belong to', (done) => {
-      request(app)
-      .get(`/api/group/${seedGroups[1].id}/users`)
-      .set('x-auth', generateAuth(seedUsers.registered[1].id))
-      .expect(401)
-      .end((err, res) => {
-        expect(res.body.error).toBe('You must belong to a group to interact with it');
-        done();
-      })
-      });
-    });
-  });
-
   describe('Authenticate Middleware: ', () => {
     it('POST /api/signup route should be accessible to unauthenticated users', (done) => {
       request(app)
@@ -181,4 +141,4 @@ describe('Middleware functions:', () => {
       })
     });
   });
-
+});

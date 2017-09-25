@@ -11,7 +11,9 @@ export const SEARCH_USERS_FAILURE = 'SEARCH_USERS_FAILURE';
 export const ADD_USER_LOADING = 'ADD_USER_LOADING';
 export const ADD_USER_SUCCESS = 'ADD_USER_SUCCESS';
 export const ADD_USER_FAILURE = 'ADD_USER_FAILURE';
-
+export const REMOVE_USER_LOADING = 'REMOVE_USER_LOADING';
+export const REMOVE_USER_SUCCESS = 'REMOVE_USER_SUCCESS';
+export const REMOVE_USER_FAILURE = 'REMOVE_USER_FAILURE';
 
 const setUserSearchTerm = (term) => {
   return {
@@ -73,57 +75,89 @@ export const searchUsers = (groupId, username, offset, limit, token) => {
 
 
 // ADD USER FROM SEARCH RESUKTS
-const addUserLoading = () => {
-  return {
-    type: ADD_USER_LOADING
-  };
+const addUserLoading = () => ({
+  type: ADD_USER_LOADING
+});
+
+const addUserSuccess = (response) => ({
+  type: ADD_USER_SUCCESS,
+  response
+});
+
+const addUserFailure = (error) => ({
+  type: ADD_USER_FAILURE,
+  error
+});
+
+export const addUserToGroup = (username, groupid,
+updateSearchResult, token) => (dispatch) => {
+  dispatch(addUserLoading());
+  const FETCH_URL = `${BASE_URL}/group/${groupid}/user`;
+  axios({
+    method: 'post',
+    url: FETCH_URL,
+    data: {
+      username
+    },
+    headers: {
+      'x-auth': token
+    }
+  })
+  .then((response) => {
+    if (response.statusText === 'Created') {
+      dispatch(addUserSuccess(response));
+      dispatch(updateSearchResult());
+      toastr.success(`${response.data.message}`);
+    }
+  })
+  .catch((err) => {
+    if (err.response) {
+      dispatch(addUserFailure(err.response.data.error));
+    }
+  });
 };
 
-const addUserSuccess = (response) => {
-  return {
-    type: ADD_USER_SUCCESS,
-    response
-  };
-};
 
-const addUserFailure = (error) => {
-  return {
-    type: ADD_USER_FAILURE,
-    error
-  };
-};
+// Remove from group
+const removeUserLoading = () => ({
+  type: REMOVE_USER_LOADING
+});
 
-// export const resetAddUserStatus = () => {
-//   return {
-//     type: RESET_ADD_USER_STATUS
-//   };
-// };
+const removeUserSuccess = response => ({
+  type: REMOVE_USER_SUCCESS,
+  response
+});
 
-export const addUserToGroup = (username, groupid,updateSearchResult, token) => {
-  return (dispatch) => {
-    dispatch(addUserLoading());
-    const FETCH_URL = `${BASE_URL}/group/${groupid}/user`;
-    axios({
-      method: 'post',
-      url: FETCH_URL,
-      data: {
-        username
-      },
-      headers: {
-        'x-auth': token
-      }
-    })
-    .then((response) => {
-      if (response.statusText === 'Created') {
-        dispatch(addUserSuccess(response));
-        dispatch(updateSearchResult());
-        toastr.success(`${response.data.message}`);
-      }
-    })
-    .catch((err) => {
-      if (err.response) {
-        dispatch(addUserFailure(err.response.data.error));
-      }
-    });
-  };
+const removeUserFailure = error => ({
+  type: REMOVE_USER_FAILURE,
+  error
+});
+
+export const removeUser = (username, groupId, updateUsersList, token) =>
+(dispatch) => {
+  dispatch(removeUserLoading());
+  const FETCH_URL = `${BASE_URL}/group/${groupId}/user`;
+  axios({
+    method: 'delete',
+    url: FETCH_URL,
+    data: {
+      username
+    },
+    headers: {
+      'x-auth': token
+    }
+  })
+  .then((response) => {
+    if (response.statusText === 'Created') {
+      dispatch(removeUserSuccess(response));
+      dispatch(updateUsersList());
+      toastr.info(response.data.message);
+    }
+  })
+  .catch((err) => {
+    if (err.response) {
+      dispatch(removeUserFailure(err.response.data.error));
+      toastr.info(err.response.data.error);
+    }
+  });
 };

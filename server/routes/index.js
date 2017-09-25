@@ -72,14 +72,8 @@ module.exports = (app) => {
   app.get('/api/group/:groupid/notmembers', authenticate,
   isGroupMember, groupsController.searchNonMembers);
 
-  // app.patch('/api/group/:groupid/rename', authenticate,
-  // isGroupMember, groupsController.renameGroup);
-
-  // app.patch('/api/group/:groupid/type', authenticate,
-  // isGroupMember, groupsController.changeGroupType);
-
-  // app.patch('/api/group/:groupid/description', authenticate,
-  // isGroupMember, groupsController.changeGroupDescription);
+  app.patch('/api/group/:groupid/info', authenticate,
+  isGroupMember, groupsController.editGroupInfo);
 
   app.post('/api/group/:groupid/remove', authenticate,
   isGroupMember, groupsController.deleteGroup);
@@ -87,7 +81,7 @@ module.exports = (app) => {
   app.post('/api/group/:groupid/message/:messageid/read', authenticate,
   isGroupMember, groupsController.markAsRead);
 
-  // Forgot password
+  // Recovery routes
   app.post('/api/forgotpassword', usersController.forgotPassword);
   app.post('/api/resetpassword', usersController.resetPassword);
 };

@@ -1,7 +1,7 @@
-import { VERIFY_AUTH_SUCCESS, SIGNUP_SUCCESS, SIGNIN_SUCCESS, 
+import { VERIFY_AUTH_SUCCESS, SIGNUP_SUCCESS, SIGNIN_SUCCESS,
   LOGOUT_USER, RESET_PASSWORD_SUCCESS } from '../actions';
 
-export default function(state = null, action) {
+export default (state = null, action) => {
   switch (action.type) {
     case SIGNIN_SUCCESS:
       return action.response.headers['x-auth'];
@@ -12,8 +12,8 @@ export default function(state = null, action) {
     case RESET_PASSWORD_SUCCESS:
       return action.response.headers['x-auth'];
     case LOGOUT_USER:
-      return null
+      return null;
     default:
-      return state
+      return state;
   }
-}
+};

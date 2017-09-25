@@ -14,7 +14,7 @@ class SideNav extends Component {
   componentDidMount() {
     $('.button-collapse').sideNav();
     $('.collapsible').collapsible();
-    $('.side-nav .my-list-item a').on('click', function(e) {
+    $('.side-nav .my-list-item a').on('click', function (e) {
       const windowSize = $(window).width();
       if (windowSize < 993) {
         $('.button-colllapse').sideNav('hide');
@@ -38,29 +38,37 @@ class SideNav extends Component {
   }
 
   render() {
-    let sideList = (
-      <ul className='side-nav fixed' id='side-nav'>
-        <li className='center teal-text'><h3>Postit</h3></li>
-        <li className='my-list-item'><NavLink to='/'>About</NavLink></li>
+    let navList = (
+      <ul className='right' id=''>
         <li className='my-list-item'><NavLink to='/signin'>Signin</NavLink></li>
         <li className='my-list-item'><NavLink to='/signup'>Signup</NavLink></li>
         <li className='my-list-item'><a target='_blank'
-        href='https://github.com.oahray/bc-24-postit'>View Project On Github</a></li>
+          href='https://github.com/oahray/bc-24-postit'>View On Github</a></li>
       </ul>
     );
+    let sideList = null;
+
+    let sideListActivator = null;
 
     if (this.props.isLoggedIn) {
+      navList = null;
+
+      sideListActivator = (
+        <a href='#' data-activates='side-nav' className='button-collapse'>
+          <i className='material-icons'>menu</i>
+        </a>);
+
       sideList = (
         <ul className='side-nav fixed' id='side-nav'>
           <li><div class='user-view center row'>
             <span className='col'><i className='material-icons white-text center'>person</i></span>
             <a class='white-text name'> {this.props.user.username}</a>
-             <a class='white-text email'>{this.props.user.email}</a> 
+            <a class='white-text email'>{this.props.user.email}</a>
           </div>
           </li>
-          <li className='search'> 
+          <li className='search'>
             {this.props.inGroupPage ? <SearchBar searchUsers={this.searchUsers}
-            user={this.props.user} selectedGroup={this.props.selectedGroup} /> : null}
+              user={this.props.user} selectedGroup={this.props.selectedGroup} /> : null}
           </li>
           <li className='my-list-item'><NavLink to='/groups/new'> Create New Group <i class="material-icons left">group_add</i></NavLink></li>
           <li className=''>
@@ -69,9 +77,9 @@ class SideNav extends Component {
                 <a class='collapsible-header'> <i class="material-icons left">group</i> My Groups </a>
                 <div class='sidebar-grouplist collapsible-body'>
                   <ul>
-                    <li className='my-list-item'><NavLink to='/'>All Groups</NavLink></li>
+                    <li className='my-list-item collection'><NavLink to='/'>All Groups</NavLink></li>
                     {this.props.groups.map((group) =>
-                      <li key={group.id} className='my-list-item'>
+                      <li key={group.id} className='my-list-item collection-item'>
                         <NavLink to={`/groups/${group.id}/messages`}>
                           <div>
                             {group.name} <small> by {group.createdBy}</small>
@@ -82,7 +90,7 @@ class SideNav extends Component {
                   </ul>
                 </div>
               </li>
-            </ul> 
+            </ul>
           </li>
           <li className='my-list-item'><NavLink to="/edit"> My Account <i class="material-icons left">settings</i> </NavLink></li>
           <li className='my-list-item'><a href='#' onClick={() => this.props.logout()}> Logout <i class="material-icons left">rowing</i> </a></li>
@@ -95,9 +103,9 @@ class SideNav extends Component {
         <div className='navbar-fixed'>
           <nav>
             <div className='nav-wrapper lighten-1'>
-              <a href='#!' className='brand-logo center'>Postit</a>
-              <a href='#' data-activates='side-nav' className='button-collapse'><i className='material-icons'>menu</i></a>
-              {/* {navList} */}
+              <a href='/' className='brand-logo'>Postit</a>
+              {sideListActivator}
+              {navList}
             </div>
           </nav>
         </div>

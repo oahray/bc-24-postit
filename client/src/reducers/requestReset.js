@@ -55,8 +55,6 @@ export const resetPasswordError = (state = null, action) => {
       return null;
     case RESET_PASSWORD_FAILED:
       return action.error;
-    // case CLEAR_RESET_PASSWORD_ERROR:
-    //   return null;
     default:
       return state;
   }

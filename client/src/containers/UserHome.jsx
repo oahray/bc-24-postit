@@ -46,10 +46,12 @@ class UserHome extends Component {
     const content = (
       < div className='user-home-content'>
         <div className='row'>
-          <h5 className='col s8'> Your Groups: </h5>
-          <span className='right'><h6>{this.props.groupList.length} {(this.props.groupList.length === 1) ? ' group' : ' groups'}</h6></span>
+          <h5 className='col s8 main-text-color'> Your Groups: </h5>
+          <span className='right'>
+            <h6>{this.props.groupList.length} {(this.props.groupList.length === 1) ? ' group' : ' groups'}</h6>
+          </span>
         </div>
-        <ul className='collection'> 
+        <ul className='collection'>
           {showGroups}
         </ul>
       </div>

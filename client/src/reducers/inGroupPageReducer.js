@@ -1,12 +1,12 @@
-import { IN_GROUP_TRUE, IN_GROUP_FALSE } from '../actions'; 
+import { IN_GROUP_TRUE, IN_GROUP_FALSE } from '../actions';
 
-export default function (state = false, action) {
-  switch(action.type) {
+export default (state = false, action) => {
+  switch (action.type) {
     case IN_GROUP_TRUE:
-      return true
+      return true;
     case IN_GROUP_FALSE:
-      return false
+      return false;
     default:
-      return state
+      return state;
   }
-}
+};

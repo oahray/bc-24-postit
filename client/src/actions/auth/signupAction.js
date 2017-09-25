@@ -1,4 +1,5 @@
 import axios from 'axios';
+import toastr from 'toastr';
 
 import { BASE_URL } from '../index';
 
@@ -6,28 +7,22 @@ export const SIGNUP_LOADING = 'SIGNUP_LOADING';
 export const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS';
 export const SIGNUP_FAILURE = 'SIGNUP_FAILURE';
 
-const signupLoading = () => {
-  return {
-    type: SIGNUP_LOADING
-  };
-};
+const signupLoading = () => ({
+  type: SIGNUP_LOADING
+});
 
-const signupSuccess = (response) => {
-  return {
-    type: SIGNUP_SUCCESS,
-    response
-  };
-};
+const signupSuccess = response => ({
+  type: SIGNUP_SUCCESS,
+  response
+});
 
-const signupFailure = (error) => {
-  return {
-    type: SIGNUP_FAILURE,
-    error
-  };
-};
+const signupFailure = error => ({
+  type: SIGNUP_FAILURE,
+  error
+});
 
-export const signupUser = (username, password, email) => {
-  return (dispatch) => {
+export const signupUser = (username, password, email) =>
+  (dispatch) => {
     dispatch(signupLoading());
     const FETCH_URL = `${BASE_URL}/user/signup`;
     axios({
@@ -42,13 +37,12 @@ export const signupUser = (username, password, email) => {
     .then((response) => {
       if (response.statusText === 'Created') {
         dispatch(signupSuccess(response));
+        toastr.info(response.data.message);
       }
     })
     .catch((err) => {
       if (err.response) {
-        console.log(err.response.data);
         dispatch(signupFailure(err.response.data.error));
       }
     });
   };
-};
