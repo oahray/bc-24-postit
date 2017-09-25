@@ -78,45 +78,6 @@ describe('Middleware functions:', () => {
     });
   });
 
-  describe('isGroupMember Middleware', () => {
-    it('should not allow users access a group route without passing a group id', (done) => {
-      request(app)
-      .get(`/api/group/ /users`)
-      .set('x-auth', tokens[2])
-      .expect(400)
-      .end((err, res) => {
-        if (err) {
-          return done(err);
-        }
-        expect(res.body.error).toBe('GroupId must be provided');
-        done();
-      });
-    });
-    it('should not allow users access a group route with a non-existent group id', (done) => {
-      request(app)
-      .get(`/api/group/56/users`)
-      .set('x-auth', tokens[2])
-      .expect(404)
-      .end((err, res) => {
-        if (err) {
-          return done(err);
-        }
-        expect(res.body.error).toBe('Specified group does not exist');
-        done();
-      });
-    });
-    it('should not allow users access a group they do not belong to', (done) => {
-      request(app)
-      .get(`/api/group/${seedGroups[1].id}/users`)
-      .set('x-auth', tokens[1])
-      .expect(401)
-      .end((err, res) => {
-        expect(res.body.error).toBe('You must belong to a group to interact with it');
-        done();
-      });
-    });
-  });
-
   describe('Authenticate Middleware: ', () => {
     it('POST /api/signup route should be accessible to unauthenticated users', (done) => {
       request(app)
