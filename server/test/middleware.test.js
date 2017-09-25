@@ -113,7 +113,6 @@ describe('Middleware functions:', () => {
       .end((err, res) => {
         expect(res.body.error).toBe('You must belong to a group to interact with it');
         done();
-      })
       });
     });
   });
@@ -181,4 +180,4 @@ describe('Middleware functions:', () => {
       })
     });
   });
-
+});
