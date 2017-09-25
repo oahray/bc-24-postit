@@ -1,10 +1,14 @@
 import jwt from 'jsonwebtoken';
+import randomstring from 'randomstring';
 import { User } from '../../models';
 
 export const generateAuth = (id) => {
   return jwt.sign({ id, access: 'auth' },
     process.env.MY_SUPER_SECRET, { expiresIn: 24 * 60 * 60 }).toString();
 }
+
+const resetHash1 = randomstring.generate(60);
+const resetHash2 = randomstring.generate(60);
 
 export const seedUsers = {
   registered: [
@@ -25,6 +29,22 @@ export const seedUsers = {
       username: 'user113',
       password: 'user113password',
       email: 'user113@example.com'
+    },
+    {
+      id: 104,
+      username: 'user114',
+      password: 'user114password',
+      email: 'user114@example.com',
+      resetHash: resetHash1,
+      resetExpiresIn: Date.now() - 10000
+    },
+    {
+      id: 105,
+      username: 'user115',
+      password: 'user115password',
+      email: 'user115@example.com',
+      resetHash: resetHash2,
+      resetExpiresIn: Date.now() + 360000
     }
   ],
 
@@ -70,4 +90,4 @@ export const tokens = [
   generateAuth(seedUsers.registered[0].id),
   generateAuth(seedUsers.registered[1].id),
   generateAuth(seedUsers.registered[2].id)
-]
+];

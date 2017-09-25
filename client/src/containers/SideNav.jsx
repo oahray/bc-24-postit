@@ -14,7 +14,7 @@ class SideNav extends Component {
   componentDidMount() {
     $('.button-collapse').sideNav();
     $('.collapsible').collapsible();
-    $('.side-nav .my-list-item a').on('click', function(e) {
+    $('.side-nav .my-list-item a').on('click', function (e) {
       const windowSize = $(window).width();
       if (windowSize < 993) {
         $('.button-colllapse').sideNav('hide');
@@ -40,23 +40,13 @@ class SideNav extends Component {
   render() {
     let navList = (
       <ul className='right' id=''>
-        {/* <li className='teal-text'><h3>Postit</h3></li> */}
         <li className='my-list-item'><NavLink to='/signin'>Signin</NavLink></li>
         <li className='my-list-item'><NavLink to='/signup'>Signup</NavLink></li>
         <li className='my-list-item'><a target='_blank'
-        href='https://github.com/oahray/bc-24-postit'>View On Github</a></li>
+          href='https://github.com/oahray/bc-24-postit'>View On Github</a></li>
       </ul>
     );
     let sideList = null;
-    //   <ul className='' id=''>
-    //     <li className='center teal-text'><h3>Postit</h3></li>
-    //     <li className='my-list-item'><NavLink to='/'>About</NavLink></li>
-    //     <li className='my-list-item'><NavLink to='/signin'>Signin</NavLink></li>
-    //     <li className='my-list-item'><NavLink to='/signup'>Signup</NavLink></li>
-    //     <li className='my-list-item'><a target='_blank'
-    //     href='https://github.com.oahray/bc-24-postit'>View Project On Github</a></li>
-    //   </ul>
-    // );
 
     let sideListActivator = null;
 
@@ -73,12 +63,12 @@ class SideNav extends Component {
           <li><div class='user-view center row'>
             <span className='col'><i className='material-icons white-text center'>person</i></span>
             <a class='white-text name'> {this.props.user.username}</a>
-             <a class='white-text email'>{this.props.user.email}</a> 
+            <a class='white-text email'>{this.props.user.email}</a>
           </div>
           </li>
           <li className='search'>
             {this.props.inGroupPage ? <SearchBar searchUsers={this.searchUsers}
-            user={this.props.user} selectedGroup={this.props.selectedGroup} /> : null}
+              user={this.props.user} selectedGroup={this.props.selectedGroup} /> : null}
           </li>
           <li className='my-list-item'><NavLink to='/groups/new'> Create New Group <i class="material-icons left">group_add</i></NavLink></li>
           <li className=''>
@@ -87,9 +77,9 @@ class SideNav extends Component {
                 <a class='collapsible-header'> <i class="material-icons left">group</i> My Groups </a>
                 <div class='sidebar-grouplist collapsible-body'>
                   <ul>
-                    <li className='my-list-item'><NavLink to='/'>All Groups</NavLink></li>
+                    <li className='my-list-item collection'><NavLink to='/'>All Groups</NavLink></li>
                     {this.props.groups.map((group) =>
-                      <li key={group.id} className='my-list-item'>
+                      <li key={group.id} className='my-list-item collection-item'>
                         <NavLink to={`/groups/${group.id}/messages`}>
                           <div>
                             {group.name} <small> by {group.createdBy}</small>
@@ -100,7 +90,7 @@ class SideNav extends Component {
                   </ul>
                 </div>
               </li>
-            </ul> 
+            </ul>
           </li>
           <li className='my-list-item'><NavLink to="/edit"> My Account <i class="material-icons left">settings</i> </NavLink></li>
           <li className='my-list-item'><a href='#' onClick={() => this.props.logout()}> Logout <i class="material-icons left">rowing</i> </a></li>

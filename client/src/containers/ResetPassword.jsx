@@ -19,7 +19,6 @@ class ResetPassword extends Component {
     if (this.state.password !== this.state.confirmPassword) {
       return $('.reset-password-message').text('Passwords do not match!');
     }
-    console.log(`Password changed to ${this.state.password}`);
     this.props.resetPassword(this.state.password, this.state.resetHash);
   }
 

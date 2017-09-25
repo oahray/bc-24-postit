@@ -50,7 +50,6 @@ export const sendMessage = (groupId, content, priority, token, messageAdded) => 
     })
     .catch((err) => {
       if (err.response) {
-        console.log('>>>>>>>>>get messages error: ', err.response);
         dispatch(sendMessageFailure(err.response.data.error));
       }
     });

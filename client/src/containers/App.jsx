@@ -26,7 +26,6 @@ class App extends Component {
     const socket = io();
 
     socket.on('Added to group', ({ user, group, addedBy }) => {
-      console.log({ user, group });
       if (user.id === this.props.user.id) {
         toastr.info(`You have just been added to ${group.name} by ${addedBy}`);
       }

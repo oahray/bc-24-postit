@@ -1,13 +1,18 @@
-import { GET_GROUP_MESSAGES_LOADING, GET_GROUP_MESSAGES_SUCCESS, GET_GROUP_MESSAGES_FAILURE, LOGOUT_USER } from '../actions'
+import { GET_GROUP_MESSAGES_LOADING,
+  GET_GROUP_MESSAGES_SUCCESS, GET_GROUP_MESSAGES_FAILURE,
+  LOGOUT_USER } from '../actions';
 
-export default function(state = false, action) {
+export default (state = false, action) => {
   switch (action.type) {
     case GET_GROUP_MESSAGES_LOADING:
-      return false
+      return false;
     case GET_GROUP_MESSAGES_SUCCESS:
-      return false
+      return false;
     case GET_GROUP_MESSAGES_FAILURE:
-      return true
+      return true;
+    case LOGOUT_USER:
+      return false;
+    default:
+      return state;
   }
-  return state;
-}
+};

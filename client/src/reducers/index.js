@@ -19,7 +19,8 @@ import groupUsers from './groupUsers';
 import inGroupPage from './inGroupPageReducer';
 import userSearchTerm from './searchTerm';
 import userSearchResults from './searchResults';
-import { requestResetLoading, requestResetMessage, resetPasswordLoading, resetPasswordError } from './requestReset';
+import { requestResetLoading, requestResetMessage,
+  resetPasswordLoading, resetPasswordError } from './requestReset';
 
 export default combineReducers({
   user,

@@ -15,11 +15,11 @@ class GuestHome extends Component {
     return (
       <div className='guest-home center'>
         <div>
-          <h5>Welcome to Postit!</h5>
-          <p> Postit is a communication-driven community that provides to: </p>
+          <h5 className="guest-home-header">Welcome to Postit!</h5>
+          <p className="guest-home-text"> Postit is a communication-driven community that provides a platform with which you can: </p>
         </div>
          <GuestCarousel />
-        <div>
+        <div className="guest-home-text">
           <p> To dive right into the experience,</p>
           <Link to='/signup'> Signup </Link>
           or 

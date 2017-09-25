@@ -2,7 +2,7 @@ import models from '../../models';
 import { seedUsers , seedGroups } from './seed'
 
 export const populateUsers = () => {
-  models.User.bulkCreate(seedUsers.registered, { fields: ['id','username', 'email', 'password']}).then(() => {
+  models.User.bulkCreate(seedUsers.registered).then(() => {
     return
   });
 };

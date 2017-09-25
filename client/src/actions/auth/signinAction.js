@@ -1,4 +1,5 @@
 import axios from 'axios';
+import toastr from 'toastr';
 
 import { BASE_URL } from '../index';
 
@@ -35,6 +36,7 @@ export const signinUser = (username, password) =>
   .then((response) => {
     if (response.statusText === 'OK') {
       dispatch(signinSuccess(response));
+      toastr.info(response.data.message);
     }
   })
   .catch((err) => {

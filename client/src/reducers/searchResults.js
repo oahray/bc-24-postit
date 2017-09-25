@@ -1,14 +1,15 @@
-import { SEARCH_USERS_LOADING, SEARCH_USERS_SUCCESS, SEARCH_USERS_FAILURE } from '../actions';
+import { SEARCH_USERS_LOADING, SEARCH_USERS_SUCCESS,
+  SEARCH_USERS_FAILURE } from '../actions';
 
 export default (state = {}, action) => {
-  switch(action.type) {
+  switch (action.type) {
     case SEARCH_USERS_LOADING:
-      return {}
+      return {};
     case SEARCH_USERS_SUCCESS:
-      return action.response.data
+      return action.response.data;
     case SEARCH_USERS_FAILURE:
-      return {}
+      return {};
     default:
-      return state
+      return state;
   }
-}
+};

@@ -83,7 +83,7 @@ describe('Middleware functions:', () => {
       request(app)
       .get(`/api/group/ /users`)
       .set('x-auth', tokens[2])
-      // .expect(400)
+      .expect(400)
       .end((err, res) => {
         if (err) {
           return done(err);
@@ -96,7 +96,7 @@ describe('Middleware functions:', () => {
       request(app)
       .get(`/api/group/56/users`)
       .set('x-auth', tokens[2])
-      // .expect(400)
+      .expect(404)
       .end((err, res) => {
         if (err) {
           return done(err);

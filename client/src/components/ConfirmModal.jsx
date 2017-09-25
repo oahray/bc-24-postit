@@ -1,23 +1,33 @@
 import React, { Component } from 'react';
 
-export default function (props) {
-  return (
-    <div>
-      <a className="waves-effect waves-light btn modal-trigger" href="#confirmModal">{props.triggerLabel}</a>
+/**
+ * @class ConfirmModal
+ */
+export default class ConfirmModal extends Component {
+  /**
+  * @returns {component} Modal
+  */
+  render() {
+    return (
+      <div>
+        <a className="waves-effect waves-grey modal-trigger pointer" href={`#${this.props.modalId}`}>{this.props.triggerLabel}</a>
 
-      <div id="conFirmModal" className="modal">
-        <div className="modal-content">
-          <p>{props.confirmText}</p>
-        </div>
-        <div className="modal-footer">
-          <span classname="left">
-            <a href="#!" className="modal-action modal-close waves-effect waves-green white teal-text btn-flat">No, go back</a>
-          </span>
-          <span className="right">
-            <a href="#!" className="modal-action modal-close waves-effect waves-green white teal-text btn-flat">Yes, do it</a>
-          </span>
+        <div id={`${this.props.modalId}`} className="modal confirm-modal">
+          <div className="modal-content">
+            <h5>{this.props.confirmText}</h5>
+          </div>
+          <div className="modal-footer">
+            <span className="left">
+              <a className="modal-action modal-close waves-effect waves-grey white main-text-color btn-flat">No, go back</a>
+            </span>
+            <span className="right">
+              <a className="modal-action modal-close waves-effect waves-red white red-text btn-flat"
+              onClick={() => this.props.callback()}
+              >Yes, do it</a>
+            </span>
+          </div>
         </div>
       </div>
-    </div>
-  )
+    );
+  }
 }

@@ -11,13 +11,8 @@ export const markAsRead = (groupId, messageId, token) => {
       'x-auth': token
     }
   })
-  .then(() => {
-    console.log('You have read this...');
-    
-  })
   .catch((err) => {
     if (err.response) {
-      console.log('Error occured marking as read: ', err.response);
       return {
         type: 'MARK_READ_FAILURE'
       };

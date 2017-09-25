@@ -1,7 +1,7 @@
 import { VERIFY_AUTH_SUCCESS, VERIFY_AUTH_FAILURE, SIGNUP_SUCCESS,
   SIGNIN_SUCCESS, LOGOUT_USER, RESET_PASSWORD_SUCCESS } from '../actions';
 
-export default function (state = false, action) {
+export default (state = false, action) => {
   switch (action.type) {
     case SIGNIN_SUCCESS:
       return true;
@@ -18,4 +18,4 @@ export default function (state = false, action) {
     default:
       return state;
   }
-}
+};

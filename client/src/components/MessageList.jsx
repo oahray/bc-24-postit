@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 
+/**
+ * @class MessageList
+ */
 export default class MessageList extends Component {
-  constructor(props) {
-    super(props);
-  }
-
+  /**
+   * @return {element} MessageList
+   */
   render() {
     return (
       <div className="message-list" id="message-list">
@@ -17,9 +19,10 @@ export default class MessageList extends Component {
             className='collection-item message-item truncate'
             id={`${message.groupid}${message.id}`}
             key={message.id}
-            onClick={() => this.props.openMessage(message)}> <strong> {message.sender}</strong><span className='grey-text timestamp'><small>{moment(message.createdAt).fromNow()}</small></span> <span className='right'><small>{message.priority} message</small></span><br />{message.content}</li>
+            onClick={() => this.props.openMessage(message)}>
+            <strong> {message.sender}</strong><span className='grey-text timestamp'><small>{moment(message.createdAt).fromNow()}</small></span> <span className='right'><small>{message.priority} message</small></span><br />{message.content}</li>;
           })}
-        </ul> : <p>This group does not contain any messages</p>}
+        </ul> : 'This group does not contain any messages'}
       </div>
     );
   }

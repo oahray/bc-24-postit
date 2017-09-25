@@ -43,7 +43,6 @@ class SignupForm extends Component {
   onFormSubmit(event) {
     event.preventDefault();
     if (this.state.confirmPassword !== this.state.password) {
-      console.log('Passwords do not match!');
       return $('.form-error-message').text('Passwords do not match!');
     }
     this.props.signupUser(this.state.username,

@@ -14,7 +14,12 @@ export default (req, res, next) => {
       });
     }
     group.getUsers(
-      { raw: true }
+      {
+        raw: true,
+        attributes: {
+          exclude: 'password'
+        }
+      }
     )
     .then((groupUsers) => {
       req.groupUsers = groupUsers;

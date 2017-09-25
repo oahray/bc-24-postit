@@ -42,6 +42,7 @@
         "MethodDefinition": true,
         "ClassDeclaration": true
       }
-    }]
+    }],
+    "react/jsx-uses-vars": [2]
   }
 }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { Link } from 'react-router-dom';
 import { requestReset, clearResetRequestMessage } from '../actions';
 
 class ForgotPassword extends Component {
@@ -35,7 +36,7 @@ class ForgotPassword extends Component {
     }
     return (
       <form className="center row" onSubmit={this.requestResetEmail}>
-        <h5 className="page-title">Forgot Password</h5>
+        <h5 className="page-title main-text-color">Forgot Password</h5>
         <h6>Please enter the email you signed up with</h6>
         <div className="col s12 m8 offset-m2 row forgot-password">
           <input
@@ -49,7 +50,7 @@ class ForgotPassword extends Component {
           {<div className="col s12">
             {resetResponseMessage}
           </div>}
-          <div className='teal-text'>
+          <div className='col s12 main-text-color'>
             <p className='center'> Remember your password? <Link to="/signin">Sign In </Link></p>
           </div>
         </div>
