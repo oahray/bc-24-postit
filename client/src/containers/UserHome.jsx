@@ -27,9 +27,9 @@ class UserHome extends Component {
       return <Preloader message='Loading your groups'/>
     }
     
-    let showGroups = (
-      this.props.groupList.length > 0 ? showGroups = (this.props.groupList.map((group) => {
-        return (<li className='collection-item avatar'  
+    const showGroups = (
+      this.props.groupList.length > 0 ? this.props.groupList.map((group) => {
+        return (<li className='collection-item avatar'
         key={group.id}>
           <div>
             <span className='title'><Link to={`/groups/${group.id}/messages`}> 
@@ -41,7 +41,7 @@ class UserHome extends Component {
             <span className='right'><small>Created by: {group.createdBy === this.props.user.username ? 'You' : group.createdBy}</small></span> <br/>
           </div>
         </li>);
-      })) : (<div className='center'><p>You do not belong to any groups. <br/> Create one to get started. </p></div>) );
+      }) : (<div className='center'><p>You do not belong to any groups. <br/> Create one to get started. </p></div>) );
     
     const content = (
       < div className='user-home-content'>

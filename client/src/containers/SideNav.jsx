@@ -60,7 +60,7 @@ class SideNav extends Component {
 
       sideList = (
         <ul className='side-nav fixed' id='side-nav'>
-          <li><div class='user-view center row'>
+          <li><div class='user-view row'>
             <span className='col'><i className='material-icons white-text center'>person</i></span>
             <a class='white-text name'> {this.props.user.username}</a>
             <a class='white-text email'>{this.props.user.email}</a>

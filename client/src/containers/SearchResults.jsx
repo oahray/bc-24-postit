@@ -17,7 +17,7 @@ class SearchResult extends Component {
       limit: 10,
       lastPage: 0
     };
-    this.groupId = this.props.match.params.groupid;
+    this.groupId = Number(this.props.match.params.groupid);
     this.searchDone = this.searchDone.bind(this);
     this.addUser = this.addUser.bind(this);
     this.removeUser = this.removeUser.bind(this);
@@ -40,12 +40,13 @@ class SearchResult extends Component {
   componentDidMount() {
     setTimeout(() => {
       $('.modal').modal();
-    }, 500);
+    }, 800);
     const socket = io();
     this.props.inGroupPage(true);
     this.props.getGroupUsers(this.groupId, this.props.token);
     socket.on('Added to group', ({ group }) => {
-      if (group.id === this.groupId.id) {
+      if (group.id === this.groupId) {
+        console.log('User added to group');
         this.props.getGroupUsers(this.groupId, this.props.token);
         this.updateSearchResult();
       }
@@ -56,6 +57,9 @@ class SearchResult extends Component {
     if (this.state.page !== newState.page) {
       this.updateSearchResult();
     }
+    setTimeout(() => {
+      $('.modal').modal();
+    }, 800);
   }
 
   searchDone() {
@@ -79,6 +83,7 @@ class SearchResult extends Component {
 
   updateUsersList() {
     this.props.getGroupUsers(this.groupId, this.props.token);
+    console.log('Users list updating...');
   }
 
   updateSearchResult() {
@@ -107,7 +112,7 @@ class SearchResult extends Component {
         page: this.state.page - 1,
         offset: this.state.offset - 10
       });
-      this.props.history.push(`/groups/${this.props.selectedGroup.id}/addusers?u=${this.state.searchTerm}&p=${Number(this.state.page) - 1}`);
+      this.props.history.push(`/groups/${this.props.selectedGroup.id}/addusers?u=${this.searchQuery.u}&p=${Number(this.state.page) - 1}`);
     }
   }
 
@@ -118,7 +123,7 @@ class SearchResult extends Component {
         page: this.state.page + 1,
         offset: this.state.offset + 10
       });
-      this.props.history.push(`/groups/${this.props.selectedGroup.id}/addusers?u=${this.state.searchTerm}&p=${Number(this.state.page) + 1}`);
+      this.props.history.push(`/groups/${this.props.selectedGroup.id}/addusers?u=${this.searchQuery.u}&p=${Number(this.state.page) + 1}`);
     }
   }
 

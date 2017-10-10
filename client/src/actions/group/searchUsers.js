@@ -135,6 +135,7 @@ const removeUserFailure = error => ({
 
 export const removeUser = (username, groupId, updateUsersList, token) =>
 (dispatch) => {
+  console.log('Removing ', username);
   dispatch(removeUserLoading());
   const FETCH_URL = `${BASE_URL}/group/${groupId}/user`;
   axios({
@@ -150,7 +151,7 @@ export const removeUser = (username, groupId, updateUsersList, token) =>
   .then((response) => {
     if (response.statusText === 'Created') {
       dispatch(removeUserSuccess(response));
-      dispatch(updateUsersList());
+      updateUsersList();
       toastr.info(response.data.message);
     }
   })

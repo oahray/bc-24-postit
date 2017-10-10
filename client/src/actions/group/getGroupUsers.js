@@ -31,7 +31,8 @@ const getGroupUsersFailure = (error) => {
 };
 
 export const getGroupUsers = (groupId, token) => {
-  return (dispatch, getState) => {
+  return (dispatch) => {
+    console.log('Getting group users');
     dispatch(getGroupUsersLoading());
     const FETCH_URL = `${BASE_URL}/group/${groupId}/users`;
     axios({
