@@ -36,7 +36,7 @@ export const deleteGroup = (groupId, token) =>
     if (response.statusText === 'Created') {
       dispatch(deleteGroupSuccess(response));
       dispatch(getGroupList(token));
-      window.location.pathname = '/';
+      // window.location.pathname = '/';
       toastr.info(response.data.message);
     }
   })
