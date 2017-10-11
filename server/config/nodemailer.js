@@ -1,9 +1,4 @@
 const nodemailer = require('nodemailer');
-const env = require('dotenv');
-
-if (process.env.NODE_ENV !== 'production') {
-  env.config();
-}
 
 export const transporter = nodemailer.createTransport({
   service: 'gmail',
