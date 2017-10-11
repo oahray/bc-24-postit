@@ -5,6 +5,7 @@ import GuestHome from '../components/GuestHome';
 import Signin from '../containers/SigninForm';
 import Signup from '../containers/SignupForm';
 import UserHome from '../containers/UserHome';
+import SideNav from '../containers/SideNav';
 import Group from '../containers/Group';
 import SearchResults from '../containers/SearchResults';
 import NewGroup from '../containers/NewGroup';
@@ -13,16 +14,7 @@ import ForgotPassword from '../containers/ForgotPassword';
 import ResetPassword from '../containers/ResetPassword';
 import NotFound from '../components/NotFound';
 
-const routeHandler = (props, component) => (
-  <BrowserRouter>
-    <div className='main'>
-      <Route component={props.nav} />
-      { component }
-    </div>
-  </BrowserRouter>
-);
-
-export const GuestRoutes = (props) => {
+const RouteHandler = (props) => {
   const unauthRoutes = (
     <div>
       <Switch>
@@ -35,10 +27,7 @@ export const GuestRoutes = (props) => {
       </Switch>
     </div>
   );
-  return routeHandler(props, unauthRoutes);
-};
 
-export const UserRoutes = (props) => {
   const authRoutes = (
     <div className='main-container'>
       <Switch>
@@ -53,5 +42,13 @@ export const UserRoutes = (props) => {
       </Switch>
     </div>
   );
-  return routeHandler(props, authRoutes);
+
+  return (<BrowserRouter>
+    <div className='main'>
+      <Route component={SideNav} />
+      { props.isLoggedIn ? authRoutes : unauthRoutes }
+    </div>
+  </BrowserRouter>);
 };
+
+export default RouteHandler;

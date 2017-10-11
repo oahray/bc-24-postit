@@ -1,11 +1,12 @@
 import axios from 'axios';
 import toastr from 'toastr';
 
-import { BASE_URL } from '../../actions';
-
-export const EDIT_PROFILE_LOADING = 'EDIT_PROFILE_LOADING';
-export const EDIT_PROFILE_SUCCESS = 'EDIT_PROFILE_SUCCESS';
-export const EDIT_PROFILE_FAILURE = 'EDIT_PROFILE_FAILURE';
+import {
+  BASE_URL,
+  EDIT_PROFILE_LOADING,
+  EDIT_PROFILE_SUCCESS,
+  EDIT_PROFILE_FAILURE
+} from '../../constants';
 
 /**
  * @function uploadImage
@@ -69,7 +70,7 @@ export const editProfile = (about, email, imageUrl, token) => (
   (dispatch) => {
     dispatch(editProfileLoading());
     const FETCH_URL = `${BASE_URL}/user/me/edit`;
-    axios({
+    return axios({
       method: 'patch',
       url: FETCH_URL,
       data: {
@@ -82,16 +83,12 @@ export const editProfile = (about, email, imageUrl, token) => (
       }
     })
     .then((response) => {
-      if (response.status === 201) {
-        toastr.info(response.data.message);
-        return dispatch(editProfileSuccess(response));
-      }
+      toastr.info(response.data.message);
+      dispatch(editProfileSuccess(response));
     })
     .catch((err) => {
-      if (err.response) {
-        toastr.info(err.response.data.error);
-        return dispatch(editProfileFailure(err.response.data.error));
-      }
+      toastr.info(err.response.data.error);
+      dispatch(editProfileFailure(err.response.data.error));
     });
   }
 );

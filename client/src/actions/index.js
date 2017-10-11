@@ -1,5 +1,4 @@
-export const BASE_URL = `${window.location.origin}/api/v1`;
-
+export * from '../constants';
 export * from './auth/signinAction';
 export * from './auth/signupAction';
 export * from './auth/clearFormError';

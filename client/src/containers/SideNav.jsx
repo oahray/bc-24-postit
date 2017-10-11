@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { NavLink } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import { logout, getGroupList, searchUsers } from '../actions';
-import SearchBar from './SearchBar';
+import SearchBar from '../components/SearchBar';
 
 /**
  * @class SideNav
  */
-class SideNav extends Component {
+export class SideNav extends Component {
   /**
    * @constructor
    * @param {*} props
@@ -65,7 +66,8 @@ class SideNav extends Component {
       <ul className='right hide-on-small-only' id=''>
         <li className='my-list-item'><NavLink to='/signin'>Signin</NavLink></li>
         <li className='my-list-item'><NavLink to='/signup'>Signup</NavLink></li>
-        <li className='my-list-item'><a href='/api/v1/docs'>Docs</a></li>
+        <li className='my-list-item docs-link'>
+         <a href='/api/v1/docs'>Docs</a></li>
         <li className='my-list-item'><a target='_blank'
           href='https://github.com/oahray/bc-24-postit'>View On Github</a></li>
       </ul>
@@ -74,7 +76,7 @@ class SideNav extends Component {
       <ul className='side-nav fixed hide-on-med-and-up' id='side-nav'>
         <li className='my-list-item'><NavLink to='/signin'>Signin</NavLink></li>
         <li className='my-list-item'><NavLink to='/signup'>Signup</NavLink></li>
-        <li className='my-list-item'><a href='/api/v1/docs'>Docs</a></li>
+        <li className='my-list-item docs-link'><a href='/api/v1/docs'>Docs</a></li>
         <li className='my-list-item'><a target='_blank'
           href='https://github.com/oahray/bc-24-postit'>View On Github</a></li>
       </ul>
@@ -98,42 +100,47 @@ class SideNav extends Component {
       sideList = (
         <ul className='side-nav fixed' id='side-nav'>
           <li>
-            <div class='user-view row'>
+            <div className='user-view row'>
               <span className='col'>
                 { this.props.user.imageUrl ?
-                <img src={this.props.user.imageUrl} /> :
+                <img className="materialboxed"
+                src={this.props.user.imageUrl} /> :
                 <i className='material-icons white-text center'>person</i>}
               </span>
               <span>
-                <a class='white-text name page-header'> {this.props.user.username}</a>
-                <a class='white-text email page-header'>{this.props.user.email}</a>
+                <a className='white-text name page-header'>
+                {this.props.user.username}</a>
+                <a className='white-text email page-header'>
+                {this.props.user.email}</a>
               </span>
             </div>
           </li>
           <li className='search'>
             {this.props.inGroupPage ? <SearchBar searchUsers={this.searchUsers}
-              user={this.props.user} selectedGroup={this.props.selectedGroup} /> : null}
+              user={this.props.user} selectedGroup=
+              {this.props.selectedGroup} /> : null}
           </li>
           <li className='my-list-item'>
             <NavLink to='/groups/new'> Create New Group <i
-            class="material-icons left">group_add</i></NavLink>
+            className="material-icons left">group_add</i></NavLink>
           </li>
           <li className=''>
-            <ul class='collapsible collapsible-accordion'>
+            <ul className='collapsible collapsible-accordion'>
               <li className=''>
-                <a class='collapsible-header'>
-                  <i class="material-icons left">group</i> My Groups
+                <a className='collapsible-header'>
+                  <i className="material-icons left">group</i> My Groups
                 </a>
-                <div class='sidebar-grouplist collapsible-body'>
-                  <ul className="collection">
+                <div className='sidebar-grouplist collapsible-body'>
+                  <ul className="collection grey">
                     <li className='my-list-item collection-item'>
                       <NavLink to='/'>All Groups</NavLink>
                     </li>
                     {this.props.groups.map(group =>
-                      <li key={group.id} className='my-list-item collection-item'>
+                      <li key={group.id}
+                      className='my-list-item collection-item'>
                         <NavLink to={`/groups/${group.id}/messages`}>
                           <div>
-                            {group.name} <small> by {group.createdBy}</small>
+                            {group.name}
                           </div>
                         </NavLink>
                       </li>
@@ -145,19 +152,19 @@ class SideNav extends Component {
           </li>
           <li className='my-list-item'>
             <NavLink to="/edit"> My Account
-              <i class="material-icons left">settings</i>
+              <i className="material-icons left">settings</i>
             </NavLink>
           </li>
-          <li className='my-list-item'><a href='#'
+          <li className='my-list-item log-out'><a href='#'
           onClick={() => this.props.logout()}> Logout
-            <i class="material-icons left">rowing</i>
+            <i className="material-icons left">rowing</i>
           </a></li>
         </ul>
       );
     }
 
     return (
-      <div>
+      <div className="navbar-div">
         <div className='navbar-fixed'>
           <nav>
             <div className='nav-wrapper lighten-1'>
@@ -172,6 +179,17 @@ class SideNav extends Component {
     );
   }
 }
+
+SideNav.propTypes = {
+  user: PropTypes.object,
+  isLoggedIn: PropTypes.bool,
+  token: PropTypes.string,
+  groups: PropTypes.array,
+  selectedGroup: PropTypes.object,
+  inGroupPage: PropTypes.bool,
+  // Action creators
+  logout: PropTypes.func.isRequired
+};
 
 const mapStateToProps = state => ({
   user: state.user,

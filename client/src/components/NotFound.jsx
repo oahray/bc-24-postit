@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
+/**
+ * @class
+ */
 class NotFound extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   /**
-   * @returns {jsx | function | null}
+   * @returns {Object | function | null} redirects or
+   * does nothing based on current route
    */
   render() {
     if (this.props.verifyAuthLoading) {
@@ -21,11 +21,7 @@ class NotFound extends Component {
 }
 
 const mapStateToProps = state => ({
-  user: state.user,
   verifyAuthLoading: state.verifyAuthLoading,
-  isLoggedIn: state.isAuthenticated,
-  verifyAuthFailed: state.verifyAuthFailed,
-  token: state.token
 });
 
 export default connect(mapStateToProps)(NotFound);

@@ -5,7 +5,14 @@ import { Redirect } from 'react-router-dom';
 import { Row, Input, Button } from 'react-materialize';
 import { createNewGroup, resetCreateGroupStatus } from '../actions';
 
+/**
+ * @class
+ */
 class NewGroup extends Component {
+  /**
+   * @constructor
+   * @param {Object} props
+   */
   constructor(props) {
     super(props);
     this.state = {
@@ -13,18 +20,31 @@ class NewGroup extends Component {
       name: '',
       description: '',
       type: 'public'
-    }
+    };
     this.onFormSubmit = this.onFormSubmit.bind(this);
   }
 
+  /**
+   * @function componentDidMount
+   * @returns {undefined}
+   */
   componentDidMount() {
     $('select').material_select();
   }
 
+  /**
+   * @function componentWillUnmount
+   * @returns {undefined}
+   */
   componentWillUnmount() {
     this.props.resetCreateGroupStatus();
   }
 
+  /**
+   * @function onFormSubmit
+   * @param {Object} event
+   * @returns {undefined}
+   */
   onFormSubmit(event) {
     event.preventDefault();
     this.props.createNewGroup(
@@ -32,12 +52,17 @@ class NewGroup extends Component {
       this.state.type, this.props.token);
   }
 
+  /**
+   * @function render
+   * @returns {Object} NewGroup jsx element
+   */
   render() {
     if (this.props.createdGroup) {
-      return (<Redirect to={`/groups/${this.props.createdGroup.id}/messages`} />);
+      return (<Redirect to={`/groups/${
+        this.props.createdGroup.id}/messages`} />);
     }
 
-    return(
+    return (
       <div className='new-group-page'>
         <h5 className='page-header center'>Create New Group</h5>
         <div className='new-group-content row'>

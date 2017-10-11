@@ -30,7 +30,7 @@ const isTaken = (req, res, next) => {
     }
     User.findOne({ where: { email } }).then((updatedUser) => {
       if (updatedUser) {
-        res.status(400).send({
+        return res.status(400).send({
           error: 'Email already taken.'
         });
       }

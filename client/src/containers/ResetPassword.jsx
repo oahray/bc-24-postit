@@ -6,7 +6,7 @@ import { resetPassword } from '../actions';
 /**
  * @class
  */
-class ResetPassword extends Component {
+export class ResetPassword extends Component {
   /**
    * @constructor
    * @param {Object} props
@@ -45,7 +45,7 @@ class ResetPassword extends Component {
       </div>
     );
     return (
-      <form className="row" onSubmit={this.resetPassword}>
+      <form className="row reset-password-form" onSubmit={this.resetPassword}>
         <div className="center">
           <h5 className="page-header">Reset Your Password</h5>
           <h6>Enter your new password</h6>
@@ -53,18 +53,18 @@ class ResetPassword extends Component {
         <div className="col s12 m8 offset-m2 row forgot-password">
           <div className='input-field col s12'>
             <i class="material-icons prefix">lock</i>
-            <input id='signup-password1' type="password" required
+            <input id='reset-password1' type="password" required
             value={this.state.password} onChange={event =>
               this.setState({ password: event.target.value })}/>
-            <label for="signup-password1">New Password</label>
+            <label for="reset-password1">New Password</label>
           </div>
 
           <div className='input-field col s12'>
             <i class="material-icons prefix">lock</i>
-            <input id='signup-password1' type="password" required
+            <input id='reset-password2' type="password" required
             value={this.state.confirmPassword} onChange={event =>
               this.setState({ confirmPassword: event.target.value })}/>
-            <label for="signup-password1">Confirm Password</label>
+            <label for="reset-password2">Confirm Password</label>
           </div>
           <div className="col s12 center">
             {resetErrorMessage}
@@ -72,9 +72,9 @@ class ResetPassword extends Component {
 
           <div className="center">
             <button
-            className="btn waves-effect waves-teal white main-text-color"
+            className="btn reset-password-btn waves-effect waves-teal white main-text-color"
             type="submit">{this.props.resetPasswordLoading ?
-            'saving your changes...' : 'change password'}</button>
+            'Saving your changes...' : 'Change password'}</button>
           </div>
         </div>
       </form>

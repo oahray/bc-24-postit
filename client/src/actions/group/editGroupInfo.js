@@ -1,17 +1,19 @@
 import axios from 'axios';
 import toastr from 'toastr';
 
-import { BASE_URL, getGroupList } from '../index';
-
-export const EDIT_GROUP_INFO_LOADING = 'EDIT_GROUP_INFO_LOADING';
-export const EDIT_GROUP_INFO_SUCCESS = 'EDIT_GROUP_INFO_SUCCESS';
-export const EDIT_GROUP_INFO_FAILURE = 'EDIT_GROUP_INFO_FAILURE';
+import { getGroupList } from '../index';
+import {
+  BASE_URL,
+  EDIT_GROUP_INFO_LOADING,
+  EDIT_GROUP_INFO_SUCCESS,
+  EDIT_GROUP_INFO_FAILURE
+} from '../../constants';
 
 /** Edit group loading: dispatched when the request
  * is made, before a response is gotten
  * @returns {object} action
  */
-const editGroupLoading = () => ({
+export const editGroupLoading = () => ({
   type: EDIT_GROUP_INFO_LOADING
 });
 
@@ -50,7 +52,7 @@ export const editGroupInfo = (groupId, name, description, type, token) =>
 (dispatch) => {
   dispatch(editGroupLoading());
   const FETCH_URL = `${BASE_URL}/group/${groupId}/info`;
-  axios({
+  return axios({
     method: 'patch',
     url: FETCH_URL,
     data: {
@@ -63,16 +65,12 @@ export const editGroupInfo = (groupId, name, description, type, token) =>
     }
   })
   .then((response) => {
-    if (response.status === 201) {
-      dispatch(getGroupList(token));
-      toastr.info(response.data.message);
-      return dispatch(editGroupSuccess(response));
-    }
+    toastr.info(response.data.message);
+    dispatch(editGroupSuccess(response));
+    dispatch(getGroupList(token));
   })
   .catch((err) => {
-    if (err.response) {
-      toastr.info(err.response.data.error);
-      return dispatch(editGroupFailure(err.response.data.error));
-    }
+    toastr.info(err.response.data.error);
+    return dispatch(editGroupFailure(err.response.data.error));
   });
 };

@@ -11,7 +11,7 @@ import GroupInfoModal from './GroupInfoModal';
  * @returns {jsx} info element
  */
 const GroupInfo = props => (
-  <li>
+  <li className="group-info-ul">
     <div className="main-text-color page-header">
       GROUP INFO
       {props.user.username === props.selectedGroup.createdBy ?
@@ -39,13 +39,13 @@ const GroupInfo = props => (
       </span> : ''}
     </div>
     <div className='group-info'>
-      <p>
+      <p className="group-creator-info" >
         Created by {props.selectedGroup.createdBy.toUpperCase()} on {
           moment(props.selectedGroup.createdAt)
           .format('Do MMMM, YYYY, [at] h:mma')
         }
       </p>
-      <p> {props.selectedGroup.description ?
+      <p className="group-description"> {props.selectedGroup.description ?
         `Description: ${props.selectedGroup.description}` :
         'No description added.'}</p>
     </div>

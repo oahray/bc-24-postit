@@ -1,16 +1,17 @@
 import axios from 'axios';
 import toastr from 'toastr';
 
-import { BASE_URL } from '../index';
-
-export const SIGNIN_LOADING = 'SIGNIN_LOADING';
-export const SIGNIN_SUCCESS = 'SIGNIN_SUCCESS';
-export const SIGNIN_FAILURE = 'SIGNIN_FAILURE';
+import {
+  BASE_URL,
+  SIGNIN_LOADING,
+  SIGNIN_SUCCESS,
+  SIGNIN_FAILURE
+} from '../../constants';
 
 /**
  * @returns {object} signin_loading action
  */
-const signinLoading = () => ({
+export const signinLoading = () => ({
   type: SIGNIN_LOADING
 });
 
@@ -41,7 +42,7 @@ export const signinUser = (username, password) =>
 (dispatch) => {
   dispatch(signinLoading());
   const FETCH_URL = `${BASE_URL}/user/signin`;
-  axios({
+  return axios({
     method: 'post',
     url: FETCH_URL,
     data: {
@@ -50,14 +51,10 @@ export const signinUser = (username, password) =>
     }
   })
   .then((response) => {
-    if (response.statusText === 'OK') {
-      dispatch(signinSuccess(response));
-      toastr.info(response.data.message);
-    }
+    toastr.info(response.data.message);
+    return dispatch(signinSuccess(response));
   })
   .catch((err) => {
-    if (err.response) {
-      dispatch(signinFailure(err.response.data.error));
-    }
+    dispatch(signinFailure(err.response.data.error));
   });
 };
