@@ -26,7 +26,7 @@
     "migrate:undo": "sequelize db:migrate:undo --config server/config/config.js",
     "migrate:undo:all": "sequelize db:migrate:undo:all --config server/config/config.js",
     "webpack": "webpack",
-    "coveralls": "nyc --reporter=lcov --reporter=text-lcov npm test | coveralls",
+    "coveralls": "nyc --reporter=lcov --reporter=text-icov npm test",
     "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "repository": {

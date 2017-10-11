@@ -10,24 +10,21 @@ module.exports = {
   },
   module: {
     loaders: [
-      { test: /\.(js|jsx)$/,
-        loader: 'babel-loader',
+      { test: /\.(js|jsx)$/, 
+        loader: 'babel-loader', 
         exclude: /node_modules\//,
-        query: {
-          presets: ['react', 'es2015'],
-          plugins: [
-            'react-html-attrs',
-            'transform-decorators-legacy',
-            'transform-class-properties'],
-        }
-      },
-      { test: /\.css$/,
-        loader: [
-          'style-loader',
-          'css-loader?importLoaders=1',
-          'font-loader?format[]=truetype&format[]=woff&format[]=embedded-opentype'
-        ]
-      },
+      query: {
+        presets: ['react', 'es2015'],
+        plugins: [
+          'react-html-attrs', 
+          'transform-decorators-legacy',
+          'transform-class-properties'],
+      } },
+      { test: /\.css$/, loader: [
+        'style-loader',
+        'css-loader?importLoaders=1',
+        'font-loader?format[]=truetype&format[]=woff&format[]=embedded-opentype'
+      ] },
       { test: /\.(ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
         loader: 'file-loader?name=/fonts/[name].[ext]'
       },
@@ -43,6 +40,10 @@ module.exports = {
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
+    // new webpack.ProvidePlugin({
+    //   $: 'window.$',
+    //   jQuery: 'window.jQuery'
+    // }),
     new webpack.optimize.ModuleConcatenationPlugin()
   ]
 };

@@ -18,11 +18,10 @@ const compiler = webpack(webpackConfig);
 const env = process.env.NODE_ENV || 'development';
 console.log('>>>>>> ENV: ', env);
 
-if (env !== 'production') {
-  dotenv.config();
-}
+dotenv.config();
 
 if (env === 'development') {
+  dotenv.config();
   app.use(webpackDevMiddleware(compiler, {
     historyApiFallback: true,
     hot: true,
@@ -56,18 +55,11 @@ app.use(cors(corsOptions));
 
 const publicPath = path.join(__dirname, '../client/public/');
 const indexPath = path.resolve(__dirname, publicPath, 'index.html');
-const docPath = path.join(__dirname, '../docs');
-
-app.use('/api/docs', express.static(docPath));
 
 app.use('/', express.static(publicPath));
 
 // Require our routes
 require('./routes')(app);
-
-app.get('/api/docs', (req, res) => {
-  res.sendFile(path.join(__dirname, '../docs', 'index.html'));
-});
 
 app.get('/api/*', (req, res) => res.status(404).send({
   error: 'Route not found',

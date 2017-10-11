@@ -22,10 +22,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    setTimeout(() => {
-      $('.modal').modal();
-    }, 800);
-
+    $('.modal-trigger').modal();
     const socket = io();
 
     socket.on('Added to group', ({ user, group, addedBy }) => {

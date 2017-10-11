@@ -16,7 +16,8 @@ before_script:
   - createdb postit-test --username=postgres
   - npm run migrate
 after_success:
-  - npm run coverage
+  - npm run coveralls
+  - nyc npm test && report -reporter=text-lcov | coveralls
 env:
   global:
     - MY_SUPER_SECRET=rgfiwa7t4873qr7tr87r8

@@ -7,3 +7,4 @@ bundle.min.js
 .nyc_output
 coverage/
 .DS_Store
+

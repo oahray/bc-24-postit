@@ -45,17 +45,11 @@ class Group extends Component {
     this.editInfo = this.editInfo.bind(this);
   }
 
-  /**
-   * @returns {void}
-   */
   componentWillMount() {
     this.props.getGroupMessages(this.groupId, this.props.token);
     this.props.getGroupUsers(this.groupId, this.props.token);
   }
 
-  /**
-   * @returns {void}
-   */
   componentDidMount() {
     $('ul.tabs').tabs();
     $('.collapsible').collapsible();
@@ -81,49 +75,27 @@ class Group extends Component {
     });
   }
 
-  /**
-   * @param {object} newProps
-   * @returns {void}
-   */
   componentWillReceiveProps(newProps) {
     if (this.props.selectedGroup && Number(newProps.match.params.groupid) !== this.props.selectedGroup.id) {
       this.props.getGroupUsers(newProps.match.params.groupid, this.props.token);
-      this.newMessageAdded(Number(newProps.match.params.groupid));
-    }
-
-    if (!newProps.groupMessagesLoading && !newProps.selectedGroup) {
-      this.props.history.push('/');
+      return this.newMessageAdded(Number(newProps.match.params.groupid));
     }
   }
 
-  /**
-   * @returns {void} and dispatches action
-   */
   componentWillUnmount() {
     this.props.inGroupPage(false);
   }
 
-  /**
-   * @param {object} event
-   * @returns {void} and sets state
-   */
   onTypeText(event) {
     this.setState({ content: event.target.value });
   }
 
-  /**
-   * @returns {void} and sets state
-   */
   toggleInfo() {
     this.setState({
       showInfo: !this.state.showInfo
     });
   }
 
-  /**
-   * @param {object} message
-   * @returns {void}
-   */
   openMessage(message) {
     this.setState({
       messageOpen: true,
@@ -132,9 +104,6 @@ class Group extends Component {
     markAsRead(this.props.selectedGroup.id, message.id, this.props.token);
   }
 
-  /**
-   * @returns {void} and sets state
-   */
   closeMessage() {
     this.setState({
       messageOpen: false,
@@ -142,10 +111,6 @@ class Group extends Component {
     });
   }
 
-  /**
-   * @param {number} groupid
-   * @returns {object}
-   */
   newMessageAdded(groupid) {
     return this.props.getGroupMessages(groupid, this.props.token);
   }
@@ -211,7 +176,7 @@ class Group extends Component {
     );
 
     const messages = (<div className='tab-content row'>
-      {this.props.groupMessagesLoading || !this.props.selectedGroup ? <Preloader message="Loading group messages..." /> : messageList}
+      {this.props.groupMessagesLoading ? <Preloader message="Loading group messages..." /> : messageList}
       {messageInput}
     </div>);
 
