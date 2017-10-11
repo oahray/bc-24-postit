@@ -81,6 +81,7 @@
     "redux-thunk": "^2.2.0",
     "sass-loader": "^6.0.6",
     "sequelize": "^4.2.1",
+    "serve-favicon": "^2.4.5",
     "socket.io": "^2.0.3",
     "socket.io-client": "^2.0.3",
     "style-loader": "^0.18.2",

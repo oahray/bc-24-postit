@@ -62,7 +62,7 @@ class Group extends Component {
     setTimeout(() => {
       $('.tooltipped').tooltip({ delay: 50, html: true });
       $('.modal').modal();
-    }, 800);
+    }, 300);
 
     this.props.inGroupPage(true);
     const socket = io();

@@ -4,7 +4,7 @@ import ConfirmModal from './ConfirmModal';
 import GroupInfoModal from './GroupInfoModal';
 // import PropTypes from 'prop-types';
 
-export const UsersList = (props) => (
+export const UsersList = props => (
   <li className="grey">
     <div className="grey white-text valign-wrapper group-users-header">
       <i className="material-icons">group</i>
@@ -63,9 +63,13 @@ export const GroupInfo = props => (
     </div>
     <div className='group-info'>
       <p>
-        Created by {props.selectedGroup.createdBy.toUpperCase()} on {moment(props.selectedGroup.createdAt).format('Do MMMM, YYYY, [at] h:mma')}
+        Created by {props.selectedGroup.createdBy.toUpperCase()} on {
+          moment(props.selectedGroup.createdAt)
+          .format('Do MMMM, YYYY, [at] h:mma')
+        }
       </p>
-      <p> Description: {props.selectedGroup.description ? props.selectedGroup.description : 'No description added.'}</p>
+      <p> Description: {props.selectedGroup.description ?
+        props.selectedGroup.description : 'No description added.'}</p>
     </div>
   </li>
 );

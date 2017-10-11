@@ -141,13 +141,13 @@ class SearchResult extends Component {
             <h5 className='page-header'>Add Users to <strong>{this.props.selectedGroup.name}</strong></h5>
           </div>
           <div className='col s12 center'>
-            <a className='btn white teal-text' onClick={this.searchDone}>Done</a>
+            <a className='btn white main-text-color' onClick={this.searchDone}>Done</a>
           </div>
 
           <div className='search-list-container col s10 offset-s1 m8 offset-m2 l6 offset-l3'>
             <h6>{this.props.userSearchResults.totalCount} found</h6>
             <ul className='row list-group'>
-              {this.props.userSearchResults.users ? (this.props.userSearchResults.users).map((user) => <li className="" key={user.id}><div className='col s12 list-item grey lighten-3'><strong>{user.username}</strong> <br /> <small>{user.about}</small> <span className='right'><a className='add-user-icon teal-text' onClick={() => this.addUser(user.username)}><i className='material-icons'>person_add</i></a></span></div><hr/></li>) : null }
+              {this.props.userSearchResults.users ? (this.props.userSearchResults.users).map((user) => <li className="" key={user.id}><div className='col s12 list-item grey lighten-3'><strong>{user.username}</strong> <br /> <small>{user.about}</small> <span className='right'><a className='add-user-icon main-text-color' onClick={() => this.addUser(user.username)}><i className='material-icons'>person_add</i></a></span></div><hr/></li>) : null }
             </ul>
           </div>
 

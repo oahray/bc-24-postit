@@ -37,13 +37,28 @@ nav, .nav-wrapper {
   font-size: 14px;
 }
 
+// input:not([type]):focus:not([readonly]) {
+//   border-bottom: 1px solid $main-color !important;
+//   box-shadow: $main-color !important;
+// }
+
+/* label focus color */
+.input-field input:focus + label, .materialize-textarea:focus:not([readonly]) + label, .input-field .prefix.active {
+  color: $secondary-color !important;
+ }
+
+/* label underline focus color */
+ .input-field input:focus, .materialize-textarea:focus:not([readonly]) {
+  border-bottom: 1px solid $secondary-color !important;
+  box-shadow: 0 1px 0 0 $secondary-color !important;
+ }
+
 .forgot-password {
   padding-bottom: 20px;
   .forgot-password-input {
     padding: 0px 10px !important;
     border-radius: 10px 0px 0px 10px!important;
     border: 2px solid grey !important;
-    // border-bottom: black !important;
     box-shadow: none!important;
     margin-right: 0px;
   }
@@ -275,7 +290,7 @@ ul.side-nav.fixed:hover {
 }
 
 .close-icon {
-  color: red;
+  color: rgb(216, 78, 78);
   :hover {
     cursor: pointer;
   }
@@ -327,7 +342,7 @@ ul.side-nav.fixed:hover {
   .guest-home-header {
     color: $main-color;
     font-weight: bold;
-    text-shadow: 5px 5px grey;
+    text-shadow: 5px 5px rgb(202, 202, 202);
     margin-top: 20px;
     font-size: 5em;
   }

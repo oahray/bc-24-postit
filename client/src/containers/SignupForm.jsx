@@ -95,7 +95,7 @@ class SignupForm extends Component {
             <label for="signup-password2">Confirm Password</label>
           </div>
           <div className='center'>
-            <Button className={`white teal-text 
+            <Button className={`white main-text-color 
             ${this.props.setUserLoading ? 'disabled' : ''}`} waves='light'
             type='submit'>{this.props.setUserLoading ?
             'Please wait...' : 'Submit'}</Button>

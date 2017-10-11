@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import logger from 'morgan';
 import cors from 'cors';
+import favicon from 'serve-favicon';
 import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
@@ -53,6 +54,9 @@ const corsOptions = {
   optionsSuccessStatus: 200
 };
 app.use(cors(corsOptions));
+
+// // set favicon
+// app.use(favicon(path.join(__dirname, '../client/public/images/favicon.ico')));
 
 const publicPath = path.join(__dirname, '../client/public/');
 const indexPath = path.resolve(__dirname, publicPath, 'index.html');

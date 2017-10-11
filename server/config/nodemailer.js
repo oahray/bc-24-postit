@@ -1,7 +1,9 @@
 const nodemailer = require('nodemailer');
 const env = require('dotenv');
 
-env.config();
+if (process.env.NODE_ENV !== 'production') {
+  env.config();
+}
 
 export const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -16,12 +18,10 @@ export const transporter = nodemailer.createTransport({
   }
 });
 
-export const helperOptions = (to, bcc, subject, html) => {
-  return {
-    from: `"Postit" <noreply@postit.com>`,
-    to,
-    bcc,
-    subject,
-    html
-  };
-};
+export const helperOptions = (to, bcc, subject, html) => ({
+  from: '"Postit" <noreply@postit.com>',
+  to,
+  bcc,
+  subject,
+  html
+});
