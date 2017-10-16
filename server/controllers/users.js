@@ -27,7 +27,7 @@ export const signin = (req, res) => {
   const body = _.pick(req.body, ['username', 'password']);
   const username = body.username.trim().toLowerCase();
   if (!body.password) {
-    return res.status(400).json({
+    return res.status(400).send({
       error: 'Password must not be empty'
     });
   }
@@ -142,19 +142,17 @@ export const forgotPassword = (req, res) => {
         <p style="color:black">If it was not you who made the request, please ignore this mail, and your password <strong>would not</strong> be changed. 
         </p>
         <p style="color:black">Best regards, <br/> The Postit Team</div></p>`;
-        if (process.env.NODE_ENV !== 'test') {
-          transporter.sendMail(
-            helperOptions(user.email, null, subject, html), (error, info) => {
-              if (error) {
-                console.log('The recovery email could not be sent: ', error);
-              }
-              console.log('The recovery email was sent: ', info);
+        transporter.sendMail(
+          helperOptions(user.email, null, subject, html), (error, info) => {
+            if (error) {
+              console.log('The recovery email could not be sent: ', error);
             }
-          );
-        }
-        res.send({
-          message: 'An email with reset instructions has been sent'
-        });
+            console.log('The recovery email was sent: ', info);
+            res.send({
+              message: 'An email with reset instructions has been sent'
+            });
+          }
+        );
       }
     })
     .catch(err => res.send({ err }));

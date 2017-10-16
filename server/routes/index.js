@@ -31,8 +31,6 @@ module.exports = (app) => {
 
   app.get('/api/user/me', authenticate, usersController.getMe);
 
-  // app.get('/api/user/token', authenticate, usersController.refreshToken);
-
   app.get('/api/user/all', authenticate, usersController.getAllUsers);
 
   app.get('/api/user/me/groups', authenticate, usersController.getMyGroups);

@@ -1,3 +1,5 @@
+import mockery from 'mockery';
+import nodemailerMock from 'nodemailer-mock';
 import models from '../../models';
 import { seedUsers , seedGroups } from './seed'
 
@@ -44,14 +46,8 @@ export const doBeforeAll = () => {
     populateUsers();
     populateGroups();
 
+
+
     done();
   });
 };
-
-export const doBeforeEach = () => {
-  beforeEach((done) => {
-    models.sequelize.sync();
-    done();
-  });
-};
-

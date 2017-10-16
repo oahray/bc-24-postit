@@ -1,9 +1,14 @@
 import expect from 'expect';
 import request from 'supertest';
+import nodemailerMock from 'nodemailer-mock';
+import io from 'socket.io-client';
 import app from '../app';
+import '../bin/www';
 import models from '../models';
 import { doBeforeAll, doBeforeEach, populateUsers } from './seeders/testHooks';
 import { seedUsers, seedGroups, tokens, generateAuth } from './seeders/seed';
+
+const socket = io('http://localhost');
 
 describe('PostIt API routes: ', () => {
   doBeforeAll();
@@ -151,6 +156,22 @@ describe('PostIt API routes: ', () => {
         done();
       });
     });
+
+    it('POST /api/user/signin route should return error if no password entered', (done) => {
+      request(app)
+      .post('/api/user/signin')
+      .send({
+        username: 'testuser2'
+      })
+      .expect(400)
+      .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
+        expect(res.body.error).toExist().toBe('Password must not be empty');
+        done();
+      });
+    });
   });
   
   describe('Protected User routes', () => {
@@ -195,6 +216,18 @@ describe('PostIt API routes: ', () => {
       .expect(200)
       .end((err, res) => {
         expect(res.body.userGroups.length).toBe(3);
+        done();
+      });
+    });
+
+    it('GET /api/user/me/groups should get user messages', (done) => {
+      const token = generateAuth(seedUsers.registered[2].id)
+      request(app)
+      .get('/api/user/me/messages')
+      .set('x-auth', token)
+      .expect(200)
+      .end((err, res) => {
+        expect(res.body.messages).toExist;
         done();
       });
     });
@@ -314,7 +347,10 @@ describe('PostIt API routes: ', () => {
           if (err) {
             return done(err);
           }
-          expect(res.body.message).toBe('An email with reset instructions has been sent')
+          // get the array of emails we sent
+          const sentMail = nodemailerMock.mock.sentMail();
+          expect(sentMail.length).toBe(1);
+          expect(res.body.message).toBe('An email with reset instructions has been sent');
           done();
         })
       });
@@ -458,6 +494,10 @@ describe('PostIt API routes: ', () => {
         if (err) {
           return done(err);
         }
+        socket.on('Added to group', (data) => {
+          expect(data.user.name).toBe(usernameToAdd);
+          expect(data.group.id).toBe(groupId);
+        });
         expect(res.body.message).toBe(`${usernameToAdd} added to group`);
         request(app)
         .delete(`/api/group/${groupId}/user`)
@@ -680,8 +720,39 @@ describe('PostIt API routes: ', () => {
         if (err) {
           return done(err);
         }
+        socket.on('Message posted', (data) => {
+          expect(data.message.sender).toExist().toBe(seedUsers.registered[2].username);
+          expect(data.group.id).toExist().toBe(seedGroups[0].id);
+        });
         expect(res.body.message).toExist;
         expect(res.body.message.content).toBe('First message');
+        done();
+      })
+    });
+
+    it('POST /api/group/:groupid/message should send email notification if priority is urgent or critical', (done) => {
+      const groupId = seedGroups[0].id
+      request(app)
+      .post(`/api/group/${groupId}/message`)
+      .send({
+        content: 'Second message',
+        priority: 'urgent'
+      })
+      .set('x-auth', generateAuth(seedUsers.registered[2].id))
+      .expect(201)
+      .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
+        const sentMail = nodemailerMock.mock.sentMail();
+        expect(sentMail.length).toBe(1);
+        expect(sentMail[0].subject).toBe('Password reset');
+        socket.on('Message posted', (data) => {
+          expect(data.message.sender).toExist().toBe(seedUsers.registered[2].username);
+          expect(data.group.id).toExist().toBe(seedGroups[0].id);
+        });
+        expect(res.body.message).toExist;
+        expect(res.body.message.content).toBe('Second message');
         done();
       })
     });
@@ -694,7 +765,7 @@ describe('PostIt API routes: ', () => {
       .expect(200)
       .end((err, res) => {
         expect(res.body.messages).toExist;
-        expect(res.body.messages.length).toBe(1);
+        expect(res.body.messages.length).toBe(2);
         done();
       })
     });
@@ -801,7 +872,7 @@ describe('PostIt API routes: ', () => {
     });
   });
 
-  describe('Catch-all route', () => {
+  describe('Catch-all routes', () => {
     it('should send html for all non-api routes', (done) => {
       request(app)
       .get('/heyyo')
@@ -810,6 +881,16 @@ describe('PostIt API routes: ', () => {
         expect(res.body).toNotBeA('JSON');
         done();
       });
-    })
-  })
-})
+    });
+
+    it('should send html for all non-api routes', (done) => {
+      request(app)
+      .get('/api/docs')
+      .expect(200)
+      .end((err, res) => {
+        expect(res.body).toNotBeA('JSON');
+        done();
+      });
+    });
+  });
+});

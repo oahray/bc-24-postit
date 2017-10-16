@@ -55,8 +55,8 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
-// // set favicon
-// app.use(favicon(path.join(__dirname, '../client/public/images/favicon.ico')));
+// set favicon
+app.use(favicon(path.join(__dirname, '../client/public/images/favicon.ico')));
 
 const publicPath = path.join(__dirname, '../client/public/');
 const indexPath = path.resolve(__dirname, publicPath, 'index.html');

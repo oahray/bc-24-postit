@@ -1,12 +1,12 @@
 import expect from 'expect';
 import request from 'supertest';
-import app from '../app';
 import models from '../models';
+import './seeders/mockNodemailer';
+import app from '../app';
 import { doBeforeAll, doBeforeEach, populateUsers } from './seeders/testHooks';
 import { seedUsers, seedGroups, generateAuth, tokens } from './seeders/seed';
 
 describe('Middleware functions:', () => {
-  // doBeforeAll();
   describe('isValidUsername Middleware', () => {
     it('does not allow a user signup without a username', (done) => {
       request(app)
@@ -141,4 +141,56 @@ describe('Middleware functions:', () => {
       })
     });
   });
+
+  describe('isGroupMember middleware', () => {
+    it('returns error if group id is not provided', (done) => {
+      const token = tokens[2];
+      request(app)
+      .get(`/api/group/${null}/users`)
+      .set('x-auth', token)
+      .expect(400)
+      .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
+        expect(res.body.error).toBe('GroupId must be provided');
+        done();
+      });
+    });
+  });
+
+  describe('isGroupMember middleware', () => {
+    it('returns error if group id is not provided', (done) => {
+      const token = tokens[2];
+      request(app)
+      .get(`/api/group/32/users`)
+      .set('x-auth', token)
+      .expect(404)
+      .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
+        expect(res.body.error).toBe('Specified group does not exist');
+        done();
+      });
+    });
+  });
+
+  describe('isGroupMember middleware', () => {
+    it('returns error if group id is not provided', (done) => {
+      const token = generateAuth(seedUsers.registered[1].id);
+      request(app)
+      .get(`/api/group/${seedGroups[1].id}/users`)
+      .set('x-auth', token)
+      .expect(401)
+      .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
+        expect(res.body.error).toBe('You must belong to a group to interact with it');
+        done();
+      });
+    });
+  });
+
 });
