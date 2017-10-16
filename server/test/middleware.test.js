@@ -144,7 +144,7 @@ describe('Middleware functions:', () => {
 
   describe('isGroupMember middleware', () => {
     it('returns error if group id is not provided', (done) => {
-      const token = tokens[2];
+      const token = generateAuth(seedUsers.registered[0].id);
       request(app)
       .get(`/api/group/${null}/users`)
       .set('x-auth', token)
@@ -161,7 +161,7 @@ describe('Middleware functions:', () => {
 
   describe('isGroupMember middleware', () => {
     it('returns error if group id is not provided', (done) => {
-      const token = tokens[2];
+      const token = generateAuth(seedUsers.registered[0].id);
       request(app)
       .get(`/api/group/32/users`)
       .set('x-auth', token)
@@ -178,7 +178,7 @@ describe('Middleware functions:', () => {
 
   describe('isGroupMember middleware', () => {
     it('returns error if group id is not provided', (done) => {
-      const token = generateAuth(seedUsers.registered[1].id);
+      const token = generateAuth(seedUsers.registered[0].id);
       request(app)
       .get(`/api/group/${seedGroups[1].id}/users`)
       .set('x-auth', token)
