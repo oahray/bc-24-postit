@@ -46,8 +46,6 @@ export const doBeforeAll = () => {
     populateUsers();
     populateGroups();
 
-
-
     done();
   });
 };

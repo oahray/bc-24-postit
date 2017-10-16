@@ -148,11 +148,12 @@ describe('Middleware functions:', () => {
       request(app)
       .get(`/api/group/${null}/users`)
       .set('x-auth', token)
-      .expect(400)
+      // .expect(400)
       .end((err, res) => {
         if (err) {
           return done(err);
         }
+        console.log(res.body.error);
         expect(res.body.error).toBe('GroupId must be provided');
         done();
       });
@@ -165,11 +166,12 @@ describe('Middleware functions:', () => {
       request(app)
       .get(`/api/group/32/users`)
       .set('x-auth', token)
-      .expect(404)
+      // .expect(404)
       .end((err, res) => {
         if (err) {
           return done(err);
         }
+        console.log(res.body.error);
         expect(res.body.error).toBe('Specified group does not exist');
         done();
       });
@@ -187,6 +189,7 @@ describe('Middleware functions:', () => {
         if (err) {
           return done(err);
         }
+        console.log(res.body.error);
         expect(res.body.error).toBe('You must belong to a group to interact with it');
         done();
       });
