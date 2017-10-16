@@ -233,9 +233,9 @@ export const sendMessageToGroup = (req, res) => {
         transporter.sendMail(
           helperOptions('You', bcc, subject, html), (error, info) => {
             if (error) {
-              return console.log('Message could not be sent');
+              return console.log('Message email could not be sent: ', error);
             }
-            console.log('The message was sent');
+            console.log('The message email was sent: ', info);
           }
         );
       }

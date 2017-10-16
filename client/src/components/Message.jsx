@@ -13,7 +13,7 @@ export default function Message(props) {
             <span className="right close-icon" onClick={props.closeMessage}><small><i className="material-icons">close</i></small></span>
           </h5>
       </div>
-      <div className="col s12 white display-linebreak">
+      <div className="col s12 white display-linebreak message-content">
         {props.message.content}
       </div>
       <div className="grey lighten-3 center">

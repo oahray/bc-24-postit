@@ -52,7 +52,7 @@ class ResetPassword extends Component {
 
           <div className="center">
             <button
-            className="btn waves-effect waves-teal white teal-text" type="submit">{this.props.resetPasswordLoading ? 'saving your changes...' : 'change password'}</button>
+            className="btn waves-effect waves-teal white main-text-color" type="submit">{this.props.resetPasswordLoading ? 'saving your changes...' : 'change password'}</button>
           </div>
         </div>
       </form>

@@ -52,7 +52,7 @@ class NewGroup extends Component {
             </Row>
 
             <div className='center'>
-              <Button className='white teal-text' waves='teal' type='submit'> Create </Button>
+              <Button className='white main-text-color' waves='teal' type='submit'> Create </Button>
             </div>
           </form>
         </div>

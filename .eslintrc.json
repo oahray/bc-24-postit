@@ -8,11 +8,20 @@
     "mocha": true
   },
   "globals": {
-    "React": true
+    "React": true,
+    "$": false,
+    "io": true
   },
   "plugins": [
     "react"
   ],
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js",".jsx"]
+      }
+    }
+  },
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true,

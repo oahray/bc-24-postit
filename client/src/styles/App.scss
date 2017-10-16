@@ -2,12 +2,15 @@ $main-color: #0C6C85;
 $secondary-color: #107D85;
 // $main-color: 
 $grey1: #E0E0E0;
+$grey2: #E6E7E8;
 $body-background: #f8f8f8;
 
 body {
   width: 100%;
   font-size: 14px;
-  background-color: $body-background;
+  background-color: white;
+  background-image: url('/images/background1.png')
+  
 }
 
 .main-text-color {
@@ -37,13 +40,23 @@ nav, .nav-wrapper {
   font-size: 14px;
 }
 
+/* label focus color */
+.input-field input:focus + label, .materialize-textarea:focus:not([readonly]) + label, .input-field .prefix.active {
+  color: $secondary-color !important;
+ }
+
+/* label underline focus color */
+ .input-field input:focus, .materialize-textarea:focus:not([readonly]) {
+  border-bottom: 1px solid $secondary-color !important;
+  box-shadow: 0 1px 0 0 $secondary-color !important;
+ }
+
 .forgot-password {
   padding-bottom: 20px;
   .forgot-password-input {
     padding: 0px 10px !important;
     border-radius: 10px 0px 0px 10px!important;
     border: 2px solid grey !important;
-    // border-bottom: black !important;
     box-shadow: none!important;
     margin-right: 0px;
   }
@@ -71,7 +84,9 @@ nav, .nav-wrapper {
   padding: 30px 0px;
   vertical-align: center;
   .row {
-    padding: 0px 20px 20px 20px;
+    background-color: $body-background;
+    padding: 10px 20px 30px 20px;
+    border-radius: 10px;
     .input-field {
       margin: 0 auto;
       padding: 10px;
@@ -96,6 +111,10 @@ ul.side-nav.fixed:hover {
 }
 
 .side-nav.fixed {
+  background-color: $grey2;
+  // a :not(.user-view), i :not(.user-view) {
+  //   color: $main-color !important;
+  // }
   overflow: hidden;
   .user-view {
     background-color: $main-color;
@@ -123,6 +142,7 @@ ul.side-nav.fixed:hover {
   padding-left: 10px !important;
   }
   .sidebar-grouplist {
+    background-color: $grey2 !important;
     max-height: 200px;
     width: 100%;
     padding: 0px;
@@ -174,6 +194,12 @@ ul.side-nav.fixed:hover {
   }
 }
 
+.group-card {
+  margin: 5px;
+  padding: 10px;
+  background-color: white;
+}
+
 .group-page {
   padding: 0px 5px;
   .tab-content {
@@ -181,6 +207,9 @@ ul.side-nav.fixed:hover {
     padding: 0px;
     min-height: 100px;
     height: calc(100vh - 130px);
+  }
+  .no-messages {
+    margin: 30px;
   }
   .group-tab li a {
     color: $main-color !important;
@@ -196,6 +225,7 @@ ul.side-nav.fixed:hover {
     margin: 0px !important;
     padding: 0px !important;
     border: 2px solid grey;
+    background-color: white;
     border-radius: 15px;
     input, input:focus {
       border-bottom: none!important;
@@ -236,7 +266,7 @@ ul.side-nav.fixed:hover {
         margin-top: 7px;
         width: 60px;
         padding: 0px;
-        background: $body-background !important;
+        background: transparent !important;
         i {
           text-align: left;
           width: 28px;
@@ -259,13 +289,14 @@ ul.side-nav.fixed:hover {
 }
 
 .message-list {
-  border: 5px solid $grey1;
+  border: 2px solid $grey1;
+  background-color: white;
   border-radius: 10px;
   margin: 10px 0px;
   height: calc(100vh - 200px);
   overflow-y: scroll;
   .message-item {
-    padding: 0px 20px !important;
+    padding: 5px 20px !important;
     text-overflow: ellipse;
   }
   :hover {
@@ -275,7 +306,7 @@ ul.side-nav.fixed:hover {
 }
 
 .close-icon {
-  color: red;
+  color: rgb(216, 78, 78);
   :hover {
     cursor: pointer;
   }
@@ -283,7 +314,13 @@ ul.side-nav.fixed:hover {
 
 .message-container {
   margin-top: 20px;
-  padding: 0px;
+  padding: 0px !important;
+  div: {
+    padding: 0px 10px !important;
+  }
+  .message-content {
+    padding: 10px;
+  }
 }
 
 .display-linebreak {
@@ -322,12 +359,12 @@ ul.side-nav.fixed:hover {
 }
 
 .guest-home {
-  background-color: #f8f8f8 !important;
+  background-color: transparent !important;
   padding-bottom: 20px;
   .guest-home-header {
     color: $main-color;
     font-weight: bold;
-    text-shadow: 5px 5px grey;
+    text-shadow: 5px 5px rgb(202, 202, 202);
     margin-top: 20px;
     font-size: 5em;
   }

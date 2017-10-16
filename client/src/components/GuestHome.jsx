@@ -2,7 +2,6 @@ import React, { Component} from  'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Redirect, Link } from 'react-router-dom';
-import { Navbar, NavItem, Icon, Carousel, Button } from 'react-materialize';
 import GuestCarousel from './GuestCarousel';
 import { verifyAuth } from '../actions';
 
@@ -30,14 +29,11 @@ class GuestHome extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    isLoggedIn: state.isAuthenticated
-  }
-}
+const mapStateToProps = state => ({
+  isLoggedIn: state.isAuthenticated
+});
 
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ verifyAuth }, dispatch);
-};
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ verifyAuth }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(GuestHome);

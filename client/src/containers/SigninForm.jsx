@@ -53,7 +53,7 @@ class SigninForm extends Component {
             <label for="signin-password">Password</label>
           </div>
           <div className='center' >
-            <Button className={`white teal-text ${this.props.signinLoading ? 'disabled' : ''}`} waves='teal' type='submit'> {this.props.signinLoading ? 'Please wait...' : 'Submit'} </Button>
+            <Button className={`white main-text-color ${this.props.signinLoading ? 'disabled' : ''}`} waves='teal' type='submit'> {this.props.signinLoading ? 'Please wait...' : 'Submit'} </Button>
           </div>
           <div className='center'>
             <p className='center'> Forgot Password? <Link to="/forgotpassword">Get Recovery Email</Link></p>

@@ -56,20 +56,6 @@ export const getMe = (req, res) => {
   return res.status(200).send({ currentUser });
 };
 
-// export const refreshToken = (req, res) => {
-//   const currentUser = req.currentUser;
-//   if (!currentUser) {
-//     return res.status(401).send({
-//       error: 'Not logged in'
-//     });
-//   }
-//   const token = currentUser.generateAuthToken();
-//   res.header('x-auth', token).status(200).send({
-//     message: `Token refreshed, ${currentUser.username}`,
-//     currentUser
-//   });
-// };
-
 export const getAllUsers = (req, res) => {
   User.findAll().then(users =>
     res.status(200).send({ users })
@@ -158,10 +144,11 @@ export const forgotPassword = (req, res) => {
         <p style="color:black">Best regards, <br/> The Postit Team</div></p>`;
         if (process.env.NODE_ENV !== 'test') {
           transporter.sendMail(
-            helperOptions(user.email, null, subject, html), (error) => {
+            helperOptions(user.email, null, subject, html), (error, info) => {
               if (error) {
-                return res.status(500);
+                console.log('The recovery email could not be sent: ', error);
               }
+              console.log('The recovery email was sent: ', info);
             }
           );
         }
