@@ -29,9 +29,9 @@ class UserHome extends Component {
     
     const showGroups = (
       this.props.groupList.length > 0 ? this.props.groupList.map((group) => {
-        return (<li className='collection-item avatar'
+        return (<li className='col s12 m6 l4'
         key={group.id}>
-          <div>
+          <div className="group-card z-depth-2">
             <span className='title'><Link to={`/groups/${group.id}/messages`}> 
               {group.name} </Link></span>
               <br/>
@@ -51,14 +51,14 @@ class UserHome extends Component {
             <h6>{this.props.groupList.length} {(this.props.groupList.length === 1) ? ' group' : ' groups'}</h6>
           </span>
         </div>
-        <ul className='collection'>
+        <ul className='group-cards-collection row'>
           {showGroups}
         </ul>
       </div>
     )
 
     return (
-      <div>
+      <div className="user-home">
         {this.props.isLoggedIn ? content : <Redirect to="/" />}
       </div>
     )

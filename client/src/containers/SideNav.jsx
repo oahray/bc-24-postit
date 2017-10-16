@@ -76,9 +76,9 @@ class SideNav extends Component {
               <li className=''>
                 <a class='collapsible-header'> <i class="material-icons left">group</i> My Groups </a>
                 <div class='sidebar-grouplist collapsible-body'>
-                  <ul>
-                    <li className='my-list-item collection'><NavLink to='/'>All Groups</NavLink></li>
-                    {this.props.groups.map((group) =>
+                  <ul className="collection">
+                    <li className='my-list-item collection-item'><NavLink to='/'>All Groups</NavLink></li>
+                    {this.props.groups.map(group =>
                       <li key={group.id} className='my-list-item collection-item'>
                         <NavLink to={`/groups/${group.id}/messages`}>
                           <div>

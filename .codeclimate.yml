@@ -1,0 +1,17 @@
+engines:
+  eslint:
+    enabled: true
+  duplication:
+    enabled: false
+    config:
+      languages:
+      - javascript:
+ratings:
+  paths:
+  - server/**
+  - client/src
+exclude_paths:
+- server/test/
+- server/config
+- docs/
+- client/public/

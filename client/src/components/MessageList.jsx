@@ -22,7 +22,7 @@ export default class MessageList extends Component {
             onClick={() => this.props.openMessage(message)}>
             <strong> {message.sender}</strong><span className='grey-text timestamp'><small>{moment(message.createdAt).fromNow()}</small></span> <span className='right'><small>{message.priority} message</small></span><br />{message.content}</li>;
           })}
-        </ul> : 'This group does not contain any messages'}
+        </ul> : <h6 className="no-messages">This group does not contain any messages</h6>}
       </div>
     );
   }

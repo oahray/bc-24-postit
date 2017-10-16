@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import * as ReactDOM from 'react-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
@@ -144,17 +143,24 @@ class Group extends Component {
 
   /**
    * @param {number} groupid
-   * @returns {object}
+   * @returns {object} action
    */
   newMessageAdded(groupid) {
     return this.props.getGroupMessages(groupid, this.props.token);
   }
 
+  /**
+   * @returns {void} and sets content state
+   */
   sendMessage() {
     if (this.state.content) {
-      this.props.sendMessage(this.props.selectedGroup.id, this.state.content, this.state.priority, this.props.token, this.newMessageAdded);
+      this.props.sendMessage(
+        this.props.selectedGroup.id, this.state.content,
+        this.state.priority, this.props.token, this.newMessageAdded
+      );
       this.setState({
-        content: ''
+        content: '',
+        priority: 'normal'
       });
     }
   }
@@ -182,7 +188,7 @@ class Group extends Component {
       return (<Redirect to='/' />);
     }
 
-    if (!this.props.selectedGroup) {
+    if (!this.props.groupMessagesLoading && !this.props.selectedGroup) {
       return (<Preloader message='Loading Group...' />);
     }
 
@@ -196,7 +202,7 @@ class Group extends Component {
         <div className="input-field col s8 m4">
           <Row>
             <Input s={12} className='message-priority-select' type='select'
-            defaultValue='normal'
+            value={this.state.priority}
             onChange={event => this.setState({ priority: event.target.value })}>
               <option value='normal'>Normal</option>
               <option value='urgent'>Urgent</option>
@@ -211,7 +217,8 @@ class Group extends Component {
     );
 
     const messages = (<div className='tab-content row'>
-      {this.props.groupMessagesLoading || !this.props.selectedGroup ? <Preloader message="Loading group messages..." /> : messageList}
+      {this.props.groupMessagesLoading && !this.props.selectedGroup ?
+      <Preloader message="Loading group messages..." /> : messageList}
       {messageInput}
     </div>);
 
