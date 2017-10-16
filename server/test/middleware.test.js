@@ -1,12 +1,12 @@
 import expect from 'expect';
 import request from 'supertest';
-import app from '../app';
 import models from '../models';
+import './seeders/mockNodemailer';
+import app from '../app';
 import { doBeforeAll, doBeforeEach, populateUsers } from './seeders/testHooks';
 import { seedUsers, seedGroups, generateAuth, tokens } from './seeders/seed';
 
 describe('Middleware functions:', () => {
-  // doBeforeAll();
   describe('isValidUsername Middleware', () => {
     it('does not allow a user signup without a username', (done) => {
       request(app)
@@ -141,4 +141,5 @@ describe('Middleware functions:', () => {
       })
     });
   });
+
 });

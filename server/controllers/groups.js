@@ -233,24 +233,22 @@ export const sendMessageToGroup = (req, res) => {
         transporter.sendMail(
           helperOptions('You', bcc, subject, html), (error, info) => {
             if (error) {
-              return console.log('Message email could not be sent: ', error);
+              return console.log('Message email could not be sent: ');
             }
-            console.log('The message email was sent: ', info);
+            console.log('The message email was sent: ');
           }
         );
       }
-      if (process.env.NODE_ENV !== 'test') {
-        const io = req.app.get('io');
-        io.emit('Message posted', {
-          message: {
-            sender: message.sender
-          },
-          group: {
-            id: group.id,
-            name: group.name
-          }
-        });
-      }
+      const io = req.app.get('io');
+      io.emit('Message posted', {
+        message: {
+          sender: message.sender
+        },
+        group: {
+          id: group.id,
+          name: group.name
+        }
+      });
       res.status(201).send({ message });
     });
   }).catch(() => res.status(500));
@@ -264,8 +262,7 @@ export const getGroupMessages = (req, res) => {
       groupId
     },
     order: [['createdAt', 'DESC']]
-  }).then(messages => res.status(200).send({ group, messages }))
-    .catch(err => res.status(500).send(err));
+  }).then(messages => res.status(200).send({ group, messages }));
 };
 
 export const markAsRead = (req, res) => {
@@ -297,7 +294,7 @@ export const markAsRead = (req, res) => {
 
 export const editGroupInfo = (req, res) => {
   const groupId = req.params.groupid;
-  const {name, description, type} = _.pick(
+  const { name, description, type } = _.pick(
     req.body, ['name', 'description', 'type']
   );
   if (!name) {

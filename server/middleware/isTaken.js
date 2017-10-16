@@ -18,8 +18,8 @@ export default (req, res, next) => {
         error: 'Username already taken.'
       });
     }
-    User.findOne({ where: { email } }).then((userAgain) => {
-      if (userAgain) {
+    User.findOne({ where: { email } }).then((updatedUser) => {
+      if (updatedUser) {
         res.status(400).send({
           error: 'Email already taken.'
         });
