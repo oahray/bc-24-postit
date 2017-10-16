@@ -1,6 +1,6 @@
 engines:
   duplication:
-    enabled: true
+    enabled: false
     checks:
     Similar code:
       enabled: false
@@ -11,6 +11,7 @@ ratings:
   paths:
   - server/**/*.js
   - server/*.js
+  - client/src/
 exclude_paths:
 - node_modules/
 - server/test/
