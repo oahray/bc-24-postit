@@ -9,6 +9,7 @@ export * from './auth/requestReset';
 export * from './group/createNewGroup';
 export * from './group/editGroupInfo';
 export * from './group/deleteGroup';
+export * from './group/leaveGroup';
 export * from './group/getGroupsList';
 export * from './group/getGroupUsers';
 export * from './group/searchUsers';

@@ -1,5 +1,5 @@
 $main-color: #0C6C85;
-$secondary-color: #107D85;
+$secondary-color: #0C6C85;
 // $main-color: 
 $grey1: #E0E0E0;
 $grey2: #E6E7E8;
@@ -99,7 +99,7 @@ nav, .nav-wrapper {
 }
 
 .nav-wrapper {
-  padding-left: 20px;
+  padding: 0px 10px;
 }
 
 ul.side-nav.fixed:hover {
@@ -112,9 +112,6 @@ ul.side-nav.fixed:hover {
 
 .side-nav.fixed {
   background-color: $grey2;
-  // a :not(.user-view), i :not(.user-view) {
-  //   color: $main-color !important;
-  // }
   overflow: hidden;
   .user-view {
     background-color: $main-color;
@@ -188,10 +185,15 @@ ul.side-nav.fixed:hover {
 }
 
 .user-home-content {
-  padding: 10px 20px;
+  padding: 10px 10px;
   a {
     color: $main-color;
   }
+}
+
+.user-home-group-desc {
+  margin: 0 auto !important;
+  padding: 0px;
 }
 
 .group-card {
@@ -200,13 +202,29 @@ ul.side-nav.fixed:hover {
   background-color: white;
 }
 
+.toast-error {
+  background-color: red;
+  border-radius: 10px;
+}
+
+.toast-success, .toast-info {
+  background-color:teal;
+  border-radius: 10px;
+}
+
 .group-page {
   padding: 0px 5px;
+  .group-page-header-icon {
+    margin-right: 10px;
+  }
+  .messages-section {
+    padding: 0px !important;
+  }
   .tab-content {
     position: relative;
     padding: 0px;
     min-height: 100px;
-    height: calc(100vh - 130px);
+    height: calc(100vh - 180px);
   }
   .no-messages {
     margin: 30px;
@@ -293,7 +311,7 @@ ul.side-nav.fixed:hover {
   background-color: white;
   border-radius: 10px;
   margin: 10px 0px;
-  height: calc(100vh - 200px);
+  height: calc(100vh - 250px);
   overflow-y: scroll;
   .message-item {
     padding: 5px 20px !important;
@@ -340,6 +358,12 @@ ul.side-nav.fixed:hover {
 }
 
 @media only screen and (max-width: 600px) {
+  .user-home-content {
+    padding: 0px !important;
+  }
+  .group-page {
+    padding: 0px !important;
+  }
   .message-input {
     border: none !important;
   }
@@ -347,15 +371,25 @@ ul.side-nav.fixed:hover {
 
 .modal {
   border-radius: 10px;
+  background-image: url('/images/background1.png');
+  .modal-footer {
+    background-color: transparent !important;
+  }
 }
 
 .confirm-modal {
-  width: 500px !important;
-  height: 200px !important;
+  bottom: calc(50vh - 200px);
+  max-width: 500px !important;
+  height: 190px !important;
 }
 
 .form-modal {
-  width: 600px;
+  max-width: 600px;
+  padding: 0px !important;
+}
+
+.collapsible-body {
+  padding: 0px;
 }
 
 .guest-home {

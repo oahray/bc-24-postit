@@ -621,7 +621,7 @@ describe('PostIt API routes: ', () => {
       });
     });
 
-    it('DELETE /api/group/:groupid allows a user leave group', (done) => {
+    it('POST /api/group/:groupid/leave allows a user leave group', (done) => {
       const user3Token = generateAuth(seedUsers.registered[2].id);
       const user1Token = generateAuth(seedUsers.registered[0].id)
       const groupId = seedGroups[2].id;
@@ -638,13 +638,13 @@ describe('PostIt API routes: ', () => {
         .set('x-auth', user1Token)
         .expect(201)
         .end((err, res) => {
-          expect(res.body.message).toBe(`${seedUsers.registered[0].username} has left the group`);
+          expect(res.body.message).toBe(`You left ${seedGroups[2].name.toUpperCase()}`);
           request(app)
           .post(`/api/group/${groupId}/leave`)
           .set('x-auth', user3Token)
           .expect(201)
           .end((err, res) => {
-            expect(res.body.message).toBe(`${seedUsers.registered[2].username} left, and group deleted`);
+            expect(res.body.message).toBe(`You left, and ${seedGroups[2].name.toUpperCase()} has been deleted`);
             done();
           });
         });
@@ -883,7 +883,7 @@ describe('PostIt API routes: ', () => {
       });
     });
 
-    it('should send html for all non-api routes', (done) => {
+    it('should send html for api doc route', (done) => {
       request(app)
       .get('/api/docs')
       .expect(200)

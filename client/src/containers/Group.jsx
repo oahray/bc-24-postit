@@ -2,15 +2,14 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import { Row, Input } from 'react-materialize';
 import PropTypes from 'prop-types';
 import { getGroupMessages, getGroupUsers, getGroupList,
   inGroupPage, sendMessage, markAsRead,
-  deleteGroup, removeUser, editGroupInfo } from '../actions';
+  deleteGroup, removeUser, leaveGroup, editGroupInfo } from '../actions';
 import Preloader from '../components/Preloader';
 import Message from '../components/Message';
 import MessageList from '../components/MessageList';
-import { UsersList, GroupInfo } from '../components/GroupHelpers';
+import { UsersList, GroupInfo, MessageInput } from '../components/GroupHelpers';
 import { isUserGroup } from '../helpers/groupFunctions';
 
 /**
@@ -28,7 +27,8 @@ class Group extends Component {
       priority: 'normal',
       showInfo: false,
       messageOpen: false,
-      selectedMessage: {}
+      selectedMessage: {},
+      smallScreen: window.innerWidth < 601
     };
     this.groupId = Number(this.props.match.params.groupid);
     this.messageList = document.querySelector('.message-list');
@@ -41,27 +41,26 @@ class Group extends Component {
     this.toggleInfo = this.toggleInfo.bind(this);
     this.deleteGroup = this.deleteGroup.bind(this);
     this.removeUser = this.removeUser.bind(this);
+    this.leaveGroup = this.leaveGroup.bind(this);
     this.editInfo = this.editInfo.bind(this);
+    this.updateDimensions = this.updateDimensions.bind(this);
+    this.initMaterial = this.initMaterial.bind(this);
   }
 
   /**
-   * @returns {void}
+   * @returns {undefined}
    */
   componentWillMount() {
     this.props.getGroupMessages(this.groupId, this.props.token);
     this.props.getGroupUsers(this.groupId, this.props.token);
+    window.addEventListener('resize', this.updateDimensions);
   }
 
   /**
-   * @returns {void}
+   * @returns {undefined}
    */
   componentDidMount() {
-    $('ul.tabs').tabs();
-    $('.collapsible').collapsible();
-    setTimeout(() => {
-      $('.tooltipped').tooltip({ delay: 50, html: true });
-      $('.modal').modal();
-    }, 300);
+    this.initMaterial();
 
     this.props.inGroupPage(true);
     const socket = io();
@@ -74,7 +73,24 @@ class Group extends Component {
       }
     });
     socket.on('Added to group', ({ group }) => {
+      if (this.props.selectedGroup.id &&
+        group.id === this.props.selectedGroup.id) {
+        this.updateUsersList();
+      }
+    });
+    socket.on('Removed from group', ({ user, group }) => {
       if (group.id === this.props.selectedGroup.id) {
+        if (user.id === this.props.user.id) {
+          return this.props.history.push('/');
+        }
+        this.updateUsersList();
+      }
+    });
+    socket.on('Left group', ({ user, group }) => {
+      if (group.id === this.props.selectedGroup.id) {
+        if (user.id === this.props.user.id) {
+          return this.props.history.push('/');
+        }
         this.updateUsersList();
       }
     });
@@ -82,10 +98,11 @@ class Group extends Component {
 
   /**
    * @param {object} newProps
-   * @returns {void}
+   * @returns {undefined}
    */
   componentWillReceiveProps(newProps) {
-    if (this.props.selectedGroup && Number(newProps.match.params.groupid) !== this.props.selectedGroup.id) {
+    if (this.props.selectedGroup &&
+      Number(newProps.match.params.groupid) !== this.props.selectedGroup.id) {
       this.props.getGroupUsers(newProps.match.params.groupid, this.props.token);
       this.newMessageAdded(Number(newProps.match.params.groupid));
     }
@@ -96,32 +113,45 @@ class Group extends Component {
   }
 
   /**
-   * @returns {void} and dispatches action
+   * @returns {undefined} and dispatches action
    */
   componentWillUnmount() {
     this.props.inGroupPage(false);
+    window.removeEventListener('resize', this.updateDimensions);
+  }
+
+  /**
+   * @returns {undefined}
+   */
+  initMaterial() {
+    setTimeout(() => {
+      $('.tooltipped').tooltip({ delay: 50, html: true });
+      $('.modal').modal();
+      $('.collapsible').collapsible();
+    }, 800);
   }
 
   /**
    * @param {object} event
-   * @returns {void} and sets state
+   * @returns {undefined} and sets state
    */
   onTypeText(event) {
     this.setState({ content: event.target.value });
   }
 
   /**
-   * @returns {void} and sets state
+   * @returns {undefined} and sets state
    */
   toggleInfo() {
     this.setState({
       showInfo: !this.state.showInfo
     });
+    this.initMaterial();
   }
 
   /**
    * @param {object} message
-   * @returns {void}
+   * @returns {undefined}
    */
   openMessage(message) {
     this.setState({
@@ -132,7 +162,7 @@ class Group extends Component {
   }
 
   /**
-   * @returns {void} and sets state
+   * @returns {undefined} and sets state
    */
   closeMessage() {
     this.setState({
@@ -150,7 +180,7 @@ class Group extends Component {
   }
 
   /**
-   * @returns {void} and sets content state
+   * @returns {undefined} and sets content state
    */
   sendMessage() {
     if (this.state.content) {
@@ -165,55 +195,105 @@ class Group extends Component {
     }
   }
 
+  /**
+   * @returns {undefined} and sets content state
+   */
   deleteGroup() {
     this.props.deleteGroup(this.props.selectedGroup.id, this.props.token);
   }
 
+  /**
+   * @returns {undefined} and sets content state
+   * @param {string} name: the new group name
+   * @param {string} description: the new group name
+   * @param {string} type: group type
+   */
   editInfo(name, description, type) {
     this.props.editGroupInfo(this.props.selectedGroup.id,
     name, description, type, this.props.token);
   }
 
+  /**
+   * @returns {undefined} and sets content state
+   */
   updateUsersList() {
     this.props.getGroupUsers(this.groupId, this.props.token);
   }
 
+  /**
+   * @param {string} username: the new group name
+   * @returns {undefined} and sets content state
+   */
   removeUser(username) {
     this.props.removeUser(username, this.props.selectedGroup.id,
     this.updateUsersList, this.props.token);
   }
 
+  /**
+   * @returns {undefined}
+   */
+  leaveGroup() {
+    this.props.leaveGroup(this.props.selectedGroup.id, this.props.token);
+  }
+
+  /**
+   * @returns {undefined}
+   */
+  updateDimensions() {
+    if (window.innerWidth < 600) {
+      this.setState({
+        smallScreen: true
+      });
+    } else {
+      this.setState({
+        smallScreen: false
+      });
+    }
+  }
+
+  /**
+   * @returns {undefined}
+   */
+  scrollToBottom() {
+    setTimeout(() => {
+      const messages = $('#chat-content');
+      const newMessage = messages.children('li:last-child');
+      const clientHeight = messages.prop('clientHeight');
+      const scrollTop = messages.prop('scrollTop');
+      const scrollHeight = messages.prop('scrollHeight');
+      const newMessageHeight = newMessage.innerHeight();
+      const lastMessageHeight = newMessage.prev().innerHeight();
+      if (scrollTop + clientHeight + newMessageHeight
+        + lastMessageHeight >= scrollHeight) {
+        messages.scrollTop(scrollHeight);
+      }
+    }, 300);
+  }
+
+  /**
+   * @returns {undefined}
+   */
   render() {
-    if (!this.props.groupMessagesLoading && this.props.groupMessagesFailed) {
+    if (!this.props.groupMessagesLoading &&
+    this.props.groupMessagesFailed) {
       return (<Redirect to='/' />);
     }
 
-    if (!this.props.groupMessagesLoading && !this.props.selectedGroup) {
+    if (!this.props.selectedGroup) {
       return (<Preloader message='Loading Group...' />);
     }
 
-    const messageList = (<MessageList groupMessages={this.props.groupMessages} openMessage={this.openMessage} />);
+    const messageList = (<MessageList
+    groupMessages={this.props.groupMessages}
+    openMessage={this.openMessage} />);
 
     const messageInput = (
-      <div className='message-input-container col s12'>
-        <div className="input-field message-input col s12 m7">
-          <textarea type="text" value={this.state.content} id="textarea1" placeholder='Type Message Here' onChange={this.onTypeText} />
-        </div>
-        <div className="input-field col s8 m4">
-          <Row>
-            <Input s={12} className='message-priority-select' type='select'
-            value={this.state.priority}
-            onChange={event => this.setState({ priority: event.target.value })}>
-              <option value='normal'>Normal</option>
-              <option value='urgent'>Urgent</option>
-              <option value='critical'>Critical</option>
-            </Input>
-          </Row>
-        </div>
-        <div className="input-field button-container col s4 m1">
-          <button className="btn btn-flat white main-text-color waves-effect waves-dark" type="submit" name="action" onClick={this.sendMessage}><i className="material-icons">send</i></button>
-        </div>
-      </div>
+      <MessageInput
+      inputValue={this.state.content}
+      onInputChange={this.onTypeText}
+      selectValue={this.state.priority}
+      onSelectChange={event => this.setState({ priority: event.target.value })}
+      onButtonClick={this.sendMessage} />
     );
 
     const messages = (<div className='tab-content row'>
@@ -244,27 +324,32 @@ class Group extends Component {
     const usersList = (<UsersList groupUsers={this.props.groupUsers}
     selectedGroup={this.props.selectedGroup}
     removeUser={this.removeUser}
+    leaveGroup={this.leaveGroup}
     user={this.props.user}/>);
 
     return (
       <div className='group-page col s12 row'>
-        <div className="col s12 z-depth-2">
-          <h5 className='page-header'>        
+        <div className="col s12 z-depth-2 messages-section">
+          <h5 className='page-header'>
             {this.props.selectedGroup.name}
-            <span className="right hide-on-large-only pointer" onClick={this.toggleInfo}>
-              <i className="material-icons">info</i>
+            <span className="right hide-on-med-and-up pointer group-page-header-icon"
+            onClick={this.toggleInfo}>
+              <i className="material-icons">
+              {this.state.showInfo ? 'message' : 'info'}</i>
             </span>
           </h5>
         </div>
         <div className="col s12">
-          <div className="col s12 l9">{messagesTab}</div>
-          <div className="col s12 l3 group-info-col">
+          {this.state.smallScreen && this.state.showInfo ? '' :
+          <div className="col s12 m9">{messagesTab}</div>}
+          {this.state.smallScreen && !this.state.showInfo ? '' :
+          <div className="col s12 m3 group-info-col">
             <ul className="">
               {infoTab}
               <hr/>
               {usersList}
             </ul>
-          </div>
+          </div>}
         </div>
       </div>
     );
@@ -301,13 +386,14 @@ const mapStateToProps = state => ({
   groupMessages: state.groupMessages
 });
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({
+const mapDispatchToProps = dispatch => bindActionCreators({
   getGroupMessages,
   getGroupUsers,
   getGroupList,
   deleteGroup,
   editGroupInfo,
   removeUser,
+  leaveGroup,
   inGroupPage,
   sendMessage },
   dispatch

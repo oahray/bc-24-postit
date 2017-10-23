@@ -13,6 +13,16 @@ export const createGroup = (req, res) => {
       error: 'Group name is required.'
     });
   }
+  if (name.length > 20) {
+    return res.status(400).send({
+      error: 'Group name too long'
+    });
+  }
+  if (description.length > 70) {
+    return res.status(400).send({
+      error: 'Group description too long'
+    });
+  }
   if (!type || type.trim().toLowerCase() !== 'private') {
     type = 'public';
   }
@@ -61,16 +71,14 @@ export const addUserToGroup = (req, res) => {
         }
         group.addUser(user.id)
         .then(() => {
-          if (process.env.NODE_ENV !== 'test') {
-            io.emit('Added to group', {
-              user: {
-                id: user.id,
-                name: user.name
-              },
-              group,
-              addedBy: req.currentUser.username
-            });
-          }
+          io.emit('Added to group', {
+            user: {
+              id: user.id,
+              name: user.name
+            },
+            group,
+            addedBy: req.currentUser.username
+          });
           res.status(201).send({
             message: `${user.username} added to group`
           });
@@ -83,6 +91,7 @@ export const addUserToGroup = (req, res) => {
 export const removeUserFromGroup = (req, res) => {
   const username = req.body.username.trim().toLowerCase();
   const groupUsernames = req.groupUsernames;
+  const io = req.app.get('io');
   Group.findById(req.params.groupid).then((group) => {
     if (group.createdBy !== req.currentUser.username) {
       return res.status(401).send({
@@ -102,25 +111,47 @@ export const removeUserFromGroup = (req, res) => {
     User.findOne({ where: { username } })
     .then((user) => {
       group.removeUser(user.id)
-      .then(() => res.status(201).send({
-        message: `${user.username} removed from group`
-      }));
+      .then(() => {
+        io.emit('Removed from group', {
+          user: {
+            id: user.id,
+            username: user.username
+          },
+          group,
+          removedBy: req.currentUser.username
+        });
+        return res.status(201).send({
+          message: `${user.username} removed from group`
+        });
+      });
     });
   });
 };
 
 export const leaveGroup = (req, res) => {
+  const io = req.app.get('io');
   Group.findById(req.params.groupid).then((group) => {
     group.getUsers().then((users) => {
+      let didDeleteGroup = false;
       if (users.length > 1) {
-        return group.removeUser(req.currentUser.id)
+        group.removeUser(req.currentUser.id)
         .then(() => res.status(201).send({
-          message: `${req.currentUser.username} has left the group`,
+          message: `You left ${req.currentGroup.name.toUpperCase()}`,
+        }));
+      } else {
+        didDeleteGroup = true;
+        group.destroy().then(() => res.status(201).send({
+          message: `You left, and ${req.currentGroup.name.toUpperCase()} has been deleted`
         }));
       }
-      group.destroy().then(() => res.status(201).send({
-        message: `${req.currentUser.username} left, and group deleted`
-      }));
+      io.emit('Left group', {
+        user: {
+          id: req.currentUser.id,
+          username: req.currentUser.username
+        },
+        group,
+        didDeleteGroup
+      });
     });
   });
 };
@@ -226,12 +257,11 @@ export const sendMessageToGroup = (req, res) => {
       const subject = `New ${message.priority} group message from ${sender}`;
       const html = `<div>
       <p>You have received a new ${message.priority} message from <strong>${sender}</strong> in your group <strong>'${group.name}'</strong></p>
-      <div style="color:brown"><h3>${message.content.replace(/\n/gi, '<br/>')}</h3></div>
       <p>To reply ${sender}, please login to your account</p>
       </div>`;
       if ((message.priority === 'urgent' || message.priority === 'critical') && bcc.length > 0) {
         transporter.sendMail(
-          helperOptions('You', bcc, subject, html), (error, info) => {
+          helperOptions('You', bcc, subject, html), (error) => {
             if (error) {
               return console.log('Message email could not be sent: ');
             }

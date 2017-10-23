@@ -2,7 +2,7 @@ import { Group } from '../models';
 
 export default (req, res, next) => {
   const groupId = req.params.groupid;
-  if (!Number(groupId)) {
+  if (Number.isNaN(groupId)) {
     return res.status(400).send({
       error: 'GroupId must be provided'
     });

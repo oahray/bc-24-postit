@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import  moment from 'moment';
+import moment from 'moment';
 
 class EditProfile extends Component {
   constructor(props) {
@@ -16,7 +16,8 @@ class EditProfile extends Component {
       <div className="container">
         <div className="user-info">
           <h5>{this.props.user.username}</h5>
-          <p><small>Registered <strong>{moment(this.props.user.createdAt).format('Do MMMM, YYYY, [at] h:mma')}</strong></small></p>
+          <p><small>Registered <strong>{moment(this.props.user.createdAt)
+            .format('Do MMMM, YYYY, [at] h:mma')}</strong></small></p>
           <hr />
           <p><strong>About me: </strong>{this.props.user.about}</p>
           <p><strong>Email: </strong>{this.props.user.email}</p>
@@ -30,14 +31,10 @@ class EditProfile extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    user: state.user
-  };
-}
+const mapStateToProps = state => ({
+  user: state.user
+});
 
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators({}, dispatch);
-}
+const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditProfile);

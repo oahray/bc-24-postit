@@ -15,44 +15,35 @@ export const REMOVE_USER_LOADING = 'REMOVE_USER_LOADING';
 export const REMOVE_USER_SUCCESS = 'REMOVE_USER_SUCCESS';
 export const REMOVE_USER_FAILURE = 'REMOVE_USER_FAILURE';
 
-const setUserSearchTerm = (term) => {
-  return {
-    type: SET_SEARCH_TERM,
-    searchTerm: term
-  }
-};
+const setUserSearchTerm = term => ({
+  type: SET_SEARCH_TERM,
+  searchTerm: term
+});
 
-export const clearUserSearchTerm = () => {
-  return {
-    type: CLEAR_SEARCH_TERM
-  }
-}
+export const clearUserSearchTerm = () => ({
+  type: CLEAR_SEARCH_TERM
+});
 
-const searchUsersLoading = () => {
-  return {
-    type: SEARCH_USERS_LOADING
-  }
-};
+const searchUsersLoading = () => ({
+  type: SEARCH_USERS_LOADING
+});
 
-const searchUsersSuccess = (response) => {
-  return {
-    type: SEARCH_USERS_SUCCESS,
-    response
-  };
-};
+const searchUsersSuccess = response => ({
+  type: SEARCH_USERS_SUCCESS,
+  response
+});
 
-const searchUsersFailure = (error) => {
-  return {
-    type: SEARCH_USERS_FAILURE,
-    error
-  };
-};
+const searchUsersFailure = error => ({
+  type: SEARCH_USERS_FAILURE,
+  error
+});
 
-export const searchUsers = (groupId, username, offset, limit, token) => {
-  return (dispatch) => {
+export const searchUsers = (groupId, username, offset, limit, token) =>
+  (dispatch) => {
     dispatch(setUserSearchTerm(username));
     dispatch(searchUsersLoading());
-    const FETCH_URL = `${BASE_URL}/group/${groupId}/notmembers?username=${username}&offset=${offset}&limit=${limit}`;
+    const FETCH_URL = `${BASE_URL}/group/${groupId}
+    /notmembers?username=${username}&offset=${offset}&limit=${limit}`;
     axios({
       method: 'get',
       url: FETCH_URL,
@@ -71,7 +62,6 @@ export const searchUsers = (groupId, username, offset, limit, token) => {
       }
     });
   };
-};
 
 
 // ADD USER FROM SEARCH RESUKTS
@@ -79,12 +69,12 @@ const addUserLoading = () => ({
   type: ADD_USER_LOADING
 });
 
-const addUserSuccess = (response) => ({
+const addUserSuccess = response => ({
   type: ADD_USER_SUCCESS,
   response
 });
 
-const addUserFailure = (error) => ({
+const addUserFailure = error => ({
   type: ADD_USER_FAILURE,
   error
 });
@@ -106,12 +96,13 @@ updateSearchResult, token) => (dispatch) => {
   .then((response) => {
     if (response.statusText === 'Created') {
       dispatch(addUserSuccess(response));
+      toastr.info(`${response.data.message}`);
       dispatch(updateSearchResult());
-      toastr.success(`${response.data.message}`);
     }
   })
   .catch((err) => {
     if (err.response) {
+      toastr.error(`${err.response.data.message}`);
       dispatch(addUserFailure(err.response.data.error));
     }
   });
@@ -135,7 +126,6 @@ const removeUserFailure = error => ({
 
 export const removeUser = (username, groupId, updateUsersList, token) =>
 (dispatch) => {
-  console.log('Removing ', username);
   dispatch(removeUserLoading());
   const FETCH_URL = `${BASE_URL}/group/${groupId}/user`;
   axios({

@@ -19,7 +19,7 @@ export const signup = (req, res) => {
       user
     });
   })
-  .catch(() => res.status(400));
+  .catch(() => res.status(500));
 };
 
 // Function to sign users in
@@ -48,7 +48,7 @@ export const signin = (req, res) => {
       user
     });
   })
-  .catch(() => res.status(400));
+  .catch(() => res.status(500));
 };
 
 export const getMe = (req, res) => {
@@ -146,8 +146,9 @@ export const forgotPassword = (req, res) => {
           helperOptions(user.email, null, subject, html), (error, info) => {
             if (error) {
               console.log('The recovery email could not be sent: ', error);
+            } else {
+              console.log('The recovery email was sent: ', info);
             }
-            console.log('The recovery email was sent: ', info);
             res.send({
               message: 'An email with reset instructions has been sent'
             });
@@ -155,7 +156,7 @@ export const forgotPassword = (req, res) => {
         );
       }
     })
-    .catch(err => res.send({ err }));
+    .catch(() => res.status(500));
   });
 };
 

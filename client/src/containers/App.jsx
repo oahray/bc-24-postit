@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Route, } from 'react-router-dom';
 import { Button } from 'react-materialize';
 import toastr from 'toastr';
 import { GuestRoutes, UserRoutes } from '../routes';
@@ -9,11 +8,13 @@ import SideNav from './SideNav';
 import { verifyAuth } from '../actions';
 import Preloader from '../components/Preloader';
 
+/**
+ * @class
+ */
 class App extends Component {
-  constructor(props) {
-    super(props);
-  }
-
+  /**
+   * @returns {undefined}
+   */
   componentWillMount() {
     if (window.localStorage && window.localStorage.getItem('x-auth')) {
       const token = window.localStorage.getItem('x-auth');
@@ -21,6 +22,9 @@ class App extends Component {
     }
   }
 
+  /**
+   * @returns {undefined}
+   */
   componentDidMount() {
     setTimeout(() => {
       $('.modal').modal();
@@ -33,57 +37,61 @@ class App extends Component {
         toastr.info(`You have just been added to ${group.name} by ${addedBy}`);
       }
     });
+
+    socket.on('Removed from group', ({ user, group, removedBy }) => {
+      if (user.id === this.props.user.id) {
+        toastr.info(`You have just been removed from ${group.name} by ${removedBy}`);
+      }
+    });
   }
 
-  showState() {
-    console.log('App props: ', this.props);
-    console.log('App state: ', this.props.store.getState());
-  }
+  // showState() {
+  //   console.log('App props: ', this.props);
+  //   console.log('App state: ', this.props.store.getState());
+  // }
 
+  /**
+   * @returns {undefined}
+   */
   render() {
-    const stateButton = (
-      <div className='center'> 
-        <Button onClick={() => this.showState()}>
-          Show State
-        </Button>
-      </div>
-    );
+    // const stateButton = (
+    //   <div className='center'>
+    //     <Button onClick={() => this.showState()}>
+    //       Show State
+    //     </Button>
+    //   </div>
+    // );
 
     if (this.props.verifyAuthLoading) {
       return (<Preloader message='Preparing your space...'/>);
-    } else {
-      const sideNav = () => (<SideNav isLoggedIn={this.props.isLoggedIn} groups={this.props.groupList}/>);
-
-      let appRoutes;
-
-      if (this.props.isLoggedIn) {
-        appRoutes = <UserRoutes nav={SideNav} />
-      } else {
-        appRoutes = <GuestRoutes nav={SideNav} />
-      }
-
-      return (
-        <div class='main'>
-          { appRoutes }
-          {/* { stateButton } */}
-        </div>
-      );
     }
+
+    let appRoutes;
+
+    if (this.props.isLoggedIn) {
+      appRoutes = (<UserRoutes nav={SideNav} />);
+    } else {
+      appRoutes = (<GuestRoutes nav={SideNav} />);
+    }
+
+    return (
+      <div class='main'>
+        { appRoutes }
+        {/* { stateButton } */}
+      </div>
+    );
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    user: state.user,
-    verifyAuthLoading: state.verifyAuthLoading,
-    isLoggedIn: state.isAuthenticated,
-    verifyAuthFailed: state.verifyAuthFailed,
-    token: state.token
-  };
-}
+const mapStateToProps = (state) => ({
+  user: state.user,
+  verifyAuthLoading: state.verifyAuthLoading,
+  isLoggedIn: state.isAuthenticated,
+  verifyAuthFailed: state.verifyAuthFailed,
+  token: state.token
+});
 
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ verifyAuth }, dispatch);
-}
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators({ verifyAuth }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

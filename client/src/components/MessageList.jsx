@@ -12,7 +12,7 @@ export default class MessageList extends Component {
   render() {
     return (
       <div className="message-list" id="message-list">
-        {this.props.groupMessages.length > 0 ? 
+        {this.props.groupMessages.length > 0 ?
         <ul id="messages-ul" className="collection">
           {this.props.groupMessages.map((message) => {
             return <li
