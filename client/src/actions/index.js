@@ -1,4 +1,4 @@
-export const BASE_URL = `${window.location.origin}/api`;
+export const BASE_URL = `${window.location.origin}/api/v1`;
 
 export * from './auth/signinAction';
 export * from './auth/signupAction';
@@ -6,6 +6,7 @@ export * from './auth/clearFormError';
 export * from './auth/verifyAuth';
 export * from './auth/logoutAction';
 export * from './auth/requestReset';
+export * from './auth/editProfile';
 export * from './group/createNewGroup';
 export * from './group/editGroupInfo';
 export * from './group/deleteGroup';

@@ -20,10 +20,8 @@ describe('signupUser action creator', () => {
       type: SIGNUP_LOADING
     }
     expect(loadingUser).toEqual(expectedAction);
-  })
-});
+  });
 
-describe('signupUser action creator', () => {
   test('dispaches a signup success action when dispatched with valid details', () => {
     const store = mockStore({ user: {} });
     const data = {
@@ -36,7 +34,7 @@ describe('signupUser action creator', () => {
       }
     }
 
-    // mocks GET, POST, ... requests to /foo 
+    // mocks the post request
     mock.onPost().replyOnce(201, {
       data
     });
@@ -54,7 +52,7 @@ describe('signupUser action creator', () => {
     });
   })
 
-  test('dispaches a signup success action when dispatched with invalid details', () => {
+  test('dispaches a signup failure action when dispatched with invalid details', () => {
     const store = mockStore({ user: {} });
     const data = {
       message: 'Welcome ray',
@@ -66,15 +64,15 @@ describe('signupUser action creator', () => {
       }
     }
 
-    // mocks GET, POST, ... requests to /foo 
+    // mocks the post request
     mock.onPost().replyOnce(400, {
       error: 'Username is required'
     });
 
-    const expectedAction = {
-      type: SIGNUP_SUCCESS,
-      response: {data}
-    }
+    // const expectedAction = {
+    //   type: SIGNUP_SUCCESS,
+    //   response: {data}
+    // }
 
     store.dispatch(signupUser(data.user.username, 'testpassword', data.user.email)).then(() => store.getActions())
     .then((actions) => {

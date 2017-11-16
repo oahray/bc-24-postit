@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { getGroupMessages, inGroupPage, clearUserSearchTerm,
-  searchUsers, addUserToGroup, removeUser, getGroupUsers } from '../actions';
-import { UsersList } from '../components/GroupHelpers';
+  searchUsers, addUserToGroup, removeUser, getGroupUsers, leaveGroup } from '../actions';
+import UsersList from '../components/UsersList';
 
 /**
  * @class SearchResult
@@ -152,9 +152,9 @@ class SearchResult extends Component {
         page: e.target.id,
         offset: 10 * (e.target.id - 1)
       });
-      this.props.history.push(`/groups/
-      ${this.props.selectedGroup.id}/addusers?u=
-      ${this.state.searchTerm}&p=${e.target.id}`);
+      this.props.history.push(`/groups/${
+        this.props.selectedGroup.id
+      }/addusers?u=${this.state.searchTerm}&p=${e.target.id}`);
     }
   }
 
@@ -195,7 +195,8 @@ class SearchResult extends Component {
    */
   render() {
     if (this.props.groupMessagesFailed) {
-      return (<h5>sorry... You cannot add users to a group you do not belong to</h5>);
+      return (<h5>sorry... You cannot add users
+        to a group you do not belong to</h5>);
     }
     if (this.props.groupMessagesLoading || !this.props.selectedGroup) {
       return (<h5>Please wait...</h5>);
@@ -213,7 +214,8 @@ class SearchResult extends Component {
             onClick={this.searchDone}>Done</a>
           </div>
 
-          <div className='search-list-container col s10 offset-s1 m8 offset-m2 l6 offset-l3'>
+          <div className={`search-list-container col s10
+            offset-s1 m8 offset-m2 l6 offset-l3`}>
             <h6>{this.props.userSearchResults.totalCount} found</h6>
             <ul className='row list-group'>
               {this.props.userSearchResults.users ?
@@ -257,11 +259,13 @@ class SearchResult extends Component {
             </ul>
           </div>
         </div>
+
         <div className="users-list col s12 m3">
           <ul>
             <UsersList user={this.props.user}
             groupUsers={this.props.groupUsers}
             removeUser={this.removeUser}
+            leaveGroup={this.props.leaveGroup}
             selectedGroup={this.props.selectedGroup}/>
           </ul>
         </div>
@@ -288,7 +292,8 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   searchUsers,
   addUserToGroup,
   removeUser,
-  getGroupUsers
+  getGroupUsers,
+  leaveGroup
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchResult);

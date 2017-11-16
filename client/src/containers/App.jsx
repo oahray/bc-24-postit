@@ -40,7 +40,8 @@ class App extends Component {
 
     socket.on('Removed from group', ({ user, group, removedBy }) => {
       if (user.id === this.props.user.id) {
-        toastr.info(`You have just been removed from ${group.name} by ${removedBy}`);
+        toastr.info(`You have just been removed from ${
+          group.name} by ${removedBy}`);
       }
     });
   }
@@ -54,13 +55,13 @@ class App extends Component {
    * @returns {undefined}
    */
   render() {
-    // const stateButton = (
-    //   <div className='center'>
-    //     <Button onClick={() => this.showState()}>
-    //       Show State
-    //     </Button>
-    //   </div>
-    // );
+    const stateButton = (
+      <div className='center'>
+        <Button onClick={() => this.showState()}>
+          Show State
+        </Button>
+      </div>
+    );
 
     if (this.props.verifyAuthLoading) {
       return (<Preloader message='Preparing your space...'/>);
@@ -83,7 +84,7 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   user: state.user,
   verifyAuthLoading: state.verifyAuthLoading,
   isLoggedIn: state.isAuthenticated,
@@ -91,7 +92,7 @@ const mapStateToProps = (state) => ({
   token: state.token
 });
 
-const mapDispatchToProps = (dispatch) =>
+const mapDispatchToProps = dispatch =>
   bindActionCreators({ verifyAuth }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

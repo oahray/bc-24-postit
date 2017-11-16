@@ -6,13 +6,9 @@ import { logout, getGroupList } from '../actions';
 import Preloader from '../components/Preloader';
 
 /**
- *@class 
+ * @class
  */
 class UserHome extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentWillMount() {
     if (this.props.user) {
       if (window.localStorage && typeof window.localStorage === 'object') {
@@ -28,8 +24,8 @@ class UserHome extends Component {
     }
 
     const showGroups = (
-      this.props.groupList.length > 0 ? this.props.groupList.map((group) => {
-        return (<li className='col s12 m6 l4'
+      this.props.groupList.length > 0 ? this.props.groupList.map(group => (
+        <li className='col s12 m6 l4'
         key={group.id}>
           <div className="group-card z-depth-2">
             <span className='title'><Link to={`/groups/${group.id}/messages`}>
@@ -43,14 +39,14 @@ class UserHome extends Component {
             {group.createdBy === this.props.user.username ?
               'You' : group.createdBy}</small></span> <br/>
           </div>
-        </li>);
-      }) : (<div className='center'><p>You do not belong to any groups.
+        </li>)
+      ) : (<div className='center'><p>You do not belong to any groups.
         <br/> Create one to get started. </p></div>));
 
     const content = (
       < div className='user-home-content'>
         <div className='row'>
-          <h5 className='col s8 main-text-color'> Your Groups (
+          <h5 className='col s12 main-text-color page-header'> Your Groups (
           {this.props.groupList.length}) </h5>
         </div>
         <ul className='group-cards-collection row'>

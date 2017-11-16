@@ -9,7 +9,9 @@ import { getGroupMessages, getGroupUsers, getGroupList,
 import Preloader from '../components/Preloader';
 import Message from '../components/Message';
 import MessageList from '../components/MessageList';
-import { UsersList, GroupInfo, MessageInput } from '../components/GroupHelpers';
+import UsersList from '../components/UsersList';
+import GroupInfo from '../components/GroupInfo';
+import MessageInput from '../components/MessageInput';
 import { isUserGroup } from '../helpers/groupFunctions';
 
 /**
@@ -45,9 +47,12 @@ class Group extends Component {
     this.editInfo = this.editInfo.bind(this);
     this.updateDimensions = this.updateDimensions.bind(this);
     this.initMaterial = this.initMaterial.bind(this);
+    this.scrollToBottom = this.scrollToBottom.bind(this);
+    this.smartScroll = this.smartScroll.bind(this);
   }
 
   /**
+   * @function componentWillMount
    * @returns {undefined}
    */
   componentWillMount() {
@@ -57,12 +62,16 @@ class Group extends Component {
   }
 
   /**
+   * @function componentDidMount
    * @returns {undefined}
    */
   componentDidMount() {
+    // Initialize materialize components
     this.initMaterial();
-
     this.props.inGroupPage(true);
+    // Scroll messages to bottom
+    this.scrollToBottom();
+
     const socket = io();
     socket.on('Message posted', ({ message, group }) => {
       if (message.sender !== this.props.user.username
@@ -97,6 +106,7 @@ class Group extends Component {
   }
 
   /**
+   * @function componentWillReceieveProps
    * @param {object} newProps
    * @returns {undefined}
    */
@@ -107,12 +117,30 @@ class Group extends Component {
       this.newMessageAdded(Number(newProps.match.params.groupid));
     }
 
+    // If the request for messages fails
+    // and current group cannot be set
+    // redirect to dashboard
     if (!newProps.groupMessagesLoading && !newProps.selectedGroup) {
       this.props.history.push('/');
     }
   }
 
   /**
+   * @function componentDidUpdate
+   * @summary fires after component updates
+   * @param {object} prevProps
+   * @param {object} prevState
+   * @returns {undefined}
+   */
+  componentDidUpdate(prevProps) {
+    if (prevProps.groupMessages.length !== this.props.groupMessages.length) {
+      this.smartScroll();
+    }
+  }
+
+  /**
+   * @function componentWillUnmount
+   * @summary: fires when component is about to unmount
    * @returns {undefined} and dispatches action
    */
   componentWillUnmount() {
@@ -121,6 +149,8 @@ class Group extends Component {
   }
 
   /**
+   * @function initMaterial
+   * @summary initialize materialize components
    * @returns {undefined}
    */
   initMaterial() {
@@ -132,6 +162,9 @@ class Group extends Component {
   }
 
   /**
+   * @function onTypeText
+   * @summary fires with onchange input event
+   * as user types in the input
    * @param {object} event
    * @returns {undefined} and sets state
    */
@@ -140,6 +173,9 @@ class Group extends Component {
   }
 
   /**
+   * @function toggleInfo
+   * @summary toggle between displaying group messages
+   * or group info on small screens
    * @returns {undefined} and sets state
    */
   toggleInfo() {
@@ -256,15 +292,28 @@ class Group extends Component {
    */
   scrollToBottom() {
     setTimeout(() => {
-      const messages = $('#chat-content');
-      const newMessage = messages.children('li:last-child');
+      const messages = $('#message-list');
+      const scrollHeight = messages.prop('scrollHeight');
+
+      messages.scrollTop(scrollHeight);
+    }, 300);
+  }
+
+  /**
+   * @returns {undefined}
+   */
+  smartScroll() {
+    setTimeout(() => {
+      const messages = $('#message-list');
+      const newMessage = messages.find('li:last-child');
       const clientHeight = messages.prop('clientHeight');
       const scrollTop = messages.prop('scrollTop');
       const scrollHeight = messages.prop('scrollHeight');
       const newMessageHeight = newMessage.innerHeight();
       const lastMessageHeight = newMessage.prev().innerHeight();
+
       if (scrollTop + clientHeight + newMessageHeight
-        + lastMessageHeight >= scrollHeight) {
+        + lastMessageHeight >= scrollHeight - clientHeight) {
         messages.scrollTop(scrollHeight);
       }
     }, 300);
@@ -330,9 +379,10 @@ class Group extends Component {
     return (
       <div className='group-page col s12 row'>
         <div className="col s12 z-depth-2 messages-section">
-          <h5 className='page-header'>
+          <h5 className='page-header center'>
             {this.props.selectedGroup.name}
-            <span className="right hide-on-med-and-up pointer group-page-header-icon"
+            <span className=
+              "right hide-on-med-and-up pointer group-page-header-icon"
             onClick={this.toggleInfo}>
               <i className="material-icons">
               {this.state.showInfo ? 'message' : 'info'}</i>
@@ -357,8 +407,8 @@ class Group extends Component {
 }
 
 Group.propTypes = {
-  user: PropTypes.object,
-  token: PropTypes.string,
+  user: PropTypes.object.isRequired,
+  token: PropTypes.string.isRequired,
   isLoggedIn: PropTypes.bool,
   groupList: PropTypes.array,
   groupUsers: PropTypes.array,

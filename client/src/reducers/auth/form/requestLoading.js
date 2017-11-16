@@ -1,25 +1,22 @@
 import { SIGNIN_LOADING, SIGNIN_SUCCESS,
   SIGNIN_FAILURE, SIGNUP_LOADING, SIGNUP_SUCCESS,
-  SIGNUP_FAILURE, CLEAR_FORM_ERROR } from '../actions';
+  SIGNUP_FAILURE } from '../../../actions';
 
-export default (state = null, action) => {
+export default (state = false, action) => {
   switch (action.type) {
     case SIGNIN_LOADING:
-      return null;
+      return true;
     case SIGNIN_SUCCESS:
-      return null;
+      return false;
     case SIGNIN_FAILURE:
-      return action.error;
+      return false;
     case SIGNUP_LOADING:
-      return null;
+      return true;
     case SIGNUP_SUCCESS:
-      return null;
+      return false;
     case SIGNUP_FAILURE:
-      return action.error;
-    case CLEAR_FORM_ERROR:
-      return null;
+      return false;
     default:
       return state;
   }
 };
-

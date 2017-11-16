@@ -7,20 +7,36 @@ export const LEAVE_GROUP_LOADING = 'LEAVE_GROUP_LOADING';
 export const LEAVE_GROUP_SUCCESS = 'LEAVE_GROUP_SUCCESS';
 export const LEAVE_GROUP_FAILURE = 'LEAVE_GROUP_FAILURE';
 
+/** leaveGroupLoading
+ * @returns {object} action
+ */
 const leaveGroupLoading = () => ({
   type: LEAVE_GROUP_LOADING
 });
 
+/**
+ * @param {object} response: api response
+ * @returns {object} action
+ */
 const leaveGroupSuccess = response => ({
   type: LEAVE_GROUP_SUCCESS,
   response
 });
 
+/**
+ * @param {object} error: api error response
+ * @returns {object} action
+ */
 const leaveGroupFailure = error => ({
   type: LEAVE_GROUP_FAILURE,
   error
 });
 
+/**
+ * @param {string} groupId
+ * @param {string} token
+ * @returns {function} dispatch
+ */
 export const leaveGroup = (groupId, token) =>
 (dispatch) => {
   dispatch(leaveGroupLoading());

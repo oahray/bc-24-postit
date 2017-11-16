@@ -2,9 +2,9 @@ import { Group } from '../models';
 
 export default (req, res, next) => {
   const groupId = req.params.groupid;
-  if (Number.isNaN(groupId)) {
+  if (Number.isNaN(Number(groupId))) {
     return res.status(400).send({
-      error: 'GroupId must be provided'
+      error: 'Valid group ID must be provided'
     });
   }
   Group.findById(groupId).then((group) => {
@@ -22,7 +22,11 @@ export default (req, res, next) => {
       }
     )
     .then((groupUsers) => {
-      req.groupUsers = groupUsers;
+      req.groupUsers = groupUsers.map(user => ({
+        id: user.id,
+        username: user.username,
+        about: user.about
+      }));
       req.groupEmails = groupUsers.map(user => user.email);
       req.groupUsernames = groupUsers.map(user => user.username);
       req.currentGroup = group;

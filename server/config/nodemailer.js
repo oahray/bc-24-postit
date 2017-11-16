@@ -13,6 +13,15 @@ export const transporter = nodemailer.createTransport({
   }
 });
 
+/**
+ * helperOptions
+ * @summary - function to set mailing options for nodemailer
+ * @param {string} to: recepient email address
+ * @param {array} bcc: array of BCC recepient email addresses
+ * @param {string} subject: subject of the email
+ * @param {string} html: email content as html
+ * @returns {object} helper options
+ */
 export const helperOptions = (to, bcc, subject, html) => ({
   from: '"Postit" <noreply@postit.com>',
   to,

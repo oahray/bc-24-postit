@@ -24,7 +24,7 @@ class SideNav extends Component {
   componentDidMount() {
     $('.button-collapse').sideNav();
     $('.collapsible').collapsible();
-    $('.side-nav .my-list-item a').on('click', function (e) {
+    $('.side-nav .my-list-item a').on('click', () => {
       const windowSize = $(window).width();
       if (windowSize < 993) {
         $('.button-colllapse').sideNav('hide');
@@ -65,7 +65,7 @@ class SideNav extends Component {
       <ul className='right hide-on-small-only' id=''>
         <li className='my-list-item'><NavLink to='/signin'>Signin</NavLink></li>
         <li className='my-list-item'><NavLink to='/signup'>Signup</NavLink></li>
-        <li className='my-list-item'><a href='/api/docs'>Docs</a></li>
+        <li className='my-list-item'><a href='/api/v1/docs'>Docs</a></li>
         <li className='my-list-item'><a target='_blank'
           href='https://github.com/oahray/bc-24-postit'>View On Github</a></li>
       </ul>
@@ -74,7 +74,7 @@ class SideNav extends Component {
       <ul className='side-nav fixed hide-on-med-and-up' id='side-nav'>
         <li className='my-list-item'><NavLink to='/signin'>Signin</NavLink></li>
         <li className='my-list-item'><NavLink to='/signup'>Signup</NavLink></li>
-        <li className='my-list-item'><a href='/api/docs'>Docs</a></li>
+        <li className='my-list-item'><a href='/api/v1/docs'>Docs</a></li>
         <li className='my-list-item'><a target='_blank'
           href='https://github.com/oahray/bc-24-postit'>View On Github</a></li>
       </ul>
@@ -98,9 +98,10 @@ class SideNav extends Component {
       sideList = (
         <ul className='side-nav fixed' id='side-nav'>
           <li><div class='user-view row'>
-            <span className='col'><i className='material-icons white-text center'>person</i></span>
-            <a class='white-text name'> {this.props.user.username}</a>
-            <a class='white-text email'>{this.props.user.email}</a>
+            <span className='col'><i
+            className='material-icons white-text center'>person</i></span>
+            <a class='white-text name page-header'> {this.props.user.username}</a>
+            <a class='white-text email page-header'>{this.props.user.email}</a>
           </div>
           </li>
           <li className='search'>

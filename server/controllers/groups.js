@@ -2,8 +2,15 @@ import * as _ from 'lodash';
 import { Group, User, Message } from '../models';
 import { transporter, helperOptions } from '../config/nodemailer';
 
-// Function to create new group
-export const createGroup = (req, res) => {
+/**
+ * @function create
+ * @summary: API controller to handle requests
+ * to create new group
+ * @param {object} req: request object
+ * @param {object} res: response object
+ * @returns {object} api response
+ */
+export const create = (req, res) => {
   const name = req.body.name;
   const description = req.body.description;
   let type = req.body.type;
@@ -13,7 +20,7 @@ export const createGroup = (req, res) => {
       error: 'Group name is required.'
     });
   }
-  if (name.length > 20) {
+  if (name.length > 25) {
     return res.status(400).send({
       error: 'Group name too long'
     });
@@ -26,25 +33,40 @@ export const createGroup = (req, res) => {
   if (!type || type.trim().toLowerCase() !== 'private') {
     type = 'public';
   }
-  Group.create({
-    name,
-    description,
-    createdBy,
-    type
-  })
-  .then((group) => {
-    User.findById(req.currentUser.id).then((user) => {
-      group.addUser(user.id);
-      return res.status(201).send({
-        message: 'Group created',
-        group
+  Group.findOne({ where: { name } })
+  .then((result) => {
+    if (result) {
+      return res.status(400).send({
+        error: 'You already have a group with this name'
+      });
+    }
+    Group.create({
+      name,
+      description,
+      createdBy,
+      type
+    })
+    .then((group) => {
+      User.findById(req.currentUser.id).then((user) => {
+        group.addUser(user.id);
+        return res.status(201).send({
+          message: 'Group created',
+          group
+        });
       });
     });
   });
 };
 
-// Function to add users to groups with username
-export const addUserToGroup = (req, res) => {
+/**
+ * @function addUser
+ * @summary: API controller to handle requests
+ * to add a user to a group
+ * @param {object} req: request object
+ * @param {object} res: response object
+ * @returns {object} api response
+ */
+export const addUser = (req, res) => {
   // Grab username from request body
   const username = req.body.username.trim().toLowerCase();
   // Grab groupId from request params
@@ -88,7 +110,15 @@ export const addUserToGroup = (req, res) => {
   });
 };
 
-export const removeUserFromGroup = (req, res) => {
+/**
+ * @function removeUser
+ * @summary: API controller to handle requests
+ * to remove a user from a group
+ * @param {object} req: request object
+ * @param {object} res: response object
+ * @returns {object} api response
+ */
+export const removeUser = (req, res) => {
   const username = req.body.username.trim().toLowerCase();
   const groupUsernames = req.groupUsernames;
   const io = req.app.get('io');
@@ -128,7 +158,16 @@ export const removeUserFromGroup = (req, res) => {
   });
 };
 
-export const leaveGroup = (req, res) => {
+/**
+ * @function leave
+ * @summary: API controller to handle requests
+ * to leave a group
+ * @param {object} req: request object
+ * @param {object} res: response object
+ * @returns {object} api response: confirmation that
+ * user has left the group
+ */
+export const leave = (req, res) => {
   const io = req.app.get('io');
   Group.findById(req.params.groupid).then((group) => {
     group.getUsers().then((users) => {
@@ -141,7 +180,9 @@ export const leaveGroup = (req, res) => {
       } else {
         didDeleteGroup = true;
         group.destroy().then(() => res.status(201).send({
-          message: `You left, and ${req.currentGroup.name.toUpperCase()} has been deleted`
+          message: `You left, and ${
+            req.currentGroup.name.toUpperCase()
+          } has been deleted`
         }));
       }
       io.emit('Left group', {
@@ -156,16 +197,26 @@ export const leaveGroup = (req, res) => {
   });
 };
 
-export const getGroupUsers = (req, res) => {
-  res.send({
-    group: req.currentGroup,
-    users: req.groupUsers
-  });
-};
-
-// Get memebers that are not in the group
-// implement pagination
-export const searchNonMembers = (req, res) => {
+/**
+ * @function getUsers
+ * @summary: API controller to handle requests
+ * to get users in a group
+ * @param {object} req: request object
+ * @param {object} res: response object
+ * @returns {array} api response - group users or
+ * non-members, depending on query parameters
+ */
+export const getUsers = (req, res) => {
+  const inGroup = req.query.members || 'true';
+  if (inGroup !== 'false') {
+    return res.send({
+      group: req.currentGroup,
+      users: req.groupUsers
+    });
+  }
+  // If the query specifies that non-members be returned,
+  // Get memebers that are not in the group
+  // and implement pagination
   const groupId = req.params.groupid;
   let { username } = req.query;
   let { offset, limit } = req.query;
@@ -224,7 +275,15 @@ export const searchNonMembers = (req, res) => {
   .catch(() => res.status(500));
 };
 
-export const sendMessageToGroup = (req, res) => {
+/**
+ * @function sendMessage
+ * @summary: API controller to handle requests
+ * to post messages to a group
+ * @param {object} req: request object
+ * @param {object} res: response object
+ * @returns {object} api response - created message
+ */
+export const sendMessage = (req, res) => {
   const content = req.body.content;
   let priority = req.body.priority;
   if (!content) {
@@ -253,13 +312,16 @@ export const sendMessageToGroup = (req, res) => {
       const sender = message.sender.toUpperCase();
       // set email message parameters
       // filter out the email of sender
-      const bcc = req.groupEmails.filter(email => email !== req.currentUser.email);
+      const bcc = req.groupEmails.filter(email =>
+        email !== req.currentUser.email);
       const subject = `New ${message.priority} group message from ${sender}`;
       const html = `<div>
       <p>You have received a new ${message.priority} message from <strong>${sender}</strong> in your group <strong>'${group.name}'</strong></p>
       <p>To reply ${sender}, please login to your account</p>
       </div>`;
-      if ((message.priority === 'urgent' || message.priority === 'critical') && bcc.length > 0) {
+      if ((message.priority === 'urgent' ||
+      message.priority === 'critical') &&
+      bcc.length > 0) {
         transporter.sendMail(
           helperOptions('You', bcc, subject, html), (error) => {
             if (error) {
@@ -279,23 +341,52 @@ export const sendMessageToGroup = (req, res) => {
           name: group.name
         }
       });
-      res.status(201).send({ message });
+      const filtered = {
+        id: message.id,
+        content: message.content,
+        priority: message.priority,
+        userId: message.userId,
+        groupId: message.groupId
+      };
+      res.status(201).send({
+        sent: filtered
+      });
     });
   }).catch(() => res.status(500));
 };
 
-export const getGroupMessages = (req, res) => {
+/**
+ * @function getMessages
+ * @summary: API controller to handle requests
+ * to get group messages
+ * @param {object} req: request object
+ * @param {object} res: response object
+ * @returns {array} api response - array of group messages
+ */
+export const getMessages = (req, res) => {
   const groupId = req.params.groupid;
   const group = req.currentGroup;
   Message.findAll({
     where: {
       groupId
     },
-    order: [['createdAt', 'DESC']]
+    attributes: {
+      exclude: ['updatedAt',
+        'userId', 'groupId']
+    },
+    order: [['createdAt', 'ASC']]
   }).then(messages => res.status(200).send({ group, messages }));
 };
 
-export const markAsRead = (req, res) => {
+/**
+ * @function markRead
+ * @summary: API controller to handle requests to mark
+ * message as read by a user when they view it
+ * @param {object} req: request object
+ * @param {object} res: response object
+ * @returns {object} api response
+ */
+export const markRead = (req, res) => {
   const user = req.currentUser;
   const messageId = req.params.messageid;
   if (!Number(messageId)) {
@@ -322,7 +413,15 @@ export const markAsRead = (req, res) => {
   });
 };
 
-export const editGroupInfo = (req, res) => {
+/**
+ * @function editInfo
+ * @summary: API controller to handle requests
+ * to edit group info
+ * @param {object} req: request object
+ * @param {object} res: response object
+ * @returns {object} api response -
+ */
+export const editInfo = (req, res) => {
   const groupId = req.params.groupid;
   const { name, description, type } = _.pick(
     req.body, ['name', 'description', 'type']
@@ -355,6 +454,15 @@ export const editGroupInfo = (req, res) => {
   });
 };
 
+/**
+ * @function deleteGroup
+ * @summary: API controller to handle requests
+ * to get users in a group
+ * @param {object} req: request object
+ * @param {object} res: response object
+ * @returns {object} api response - delete group
+ * confirmation or failure
+ */
 export const deleteGroup = (req, res) => {
   Group.findById(req.params.groupid).then((group) => {
     if (req.currentUser.username !== group.createdBy) {

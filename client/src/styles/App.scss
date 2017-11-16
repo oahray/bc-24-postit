@@ -4,13 +4,15 @@ $secondary-color: #0C6C85;
 $grey1: #E0E0E0;
 $grey2: #E6E7E8;
 $body-background: #f8f8f8;
+$header-font: 'Merienda', serif;
+$body-font: 'Dosis', sans-serif;
 
 body {
   width: 100%;
-  font-size: 14px;
+  font-size: 16px;
   background-color: white;
-  background-image: url('/images/background1.png')
-  
+  background-image: url('/images/background1.png');
+  font-family: $body-font, sans-serif;
 }
 
 .main-text-color {
@@ -38,6 +40,17 @@ nav, .nav-wrapper {
 .timestamp {
   padding-left: 10px;
   font-size: 14px;
+}
+
+.full-photo-div {
+  padding: 0px 10px 0px 0px !important;
+  img {
+    align-content: center;
+    height: 150px;
+    width: 150px;
+    background-color:white;
+    border-radius: 5px;
+  }
 }
 
 /* label focus color */
@@ -100,6 +113,7 @@ nav, .nav-wrapper {
 
 .nav-wrapper {
   padding: 0px 10px;
+  font-family: $header-font;
 }
 
 ul.side-nav.fixed:hover {
@@ -303,7 +317,7 @@ ul.side-nav.fixed:hover {
 
 .page-header {
   color: $main-color;
-  text-align: center;
+  font-family: $header-font;
 }
 
 .message-list {
@@ -343,6 +357,10 @@ ul.side-nav.fixed:hover {
 
 .display-linebreak {
   white-space: pre-line;
+}
+
+.btn {
+  font-family: $header-font;
 }
 
 .search-page {
@@ -392,6 +410,17 @@ ul.side-nav.fixed:hover {
   padding: 0px;
 }
 
+.edit-profile-page {
+  margin-top: 30px;
+  .edit-profile-card {
+    background-color: white;
+    padding: 40px;
+    min-width: 450px;
+    max-width: 800px;
+    margin: 0 auto !important;
+  }
+}
+
 .guest-home {
   background-color: transparent !important;
   padding-bottom: 20px;
@@ -401,11 +430,13 @@ ul.side-nav.fixed:hover {
     text-shadow: 5px 5px rgb(202, 202, 202);
     margin-top: 20px;
     font-size: 5em;
+    font-family: $header-font
   }
   .guest-home-text {
     font-size: 1.4em;
     color: $secondary-color;
   }
+
   #guest-carousel {
     padding: 0 auto;
     height: 270px !important;

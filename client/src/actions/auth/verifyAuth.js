@@ -13,7 +13,7 @@ const verifyAuthLoading = () => ({
   type: VERIFY_AUTH_LOADING
 });
 
-/**
+/** Action creator for auth success
  * @param {object} response: api response
  * @returns {object} verify_auth_success action
  */
@@ -22,7 +22,7 @@ const verifyAuthSuccess = response => ({
   response
 });
 
-/**
+/** Action creator for auth failure actions
  * @param {object} response: api error response
  * @returns {object} verify_auth_failure action
  */

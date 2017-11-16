@@ -45,13 +45,13 @@ export const resetCreateGroupStatus = () => ({
  * @param {*} description
  * @param {*} type
  * @param {*} token
- * @returns {function} 
+ * @returns {function} axios post
  */
 export const createNewGroup = (name, description, type, token) =>
 (dispatch) => {
   dispatch(createGroupLoading());
   const FETCH_URL = `${BASE_URL}/group`;
-  axios({
+  return axios({
     method: 'post',
     url: FETCH_URL,
     data: {

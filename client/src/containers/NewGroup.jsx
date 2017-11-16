@@ -39,7 +39,7 @@ class NewGroup extends Component {
 
     return(
       <div className='new-group-page'>
-        <h5 className='page-header'>Create New Group</h5>
+        <h5 className='page-header center'>Create New Group</h5>
         <div className='new-group-content row'>
           <form className='row col s10 offset-s1 m8 offset-m2'
           onSubmit={this.onFormSubmit}>
