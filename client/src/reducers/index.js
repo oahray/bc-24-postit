@@ -1,13 +1,19 @@
 import { combineReducers } from 'redux';
-import user from './setUserReducer';
-import verifyAuthLoading from './verifyAuthLoading';
-import isAuthenticated from './authReducer';
-import verifyAuthFailed from './verifyAuthFailed';
-import token from './setTokenReducer';
-import setUserLoading from './setUserLoading';
-import authFormErrorMessage from './authFormErrorMessage';
-import authFormLoading from './authFormLoading';
-import authFormFailed from './authFormFailed';
+import user from './auth/user/setUser';
+import setUserLoading from './auth/user/loadingUser';
+import verifyAuthLoading from './auth/status/authLoading';
+import isAuthenticated from './auth/status/authStatus';
+import verifyAuthFailed from './auth/status/authFailed';
+import token from './auth/token/setToken';
+import authFormErrorMessage from './auth/form/errorMessage';
+import authFormLoading from './auth/form/requestLoading';
+import authFormFailed from './auth/form/requestFailed';
+import {
+  requestResetLoading,
+  requestResetMessage,
+  resetPasswordLoading,
+  resetPasswordError
+} from './auth/user/resetPassword';
 import groupList from './groupListReducer';
 import groupListLoading from './groupListLoading';
 import createdGroup from './createdGroup';
@@ -19,8 +25,6 @@ import groupUsers from './groupUsers';
 import inGroupPage from './inGroupPageReducer';
 import userSearchTerm from './searchTerm';
 import userSearchResults from './searchResults';
-import { requestResetLoading, requestResetMessage,
-  resetPasswordLoading, resetPasswordError } from './requestReset';
 
 export default combineReducers({
   user,

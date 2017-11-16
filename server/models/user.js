@@ -26,6 +26,11 @@ export default (sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: 'New to Postit'
     },
+    imageUrl: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: ''
+    },
     resetHash: {
       type: DataTypes.STRING,
       allowNull: true,
