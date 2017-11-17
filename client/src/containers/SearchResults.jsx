@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { getGroupMessages, inGroupPage, clearUserSearchTerm,
-  searchUsers, addUserToGroup, removeUser, getGroupUsers, leaveGroup } from '../actions';
+  searchUsers, addUserToGroup, removeUser, getGroupUsers, leaveGroup
+} from '../actions';
 import UsersList from '../components/UsersList';
+import UserInfoModal from '../components/UserInfoModal';
 
 /**
  * @class SearchResult
@@ -205,7 +207,7 @@ class SearchResult extends Component {
       <div className='row search-page col s12 m8'>
         <div className="search-results-container col s12 m9">
           <div className='col s12'>
-            <h5 className='page-header'>
+            <h5 className='page-header center'>
               Add Users to <strong>{this.props.selectedGroup.name}</strong>
             </h5>
           </div>
@@ -215,24 +217,29 @@ class SearchResult extends Component {
           </div>
 
           <div className={`search-list-container col s10
-            offset-s1 m8 offset-m2 l6 offset-l3`}>
-            <h6>{this.props.userSearchResults.totalCount} found</h6>
-            <ul className='row list-group'>
+            offset-s1`}>
+            <h6>{this.props.userSearchResults.totalCount ?
+            this.props.userSearchResults.totalCount : 'No'}
+            {this.props.userSearchResults.totalCount === 1 ?
+            ' user ' : ' users '} found</h6>
+            <ul className='collection list-group'>
               {this.props.userSearchResults.users ?
                 (this.props.userSearchResults.users).map(user =>
-                <li className="z-depth-1" key={user.id}>
-                  <div className='col s12 list-item grey lighten-3'>
-                    <strong>{user.username}</strong> <br />
-                      <small>{user.about}</small>
-                      <span className='right'>
-                        <a className='add-user-icon main-text-color'
-                        onClick={() => this.addUser(user.username)}>
-                          <i className='material-icons'>person_add</i>
-                        </a>
-                      </span>
-                    </div>
-                    <hr/>
-                  </li>) : null }
+                <li className="collection-item avatar grey lighten-3"
+                key={user.id}>
+                  <img src={user.imageUrl ? user.imageUrl :
+                    '/images/no-pic.png'} className="circle"/>
+                  <span className="title">
+                    <UserInfoModal user={user} />
+                  </span>
+                  <p><small>{user.about}</small></p>
+                  <span className='secondary-content'>
+                    <a className='add-user-icon main-text-color'
+                    onClick={() => this.addUser(user.username)}>
+                      <i className='material-icons'>person_add</i>
+                    </a>
+                  </span>
+                </li>) : null }
             </ul>
           </div>
 
