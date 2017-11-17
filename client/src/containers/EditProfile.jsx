@@ -186,7 +186,7 @@ class EditProfile extends Component {
     );
 
     const profileEditor = (
-      <div className="edit-profile-card col s12 m8 offset-s2 z-depth-1">
+      <div className="edit-profile-card col s12 m8 offset-m2 z-depth-1">
         <h5 className="page-header center">Edit Profile</h5>
         <form className="">
           <div className="input-field col s12"
