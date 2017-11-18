@@ -22,7 +22,7 @@ class SearchResult extends Component {
       searchTerm: this.searchQuery.u,
       page: Number(this.searchQuery.p),
       offset: 10 * (this.searchQuery.p - 1),
-      limit: 10,
+      limit: 7,
       lastPage: 0
     };
     this.groupId = Number(this.props.match.params.groupid);

@@ -53,7 +53,7 @@ class SideNav extends Component {
    */
   searchUsers(username, resultPath) {
     const { selectedGroup, token } = this.props;
-    this.props.searchUsers(selectedGroup.id, username, 0, 10, token);
+    this.props.searchUsers(selectedGroup.id, username, 0, 7, token);
     this.props.history.push(resultPath);
   }
 
