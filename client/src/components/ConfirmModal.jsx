@@ -14,7 +14,7 @@ export default class ConfirmModal extends Component {
         href={`#${this.props.modalId}`}>{this.props.triggerLabel}</a>
         <div id={`${this.props.modalId}`} className="modal confirm-modal">
           <div className="modal-content">
-            <h5> {this.props.confirmText}</h5>
+            <h5>{this.props.confirmText}</h5>
           </div>
           <div className="modal-footer">
             <span className="left">

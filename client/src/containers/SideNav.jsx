@@ -53,7 +53,7 @@ class SideNav extends Component {
    */
   searchUsers(username, resultPath) {
     const { selectedGroup, token } = this.props;
-    this.props.searchUsers(selectedGroup.id, username, 0, 7, token);
+    this.props.searchUsers(selectedGroup.id, username, 0, 10, token);
     this.props.history.push(resultPath);
   }
 
@@ -97,18 +97,12 @@ class SideNav extends Component {
 
       sideList = (
         <ul className='side-nav fixed' id='side-nav'>
-          <li>
-            <div class='user-view row'>
-              <span className='col'>
-                { this.props.user.imageUrl ?
-                <img src={this.props.user.imageUrl} /> :
-                <i className='material-icons white-text center'>person</i>}
-              </span>
-              <span>
-                <a class='white-text name page-header'> {this.props.user.username}</a>
-                <a class='white-text email page-header'>{this.props.user.email}</a>
-              </span>
-            </div>
+          <li><div class='user-view row'>
+            <span className='col'><i
+            className='material-icons white-text center'>person</i></span>
+            <a class='white-text name page-header'> {this.props.user.username}</a>
+            <a class='white-text email page-header'>{this.props.user.email}</a>
+          </div>
           </li>
           <li className='search'>
             {this.props.inGroupPage ? <SearchBar searchUsers={this.searchUsers}

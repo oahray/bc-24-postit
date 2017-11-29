@@ -7,14 +7,15 @@ import PropTypes from 'prop-types';
  */
 export default class MessageList extends Component {
   /**
-   * @return {jsx} MessageList
+   * @return {element} MessageList
    */
   render() {
     return (
       <div className="message-list" id="message-list">
         {this.props.groupMessages.length > 0 ?
         <ul id="messages-ul" className="collection">
-          {this.props.groupMessages.map(message => (<li
+          {this.props.groupMessages.map((message) => {
+            return <li
             className='collection-item message-item truncate'
             id={`${message.groupid}${message.id}`}
             key={message.id}
@@ -23,10 +24,10 @@ export default class MessageList extends Component {
             <span className='grey-text timestamp'>
             <small>
               {moment(message.createdAt).fromNow()}
-            </small></span>
+            </small></span> 
             <span className='right'><small>{message.priority} message</small>
-            </span><br />{message.content}</li>
-          ))}
+            </span><br />{message.content}</li>;
+          })}
         </ul> :
         <h6 className="no-messages">
           This group does not contain any messages
