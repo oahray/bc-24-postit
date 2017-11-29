@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import { Group, User, Message } from '../models';
-import { transporter, helperOptions } from '../config/nodemailer';
+import { transporter, helperOptions, templates } from '../config/nodemailer';
 
 /**
  * @function create
@@ -34,28 +34,31 @@ export const create = (req, res) => {
     type = 'public';
   }
   Group.findOne({ where: { name } })
-  .then((result) => {
-    if (result) {
-      return res.status(400).send({
-        error: 'You already have a group with this name'
-      });
-    }
-    Group.create({
-      name,
-      description,
-      createdBy,
-      type
-    })
-    .then((group) => {
-      User.findById(req.currentUser.id).then((user) => {
-        group.addUser(user.id);
-        return res.status(201).send({
-          message: 'Group created',
-          group
+    .then((result) => {
+      if (result) {
+        return res.status(400).send({
+          error: 'You already have a group with this name'
         });
-      });
-    });
-  });
+      }
+      Group.create({
+        name,
+        description,
+        createdBy,
+        type
+      })
+        .then((group) => {
+          User.findById(req.currentUser.id).then((user) => {
+            group.addUser(user.id);
+            return res.status(201).send({
+              message: 'Group created',
+              group
+            });
+          });
+        });
+    })
+    .catch(() => res.status(500).send({
+      error: 'Internal server error'
+    }));
 };
 
 /**
@@ -69,15 +72,16 @@ export const create = (req, res) => {
 export const addUser = (req, res) => {
   // Grab username from request body
   const username = req.body.username.trim().toLowerCase();
-  // Grab groupId from request params
-  const groupId = req.params.groupid;
-  Group.findById(groupId).then((group) => {
-    // Find a user with that username from request body
-    User.findOne({
-      where: {
-        username,
-      }
-    })
+  // Grab group instance from request object.
+  // It has been set in the isGroupMember middleware.
+  const group = req.group;
+  // Group.findById(groupId).then((group) => {
+  // Find a user with that username from request body
+  User.findOne({
+    where: {
+      username,
+    }
+  })
     .then((user) => {
       if (!user) {
         return res.status(404).send({
@@ -92,22 +96,21 @@ export const addUser = (req, res) => {
           });
         }
         group.addUser(user.id)
-        .then(() => {
-          io.emit('Added to group', {
-            user: {
-              id: user.id,
-              name: user.name
-            },
-            group,
-            addedBy: req.currentUser.username
+          .then(() => {
+            io.emit('Added to group', {
+              user: {
+                id: user.id,
+                name: user.name
+              },
+              group,
+              addedBy: req.currentUser.username
+            });
+            res.status(201).send({
+              message: `${user.username} added to group`
+            });
           });
-          res.status(201).send({
-            message: `${user.username} added to group`
-          });
-        });
       });
     });
-  });
 };
 
 /**
@@ -122,40 +125,39 @@ export const removeUser = (req, res) => {
   const username = req.body.username.trim().toLowerCase();
   const groupUsernames = req.groupUsernames;
   const io = req.app.get('io');
-  Group.findById(req.params.groupid).then((group) => {
-    if (group.createdBy !== req.currentUser.username) {
-      return res.status(401).send({
-        error: 'Only a group creator can remove members'
-      });
-    }
-    if (groupUsernames && groupUsernames.indexOf(username) === -1) {
-      return res.status(400).send({
-        error: 'No such user in specified group'
-      });
-    }
-    if (username === req.currentUser.username) {
-      return res.status(400).send({
-        error: 'You cannot remove yourself from a group. Leave instead'
-      });
-    }
-    User.findOne({ where: { username } })
+  const group = req.group;
+  if (group.createdBy !== req.currentUser.username) {
+    return res.status(401).send({
+      error: 'Only a group creator can remove members'
+    });
+  }
+  if (groupUsernames && groupUsernames.indexOf(username) === -1) {
+    return res.status(400).send({
+      error: 'No such user in specified group'
+    });
+  }
+  if (username === req.currentUser.username) {
+    return res.status(400).send({
+      error: 'You cannot remove yourself from a group. Leave instead'
+    });
+  }
+  User.findOne({ where: { username } })
     .then((user) => {
       group.removeUser(user.id)
-      .then(() => {
-        io.emit('Removed from group', {
-          user: {
-            id: user.id,
-            username: user.username
-          },
-          group,
-          removedBy: req.currentUser.username
+        .then(() => {
+          io.emit('Removed from group', {
+            user: {
+              id: user.id,
+              username: user.username
+            },
+            group,
+            removedBy: req.currentUser.username
+          });
+          return res.status(201).send({
+            message: `${user.username} removed from group`
+          });
         });
-        return res.status(201).send({
-          message: `${user.username} removed from group`
-        });
-      });
     });
-  });
 };
 
 /**
@@ -169,30 +171,29 @@ export const removeUser = (req, res) => {
  */
 export const leave = (req, res) => {
   const io = req.app.get('io');
-  Group.findById(req.params.groupid).then((group) => {
-    group.getUsers().then((users) => {
-      let didDeleteGroup = false;
-      if (users.length > 1) {
-        group.removeUser(req.currentUser.id)
+  const group = req.group;
+  group.getUsers().then((users) => {
+    let didDeleteGroup = false;
+    if (users.length > 1) {
+      group.removeUser(req.currentUser.id)
         .then(() => res.status(201).send({
           message: `You left ${req.currentGroup.name.toUpperCase()}`,
         }));
-      } else {
-        didDeleteGroup = true;
-        group.destroy().then(() => res.status(201).send({
-          message: `You left, and ${
-            req.currentGroup.name.toUpperCase()
+    } else {
+      didDeleteGroup = true;
+      group.destroy().then(() => res.status(201).send({
+        message: `You left, and ${
+          req.currentGroup.name.toUpperCase()
           } has been deleted`
-        }));
-      }
-      io.emit('Left group', {
-        user: {
-          id: req.currentUser.id,
-          username: req.currentUser.username
-        },
-        group,
-        didDeleteGroup
-      });
+      }));
+    }
+    io.emit('Left group', {
+      user: {
+        id: req.currentUser.id,
+        username: req.currentUser.username
+      },
+      group,
+      didDeleteGroup
     });
   });
 };
@@ -217,7 +218,6 @@ export const getUsers = (req, res) => {
   // If the query specifies that non-members be returned,
   // Get memebers that are not in the group
   // and implement pagination
-  const groupId = req.params.groupid;
   let { username } = req.query;
   let { offset, limit } = req.query;
   limit = Number(limit);
@@ -240,39 +240,35 @@ export const getUsers = (req, res) => {
     searchOptions.limit = Number(limit);
   }
 
-  Group.findById(groupId).then((group) => {
-    group.getUsers().then(groupUsers =>
-      groupUsers.map(user => user.username)
-    )
-    .then((usernames) => {
-      searchOptions.where.username.$notIn = usernames;
-      User.findAndCountAll(searchOptions)
-      .then((result) => {
-        const totalCount = result.count;
-        let pageCount = 1;
+  const usernames = req.groupUsernames;
+  searchOptions.where.username.$notIn = usernames;
+  User.findAndCountAll(searchOptions)
+    .then((result) => {
+      const totalCount = result.count;
+      let pageCount = 1;
 
-        if (!offset) {
-          offset = 0;
-        }
+      if (!offset) {
+        offset = 0;
+      }
 
-        if (!limit) {
-          limit = totalCount;
-        }
+      if (!limit) {
+        limit = totalCount;
+      }
 
-        pageCount = Math.ceil(totalCount / limit);
-        const page = Math.ceil((offset + limit) / limit);
-        const pageSize = result.rows.length;
-        res.status(200).send({
-          page,
-          pageCount,
-          pageSize,
-          totalCount,
-          users: result.rows
-        });
+      pageCount = Math.ceil(totalCount / limit);
+      const page = Math.ceil((offset + limit) / limit);
+      const pageSize = result.rows.length;
+      res.status(200).send({
+        page,
+        pageCount,
+        pageSize,
+        totalCount,
+        users: result.rows
       });
-    });
-  })
-  .catch(() => res.status(500));
+    })
+    .catch(() => res.status(500).send({
+      error: 'Internal server errors'
+    }));
 };
 
 /**
@@ -295,64 +291,59 @@ export const sendMessage = (req, res) => {
     priority = 'normal';
   }
   priority = priority.trim().toLowerCase();
-  Group.findById(req.params.groupid).then((group) => {
-    if (!Message.verifyPriority(priority)) {
-      return res.status(400).send({
-        error: 'Incorrect priority option. Choose NORMAL, URGENT or CRITICAL.'
-      });
-    }
-    Message.create({
-      content,
-      priority,
-      sender: req.currentUser.username,
-      readBy: req.currentUser.username
-    }).then((message) => {
-      message.setGroup(group.id);
-      message.setUser(req.currentUser.id);
-      const sender = message.sender.toUpperCase();
-      // set email message parameters
-      // filter out the email of sender
-      const bcc = req.groupEmails.filter(email =>
-        email !== req.currentUser.email);
-      const subject = `New ${message.priority} group message from ${sender}`;
-      const html = `<div>
-      <p>You have received a new ${message.priority} message from <strong>${sender}</strong> in your group <strong>'${group.name}'</strong></p>
-      <p>To reply ${sender}, please login to your account</p>
-      </div>`;
-      if ((message.priority === 'urgent' ||
+
+  const group = req.group;
+  if (!Message.verifyPriority(priority)) {
+    return res.status(400).send({
+      error: 'Incorrect priority option. Choose NORMAL, URGENT or CRITICAL.'
+    });
+  }
+  Message.create({
+    content,
+    priority,
+    sender: req.currentUser.username,
+    readBy: req.currentUser.username
+  }).then((message) => {
+    message.setGroup(group.id);
+    message.setUser(req.currentUser.id);
+    const sender = message.sender.toUpperCase();
+    // set email message parameters
+    // filter out the email of sender
+    const bcc = req.groupEmails.filter(email =>
+      email !== req.currentUser.email);
+    const subject = `New ${message.priority} group message from ${sender}`;
+    const html = templates.notification(message, group);
+    if ((message.priority === 'urgent' ||
       message.priority === 'critical') &&
       bcc.length > 0) {
-        transporter.sendMail(
-          helperOptions('You', bcc, subject, html), (error) => {
-            if (error) {
-              return console.log('Message email could not be sent: ');
-            }
-            console.log('The message email was sent: ');
-          }
-        );
+      transporter.sendMail(
+        helperOptions('You', bcc, subject, html))
+        .then(() => {
+          console.log('The message email was sent: ');
+        })
+        .catch(() => { });
+    }
+    const io = req.app.get('io');
+    io.emit('Message posted', {
+      message: {
+        sender: message.sender
+      },
+      group: {
+        id: group.id,
+        name: group.name
       }
-      const io = req.app.get('io');
-      io.emit('Message posted', {
-        message: {
-          sender: message.sender
-        },
-        group: {
-          id: group.id,
-          name: group.name
-        }
-      });
-      const filtered = {
-        id: message.id,
-        content: message.content,
-        priority: message.priority,
-        userId: message.userId,
-        groupId: message.groupId
-      };
-      res.status(201).send({
-        sent: filtered
-      });
     });
-  }).catch(() => res.status(500));
+    const filtered = {
+      id: message.id,
+      content: message.content,
+      priority: message.priority,
+      userId: message.userId,
+      groupId: message.groupId
+    };
+    res.status(201).send({
+      sent: filtered
+    });
+  });
 };
 
 /**
@@ -395,22 +386,22 @@ export const markRead = (req, res) => {
     });
   }
   Message.findById(messageId)
-  .then((message) => {
-    const readers = message.readBy.split(',');
-    let readMessage = message;
-    if (message && (user.username !== message.sender)
-      && (readers.indexOf(user.username)) === -1) {
-      message.update({
-        readBy: `${message.readBy},${user.username}`
-      })
-      .then((update) => {
-        readMessage = update;
+    .then((message) => {
+      const readers = message.readBy.split(',');
+      let readMessage = message;
+      if (message && (user.username !== message.sender)
+        && (readers.indexOf(user.username)) === -1) {
+        message.update({
+          readBy: `${message.readBy},${user.username}`
+        })
+          .then((update) => {
+            readMessage = update;
+          });
+      }
+      return res.status(201).send({
+        update: readMessage
       });
-    }
-    return res.status(201).send({
-      update: readMessage
     });
-  });
 };
 
 /**
@@ -422,7 +413,6 @@ export const markRead = (req, res) => {
  * @returns {object} api response -
  */
 export const editInfo = (req, res) => {
-  const groupId = req.params.groupid;
   const { name, description, type } = _.pick(
     req.body, ['name', 'description', 'type']
   );
@@ -443,15 +433,12 @@ export const editInfo = (req, res) => {
     update.type = type;
   }
 
-  Group.findById(groupId)
-  .then((group) => {
-    group.update(update)
+  const group = req.group;
+  group.update(update)
     .then(updatedGroup => res.status(201).send({
       message: 'Group info successfully updated',
       group: updatedGroup
-    }))
-    .catch(() => res.status(500).send());
-  });
+    }));
 };
 
 /**
@@ -464,14 +451,18 @@ export const editInfo = (req, res) => {
  * confirmation or failure
  */
 export const deleteGroup = (req, res) => {
-  Group.findById(req.params.groupid).then((group) => {
-    if (req.currentUser.username !== group.createdBy) {
-      return res.status(401).send({
-        error: 'You can only delete groups created by you'
-      });
-    }
-    group.destroy().then(() => res.status(201).send({
+  // Group.findById(req.params.groupid).then((group) => {
+  if (req.currentUser.username !== req.group.createdBy) {
+    return res.status(401).send({
+      error: 'You can only delete groups created by you'
+    });
+  }
+  const group = req.group;
+  group.destroy()
+    .then(() => res.status(201).send({
       message: 'Group successfully deleted'
+    }))
+    .catch(() => res.status(500).send({
+      error: 'Internal server error'
     }));
-  });
 };

@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import randomstring from 'randomstring';
 import { User, Message } from '../models';
-import { transporter, helperOptions } from '../config/nodemailer';
+import { transporter, helperOptions, templates } from '../config/nodemailer';
 
 /**
  * @function signin
@@ -23,12 +23,14 @@ export const signup = (req, res) => {
   })
   .then((user) => {
     const token = user.generateAuthToken();
-    res.header('x-auth', token).status(201).send({
+    return res.header('x-auth', token).status(201).send({
       message: `welcome ${user.username}`,
       user
     });
   })
-  .catch(() => res.status(500));
+  .catch(() => res.status(500).send({
+    error: 'Internal server error'
+  }));
 };
 
 /**
@@ -63,8 +65,7 @@ export const signin = (req, res) => {
       message: `welcome back, ${user.username}`,
       user
     });
-  })
-  .catch(() => res.status(500));
+  });
 };
 
 export const getMe = (req, res) => {
@@ -158,27 +159,24 @@ export const forgotPassword = (req, res) => {
     .then((update) => {
       if (update) {
         const subject = 'Password reset';
-        const html = `<div><h2 style="color:brown">You requested a password reset. </h2>
-        <p style="color:black">A request was made to reset your password. If you did not make this request, simply ignore this email and your password would <strong>not</strong> be changed. If you did make this request just click the link below: </p>
-        <p>${req.protocol}://${req.headers.host}/resetpassword?t=${update.resetHash}</p>
-        <p style="color:black">If the above URL does not work, try copying and pasting it into your browser. If you continue to experience problems please feel free to contact us.
-        </p>
-        <p style="color:black">Best regards, <br/> The Postit Team</div></p>`;
+        const html = templates.recovery(req, update);
         transporter.sendMail(
-          helperOptions(user.email, null, subject, html), (error, info) => {
-            if (error) {
-              console.log('The recovery email could not be sent: ', error);
-            } else {
-              console.log('The recovery email was sent: ', info);
-            }
+          helperOptions(user.email, null, subject, html))
+          .then(() => {
             res.send({
-              message: 'An email with reset instructions has been sent'
+              message: `An email with reset instructions has been sent to ${user.email}`
             });
-          }
-        );
+          })
+          .catch(() => {
+            res.status(500).send({
+              error: 'Error sending recovery mail. Please try again later'
+            });
+          });
       }
     })
-    .catch(() => res.status(500));
+    .catch(() => res.status(500).send({
+      error: 'Internal server error'
+    }));
   });
 };
 

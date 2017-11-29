@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { Redirect, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Modal, Row, Input, Button } from 'react-materialize';
 
 import { signupUser, verifyAuth, clearFormError } from '../actions';
 
@@ -10,7 +9,7 @@ import { signupUser, verifyAuth, clearFormError } from '../actions';
  * Signup form
  * @returns {div} element
  */
-class SignupForm extends Component {
+export class SignupForm extends Component {
   /**
    * @constructor
    * @param {*} props
@@ -37,8 +36,9 @@ class SignupForm extends Component {
   }
 
   /**
-   *
+   * @function onFormSubmit
    * @param {*} event
+   * @returns {undefined}
    */
   onFormSubmit(event) {
     event.preventDefault();
@@ -50,12 +50,13 @@ class SignupForm extends Component {
   }
 
   /**
-   * 
+   * @function render
+   * @returns {Object} signup component
    */
   render() {
     const content = (
       <div className='row forms col s12 m8 l6'>
-        <form className='row col s12 m10 offset-m1 z-depth-2'
+        <form className='signup-form row col s12 m10 offset-m1 z-depth-2'
         onSubmit={this.onFormSubmit}>
           <h4 className="page-header center"> Sign up </h4>
           <div className='form-error center red-text bold'>
@@ -65,7 +66,7 @@ class SignupForm extends Component {
           </div>
           <div className="input-field col s12">
             <i class="material-icons prefix">person</i>
-            <input id='sign-up-username' type='text' autoFocus required
+            <input id='signup-username' type='text' autoFocus required
             value={this.state.username} onChange={event =>
             this.setState({ username: event.target.value })}/>
             <label for="signup-username">Username</label>
@@ -95,10 +96,10 @@ class SignupForm extends Component {
             <label for="signup-password2">Confirm Password</label>
           </div>
           <div className='center'>
-            <Button className={`white main-text-color 
-            ${this.props.setUserLoading ? 'disabled' : ''}`} waves='light'
-            type='submit'>{this.props.setUserLoading ?
-            'Please wait...' : 'Submit'}</Button>
+            <button className={`btn signup-btn white main-text-color 
+            ${this.props.signupLoading ? 'disabled' : ''}`}
+            type='submit'>{this.props.signupLoading ?
+            'Please wait...' : 'Submit'}</button>
           </div>
           <div className='main-text-color'>
             <p className='center'>
@@ -110,7 +111,7 @@ class SignupForm extends Component {
     );
     return (
       <div>
-        {this.props.isLoggedIn ? <Redirect to="/dashboard" /> : content }
+        {this.props.isLoggedIn ? <Redirect to="/" /> : content }
       </div>
     );
   }

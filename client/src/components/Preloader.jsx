@@ -1,50 +1,50 @@
 import React from 'react';
 
-export default function(props) {
-  return (
-    <div className='preloader center'>
-      <div class="preloader-wrapper active">
-        <div class="spinner-layer spinner-blue">
-          <div class="circle-clipper left">
-            <div class="circle"></div>
-          </div><div class="gap-patch">
-            <div class="circle"></div>
-          </div><div class="circle-clipper right">
-            <div class="circle"></div>
-          </div>
-        </div>
-
-        <div class="spinner-layer spinner-red">
-          <div class="circle-clipper left">
-            <div class="circle"></div>
-          </div><div class="gap-patch">
-            <div class="circle"></div>
-          </div><div class="circle-clipper right">
-            <div class="circle"></div>
-          </div>
-        </div>
-
-        <div class="spinner-layer spinner-yellow">
-          <div class="circle-clipper left">
-            <div class="circle"></div>
-          </div><div class="gap-patch">
-            <div class="circle"></div>
-          </div><div class="circle-clipper right">
-            <div class="circle"></div>
-          </div>
-        </div>
-
-        <div class="spinner-layer spinner-green">
-          <div class="circle-clipper left">
-            <div class="circle"></div>
-          </div><div class="gap-patch">
-            <div class="circle"></div>
-          </div><div class="circle-clipper right">
-            <div class="circle"></div>
-          </div>
+const Preloader = props =>
+  (<div className='preloader center'>
+    <div className="preloader-wrapper active">
+      <div className="spinner-layer spinner-blue">
+        <div className="circle-clipper left">
+          <div className="circle"></div>
+        </div><div className="gap-patch">
+          <div className="circle"></div>
+        </div><div className="circle-clipper right">
+          <div className="circle"></div>
         </div>
       </div>
-      <h6>{props.message}</h6>
+
+      <div className="spinner-layer spinner-red">
+        <div className="circle-clipper left">
+          <div className="circle"></div>
+        </div><div className="gap-patch">
+          <div className="circle"></div>
+        </div><div className="circle-clipper right">
+          <div className="circle"></div>
+        </div>
+      </div>
+
+      <div className="spinner-layer spinner-yellow">
+        <div className="circle-clipper left">
+          <div className="circle"></div>
+        </div><div className="gap-patch">
+          <div className="circle"></div>
+        </div><div className="circle-clipper right">
+          <div className="circle"></div>
+        </div>
+      </div>
+
+      <div className="spinner-layer spinner-green">
+        <div className="circle-clipper left">
+          <div className="circle"></div>
+        </div><div className="gap-patch">
+          <div className="circle"></div>
+        </div><div className="circle-clipper right">
+          <div className="circle"></div>
+        </div>
+      </div>
     </div>
-  )
-}
+    <h6>{props.message}</h6>
+  </div>
+);
+
+export default Preloader;

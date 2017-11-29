@@ -1,5 +1,5 @@
 import { VERIFY_AUTH_SUCCESS, SIGNUP_SUCCESS, SIGNIN_SUCCESS,
-  LOGOUT_USER, RESET_PASSWORD_SUCCESS } from '../../../actions';
+  LOGOUT_USER, RESET_PASSWORD_SUCCESS } from '../../../constants';
 
 export default (state = null, action) => {
   switch (action.type) {

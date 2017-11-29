@@ -1,12 +1,14 @@
 import axios from 'axios';
 import toastr from 'toastr';
 
-import { BASE_URL, getGroupList } from '../index';
-
-export const CREATE_GROUP_LOADING = 'CREATE_GROUP_LOADING';
-export const CREATE_GROUP_SUCCESS = 'CREATE_GROUP_SUCCESS';
-export const CREATE_GROUP_FAILURE = 'CREATE_GROUP_FAILURE';
-export const RESET_CREATE_GROUP_STATUS = 'RESET_CREATE_GROUP_STATUS';
+import { getGroupList } from '../index';
+import {
+  BASE_URL,
+  CREATE_GROUP_LOADING,
+  CREATE_GROUP_SUCCESS,
+  CREATE_GROUP_FAILURE,
+  RESET_CREATE_GROUP_STATUS
+} from '../../constants';
 
 /**
  * @returns {object} client_group_loading action
@@ -64,16 +66,12 @@ export const createNewGroup = (name, description, type, token) =>
     }
   })
   .then((response) => {
-    if (response.statusText === 'Created') {
-      dispatch(createGroupSuccess(response));
-      toastr.success(response.data.message);
-      dispatch(getGroupList(token));
-    }
+    dispatch(createGroupSuccess(response));
+    toastr.success(response.data.message);
+    dispatch(getGroupList(token));
   })
   .catch((err) => {
-    if (err.response) {
-      toastr.error(err.response.data.error);
-      dispatch(createGroupFailure(err.response.data.error));
-    }
+    toastr.error(err.response.data.error);
+    dispatch(createGroupFailure(err.response.data.error));
   });
 };

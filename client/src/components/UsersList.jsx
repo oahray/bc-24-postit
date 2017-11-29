@@ -23,12 +23,12 @@ const UsersList = props => (
           <ul className=" collection">
             {props.groupUsers.map(user => (
               <li className="collection-item row" key={user.id}>
-                <span className="col s10">
+                <span className="col s6">
                   {(user.username === props.user.username) ?
                   user.username :
                   <UserInfoModal user={user} />}
                   {user.username ===
-                    props.user.username ? ' (you)' : ''}
+                    props.user.username ? <small> (you)</small> : ''}
                 </span>
                 {(props.user.username === props.selectedGroup.createdBy
                 && user.username !== props.user.username) ?

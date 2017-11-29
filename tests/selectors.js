@@ -8,7 +8,7 @@ module.exports = {
 
   signin: {
     formDiv: '#root > div > div > div:nth-child(2) > div',
-    formHeader: '#root > div > div > div:nth-child(2) > div > form > h3',
+    formHeader: '#root > div > div > div:nth-child(2) > div > form > h4',
     usernameInput: '#signin-username',
     passwordInput: '#signin-password',
     submitButton: '#root > div > div > div:nth-child(2) > div > form > div:nth-child(6) > button'

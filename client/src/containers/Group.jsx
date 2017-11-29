@@ -281,6 +281,7 @@ class Group extends Component {
         smallScreen: true
       });
     } else {
+      this.initMaterial();
       this.setState({
         smallScreen: false
       });

@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import './styles/App.scss'
+import './styles/App.scss';
 
 import App from './containers/App';
 import store from './store';
@@ -16,7 +16,7 @@ render(
   document.getElementById('root')
 );
 
-if(module.hot) {
-	module.hot.accept();
+if (module.hot) {
+  module.hot.accept();
 }
 

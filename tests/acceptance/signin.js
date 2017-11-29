@@ -23,7 +23,7 @@ module.exports = {
   },
   'Signin form lets user sign in': (client) => {
     client
-      .setValue(signin.usernameInput, 'test')
+      .setValue(signin.usernameInput, 'ray')
       .setValue(signin.passwordInput, 'mypassword')
       .click(signin.submitButton)
       .waitForElementVisible(dashboard.container, 1000)

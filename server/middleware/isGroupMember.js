@@ -7,13 +7,14 @@ export default (req, res, next) => {
       error: 'Valid group ID must be provided'
     });
   }
-  Group.findById(groupId).then((group) => {
+  return Group.findById(groupId).then((group) => {
     if (!group) {
       return res.status(404).send({
         error: 'Specified group does not exist'
       });
     }
-    group.getUsers(
+    req.group = group;
+    return group.getUsers(
       {
         raw: true,
         attributes: {
@@ -40,5 +41,8 @@ export default (req, res, next) => {
       }
       next();
     });
-  });
+  })
+  .catch(() => res.status(500).send({
+    error: 'Internal server error'
+  }));
 };

@@ -1,36 +1,31 @@
 import axios from 'axios';
 
-import { BASE_URL } from '../index';
+import {
+  BASE_URL,
+  GET_GROUP_MESSAGES_LOADING,
+  GET_GROUP_MESSAGES_SUCCESS,
+  GET_GROUP_MESSAGES_FAILURE
+} from '../index';
 
-export const GET_GROUP_MESSAGES_LOADING = 'GET_GROUP_MESSAGES_LOADING';
-export const GET_GROUP_MESSAGES_SUCCESS = 'GET_GROUP_MESSAGES_SUCCESS';
-export const GET_GROUP_MESSAGES_FAILURE = 'GET_GROUP_MESSAGES_FAILURE';
+export const getGroupMessagesLoading = () => ({
+  type: GET_GROUP_MESSAGES_LOADING
+});
 
-const getGroupMessagesLoading = () => {
-  return {
-    type: GET_GROUP_MESSAGES_LOADING
-  }
-};
+const getGroupMessagesSuccess = response => ({
+  type: GET_GROUP_MESSAGES_SUCCESS,
+  response
+});
 
-const getGroupMessagesSuccess = (response) => {
-  return {
-    type: GET_GROUP_MESSAGES_SUCCESS,
-    response
-  }
-};
+const getGroupMessagesFailure = error => ({
+  type: GET_GROUP_MESSAGES_FAILURE,
+  error
+});
 
-const getGroupMessagesFailure = (error) => {
-  return {
-    type: GET_GROUP_MESSAGES_FAILURE,
-    error
-  }
-};
-
-export const getGroupMessages = (groupId, token) => {
-  return (dispatch, getState) => {
+export const getGroupMessages = (groupId, token) =>
+  (dispatch) => {
     dispatch(getGroupMessagesLoading());
     const FETCH_URL = `${BASE_URL}/group/${groupId}/messages`;
-    axios({
+    return axios({
       method: 'get',
       url: FETCH_URL,
       headers: {
@@ -38,14 +33,9 @@ export const getGroupMessages = (groupId, token) => {
       }
     })
     .then((response) => {
-      if (response.statusText === 'OK') {
-        dispatch(getGroupMessagesSuccess(response));
-      }
+      dispatch(getGroupMessagesSuccess(response));
     })
     .catch((err) => {
-      if (err.response) {
-        dispatch(getGroupMessagesFailure(err.response.data.error));
-      }
+      dispatch(getGroupMessagesFailure(err.response.data.error));
     });
-  }
-}
+  };

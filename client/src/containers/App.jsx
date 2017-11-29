@@ -1,23 +1,23 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Button } from 'react-materialize';
+// import { Button } from 'react-materialize';
 import toastr from 'toastr';
-import { GuestRoutes, UserRoutes } from '../routes';
-import SideNav from './SideNav';
+import RouteHandler from '../routes';
 import { verifyAuth } from '../actions';
 import Preloader from '../components/Preloader';
+// import Footer from '../components/Footer';
 
 /**
  * @class
  */
-class App extends Component {
+export class App extends Component {
   /**
    * @returns {undefined}
    */
   componentWillMount() {
-    if (window.localStorage && window.localStorage.getItem('x-auth')) {
-      const token = window.localStorage.getItem('x-auth');
+    if (localStorage && localStorage.getItem('x-auth')) {
+      const token = localStorage.getItem('x-auth');
       this.props.verifyAuth(token);
     }
   }
@@ -55,30 +55,26 @@ class App extends Component {
    * @returns {undefined}
    */
   render() {
-    const stateButton = (
-      <div className='center'>
-        <Button onClick={() => this.showState()}>
-          Show State
-        </Button>
-      </div>
-    );
+    // const stateButton = (
+    //   <div className='center'>
+    //     <a className="btn white main-color"
+    //     onClick={() => this.showState()}>
+    //       Show State
+    //     </a>
+    //   </div>
+    // );
 
     if (this.props.verifyAuthLoading) {
       return (<Preloader message='Preparing your space...'/>);
     }
 
-    let appRoutes;
-
-    if (this.props.isLoggedIn) {
-      appRoutes = (<UserRoutes nav={SideNav} />);
-    } else {
-      appRoutes = (<GuestRoutes nav={SideNav} />);
-    }
+    const appRoutes = <RouteHandler isLoggedIn={this.props.isLoggedIn} />;
 
     return (
       <div class='main'>
         { appRoutes }
         {/* { stateButton } */}
+        {/* <Footer /> */}
       </div>
     );
   }
@@ -87,9 +83,7 @@ class App extends Component {
 const mapStateToProps = state => ({
   user: state.user,
   verifyAuthLoading: state.verifyAuthLoading,
-  isLoggedIn: state.isAuthenticated,
-  verifyAuthFailed: state.verifyAuthFailed,
-  token: state.token
+  isLoggedIn: state.isAuthenticated
 });
 
 const mapDispatchToProps = dispatch =>

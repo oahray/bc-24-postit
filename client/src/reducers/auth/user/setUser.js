@@ -5,7 +5,7 @@ import {
   LOGOUT_USER,
   RESET_PASSWORD_SUCCESS,
   EDIT_PROFILE_SUCCESS
-} from '../../../actions';
+} from '../../../constants';
 
 export default (state = null, action) => {
   switch (action.type) {

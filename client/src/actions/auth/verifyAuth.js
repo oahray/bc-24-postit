@@ -1,15 +1,16 @@
 import axios from 'axios';
 
-import { BASE_URL } from '../index';
-
-export const VERIFY_AUTH_SUCCESS = 'VERIFY_AUTH_SUCCESS';
-export const VERIFY_AUTH_FAILURE = 'VERIFY_AUTH_FAILURE';
-export const VERIFY_AUTH_LOADING = 'VERIFY_AUTH_LOADING';
+import {
+  BASE_URL,
+  VERIFY_AUTH_LOADING,
+  VERIFY_AUTH_SUCCESS,
+  VERIFY_AUTH_FAILURE
+} from '../index';
 
 /**
  * @returns {object} verify_auth_loading action
  */
-const verifyAuthLoading = () => ({
+export const verifyAuthLoading = () => ({
   type: VERIFY_AUTH_LOADING
 });
 
@@ -39,7 +40,7 @@ export const verifyAuth = token =>
   (dispatch) => {
     dispatch(verifyAuthLoading());
     const FETCH_URL = `${BASE_URL}/user/me`;
-    axios({
+    return axios({
       method: 'get',
       url: FETCH_URL,
       headers: {
@@ -47,13 +48,9 @@ export const verifyAuth = token =>
       }
     })
     .then((response) => {
-      if (response.statusText === 'OK') {
-        dispatch(verifyAuthSuccess(response));
-      }
+      dispatch(verifyAuthSuccess(response));
     })
     .catch((err) => {
-      if (err.response) {
-        dispatch(verifyAuthFailure(err.response.data.error));
-      }
+      dispatch(verifyAuthFailure(err.response.data.error));
     });
   };

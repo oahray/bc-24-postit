@@ -1,36 +1,32 @@
 import axios from 'axios';
 
-import { BASE_URL, getGroupMessages } from '../index';
+import { getGroupMessages } from '../index';
+import {
+  BASE_URL,
+  SEND_MESSAGE_LOADING,
+  SEND_MESSAGE_SUCCESS,
+  SEND_MESSAGE_FAILURE
+} from '../../constants';
 
-export const SEND_MESSAGE_LOADING = 'SEND_MESSAGE_LOADING';
-export const SEND_MESSAGE_SUCCESS = 'SEND_MESSAGE_SUCCESS';
-export const SEND_MESSAGE_FAILURE = 'SEND_MESSAGE_FAILURE';
+export const sendMessageLoading = () => ({
+  type: SEND_MESSAGE_LOADING
+});
 
-const sendMessageLoading = () => {
-  return {
-    type: SEND_MESSAGE_LOADING
-  }
-};
+const sendMessageSuccess = response => ({
+  type: SEND_MESSAGE_SUCCESS,
+  response
+});
 
-const sendMessageSuccess = (response) => {
-  return {
-    type: SEND_MESSAGE_SUCCESS,
-    response
-  }
-};
+const sendMessageFailure = error => ({
+  type: SEND_MESSAGE_FAILURE,
+  error
+});
 
-const sendMessageFailure = (error) => {
-  return {
-    type: SEND_MESSAGE_FAILURE,
-    error
-  }
-};
-
-export const sendMessage = (groupId, content, priority, token, messageAdded) => {
-  return (dispatch, getState) => {
+export const sendMessage = (groupId, content, priority, token) =>
+  (dispatch) => {
     dispatch(sendMessageLoading());
     const FETCH_URL = `${BASE_URL}/group/${groupId}/message`;
-    axios({
+    return axios({
       method: 'post',
       url: FETCH_URL,
       data: {
@@ -42,16 +38,10 @@ export const sendMessage = (groupId, content, priority, token, messageAdded) => 
       }
     })
     .then((response) => {
-      response.statusText;
-      if (response.statusText === 'Created') {
-        dispatch(sendMessageSuccess(response));
-        dispatch(getGroupMessages(groupId, token))
-      }
+      dispatch(sendMessageSuccess(response));
+      dispatch(getGroupMessages(groupId, token));
     })
     .catch((err) => {
-      if (err.response) {
-        dispatch(sendMessageFailure(err.response.data.error));
-      }
+      dispatch(sendMessageFailure(err.response.data.error));
     });
   };
-};

@@ -1,11 +1,12 @@
 import axios from 'axios';
 import toastr from 'toastr';
 
-import { BASE_URL } from '../index';
-
-export const SIGNUP_LOADING = 'SIGNUP_LOADING';
-export const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS';
-export const SIGNUP_FAILURE = 'SIGNUP_FAILURE';
+import {
+  BASE_URL,
+  SIGNUP_LOADING,
+  SIGNUP_SUCCESS,
+  SIGNUP_FAILURE
+} from '../index';
 
 /**
  * @returns {object} signup_loading action
@@ -52,14 +53,10 @@ export const signupUser = (username, password, email) =>
       }
     })
     .then((response) => {
-      if (response.status === 201) {
-        dispatch(signupSuccess(response));
-        toastr.info(response.data.message);
-      }
+      dispatch(signupSuccess(response));
+      toastr.info(response.data.message);
     })
     .catch((err) => {
-      if (err.response) {
-        dispatch(signupFailure(err.response.data.error));
-      }
+      dispatch(signupFailure(err.response.data.error));
     });
   };

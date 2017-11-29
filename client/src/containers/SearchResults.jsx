@@ -6,6 +6,7 @@ import { getGroupMessages, inGroupPage, clearUserSearchTerm,
 } from '../actions';
 import UsersList from '../components/UsersList';
 import UserInfoModal from '../components/UserInfoModal';
+import Pagination from '../components/Pagination';
 
 /**
  * @class SearchResult
@@ -21,7 +22,7 @@ class SearchResult extends Component {
     this.state = {
       searchTerm: this.searchQuery.u,
       page: Number(this.searchQuery.p),
-      offset: 10 * (this.searchQuery.p - 1),
+      offset: 7 * (Number(this.searchQuery.p) - 1),
       limit: 7,
       lastPage: 0
     };
@@ -89,6 +90,7 @@ class SearchResult extends Component {
       this.updateSearchResult();
     }
     setTimeout(() => {
+      $('materialboxed').materialbox();
       $('.modal').modal();
       $('.tooltipped').tooltip({ delay: 50, html: true });
     }, 500);
@@ -152,7 +154,7 @@ class SearchResult extends Component {
     if (e.target.id !== this.state.page) {
       this.setState({
         page: e.target.id,
-        offset: 10 * (e.target.id - 1)
+        offset: 7 * (e.target.id - 1)
       });
       this.props.history.push(`/groups/${
         this.props.selectedGroup.id
@@ -167,11 +169,11 @@ class SearchResult extends Component {
     if (this.state.page > 1) {
       this.setState({
         page: this.state.page - 1,
-        offset: this.state.offset - 10
+        offset: this.state.offset - 7
       });
-      this.props.history.push(`/groups/
-      ${this.props.selectedGroup.id}/addusers?u=
-      ${this.searchQuery.u}&p=${Number(this.state.page) - 1}`);
+      this.props.history.push(`/groups/${
+        this.props.selectedGroup.id}/addusers?u=${
+        this.searchQuery.u}&p=${Number(this.state.page) - 1}`);
     }
   }
 
@@ -185,10 +187,10 @@ class SearchResult extends Component {
     if (this.state.page < lastPage) {
       this.setState({
         page: this.state.page + 1,
-        offset: this.state.offset + 10
+        offset: this.state.offset + 7
       });
-      this.props.history.push(`/groups/${this.props.selectedGroup.id}
-      /addusers?u=${this.searchQuery.u}&p=${Number(this.state.page) + 1}`);
+      this.props.history.push(`/groups/${this.props.selectedGroup.id
+      }/addusers?u=${this.searchQuery.u}&p=${Number(this.state.page) + 1}`);
     }
   }
 
@@ -208,7 +210,7 @@ class SearchResult extends Component {
         <div className="search-results-container col s12 m9">
           <div className='col s12'>
             <h5 className='page-header center'>
-              Add Users to <strong>{this.props.selectedGroup.name}</strong>
+              Add Users to '<strong>{this.props.selectedGroup.name}'</strong>
             </h5>
           </div>
           <div className='col s12 center'>
@@ -218,7 +220,7 @@ class SearchResult extends Component {
 
           <div className={`search-list-container col s10
             offset-s1`}>
-            <h6>{this.props.userSearchResults.totalCount ?
+            <h6 className="center">{this.props.userSearchResults.totalCount ?
             this.props.userSearchResults.totalCount : 'No'}
             {this.props.userSearchResults.totalCount === 1 ?
             ' user ' : ' users '} found</h6>
@@ -227,7 +229,8 @@ class SearchResult extends Component {
                 (this.props.userSearchResults.users).map(user =>
                 <li className="collection-item avatar grey lighten-3"
                 key={user.id}>
-                  <img src={user.imageUrl ? user.imageUrl :
+                  <img
+                  src={user.imageUrl ? user.imageUrl :
                     '/images/no-pic.png'} className="circle"/>
                   <span className="title">
                     <UserInfoModal user={user} />
@@ -243,28 +246,11 @@ class SearchResult extends Component {
             </ul>
           </div>
 
-          <div className='col s12 center'>
-            <ul class="pagination">
-              <li
-              class={this.state.page < 2 ? 'disabled' : 'waves-effect'}
-              onClick={this.previousPage}
-              ><a href="#!"><i class="material-icons">chevron_left</i></a></li>
-
-              {Array.from({ length: Math.ceil(
-                this.props.userSearchResults.totalCount
-                / this.state.limit) }, (v, i) => i + 1).map(i =>
-                <li class={i === this.state.page ? 'active' : 'waves-effect'}
-                key={i} onClick={this.onPageChange}><a id={i}>{i}</a></li>)}
-
-              <li class={this.state.page < Math.ceil(
-                this.props.userSearchResults.totalCount / this.state.limit) ?
-                'waves-effect' : 'disabled'}
-              onClick={this.nextPage} >
-                <a href="#!">
-                  <i class="material-icons">chevron_right</i>
-                </a></li>
-            </ul>
-          </div>
+          {this.props.userSearchResults ? <Pagination state={this.state}
+          previousPage={this.previousPage}
+          userSearchResults={this.props.userSearchResults}
+          onPageChange={this.onPageChange}
+          nextPage={this.nextPage}/> : ''}
         </div>
 
         <div className="users-list col s12 m3">

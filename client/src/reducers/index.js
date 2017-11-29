@@ -14,17 +14,17 @@ import {
   resetPasswordLoading,
   resetPasswordError
 } from './auth/user/resetPassword';
-import groupList from './groupListReducer';
-import groupListLoading from './groupListLoading';
-import createdGroup from './createdGroup';
-import selectedGroup from './selectedGroupReducer';
-import groupMessages from './groupMessagesReducer';
-import groupMessagesLoading from './groupMessagesLoading';
-import groupMessagesFailed from './groupMessagesFailed';
-import groupUsers from './groupUsers';
-import inGroupPage from './inGroupPageReducer';
-import userSearchTerm from './searchTerm';
-import userSearchResults from './searchResults';
+import groupList from './group/list';
+import groupListLoading from './group/listLoading';
+import createdGroup from './group/created';
+import selectedGroup from './group/selected';
+import groupMessages from './group/messages';
+import groupMessagesLoading from './group/messagesLoading';
+import groupMessagesFailed from './group/messagesFailed';
+import groupUsers from './group/users';
+import inGroupPage from './group/inGroupPage';
+import userSearchTerm from './search/term';
+import userSearchResults from './search/results';
 
 export default combineReducers({
   user,

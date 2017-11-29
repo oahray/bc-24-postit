@@ -5,6 +5,17 @@ import React, { Component } from 'react';
  */
 export default class ConfirmModal extends Component {
   /**
+   * @function componentDidMount
+   * @description lifecycle method fired when component mounts
+   * @returns {undefined}
+   */
+  componentDidMount() {
+    setTimeout(() => {
+      $('.materialboxed').materialbox();
+    }, 500);
+  }
+
+  /**
   * @returns {component} Modal
   */
   render() {
@@ -17,10 +28,12 @@ export default class ConfirmModal extends Component {
           className="modal user-info-modal">
           <div className="modal-content center">
             <h3 className=""> {this.props.user.username}</h3>
-            <div className="full-photo-div">
-              <img className="user-info-img responsive-img"
-              src={this.props.user.imageUrl ? this.props.user.imageUrl :
-              '/images/no-pic.png'} />
+            <div className="user-photo-div">
+              <div className="full-photo-div">
+                <img className="full-photo responsive-img materialboxed center"
+                src={this.props.user.imageUrl ? this.props.user.imageUrl :
+                '/images/no-pic.png'} />
+              </div>
             </div>
             <p>About Me: {this.props.user.about}</p>
           </div>

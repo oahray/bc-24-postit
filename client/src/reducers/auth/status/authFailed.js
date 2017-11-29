@@ -1,6 +1,6 @@
 import { VERIFY_AUTH_LOADING, VERIFY_AUTH_SUCCESS,
   VERIFY_AUTH_FAILURE, SIGNIN_SUCCESS, SIGNUP_SUCCESS,
-  LOGOUT_USER } from '../../../actions';
+  LOGOUT_USER } from '../../../constants';
 
 export default (state = false, action) => {
   switch (action.type) {

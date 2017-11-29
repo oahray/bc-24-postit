@@ -1,7 +1,6 @@
 import expect from 'expect';
 import request from 'supertest';
 import models from '../models';
-import './seeders/mockNodemailer';
 import app from '../app';
 import { doBeforeAll, doBeforeEach, populateUsers } from './seeders/testHooks';
 import { seedUsers, seedGroups, generateAuth, tokens } from './seeders/seed';

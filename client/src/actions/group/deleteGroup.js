@@ -1,16 +1,18 @@
 import axios from 'axios';
 import toastr from 'toastr';
 
-import { BASE_URL, getGroupList } from '../index';
-
-export const DELETE_GROUP_LOADING = 'DELETE_GROUP_LOADING';
-export const DELETE_GROUP_SUCCESS = 'DELETE_GROUP_SUCCESS';
-export const DELETE_GROUP_FAILURE = 'DELETE_GROUP_FAILURE';
+import { getGroupList } from '../index';
+import {
+  BASE_URL,
+  DELETE_GROUP_LOADING,
+  DELETE_GROUP_SUCCESS,
+  DELETE_GROUP_FAILURE
+} from '../../constants';
 
 /**
  * @returns {object} delete group action
  */
-const deleteGroupLoading = () => ({
+export const deleteGroupLoading = () => ({
   type: DELETE_GROUP_LOADING
 });
 
@@ -46,28 +48,24 @@ const deleteGroupFailure = error => ({
  * @returns {object} action
  */
 export const deleteGroup = (groupId, token) =>
-(dispatch) => {
-  dispatch(deleteGroupLoading());
-  const FETCH_URL = `${BASE_URL}/group/${groupId}/remove`;
-  axios({
-    method: 'post',
-    url: FETCH_URL,
-    headers: {
-      'x-auth': token
-    }
-  })
-  .then((response) => {
-    if (response.statusText === 'Created') {
-      dispatch(getGroupList(token));
-      toastr.info(response.data.message);
-      return dispatch(deleteGroupSuccess(response));
-    }
-  })
-  .catch((err) => {
-    if (err.response) {
-      const errorMessage = err.response.data.error;
-      toastr.info(errorMessage);
-      return dispatch(deleteGroupFailure(errorMessage));
-    }
-  });
-};
+  (dispatch) => {
+    dispatch(deleteGroupLoading());
+    const FETCH_URL = `${BASE_URL}/group/${groupId}/remove`;
+    return axios({
+      method: 'post',
+      url: FETCH_URL,
+      headers: {
+        'x-auth': token
+      }
+    })
+      .then((response) => {
+        toastr.info(response.data.message);
+        dispatch(deleteGroupSuccess(response));
+        dispatch(getGroupList(token));
+      })
+      .catch((err) => {
+        const errorMessage = err.response.data.error;
+        toastr.info(errorMessage);
+        dispatch(deleteGroupFailure(errorMessage));
+      });
+  };

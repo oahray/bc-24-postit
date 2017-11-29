@@ -1,4 +1,4 @@
-export const CLEAR_FORM_ERROR = 'CLEAR_FORM_ERROR';
+import { CLEAR_FORM_ERROR } from './../../constants';
 
 /**
  * @returns {object} clear_form_error action

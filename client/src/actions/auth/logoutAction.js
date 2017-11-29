@@ -1,12 +1,12 @@
-export const LOGOUT_USER = 'LOGOUT_USER';
+import { LOGOUT_USER } from '../../constants';
 
 /**
  * @returns {object} logout_user action
  */
 export const logout = () => {
   // remove token from local storage
-  if (window.localStorage.getItem('x-auth')) {
-    window.localStorage.removeItem('x-auth');
+  if (localStorage.getItem('x-auth')) {
+    localStorage.removeItem('x-auth');
   }
   // return an action for reducers to set auth state
   return {

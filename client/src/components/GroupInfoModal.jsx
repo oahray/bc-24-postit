@@ -20,18 +20,20 @@ export default class GroupInfoModal extends Component {
   }
 
   /**
-   * @returns {void}
+   * @returns {undefined}
    */
   componentDidMount() {
-    this.setState({
-      name: this.props.selectedGroup.name,
-      description: this.props.selectedGroup.description || '',
-      type: this.props.selectedGroup.type
-    });
+    if (this.props.selectedGroup) {
+      this.setState({
+        name: this.props.selectedGroup.name,
+        description: this.props.selectedGroup.description || '',
+        type: this.props.selectedGroup.type
+      });
+    }
   }
 
   /**
-   * @returns {void}
+   * @returns {undefined}
    */
   saveChanges() {
     this.props.editInfo(this.state.name,
@@ -48,7 +50,7 @@ export default class GroupInfoModal extends Component {
 
         <div id={`${this.props.modalId}`} className="modal form-modal">
           <div className="modal-content">
-            <h5 className="page-header">Edit group info</h5>
+            <h5 className="page-header center">Edit group info</h5>
             <div className='row'>
               <form className='row col s12'>
                 <div className="input-field col s12">

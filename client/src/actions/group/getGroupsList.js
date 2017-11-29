@@ -1,16 +1,17 @@
 import axios from 'axios';
 
-import { BASE_URL } from '../index';
-
-export const GROUPS_LIST_LOADING = 'GROUPS_LIST_LOADING';
-export const GROUPS_LIST_SUCCESS = 'GROUPS_LIST_SUCCESS';
-export const GROUPS_LIST_FAILURE = 'GROUPS_LIST_FAILURE';
+import {
+  BASE_URL,
+  GROUPS_LIST_LOADING,
+  GROUPS_LIST_SUCCESS,
+  GROUPS_LIST_FAILURE
+} from '../../constants';
 
 /** group list loading:  dispatched
  * when request is made
  * @returns {object} action
  */
-const groupListLoading = () => ({
+export const groupListLoading = () => ({
   type: GROUPS_LIST_LOADING
 });
 
@@ -43,7 +44,7 @@ const groupsListFailure = response => ({
 export const getGroupList = token => (dispatch) => {
   dispatch(groupListLoading());
   const FETCH_URL = `${BASE_URL}/user/me/groups`;
-  axios({
+  return axios({
     method: 'get',
     url: FETCH_URL,
     headers: {
@@ -51,13 +52,9 @@ export const getGroupList = token => (dispatch) => {
     }
   })
   .then((response) => {
-    if (response.statusText === 'OK') {
-      return dispatch(groupListSuccess(response));
-    }
+    dispatch(groupListSuccess(response));
   })
   .catch((err) => {
-    if (err.response) {
-      return dispatch(groupsListFailure(err.response));
-    }
+    dispatch(groupsListFailure(err.response));
   });
 };

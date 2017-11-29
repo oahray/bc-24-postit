@@ -1,7 +1,7 @@
 import expect from 'expect';
 import request from 'supertest';
 import app from '../app';
-import models from '../models';
+import models, { User, Group, Message } from '../models';
 import { doBeforeAll, doBeforeEach, populateUsers } from './seeders/testHooks';
 import { seedUsers, tokens, generateAuth } from './seeders/seed';
 
@@ -9,7 +9,7 @@ describe('Data Models:', () => {
   doBeforeAll();
   describe('#User model', () => {
     it('should create a user instance', (done) => {
-      models.User.create({
+      User.create({
         username: 'testuser',
         password: 'testpass',
         email: 'testing1@example.com'
@@ -24,20 +24,20 @@ describe('Data Models:', () => {
     });
 
     it('should be the class of the created instance', (done) => {
-      models.User.create({
+      User.create({
         username: 'testuser2',
         password: 'testpass',
         email: 'testing2@example.com'
       })
       .then((user) => {
         expect(user).toExist;
-        expect(user instanceof models.User).toBe(true);
+        expect(user instanceof User).toBe(true);
         done();
       }).catch((err) => done(err));
     });
 
     it('beforeCreate class method should hash passwords before they are stored', (done) => {
-      models.User.create({
+      User.create({
         username: 'testuser3',
         password: 'testpass',
         email: 'testing3@example.com'
@@ -52,7 +52,7 @@ describe('Data Models:', () => {
 
     it('beforeUpdate class method should not modify passwords if they are not updated', (done) => {
       let initEmail
-      models.User.findOne({ where: {
+      User.findOne({ where: {
         username: 'testuser'
       }})
       .then((user) => {
@@ -74,7 +74,7 @@ describe('Data Models:', () => {
 
     it('beforeUpdate class method should modify passwords if updated by authenticated user', (done) => {
       let initPassword;
-      models.User.findOne({ where: {
+      User.findOne({ where: {
         username: 'testuser2'
       }})
       .then((user) => {
@@ -93,7 +93,7 @@ describe('Data Models:', () => {
     });
 
     it('validate Password instance method should be able to detect valid passwords', (done) => {
-      models.User.create({
+      User.create({
         username: 'testuser4',
         password: 'somethingweird',
         email: 'testing4@example.com'
@@ -107,7 +107,7 @@ describe('Data Models:', () => {
     });
 
     it('validPassword instance method should be able to detect invalid passwords', (done) => {
-      models.User.create({
+      User.create({
         username: 'testuser5',
         password: 'somethingweirder',
         email: 'testing5@example.com'
@@ -121,7 +121,7 @@ describe('Data Models:', () => {
     });
 
     it('toJSON instance method should not pass along user password', (done) => {
-      models.User.create({
+      User.create({
         username: 'testuser6',
         password: 'somethingweirder',
         email: 'testing6@example.com'
@@ -135,7 +135,7 @@ describe('Data Models:', () => {
     });
 
     it('generateAuthToken instance method should generate a token', (done) => {
-      models.User.create({
+      User.create({
         username: 'testUser7',
         password: 'somethingelse',
         email: 'testuser7@example.com'
@@ -150,7 +150,7 @@ describe('Data Models:', () => {
 
   describe('#Group model', () => {
     it('should create a Group instance', (done) => {
-      models.Group.create({
+      Group.create({
         name: 'My first test group',
         type: 'private',
         description: '',
@@ -165,7 +165,7 @@ describe('Data Models:', () => {
     });
 
     it('should be the class of the created instance', (done) => {
-      models.Group.create({
+      Group.create({
         name: 'My test group',
         description: '',
         createdBy: 'User2',
@@ -173,7 +173,7 @@ describe('Data Models:', () => {
       })
       .then((group) => {
         expect(group).toExist;
-        expect(group instanceof models.Group).toBe(true);
+        expect(group instanceof Group).toBe(true);
         done();
       }).catch((err) => done(err));
     });
@@ -187,7 +187,7 @@ describe('Data Models:', () => {
       readBy: 'user1'
     };
     it('should create a Message instance', (done) => {
-      models.Message.create(myMessage)
+      Message.create(myMessage)
       .then((message) => {
         expect(message).toExist;
         expect(message.content).toBe('testing... testing');
@@ -197,49 +197,49 @@ describe('Data Models:', () => {
     });
 
     it('should be the class of the created message instance', (done) => {
-      models.Message.create(myMessage)
+      Message.create(myMessage)
       .then((message) => {
         expect(message).toExist;
-        expect(message instanceof models.Message).toBe(true);
+        expect(message instanceof Message).toBe(true);
         done();
       }).catch((err) => done(err));
     });
 
     it('verifyPriority instance method should return true for normal priority', (done) => {
-      expect(models.Message.verifyPriority('normal')).toBe(true);
+      expect(Message.verifyPriority('normal')).toBe(true);
       done();
     });
 
     it('verifyPriority instance method should return true for urgent priority', (done) => {
-      expect(models.Message.verifyPriority('urgent')).toBe(true);
+      expect(Message.verifyPriority('urgent')).toBe(true);
       done();
     });
 
     it('verifyPriority instance method should return true for critical priority', (done) => {
-      expect(models.Message.verifyPriority('critical')).toBe(true);
+      expect(Message.verifyPriority('critical')).toBe(true);
       done();
     });
 
     it('verifyPriority instance method should return false for invalid priority', (done) => {
-      expect(models.Message.verifyPriority('quick')).toBe(false);
-      expect(models.Message.verifyPriority('normale')).toBe(false);
-      expect(models.Message.verifyPriority('urgentt')).toBe(false);
-      expect(models.Message.verifyPriority('kritikal')).toBe(false);
+      expect(Message.verifyPriority('quick')).toBe(false);
+      expect(Message.verifyPriority('normale')).toBe(false);
+      expect(Message.verifyPriority('urgentt')).toBe(false);
+      expect(Message.verifyPriority('kritikal')).toBe(false);
       done();
     });
 
     it('verifyPriority instance method should trim trailing spaces', (done) => {
-      expect(models.Message.verifyPriority('      normal')).toBe(true);
-      expect(models.Message.verifyPriority('urgent      ')).toBe(true);
-      expect(models.Message.verifyPriority('      critical      ')).toBe(true);
+      expect(Message.verifyPriority('      normal')).toBe(true);
+      expect(Message.verifyPriority('urgent      ')).toBe(true);
+      expect(Message.verifyPriority('      critical      ')).toBe(true);
       done();
     });
 
     it('verifyPriority instance method should be case insensitive', (done) => {
-      expect(models.Message.verifyPriority('NorMal')).toBe(true);
-      expect(models.Message.verifyPriority('NORmal')).toBe(true);
-      expect(models.Message.verifyPriority('urGENT')).toBe(true);
-      expect(models.Message.verifyPriority('CRITICAL')).toBe(true);
+      expect(Message.verifyPriority('NorMal')).toBe(true);
+      expect(Message.verifyPriority('NORmal')).toBe(true);
+      expect(Message.verifyPriority('urGENT')).toBe(true);
+      expect(Message.verifyPriority('CRITICAL')).toBe(true);
       done();
     });
   });

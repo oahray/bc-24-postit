@@ -22,7 +22,7 @@ export default class ConfirmModal extends Component {
               waves-grey white main-text-color btn-flat`}>No, go back</a>
             </span>
             <span className="right">
-              <a className={`modal-action modal-close
+              <a className={`modal-action modal-confirm modal-close
               waves-effect waves-red white red-text btn-flat`}
               onClick={() => this.props.callback()}
               >Yes, do it</a>

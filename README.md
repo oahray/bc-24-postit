@@ -23,7 +23,7 @@ Postit requires:
 
 **API DOCUMENTATION**
 
-The documentation for the Postit API can be found [here](https://postit-ray.herokuapp.com/api/docs)
+The documentation for the Postit API can be found [here](https://postit-ray.herokuapp.com/api/v1/docs)
 
 **HOW TO CONTRIBUTE**
 

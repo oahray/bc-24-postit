@@ -77,7 +77,7 @@ app.get('/api/*', (req, res) => res.status(404).send({
   error: 'Route not found',
 }));
 app.post('/api/*', (req, res) => res.status(404).send({
-  error: 'Route does not exist',
+  error: 'Route not found',
 }));
 
 app.get('*', (req, res) => {
