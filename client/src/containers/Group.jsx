@@ -320,7 +320,9 @@ class Group extends Component {
   }
 
   /**
-   * @returns {undefined}
+   * @function render
+   * @description specifies what would be rendered on the DOM
+   * @returns {Object} jsx element
    */
   render() {
     if (!this.props.groupMessagesLoading &&

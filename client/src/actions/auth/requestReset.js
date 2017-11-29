@@ -1,4 +1,5 @@
 import axios from 'axios';
+import toastr from 'toastr';
 
 import { BASE_URL } from '../index';
 
@@ -74,7 +75,7 @@ export const requestReset = email =>
  * @returns {object} reset_password_loading action
  */
 const resetPasswordLoading = () => ({
-  type: 'RESET_PASSWORD_LOADING'
+  type: RESET_PASSWORD_LOADING
 });
 
 /**
@@ -112,8 +113,9 @@ export const resetPassword = (password, resetHash) =>
       }
     })
     .then((response) => {
-      if (response.statusText === 'OK') {
+      if (response.status === 201) {
         dispatch(resetPasswordSuccess(response));
+        toastr.info(response.data.message);
       }
     })
     .catch((err) => {
