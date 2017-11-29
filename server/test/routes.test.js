@@ -12,11 +12,10 @@ const socket = io('http://localhost');
 
 describe('PostIt API routes: ', () => {
   doBeforeAll();
-  // populateUsers();
   describe('Can signup or signin user: ', () => {
-    it('POST /api/user/signup route should create a new user', (done) => {
+    it('POST /api/v1/user/signup route should create a new user', (done) => {
       request(app)
-      .post('/api/user/signup')
+      .post('/api/v1/user/signup')
       .send({
         username: 'testuser1',
         email: 'testuser1@example.com',
@@ -33,9 +32,9 @@ describe('PostIt API routes: ', () => {
         done();
       });
     });
-    it('POST /api/user/signup route should not pass back user password with response', (done) => {
+    it('POST /api/v1/user/signup route should not pass back user password with response', (done) => {
       request(app)
-      .post('/api/user/signup')
+      .post('/api/v1/user/signup')
       .send({
         username: 'testuser2',
         email: 'testuser2@example.com',
@@ -51,9 +50,9 @@ describe('PostIt API routes: ', () => {
         done();
       });
     });
-    it('POST /api/user/signup route should not create user with same username twice', (done) => {
+    it('POST /api/v1/user/signup route should not create user with same username twice', (done) => {
       request(app)
-      .post('/api/user/signup')
+      .post('/api/v1/user/signup')
       .send({
         username: 'testuser2',
         email: 'testuser3@example.com',
@@ -69,9 +68,9 @@ describe('PostIt API routes: ', () => {
         done();
       });
     });
-    it('POST /api/user/signup route should not create user with same username twice', (done) => {
+    it('POST /api/v1/user/signup route should not create user with same username twice', (done) => {
       request(app)
-      .post('/api/user/signup')
+      .post('/api/v1/user/signup')
       .send({
         username: 'testuser3',
         email: 'testuser2@example.com',
@@ -87,9 +86,9 @@ describe('PostIt API routes: ', () => {
         done();
       });
     });
-    it('POST /api/user/signin route should sign user in', (done) => {
+    it('POST /api/v1/user/signin route should sign user in', (done) => {
       request(app)
-      .post('/api/user/signin')
+      .post('/api/v1/user/signin')
       .send({
         username: 'testuser1',
         password: 'mypassword',
@@ -104,9 +103,9 @@ describe('PostIt API routes: ', () => {
         done();
       });
     });
-    it('POST /api/user/signin route should not sign user with unregistered username', (done) => {
+    it('POST /api/v1/user/signin route should not sign user with unregistered username', (done) => {
       request(app)
-      .post('/api/user/signin')
+      .post('/api/v1/user/signin')
       .send({
         username: 'thisOneDoesNotExist',
         password: 'doesNotMatter'
@@ -121,9 +120,9 @@ describe('PostIt API routes: ', () => {
         done();
       }); 
     });
-    it('POST /api/user/signin route should not sign user in with incorrect password', (done) => {
+    it('POST /api/v1/user/signin route should not sign user in with incorrect password', (done) => {
       request(app)
-      .post('/api/user/signin')
+      .post('/api/v1/user/signin')
       .send({
         username: 'testuser1',
         password: 'mypasswor',
@@ -138,9 +137,9 @@ describe('PostIt API routes: ', () => {
         done();
       });
     });
-    it('POST /api/user/signin route should not pass back user password with response', (done) => {
+    it('POST /api/v1/user/signin route should not pass back user password with response', (done) => {
       request(app)
-      .post('/api/user/signin')
+      .post('/api/v1/user/signin')
       .send({
         username: 'testuser2',
         email: 'testuser2@example.com',
@@ -157,9 +156,9 @@ describe('PostIt API routes: ', () => {
       });
     });
 
-    it('POST /api/user/signin route should return error if no password entered', (done) => {
+    it('POST /api/v1/user/signin route should return error if no password entered', (done) => {
       request(app)
-      .post('/api/user/signin')
+      .post('/api/v1/user/signin')
       .send({
         username: 'testuser2'
       })
@@ -176,9 +175,9 @@ describe('PostIt API routes: ', () => {
   
   describe('Protected User routes', () => {
     const token = generateAuth(103);
-    it('GET /api/user/me route should return current user', (done) => {
+    it('GET /api/v1/user/me route should return current user', (done) => {
       request(app)
-      .get('/api/user/me')
+      .get('/api/v1/user/me')
       .set('x-auth', token)
       .expect(200)
       .end((err, res) => {
@@ -191,9 +190,9 @@ describe('PostIt API routes: ', () => {
       });
     });
 
-    it('GET /api/users route should get a list of all users', (done) => {
+    it('GET /api/v1/users route should get a list of all users', (done) => {
       request(app)
-      .get('/api/user/all')
+      .get('/api/v1/user/all')
       .set('x-auth', generateAuth(103))
       .expect(200)
       .end((err, res) => {
@@ -208,10 +207,10 @@ describe('PostIt API routes: ', () => {
       });
     });
     
-    it('GET /api/user/me/groups should get user groups', (done) => {
+    it('GET /api/v1/user/me/groups should get user groups', (done) => {
       const token = generateAuth(seedUsers.registered[2].id)
       request(app)
-      .get('/api/user/me/groups')
+      .get('/api/v1/user/me/groups')
       .set('x-auth', token)
       .expect(200)
       .end((err, res) => {
@@ -220,10 +219,10 @@ describe('PostIt API routes: ', () => {
       });
     });
 
-    it('GET /api/user/me/groups should get user messages', (done) => {
+    it('GET /api/v1/user/me/groups should get user messages', (done) => {
       const token = generateAuth(seedUsers.registered[2].id)
       request(app)
-      .get('/api/user/me/messages')
+      .get('/api/v1/user/me/messages')
       .set('x-auth', token)
       .expect(200)
       .end((err, res) => {
@@ -232,10 +231,10 @@ describe('PostIt API routes: ', () => {
       });
     });
 
-    it('PATCH /api/user/me/password route should return 400 if current password is not supplied', (done) => {
+    it('PATCH /api/v1/user/me/password route should return 400 if current password is not supplied', (done) => {
       const token = generateAuth(seedUsers.registered[1].id)
       request(app)
-      .patch('/api/user/me/password')
+      .patch('/api/v1/user/me/password')
       .set('x-auth', token)
       .send({
         newpassword: 'changedThis'
@@ -247,10 +246,10 @@ describe('PostIt API routes: ', () => {
       });
     });
 
-    it('PATCH /api/user/me/password route should return 400 if new password is not supplied', (done) => {
+    it('PATCH /api/v1/user/me/password route should return 400 if new password is not supplied', (done) => {
       const token = generateAuth(seedUsers.registered[1].id)
       request(app)
-      .patch('/api/user/me/password')
+      .patch('/api/v1/user/me/password')
       .set('x-auth', token)
       .send({
         currentpassword: seedUsers.registered[1].password
@@ -262,10 +261,10 @@ describe('PostIt API routes: ', () => {
       });
     });
 
-    it('PATCH /api/user/me/password route should return 400 if current password is incorrect', (done) => {
+    it('PATCH /api/v1/user/me/password route should return 400 if current password is incorrect', (done) => {
       const token = generateAuth(seedUsers.registered[1].id)
       request(app)
-      .patch('/api/user/me/password')
+      .patch('/api/v1/user/me/password')
       .set('x-auth', token)
       .send({
         currentpassword: 'cannotRemember',
@@ -278,10 +277,10 @@ describe('PostIt API routes: ', () => {
       });
     });
 
-    it('PATCH /api/user/me/password route should return 400 if current password is incorrect', (done) => {
+    it('PATCH /api/v1/user/me/password route should return 400 if current password is incorrect', (done) => {
       const token = generateAuth(seedUsers.registered[1].id)
       request(app)
-      .patch('/api/user/me/password')
+      .patch('/api/v1/user/me/password')
       .set('x-auth', token)
       .send({
         currentpassword: seedUsers.registered[1].password,
@@ -294,10 +293,10 @@ describe('PostIt API routes: ', () => {
       });
     });
 
-    it('PATCH /api/user/me/password route should successfully update password', (done) => {
+    it('PATCH /api/v1/user/me/password route should successfully update password', (done) => {
       const token = generateAuth(seedUsers.registered[1].id)
       request(app)
-      .patch('/api/user/me/password')
+      .patch('/api/v1/user/me/password')
       .set('x-auth', token)
       .send({
         currentpassword: seedUsers.registered[1].password,
@@ -309,13 +308,52 @@ describe('PostIt API routes: ', () => {
         done();
       });
     });
+
+    it('PATCH /api/v1/user/me/edit route should return error when email is empty', (done) => {
+      const token = generateAuth(seedUsers.registered[1].id)
+      request(app)
+      .patch('/api/v1/user/me/edit')
+      .set('x-auth', token)
+      .send({
+        about: 'Awesome me'
+      })
+      .expect(400)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        }
+        expect(res.body.error).toBe('Email is required');
+        done();
+      });
+    });
+
+    it('PATCH /api/v1/user/me/password route should successfully update profile', (done) => {
+      const token = generateAuth(seedUsers.registered[1].id);
+      const email = 'updatedemail@example.com';
+      request(app)
+      .patch('/api/v1/user/me/edit')
+      .set('x-auth', token)
+      .send({
+        email
+      })
+      .expect(201)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        }
+        expect(res.body.message).toBe('Profile successfully updated');
+        expect(res.body.profile.email).toBe(email);
+        done();
+      });
+    });
   });
 
   describe('Recovery routes:', () => {
-    describe('POST /api/forgotpassword route', () => {
+    doBeforeAll();
+    describe('POST /api/v1/forgotpassword route', () => {
       it('should return error if no recovery email is provided', (done) => {
         request(app)
-        .post('/api/forgotpassword')
+        .post('/api/v1/forgotpassword')
         .expect(400)
         .end((err, res) => {
           expect(res.body.error).toBe('Email is required for password recovery')
@@ -325,20 +363,20 @@ describe('PostIt API routes: ', () => {
 
       it('should return error if no valid recovery email is provided', (done) => {
         request(app)
-        .post('/api/forgotpassword')
+        .post('/api/v1/forgotpassword')
         .send({
           email: 'some email'
         })
         .expect(400)
         .end((err, res) => {
-          expect(res.body.error).toBe('Specified email is not linked to any account')
+          expect(res.body.error).toBe('Incorrect email')
           done();
         });
       })
 
       it('should send reset email', (done) => {
         request(app)
-        .post('/api/forgotpassword')
+        .post('/api/v1/forgotpassword')
         .send({
           email: seedUsers.registered[1].email
         })
@@ -356,10 +394,10 @@ describe('PostIt API routes: ', () => {
       });
     });
 
-    describe('POST /api/resetpassword route', () => {
+    describe('POST /api/v1/resetpassword route', () => {
       it('should return error if no reset hash is provided', (done) => {
         request(app)
-        .post(`/api/resetpassword?`)
+        .post(`/api/v1/resetpassword?`)
         .send({
           password: 'newPassword'
         })
@@ -375,7 +413,7 @@ describe('PostIt API routes: ', () => {
 
       it('should return error if no password is provided', (done) => {
         request(app)
-        .post(`/api/resetpassword?t=fjdhstjdfkgjlhklk`)
+        .post(`/api/v1/resetpassword?t=fjdhstjdfkgjlhklk`)
         .send({
           password: ''
         })
@@ -391,7 +429,7 @@ describe('PostIt API routes: ', () => {
 
       it('should return error if reset link is invalid', (done) => {
         request(app)
-        .post(`/api/resetpassword?t=somerandomstuff`)
+        .post(`/api/v1/resetpassword?t=somerandomstuff`)
         .send({
           password: 'somepassword'
         })
@@ -407,7 +445,7 @@ describe('PostIt API routes: ', () => {
 
       it('should return error if reset link has expired', (done) => {
         request(app)
-        .post(`/api/resetpassword?t=${seedUsers.registered[3].resetHash}`)
+        .post(`/api/v1/resetpassword?t=${seedUsers.registered[3].resetHash}`)
         .send({
           password: 'somepassword'
         })
@@ -423,7 +461,7 @@ describe('PostIt API routes: ', () => {
 
       it('should successfully reset password with valid authentication', (done) => {
         request(app)
-        .post(`/api/resetpassword?t=${seedUsers.registered[4].resetHash}`)
+        .post(`/api/v1/resetpassword?t=${seedUsers.registered[4].resetHash}`)
         .send({
           password: 'myNewPassword'
         })
@@ -442,40 +480,42 @@ describe('PostIt API routes: ', () => {
 
   describe('Group routes:', () => {
     const token = generateAuth(seedUsers.registered[0].id);
-    it('/api/group route requires group name', (done) => {
-      request(app)
-      .post('/api/group')
-      .set('x-auth', token)
-      .send({
-        description: 'This group has no name',
-        type: 'public'
-      })
-      .expect(400)
-      .end((err, res) => {
-        if (err) {
-          return done(err);
-        }
-        expect(res.body.error).toExist().toBe('Group name is required.');
-        done()
+    describe('', () => {
+      it('/api/v1/group route requires group name', (done) => {
+        request(app)
+        .post('/api/v1/group')
+        .set('x-auth', token)
+        .send({
+          description: 'This group has no name',
+          type: 'public'
+        })
+        .expect(400)
+        .end((err, res) => {
+          if (err) {
+            return done(err);
+          }
+          expect(res.body.error).toExist().toBe('Group name is required.');
+          done()
+        });
       });
-    });
 
-    it('/api/group route sets group type to public if private is not specified', (done) => {
-      const token = generateAuth(seedUsers.registered[2].id);
-      request(app)
-      .post('/api/group')
-      .set('x-auth', token)
-      .send({
-        name: 'This group is named',
-        description: 'But that is the name',
-      })
-      .expect(201)
-      .end((err, res) => {
-        if (err) {
-          return done(err);
-        }
-        expect(res.body.message).toExist().toBe('Group created');
-        done()
+      it('/api/v1/group route sets group type to public if private is not specified', (done) => {
+        const token = generateAuth(seedUsers.registered[2].id);
+        request(app)
+        .post('/api/v1/group')
+        .set('x-auth', token)
+        .send({
+          name: 'This group is named',
+          description: 'But that is the name',
+        })
+        .expect(201)
+        .end((err, res) => {
+          if (err) {
+            return done(err);
+          }
+          expect(res.body.message).toExist().toBe('Group created');
+          done()
+        });
       });
     });
 
@@ -484,7 +524,7 @@ describe('PostIt API routes: ', () => {
       const usernameToAdd = seedUsers.registered[0].username;
       const groupId = seedGroups[0].id;
       request(app)
-      .post(`/api/group/${groupId}/user`)
+      .post(`/api/v1/group/${groupId}/user`)
       .set('x-auth', token)
       .send({
         username: usernameToAdd
@@ -500,7 +540,7 @@ describe('PostIt API routes: ', () => {
         });
         expect(res.body.message).toBe(`${usernameToAdd} added to group`);
         request(app)
-        .delete(`/api/group/${groupId}/user`)
+        .delete(`/api/v1/group/${groupId}/user`)
         .set('x-auth', token)
         .send({
           username: usernameToAdd
@@ -513,12 +553,12 @@ describe('PostIt API routes: ', () => {
       });
     });
 
-    it('POST /api/group/:groupid/user returns 400 on non-existent username', (done) => {
+    it('POST /api/v1/group/:groupid/user returns 400 on non-existent username', (done) => {
       const token = generateAuth(seedUsers.registered[2].id);
       const usernameToAdd = '123';
       const groupId = seedGroups[0].id;
       request(app)
-      .post(`/api/group/${groupId}/user`)
+      .post(`/api/v1/group/${groupId}/user`)
       .set('x-auth', token)
       .send({
         username: usernameToAdd
@@ -533,12 +573,12 @@ describe('PostIt API routes: ', () => {
       });
     });
 
-    it('POST /api/group/:groupid/user returns 400 on user already in group', (done) => {
+    it('POST /api/v1/group/:groupid/user returns 400 on user already in group', (done) => {
       const token = generateAuth(seedUsers.registered[2].id);
       const usernameToAdd = seedUsers.registered[2].username;
       const groupId = seedGroups[0].id;
       request(app)
-      .post(`/api/group/${groupId}/user`)
+      .post(`/api/v1/group/${groupId}/user`)
       .set('x-auth', token)
       .send({
         username: usernameToAdd
@@ -553,12 +593,12 @@ describe('PostIt API routes: ', () => {
       });
     });
 
-    it('DELETE /api/group/:groupid/user only allows group creator remove users', (done) => {
+    it('DELETE /api/v1/group/:groupid/user only allows group creator remove users', (done) => {
       const user3Token = generateAuth(seedUsers.registered[2].id);
       const user1Token = generateAuth(seedUsers.registered[0].id)
       const groupId = seedGroups[2].id;
       request(app)
-      .post(`/api/group/${seedGroups[2].id}/user`)
+      .post(`/api/v1/group/${seedGroups[2].id}/user`)
       .set('x-auth', user3Token)
       .send({
         username: seedUsers.registered[0].username
@@ -566,7 +606,7 @@ describe('PostIt API routes: ', () => {
       .expect(201)
       .end((err, res) => {
         request(app)
-        .delete(`/api/group/${groupId}/user`)
+        .delete(`/api/v1/group/${groupId}/user`)
         .set('x-auth', user1Token)
         .send({
           username: seedUsers.registered[1].username
@@ -579,12 +619,12 @@ describe('PostIt API routes: ', () => {
       });
     });
     
-    it('DELETE /api/group/:groupid/user does not work with non-members', (done) => {
+    it('DELETE /api/v1/group/:groupid/user does not work with non-members', (done) => {
       const user3Token = generateAuth(seedUsers.registered[2].id);
       const user1Token = generateAuth(seedUsers.registered[0].id)
       const groupId = seedGroups[2].id;
       request(app)
-      .post(`/api/group/${seedGroups[2].id}/user`)
+      .post(`/api/v1/group/${seedGroups[2].id}/user`)
       .set('x-auth', user3Token)
       .send({
         username: seedUsers.registered[0].username
@@ -592,7 +632,7 @@ describe('PostIt API routes: ', () => {
       .expect(201)
       .end((err, res) => {
         request(app)
-        .delete(`/api/group/${groupId}/user`)
+        .delete(`/api/v1/group/${groupId}/user`)
         .set('x-auth', user3Token)
         .send({
           username: seedUsers.unregistered[0].username
@@ -605,11 +645,11 @@ describe('PostIt API routes: ', () => {
       });
     });
 
-    it('DELETE /api/group/:groupid/user route does not remove current user', (done) => {
+    it('DELETE /api/v1/group/:groupid/user route does not remove current user', (done) => {
       const user3Token = generateAuth(seedUsers.registered[2].id);
       const groupId = seedGroups[2].id;
       request(app)
-      .delete(`/api/group/${groupId}/user`)
+      .delete(`/api/v1/group/${groupId}/user`)
       .set('x-auth', user3Token)
       .send({
         username: seedUsers.registered[2].username
@@ -621,12 +661,12 @@ describe('PostIt API routes: ', () => {
       });
     });
 
-    it('DELETE /api/group/:groupid allows a user leave group', (done) => {
+    it('POST /api/v1/group/:groupid/leave allows a user leave group', (done) => {
       const user3Token = generateAuth(seedUsers.registered[2].id);
       const user1Token = generateAuth(seedUsers.registered[0].id)
       const groupId = seedGroups[2].id;
       request(app)
-      .post(`/api/group/${seedGroups[2].id}/user`)
+      .post(`/api/v1/group/${seedGroups[2].id}/user`)
       .set('x-auth', user3Token)
       .send({
         username: seedUsers.registered[0].username
@@ -634,27 +674,27 @@ describe('PostIt API routes: ', () => {
       .expect(201)
       .end((err, res) => {
         request(app)
-        .post(`/api/group/${groupId}/leave`)
+        .post(`/api/v1/group/${groupId}/leave`)
         .set('x-auth', user1Token)
         .expect(201)
         .end((err, res) => {
-          expect(res.body.message).toBe(`${seedUsers.registered[0].username} has left the group`);
+          expect(res.body.message).toBe(`You left ${seedGroups[2].name.toUpperCase()}`);
           request(app)
-          .post(`/api/group/${groupId}/leave`)
+          .post(`/api/v1/group/${groupId}/leave`)
           .set('x-auth', user3Token)
           .expect(201)
           .end((err, res) => {
-            expect(res.body.message).toBe(`${seedUsers.registered[2].username} left, and group deleted`);
+            expect(res.body.message).toBe(`You left, and ${seedGroups[2].name.toUpperCase()} has been deleted`);
             done();
           });
         });
       });
     });
 
-    it('GET /api/group/:groupid/users should return list of group users', (done) => {
+    it('GET /api/v1/group/:groupid/users should return list of group users', (done) => {
       const groupId = seedGroups[0].id
       request(app)
-      .get(`/api/group/${groupId}/users`)
+      .get(`/api/v1/group/${groupId}/users`)
       .set('x-auth', generateAuth(seedUsers.registered[2].id))
       .expect(200)
       .end((err, res) => {
@@ -663,10 +703,10 @@ describe('PostIt API routes: ', () => {
       })
     });
 
-    it('GET /api/group/:groupid/notmembers should return list of all users not in group if search query is not provided', (done) => {
+    it('GET /api/v1/group/:groupid/users?members=false should return list of all users not in group if search query is not provided', (done) => {
       const groupId = seedGroups[0].id
       request(app)
-      .get(`/api/group/${groupId}/notmembers`)
+      .get(`/api/v1/group/${groupId}/users?members=false`)
       .set('x-auth', generateAuth(seedUsers.registered[2].id))
       .expect(200)
       .end((err, res) => {
@@ -679,10 +719,26 @@ describe('PostIt API routes: ', () => {
       })
     });
 
-    it('POST /api/group/:groupid/message should return error if message content is not provided', (done) => {
+    // it('GET /api/v1/group/:groupid/users?members=false should return results based on query', (done) => {
+    //   const groupId = seedGroups[0].id
+    //   request(app)
+    //   .get(`/api/v1/group/${groupId}/users?members=false&u=u&limit=5&offset=0`)
+    //   .set('x-auth', generateAuth(seedUsers.registered[2].id))
+    //   .expect(200)
+    //   .end((err, res) => {
+    //     expect(res.body.page).toBe(1);
+    //     expect(res.body.pageCount).toExist;
+    //     expect(res.body.pageSize).toExist;
+    //     expect(res.body.totalCount).toExist;
+    //     expect(res.body.users).toExist;
+    //     done();
+    //   })
+    // });
+
+    it('POST /api/v1/group/:groupid/message should return error if message content is not provided', (done) => {
       const groupId = seedGroups[0].id
       request(app)
-      .post(`/api/group/${groupId}/message`)
+      .post(`/api/v1/group/${groupId}/message`)
       .set('x-auth', generateAuth(seedUsers.registered[2].id))
       .expect(400)
       .end((err, res) => {
@@ -691,10 +747,10 @@ describe('PostIt API routes: ', () => {
       })
     });
 
-    it('POST /api/group/:groupid/message should return error if message priority is set but incorrect', (done) => {
+    it('POST /api/v1/group/:groupid/message should return error if message priority is set but incorrect', (done) => {
       const groupId = seedGroups[0].id
       request(app)
-      .post(`/api/group/${groupId}/message`)
+      .post(`/api/v1/group/${groupId}/message`)
       .send({
         content: 'First message',
         priority: 'dunno'
@@ -707,10 +763,10 @@ describe('PostIt API routes: ', () => {
       })
     });
 
-    it('POST /api/group/:groupid/message should send message to group, and set priority to normal if none supplied', (done) => {
+    it('POST /api/v1/group/:groupid/message should send message to group, and set priority to normal if none supplied', (done) => {
       const groupId = seedGroups[0].id
       request(app)
-      .post(`/api/group/${groupId}/message`)
+      .post(`/api/v1/group/${groupId}/message`)
       .send({
         content: 'First message'
       })
@@ -724,16 +780,16 @@ describe('PostIt API routes: ', () => {
           expect(data.message.sender).toExist().toBe(seedUsers.registered[2].username);
           expect(data.group.id).toExist().toBe(seedGroups[0].id);
         });
-        expect(res.body.message).toExist;
-        expect(res.body.message.content).toBe('First message');
+        expect(res.body.sent).toExist;
+        expect(res.body.sent.content).toBe('First message');
         done();
       })
     });
 
-    it('POST /api/group/:groupid/message should send email notification if priority is urgent or critical', (done) => {
+    it('POST /api/v1/group/:groupid/message should send email notification if priority is urgent or critical', (done) => {
       const groupId = seedGroups[0].id
       request(app)
-      .post(`/api/group/${groupId}/message`)
+      .post(`/api/v1/group/${groupId}/message`)
       .send({
         content: 'Second message',
         priority: 'urgent'
@@ -751,16 +807,16 @@ describe('PostIt API routes: ', () => {
           expect(data.message.sender).toExist().toBe(seedUsers.registered[2].username);
           expect(data.group.id).toExist().toBe(seedGroups[0].id);
         });
-        expect(res.body.message).toExist;
-        expect(res.body.message.content).toBe('Second message');
+        expect(res.body.sent).toExist;
+        expect(res.body.sent.content).toBe('Second message');
         done();
       })
     });
 
-    it('GET /api/group/:groupid/messages should get group messages', (done) => {
+    it('GET /api/v1/group/:groupid/messages should get group messages', (done) => {
       const groupId = seedGroups[0].id
       request(app)
-      .get(`/api/group/${groupId}/messages`)
+      .get(`/api/v1/group/${groupId}/messages`)
       .set('x-auth', generateAuth(seedUsers.registered[2].id))
       .expect(200)
       .end((err, res) => {
@@ -770,12 +826,12 @@ describe('PostIt API routes: ', () => {
       })
     });
 
-    it('POST /api/group/:groupid/remove should not let non-creator user delete group', (done) => {
+    it('POST /api/v1/group/:groupid/remove should not let non-creator user delete group', (done) => {
       const token = generateAuth(seedUsers.registered[2].id);
       const usernameToAdd = seedUsers.registered[0].username;
       const groupId = seedGroups[0].id;
       request(app)
-      .post(`/api/group/${groupId}/user`)
+      .post(`/api/v1/group/${groupId}/user`)
       .set('x-auth', token)
       .send({
         username: usernameToAdd
@@ -787,7 +843,7 @@ describe('PostIt API routes: ', () => {
         }
         expect(res.body.message).toBe(`${usernameToAdd} added to group`);
         request(app)
-        .post(`/api/group/${groupId}/remove`)
+        .post(`/api/v1/group/${groupId}/remove`)
         .set('x-auth', generateAuth(seedUsers.registered[0].id))
         .expect(401)
         .end((err, res) => {
@@ -797,10 +853,10 @@ describe('PostIt API routes: ', () => {
       });
     });
 
-    it('GET /api/group/:groupid/message/:messageid/read should return error if message id invalid', (done) => {
+    it('GET /api/v1/group/:groupid/message/:messageid/read should return error if message id invalid', (done) => {
       const groupId = seedGroups[0].id
       request(app)
-      .post(`/api/group/${groupId}/message/hey/read`)
+      .post(`/api/v1/group/${groupId}/message/hey/read`)
       .set('x-auth', generateAuth(seedUsers.registered[2].id))
       .expect(400)
       .end((err, res) => {
@@ -810,10 +866,10 @@ describe('PostIt API routes: ', () => {
       })
     });
 
-    it('GET /api/group/:groupid/message/:messageid/read should mark messages as read', (done) => {
+    it('GET /api/v1/group/:groupid/message/:messageid/read should mark messages as read', (done) => {
       const groupId = seedGroups[0].id
       request(app)
-      .post(`/api/group/${groupId}/message/1/read`)
+      .post(`/api/v1/group/${groupId}/message/1/read`)
       .set('x-auth', generateAuth(seedUsers.registered[0].id))
       .expect(201)
       .end((err, res) => {
@@ -824,9 +880,9 @@ describe('PostIt API routes: ', () => {
       })
     });
 
-    it('PATCH /api/group/:groupid/info should return error if group name not supplied', (done) => {
+    it('PATCH /api/v1/group/:groupid/info should return error if group name not supplied', (done) => {
       request(app)
-      .patch(`/api/group/${seedGroups[0].id}/info`)
+      .patch(`/api/v1/group/${seedGroups[0].id}/info`)
       .set('x-auth', generateAuth(seedUsers.registered[0].id))
       .expect(400)
       .end((err, res) => {
@@ -838,9 +894,9 @@ describe('PostIt API routes: ', () => {
       })
     });
 
-    it('PATCH /api/group/:groupid/info should update group info', (done) => {
+    it('PATCH /api/v1/group/:groupid/info should update group info', (done) => {
       request(app)
-      .patch(`/api/group/${seedGroups[0].id}/info`)
+      .patch(`/api/v1/group/${seedGroups[0].id}/info`)
       .set('x-auth', generateAuth(seedUsers.registered[0].id))
       .send({
         name: "Better name for group",
@@ -856,10 +912,10 @@ describe('PostIt API routes: ', () => {
       })
     });
 
-    it('POST /api/group/:groupid/remove should let group creator successfully delete group', (done) => {
+    it('POST /api/v1/group/:groupid/remove should let group creator successfully delete group', (done) => {
       const groupId = seedGroups[0].id
       request(app)
-      .post(`/api/group/${groupId}/remove`)
+      .post(`/api/v1/group/${groupId}/remove`)
       .set('x-auth', generateAuth(seedUsers.registered[2].id))
       .expect(201)
       .end((err, res) => {
@@ -883,9 +939,9 @@ describe('PostIt API routes: ', () => {
       });
     });
 
-    it('should send html for all non-api routes', (done) => {
+    it('should send html for api doc route', (done) => {
       request(app)
-      .get('/api/docs')
+      .get('/api/v1/docs')
       .expect(200)
       .end((err, res) => {
         expect(res.body).toNotBeA('JSON');

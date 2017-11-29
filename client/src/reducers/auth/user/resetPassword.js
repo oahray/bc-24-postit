@@ -1,6 +1,6 @@
 import { REQUEST_RESET_LOADING, REQUEST_RESET_SUCCESS, REQUEST_RESET_FAILURE,
   CLEAR_REQUEST_RESET_MESSAGE, RESET_PASSWORD_LOADING, RESET_PASSWORD_SUCCESS,
-  RESET_PASSWORD_FAILED } from '../actions';
+  RESET_PASSWORD_FAILED } from '../../../actions';
 
 export const requestResetLoading = (state = false, action) => {
   switch (action.type) {
