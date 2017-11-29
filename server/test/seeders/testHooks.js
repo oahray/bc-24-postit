@@ -1,5 +1,3 @@
-import mockery from 'mockery';
-import nodemailerMock from 'nodemailer-mock';
 import models from '../../models';
 import { seedUsers , seedGroups } from './seed'
 
