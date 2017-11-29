@@ -1,5 +1,8 @@
 export const LOGOUT_USER = 'LOGOUT_USER';
 
+/**
+ * @returns {object} logout_user action
+ */
 export const logout = () => {
   // remove token from local storage
   if (window.localStorage.getItem('x-auth')) {

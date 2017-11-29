@@ -36,7 +36,7 @@ class ForgotPassword extends Component {
     }
     return (
       <form className="center row" onSubmit={this.requestResetEmail}>
-        <h5 className="page-title main-text-color">Forgot Password</h5>
+        <h5 className="page-header main-text-color">Forgot Password</h5>
         <h6>Please enter the email you signed up with</h6>
         <div className="col s12 m8 offset-m2 row forgot-password">
           <input

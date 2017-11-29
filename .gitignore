@@ -1,9 +1,11 @@
-node_modules/
-*.log*
-playground/
+.DS_Store
+.nyc_output/
 .vscode/
+bin/
+coverage/
+node_modules/
+playground/
+reports/
+*.log*
 .env
 bundle.min.js
-.nyc_output
-coverage/
-.DS_Store

@@ -39,6 +39,7 @@
     "curly": ["error", "multi-line"],
     "import/no-unresolved": [2, { "commonjs": true }],
     "no-shadow": ["error", { "allow": ["req", "res", "err"] }],
+    "class-methods-use-this": 0,
     "valid-jsdoc": ["error", {
       "requireReturn": true,
       "requireReturnType": true,
@@ -52,6 +53,7 @@
         "ClassDeclaration": true
       }
     }],
-    "react/jsx-uses-vars": [2]
+    "react/jsx-uses-vars": [2],
+    "react/jsx-uses-react": "error"
   }
 }

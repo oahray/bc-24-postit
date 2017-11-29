@@ -3,7 +3,16 @@ import randomstring from 'randomstring';
 import { User, Message } from '../models';
 import { transporter, helperOptions } from '../config/nodemailer';
 
-// Function to signup new users
+/**
+ * @function signin
+ * @summary: API controller to handle requests
+ * to create new group
+ * @param {object} req: request object
+ * @param {object} res: response object
+ * @returns {object} api response: user object for
+ * successful requests, or error object for
+ * requests that fail
+ */
 export const signup = (req, res) => {
   const username = req.body.username.trim().toLowerCase();
   const email = req.body.email.trim().toLowerCase();
@@ -19,10 +28,17 @@ export const signup = (req, res) => {
       user
     });
   })
-  .catch(() => res.status(400));
+  .catch(() => res.status(500));
 };
 
-// Function to sign users in
+/**
+ * @function signin
+ * @summary: API controller to handle requests
+ * to create new group
+ * @param {object} req: request object
+ * @param {object} res: response object
+ * @returns {object} api response
+ */
 export const signin = (req, res) => {
   const body = _.pick(req.body, ['username', 'password']);
   const username = body.username.trim().toLowerCase();
@@ -48,7 +64,7 @@ export const signin = (req, res) => {
       user
     });
   })
-  .catch(() => res.status(400));
+  .catch(() => res.status(500));
 };
 
 export const getMe = (req, res) => {
@@ -57,9 +73,15 @@ export const getMe = (req, res) => {
 };
 
 export const getAllUsers = (req, res) => {
-  User.findAll().then(users =>
-    res.status(200).send({ users })
-  );
+  User.findAll().then((result) => {
+    const users = result.map(user => ({
+      id: user.id,
+      username: user.username,
+      about: user.about,
+      email: user.email
+    }));
+    res.status(200).send({ users });
+  });
 };
 
 export const getMySentMessages = (req, res) => {
@@ -126,7 +148,7 @@ export const forgotPassword = (req, res) => {
   .then((user) => {
     if (!user) {
       return res.status(404).send({
-        error: 'Specified email is not linked to any account'
+        error: 'Incorrect email'
       });
     }
     user.update({
@@ -137,17 +159,18 @@ export const forgotPassword = (req, res) => {
       if (update) {
         const subject = 'Password reset';
         const html = `<div><h2 style="color:brown">You requested a password reset. </h2>
-        <p style="color:black">Click the link below to reset your password, or copy and paste in your browser.</p>
+        <p style="color:black">A request was made to reset your password. If you did not make this request, simply ignore this email and your password would <strong>not</strong> be changed. If you did make this request just click the link below: </p>
         <p>${req.protocol}://${req.headers.host}/resetpassword?t=${update.resetHash}</p>
-        <p style="color:black">If it was not you who made the request, please ignore this mail, and your password <strong>would not</strong> be changed. 
+        <p style="color:black">If the above URL does not work, try copying and pasting it into your browser. If you continue to experience problems please feel free to contact us.
         </p>
         <p style="color:black">Best regards, <br/> The Postit Team</div></p>`;
         transporter.sendMail(
           helperOptions(user.email, null, subject, html), (error, info) => {
             if (error) {
               console.log('The recovery email could not be sent: ', error);
+            } else {
+              console.log('The recovery email was sent: ', info);
             }
-            console.log('The recovery email was sent: ', info);
             res.send({
               message: 'An email with reset instructions has been sent'
             });
@@ -155,7 +178,7 @@ export const forgotPassword = (req, res) => {
         );
       }
     })
-    .catch(err => res.send({ err }));
+    .catch(() => res.status(500));
   });
 };
 
@@ -202,3 +225,27 @@ export const resetPassword = (req, res) => {
   });
 };
 
+export const editProfile = (req, res) => {
+  const { email } = req.body;
+  let { about, imageUrl } = req.body;
+  if (!email) {
+    return res.status(400).send({
+      error: 'Email is required'
+    });
+  }
+  if (!imageUrl) {
+    imageUrl = '';
+  }
+  if (!about) {
+    about = '';
+  }
+  req.currentUser.update({
+    about, email, imageUrl
+  })
+  .then((update) => {
+    res.status(201).send({
+      message: 'Profile successfully updated',
+      profile: update
+    });
+  });
+};
