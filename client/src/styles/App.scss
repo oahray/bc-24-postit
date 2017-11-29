@@ -1,18 +1,16 @@
 $main-color: #0C6C85;
-$secondary-color: #0C6C85;
+$secondary-color: #107D85;
 // $main-color: 
 $grey1: #E0E0E0;
 $grey2: #E6E7E8;
 $body-background: #f8f8f8;
-$header-font: 'Merienda', serif;
-$body-font: 'Dosis', sans-serif;
 
 body {
   width: 100%;
-  font-size: 16px;
+  font-size: 14px;
   background-color: white;
-  background-image: url('/images/background1.png');
-  font-family: $body-font, sans-serif;
+  background-image: url('/images/background1.png')
+  
 }
 
 .main-text-color {
@@ -40,17 +38,6 @@ nav, .nav-wrapper {
 .timestamp {
   padding-left: 10px;
   font-size: 14px;
-}
-
-.full-photo-div {
-  padding: 0px 10px 0px 0px !important;
-  img {
-    align-content: center;
-    height: 150px;
-    width: 150px;
-    background-color:white;
-    border-radius: 5px;
-  }
 }
 
 /* label focus color */
@@ -112,8 +99,7 @@ nav, .nav-wrapper {
 }
 
 .nav-wrapper {
-  padding: 0px 10px;
-  font-family: $header-font;
+  padding-left: 20px;
 }
 
 ul.side-nav.fixed:hover {
@@ -126,6 +112,9 @@ ul.side-nav.fixed:hover {
 
 .side-nav.fixed {
   background-color: $grey2;
+  // a :not(.user-view), i :not(.user-view) {
+  //   color: $main-color !important;
+  // }
   overflow: hidden;
   .user-view {
     background-color: $main-color;
@@ -199,15 +188,10 @@ ul.side-nav.fixed:hover {
 }
 
 .user-home-content {
-  padding: 10px 10px;
+  padding: 10px 20px;
   a {
     color: $main-color;
   }
-}
-
-.user-home-group-desc {
-  margin: 0 auto !important;
-  padding: 0px;
 }
 
 .group-card {
@@ -216,29 +200,13 @@ ul.side-nav.fixed:hover {
   background-color: white;
 }
 
-.toast-error {
-  background-color: red;
-  border-radius: 10px;
-}
-
-.toast-success, .toast-info {
-  background-color:teal;
-  border-radius: 10px;
-}
-
 .group-page {
   padding: 0px 5px;
-  .group-page-header-icon {
-    margin-right: 10px;
-  }
-  .messages-section {
-    padding: 0px !important;
-  }
   .tab-content {
     position: relative;
     padding: 0px;
     min-height: 100px;
-    height: calc(100vh - 180px);
+    height: calc(100vh - 130px);
   }
   .no-messages {
     margin: 30px;
@@ -317,7 +285,7 @@ ul.side-nav.fixed:hover {
 
 .page-header {
   color: $main-color;
-  font-family: $header-font;
+  text-align: center;
 }
 
 .message-list {
@@ -325,7 +293,7 @@ ul.side-nav.fixed:hover {
   background-color: white;
   border-radius: 10px;
   margin: 10px 0px;
-  height: calc(100vh - 250px);
+  height: calc(100vh - 200px);
   overflow-y: scroll;
   .message-item {
     padding: 5px 20px !important;
@@ -359,10 +327,6 @@ ul.side-nav.fixed:hover {
   white-space: pre-line;
 }
 
-.btn {
-  font-family: $header-font;
-}
-
 .search-page {
   .add-user-icon:hover {
     cursor: pointer;
@@ -376,12 +340,6 @@ ul.side-nav.fixed:hover {
 }
 
 @media only screen and (max-width: 600px) {
-  .user-home-content {
-    padding: 0px !important;
-  }
-  .group-page {
-    padding: 0px !important;
-  }
   .message-input {
     border: none !important;
   }
@@ -389,36 +347,15 @@ ul.side-nav.fixed:hover {
 
 .modal {
   border-radius: 10px;
-  background-image: url('/images/background1.png');
-  .modal-footer {
-    background-color: transparent !important;
-  }
 }
 
 .confirm-modal {
-  bottom: calc(50vh - 200px);
-  max-width: 500px !important;
-  height: 190px !important;
+  width: 500px !important;
+  height: 200px !important;
 }
 
 .form-modal {
-  max-width: 600px;
-  padding: 0px !important;
-}
-
-.collapsible-body {
-  padding: 0px;
-}
-
-.edit-profile-page {
-  margin-top: 30px;
-  .edit-profile-card {
-    background-color: white;
-    padding: 40px;
-    min-width: 450px;
-    max-width: 800px;
-    margin: 0 auto !important;
-  }
+  width: 600px;
 }
 
 .guest-home {
@@ -430,13 +367,11 @@ ul.side-nav.fixed:hover {
     text-shadow: 5px 5px rgb(202, 202, 202);
     margin-top: 20px;
     font-size: 5em;
-    font-family: $header-font
   }
   .guest-home-text {
     font-size: 1.4em;
     color: $secondary-color;
   }
-
   #guest-carousel {
     padding: 0 auto;
     height: 270px !important;

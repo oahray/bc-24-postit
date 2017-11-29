@@ -37,7 +37,7 @@ class SigninForm extends Component {
       <div className='forms row col s12 m8 l6'>
         <form className='row col s12 m10 offset-m1 z-depth-2' 
         onSubmit={this.onFormSubmit}>
-          <h4 className="page-header center"> Sign in </h4>
+          <h3 className="page-header"> Sign in </h3>
           <div className='form-error-message center red-text bold'>
             <h6>{this.props.signinFailed ? this.props.signinError : null}</h6>
           </div>
@@ -49,19 +49,14 @@ class SigninForm extends Component {
           <br/>
           <div className='input-field col s12'>
             <i class="material-icons prefix">lock</i>
-            <input type="password" id='signin-password'
-            value={this.state.password} required onChange={event =>
-              this.setState({ password: event.target.value })} />
+            <input type="password" id='signin-password' value={this.state.password} required onChange={event => this.setState({ password: event.target.value })} />
             <label for="signin-password">Password</label>
           </div>
           <div className='center' >
-            <Button className={`white main-text-color
-            ${this.props.signinLoading ? 'disabled' : ''}`}
-            waves='teal' type='submit'> {this.props.signinLoading
-              ? 'Please wait...' : 'Submit'} </Button>
+            <Button className={`white main-text-color ${this.props.signinLoading ? 'disabled' : ''}`} waves='teal' type='submit'> {this.props.signinLoading ? 'Please wait...' : 'Submit'} </Button>
           </div>
           <div className='center'>
-            <p className='center'> Forgot Password? <Link to="/forgotpassword">Recover Password</Link></p>
+            <p className='center'> Forgot Password? <Link to="/forgotpassword">Get Recovery Email</Link></p>
             <p className='center'> New to Postit? <Link to="/signup">Sign Up</Link></p>
           </div>
         </form>
@@ -80,8 +75,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({
-    signinUser,
+  return bindActionCreators({ signinUser,
     verifyAuth,
     clearFormError
   }, dispatch);

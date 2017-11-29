@@ -1,16 +1,6 @@
 import { User } from '../models';
 
-/**
- * @function isTaken
- * @summary middleware that checks if username or email is taken
- * when a user tries to sign up
- * @param {Object} req
- * @param {Object} res
- * @param {function} next
- * @returns {Object | undefined} error object
- * or undefined if next is called
- */
-const isTaken = (req, res, next) => {
+export default (req, res, next) => {
   if (!req.body.email) {
     return res.status(400).send({
       error: 'Email is required.'
@@ -38,5 +28,3 @@ const isTaken = (req, res, next) => {
     });
   });
 };
-
-export default isTaken;

@@ -57,7 +57,7 @@ class SignupForm extends Component {
       <div className='row forms col s12 m8 l6'>
         <form className='row col s12 m10 offset-m1 z-depth-2'
         onSubmit={this.onFormSubmit}>
-          <h4 className="page-header center"> Sign up </h4>
+          <h3 className="page-header"> Sign up </h3>
           <div className='form-error center red-text bold'>
             <h6 className='form-error-message'>
               {this.props.signupFailed ? this.props.signupError : null}
