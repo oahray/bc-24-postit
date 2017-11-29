@@ -11,44 +11,35 @@ export const RESET_PASSWORD_LOADING = 'RESET_PASSWORD_LOADING';
 export const RESET_PASSWORD_FAILED = 'RESET_PASSWORD_FAILED';
 export const RESET_PASSWORD_SUCCESS = 'RESET_PASSWORD_SUCCESS';
 
-/**
- * @returns {object} request_reset_loading action
- */
-const requestResetLoading = () => ({
-  type: REQUEST_RESET_LOADING
-});
+// Request password reset
+const requestResetLoading = () => {
+  return {
+    type: REQUEST_RESET_LOADING
+  };
+};
 
-/**
- * @param {object} response: api response
- * @returns {object} request_reset_success action
- */
-const requestResetSuccess = response => ({
-  type: REQUEST_RESET_SUCCESS,
-  response
-});
+const requestResetSuccess = (response) => {
+  return {
+    type: REQUEST_RESET_SUCCESS,
+    response
+  };
+};
 
-/**
- * @param {object} error: api error response
- * @returns {object} request_reset_failure action
- */
-const requestResetFailed = error => ({
-  type: REQUEST_RESET_FAILURE,
-  error
-});
+const requestResetFailed = (error) => {
+  return {
+    type: REQUEST_RESET_FAILURE,
+    error
+  };
+};
 
-/**
- * @returns {object} clear_request_reset_message action
- */
-export const clearResetRequestMessage = () => ({
-  type: CLEAR_REQUEST_RESET_MESSAGE
-});
+export const clearResetRequestMessage = () => {
+  return {
+    type: CLEAR_REQUEST_RESET_MESSAGE
+  };
+};
 
-/**
-* @param {string} email: the new password
-* @returns {function} dispaches action creator
-*/
-export const requestReset = email =>
-  (dispatch) => {
+export const requestReset = (email) => {
+  return (dispatch) => {
     dispatch(requestResetLoading());
     const FETCH_URL = `${BASE_URL}/forgotpassword`;
     axios({
@@ -69,39 +60,31 @@ export const requestReset = email =>
       }
     });
   };
+};
 
-/**
- * @returns {object} reset_password_loading action
- */
-const resetPasswordLoading = () => ({
-  type: 'RESET_PASSWORD_LOADING'
-});
+// Reset Password
+const resetPasswordLoading = () => {
+  return {
+    type: 'RESET_PASSWORD_LOADING'
+  };
+};
 
-/**
- * @param {object} response: api response
- * @returns {object} reset_password_success action
- */
-const resetPasswordSuccess = response => ({
-  type: RESET_PASSWORD_SUCCESS,
-  response
-});
+const resetPasswordSuccess = (response) => {
+  return {
+    type: RESET_PASSWORD_SUCCESS,
+    response
+  };
+};
 
-/**
- * @param {object} error: api error response
- * @returns {object} reset_password_failed action
- */
-const resetPasswordFailed = error => ({
-  type: RESET_PASSWORD_FAILED,
-  error
-});
+const resetPasswordFailed = (error) => {
+  return {
+    type: RESET_PASSWORD_FAILED,
+    error
+  };
+};
 
-/**
- * @param {string} password: the new password
- * @param {string} resetHash: hash from reset email
- * @returns {function} dispatches action creator
- */
-export const resetPassword = (password, resetHash) =>
-  (dispatch) => {
+export const resetPassword = (password, resetHash) => {
+  return (dispatch) => {
     dispatch(resetPasswordLoading());
     const FETCH_URL = `${BASE_URL}/resetpassword?t=${resetHash}`;
     axios({
@@ -122,3 +105,4 @@ export const resetPassword = (password, resetHash) =>
       }
     });
   };
+};

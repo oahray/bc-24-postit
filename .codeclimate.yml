@@ -1,10 +1,12 @@
 engines:
   duplication:
-    enabled: true
+    enabled: false
+    checks:
+    Similar code:
+      enabled: false
     config:
       languages:
-        javascript:
-          mass_threshold: 500
+      - javascript:
 ratings:
   paths:
   - server/**/*.js

@@ -1,11 +1,5 @@
-import {
-  VERIFY_AUTH_SUCCESS,
-  SIGNUP_SUCCESS,
-  SIGNIN_SUCCESS,
-  LOGOUT_USER,
-  RESET_PASSWORD_SUCCESS,
-  EDIT_PROFILE_SUCCESS
-} from '../../../actions';
+import { VERIFY_AUTH_SUCCESS, SIGNUP_SUCCESS,
+  SIGNIN_SUCCESS, LOGOUT_USER, RESET_PASSWORD_SUCCESS } from '../actions';
 
 export default (state = null, action) => {
   switch (action.type) {
@@ -17,8 +11,6 @@ export default (state = null, action) => {
       return action.response.data.currentUser;
     case RESET_PASSWORD_SUCCESS:
       return action.response.data.user;
-    case EDIT_PROFILE_SUCCESS:
-      return action.response.data.profile;
     case LOGOUT_USER:
       return null;
     default:

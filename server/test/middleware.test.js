@@ -7,11 +7,10 @@ import { doBeforeAll, doBeforeEach, populateUsers } from './seeders/testHooks';
 import { seedUsers, seedGroups, generateAuth, tokens } from './seeders/seed';
 
 describe('Middleware functions:', () => {
-  doBeforeAll();
   describe('isValidUsername Middleware', () => {
     it('does not allow a user signup without a username', (done) => {
       request(app)
-      .post('/api/v1/user/signup')
+      .post('/api/user/signup')
       .send({
         email: 'user0@example.com',
         password: 'user0pass'
@@ -27,7 +26,7 @@ describe('Middleware functions:', () => {
     });
     it('does not allow a user signup with invalid username', (done) => {
       request(app)
-      .post('/api/v1/user/signup')
+      .post('/api/user/signup')
       .send({
         username: 'user0.3',
         email: 'user0@example.com',
@@ -47,7 +46,7 @@ describe('Middleware functions:', () => {
   describe('isTaken Middleware', () => {
     it('does not allow users signup without email', (done) => {
       request(app)
-      .post('/api/v1/user/signup')
+      .post('/api/user/signup')
       .send({
         username: 'user0',
         password: 'user0pass'
@@ -63,7 +62,7 @@ describe('Middleware functions:', () => {
     });
     it('does not allow users signup without password', (done) => {
       request(app)
-      .post('/api/v1/user/signup')
+      .post('/api/user/signup')
       .send({
         username: 'user0',
         email: 'user0@example.com'
@@ -80,9 +79,9 @@ describe('Middleware functions:', () => {
   });
 
   describe('Authenticate Middleware: ', () => {
-    it('POST /api/v1/signup route should be accessible to unauthenticated users', (done) => {
+    it('POST /api/signup route should be accessible to unauthenticated users', (done) => {
       request(app)
-      .post('/api/v1/user/signup')
+      .post('/api/user/signup')
       .send({
         username: 'user1',
         password: 'mypassword',
@@ -99,9 +98,9 @@ describe('Middleware functions:', () => {
         done();
       });
     });
-    it('POST /api/v1/user/me route should not be accessible to unauthenticated users', (done) => {
+    it('POST /api/user/me route should not be accessible to unauthenticated users', (done) => {
       request(app)
-      .get('/api/v1/user/me')
+      .get('/api/user/me')
       .expect(401)
       .end((err, res) => {
         if (err) {
@@ -112,10 +111,10 @@ describe('Middleware functions:', () => {
         done();
       });
     });
-    it('POST /api/v1/user/me route should not be accessible to users with incorrect token', (done) => {
+    it('POST /api/user/me route should not be accessible to users with incorrect token', (done) => {
       const token = generateAuth(99);
       request(app)
-      .get('/api/v1/user/me')
+      .get('/api/user/me')
       .set('x-auth', token)
       .expect(401)
       .end((err, res) => {
@@ -127,10 +126,10 @@ describe('Middleware functions:', () => {
         done();
       })
     });
-    it('POST /api/v1/user/me route should not be accessible to users with invalid token', (done) => {
+    it('POST /api/user/me route should not be accessible to users with invalid token', (done) => {
       const token = '123';
       request(app)
-      .get('/api/v1/user/me')
+      .get('/api/user/me')
       .set('x-auth', token)
       .expect(401)
       .end((err, res) => {
@@ -143,50 +142,4 @@ describe('Middleware functions:', () => {
     });
   });
 
-  describe('isGroupMember middleware', () => {
-    it('returns error if group id is not provided', (done) => {
-      const token = generateAuth(seedUsers.registered[0].id);
-      request(app)
-      .get(`/api/v1/group/${null}/users`)
-      .set('x-auth', token)
-      .expect(400)
-      .end((err, res) => {
-        if (err) {
-          return done(err);
-        }
-        expect(res.body.error).toBe('Valid group ID must be provided');
-        done();
-      });
-    });
-  
-    it('returns error if group id is not provided', (done) => {
-      const token = generateAuth(seedUsers.registered[0].id);
-      request(app)
-      .get(`/api/v1/group/32/users`)
-      .set('x-auth', token)
-      .expect(404)
-      .end((err, res) => {
-        if (err) {
-          return done(err);
-        }
-        expect(res.body.error).toBe('Specified group does not exist');
-        done();
-      });
-    });
-  
-    it('returns error if group id is not provided', (done) => {
-      const token = generateAuth(seedUsers.registered[0].id);
-      request(app)
-      .get(`/api/v1/group/${seedGroups[1].id}/users`)
-      .set('x-auth', token)
-      .expect(401)
-      .end((err, res) => {
-        if (err) {
-          return done(err);
-        }
-        expect(res.body.error).toBe('You must belong to a group to interact with it');
-        done();
-      });
-    });
-  });
 });

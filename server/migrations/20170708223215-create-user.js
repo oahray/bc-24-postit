@@ -26,11 +26,6 @@ module.exports = {
         allowNull: true,
         defaultValue: 'New to Postit'
       },
-      imageUrl: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        defaultValue: ''
-      },
       resetHash: {
         type: Sequelize.STRING,
         allowNull: true,

@@ -1,6 +1,6 @@
-import { SIGNUP_LOADING, SIGNUP_SUCCESS,
-  SIGNUP_FAILURE, SIGNIN_LOADING, SIGNIN_SUCCESS,
-  SIGNIN_FAILURE } from '../../../actions';
+import { SIGNIN_LOADING, SIGNIN_SUCCESS,
+  SIGNIN_FAILURE, SIGNUP_LOADING, SIGNUP_SUCCESS,
+  SIGNUP_FAILURE } from '../actions';
 
 export default (state = false, action) => {
   switch (action.type) {
@@ -20,4 +20,3 @@ export default (state = false, action) => {
       return state;
   }
 };
-

@@ -20,10 +20,10 @@ app.set('io', io);
 
 server.listen(port);
 
-if (module.hot) {
-  module.hot.accept('../app', () => {
-    server.removeListener('request', currentApp);
-    server.on('request', app);
-    currentApp = app;
-  });
-}
+// if (module.hot) {
+//   module.hot.accept('../app', () => {
+//     server.removeListener('request', currentApp);
+//     server.on('request', app);
+//     currentApp = app;
+//   });
+// }
