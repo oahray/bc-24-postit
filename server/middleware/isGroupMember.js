@@ -25,7 +25,8 @@ export default (req, res, next) => {
       req.groupUsers = groupUsers.map(user => ({
         id: user.id,
         username: user.username,
-        about: user.about
+        about: user.about,
+        imageUrl: user.imageUrl
       }));
       req.groupEmails = groupUsers.map(user => user.email);
       req.groupUsernames = groupUsers.map(user => user.username);

@@ -42,17 +42,6 @@ nav, .nav-wrapper {
   font-size: 14px;
 }
 
-.full-photo-div {
-  padding: 0px 10px 0px 0px !important;
-  img {
-    align-content: center;
-    height: 150px;
-    width: 150px;
-    background-color:white;
-    border-radius: 5px;
-  }
-}
-
 /* label focus color */
 .input-field input:focus + label, .materialize-textarea:focus:not([readonly]) + label, .input-field .prefix.active {
   color: $secondary-color !important;
@@ -73,11 +62,11 @@ nav, .nav-wrapper {
     box-shadow: none!important;
     margin-right: 0px;
   }
-  .request-reset-btn {
+  #request-reset-btn {
     margin-left: 0px;
     padding: 3px 5px;
     border-radius: 0px 10px 10px 0px;
-    height: 47px;
+    height: 47px !important;
     font-size: 18px;
     background-color: white;
     color: $main-color;
@@ -143,6 +132,9 @@ ul.side-nav.fixed:hover {
       height: 40px !important;
       padding-top: 0px !important;
       background-color: $main-color;
+    }
+    img {
+      width: 80px;
     }
     .name {
       margin: 0px;
@@ -367,6 +359,12 @@ ul.side-nav.fixed:hover {
   .add-user-icon:hover {
     cursor: pointer;
   }
+  .collection-item {
+    .title {
+      font-weight: bold;
+    }
+    min-height: 10px !important;
+  }
 }
 
 @media only screen and (min-width: 993px) {
@@ -406,18 +404,55 @@ ul.side-nav.fixed:hover {
   padding: 0px !important;
 }
 
+.user-info-modal {
+  padding: 0px 30px;
+  background-color: rgb(245, 244, 244);
+  background-image: none;
+  max-width: 600px !important;
+  max-height: 600px !important;
+  .user-info-img {
+    max-height: 300px !important;
+  }
+}
+
 .collapsible-body {
   padding: 0px;
 }
 
 .edit-profile-page {
-  margin-top: 30px;
+  margin: 30px;
   .edit-profile-card {
     background-color: white;
     padding: 40px;
-    min-width: 450px;
-    max-width: 800px;
-    margin: 0 auto !important;
+  }
+  .mod-pic-div {
+    margin-bottom: 10px;
+    #change-pic-text {
+      padding-top: 2px;
+      padding-right: 5px;
+      color: $main-color;
+    }
+    #remove-pic-text > a :hover {
+      background-color: $grey1;
+    }
+    #remove-pic-text > div > a {
+      border: 1px solid $grey1;
+      border-radius: 10px;
+      padding: 0px 5px;
+      vertical-align: center;
+      font-weight: 900 !important;
+      font-size: 16px;
+      color: rgb(212, 52, 52) !important;
+    }
+  }
+  .full-photo-div {
+    padding: 0px 5px 0px 0px !important;
+    img {
+      max-width: 100%;
+      max-height: 500px;
+      border: 1px solid $grey1;
+      border-radius: 10px;
+    }
   }
 }
 
