@@ -50,9 +50,6 @@ module.exports = {
       }
     }),
     new webpack.DefinePlugin({
-      'process.env.CLOUDINARY_URL': JSON.stringify(process.env.CLOUDINARY_URL),
-      'process.env.CLOUDINARY_PRESET': JSON.stringify(process.env.CLOUDINARY_PRESET),
-      'process.env.CLOUDINARY_KEY': JSON.stringify(process.env.CLOUDINARY_KEY),
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
     }),
     new webpack.optimize.OccurrenceOrderPlugin(),

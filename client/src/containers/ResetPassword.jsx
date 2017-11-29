@@ -3,14 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { resetPassword } from '../actions';
 
-/**
- * @class
- */
 class ResetPassword extends Component {
-  /**
-   * @constructor
-   * @param {Object} props
-   */
   constructor(props) {
     super(props);
     this.state = {
@@ -21,11 +14,6 @@ class ResetPassword extends Component {
     this.resetPassword = this.resetPassword.bind(this);
   }
 
-  /**
-   * @function resetPassword
-   * @param {Onject} e: form event object
-   * @returns {Object | undefined} dispatch action creator
-   */
   resetPassword(e) {
     e.preventDefault();
     if (this.state.password !== this.state.confirmPassword) {
@@ -34,10 +22,6 @@ class ResetPassword extends Component {
     this.props.resetPassword(this.state.password, this.state.resetHash);
   }
 
-  /**
-   * @function render
-   * @returns {Object} resetPassword jsx component
-   */
   render() {
     const resetErrorMessage = (
       <div className='reset-password-message red-text'>
@@ -53,17 +37,13 @@ class ResetPassword extends Component {
         <div className="col s12 m8 offset-m2 row forgot-password">
           <div className='input-field col s12'>
             <i class="material-icons prefix">lock</i>
-            <input id='signup-password1' type="password" required
-            value={this.state.password} onChange={event =>
-              this.setState({ password: event.target.value })}/>
+            <input id='signup-password1' type="password" required value={this.state.password} onChange={event => this.setState({ password: event.target.value })}/>
             <label for="signup-password1">New Password</label>
           </div>
 
           <div className='input-field col s12'>
             <i class="material-icons prefix">lock</i>
-            <input id='signup-password1' type="password" required
-            value={this.state.confirmPassword} onChange={event =>
-              this.setState({ confirmPassword: event.target.value })}/>
+            <input id='signup-password1' type="password" required value={this.state.confirmPassword} onChange={event => this.setState({ confirmPassword: event.target.value })}/>
             <label for="signup-password1">Confirm Password</label>
           </div>
           <div className="col s12 center">
@@ -72,9 +52,7 @@ class ResetPassword extends Component {
 
           <div className="center">
             <button
-            className="btn waves-effect waves-teal white main-text-color"
-            type="submit">{this.props.resetPasswordLoading ?
-            'saving your changes...' : 'change password'}</button>
+            className="btn waves-effect waves-teal white main-text-color" type="submit">{this.props.resetPasswordLoading ? 'saving your changes...' : 'change password'}</button>
           </div>
         </div>
       </form>
@@ -82,12 +60,15 @@ class ResetPassword extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  resetPasswordError: state.resetPasswordError,
-  resetPasswordLoading: state.resetPasswordLoading
-});
+function mapStateToProps(state) {
+  return {
+    resetPasswordError: state.resetPasswordError,
+    resetPasswordLoading: state.resetPasswordLoading
+  };
+}
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators({ resetPassword }, dispatch);
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ resetPassword }, dispatch);
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(ResetPassword);

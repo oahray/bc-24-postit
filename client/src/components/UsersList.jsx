@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ConfirmModal from './ConfirmModal';
-import UserInfoModal from '../components/UserInfoModal';
 
 /**
  * @function UsersList
@@ -22,19 +21,14 @@ const UsersList = props => (
         <div className="white collapsible-body">
           <ul className=" collection">
             {props.groupUsers.map(user => (
-              <li className="collection-item row" key={user.id}>
-                <span className="col s10">
-                  {(user.username === props.user.username) ?
-                  user.username :
-                  <UserInfoModal user={user} />}
-                  {user.username ===
-                    props.user.username ? ' (you)' : ''}
-                </span>
-                {(props.user.username === props.selectedGroup.createdBy
-                && user.username !== props.user.username) ?
-              <span className="secondary-content pointer">
+              <li className="collection-item" key={user.id}>
+              {user.username} {user.username ===
+                props.user.username ? '(you)' : ''}
+              {(props.user.username === props.selectedGroup.createdBy
+              && user.username !== props.user.username) ?
+              <span className="right valign-wrapper pointer">
                 <ConfirmModal triggerLabel={<i
-                className="material-icons tooltipped leave-group-option"
+                className="material-icons tooltipped"
                 data-position="bottom" data-delay="50"
                 data-tooltip={`Remove ${user.username} from group`}
                 ><small>clear</small></i>}
