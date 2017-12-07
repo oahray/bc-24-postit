@@ -5,6 +5,14 @@ engines:
       languages:
         javascript:
           mass_threshold: 500
+
+checks: 
+  method-complexity:
+    config:
+      threshold: 10
+  method-lines:
+    config:
+      threshold: 50
 ratings:
   paths:
   - server/**/*.js
