@@ -8,7 +8,7 @@ import { createNewGroup, resetCreateGroupStatus } from '../actions';
 /**
  * @class
  */
-class NewGroup extends Component {
+export class NewGroup extends Component {
   /**
    * @constructor
    * @param {Object} props

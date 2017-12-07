@@ -54,14 +54,14 @@ export default class GroupInfoModal extends Component {
             <div className='row'>
               <form className='row col s12'>
                 <div className="input-field col s12">
-                  <input className="s12" label="Group Name" autoFocus
+                  <input id="group-name-input" className="s12" label="Group Name" autoFocus
                   value={this.state.name} onChange={event =>
                     this.setState({ name: event.target.value })} />
-                  <label class="active" for="first_name2">Group Name</label>
+                  <label class="active" htmlFor="first_name2">Group Name</label>
                 </div>
 
                 <div className="input-field col s12">
-                  {<input className="s12" label="Group description"
+                  {<input id="group-desc-input" className="s12" label="Group description"
                   value={this.state.description}
                   onChange={event =>
                     this.setState({ description: event.target.value })} />}
@@ -69,7 +69,7 @@ export default class GroupInfoModal extends Component {
                 </div>
 
                 <Row>
-                  <Input s={12} type='select'
+                  <Input id="group-privacy-select" s={12} type='select'
                   label="Group Privacy Type" value={this.state.type}
                   onChange={event => this.setState({
                     type: event.target.value })}
@@ -83,7 +83,7 @@ export default class GroupInfoModal extends Component {
                   <span className="left">
                     <a className="modal-action modal-close waves-effect waves-dark white main-text-color btn-flat">Cancel</a>
                   </span>
-                  <span className="right">
+                  <span className="right" id="save-group-info">
                     <a className="modal-action modal-close waves-effect waves-dark white red-text btn-flat"
                     onClick={this.saveChanges}
                     >Save</a>

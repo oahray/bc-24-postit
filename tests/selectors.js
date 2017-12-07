@@ -11,7 +11,8 @@ module.exports = {
     formHeader: '#root > div > div > div:nth-child(2) > div > form > h4',
     usernameInput: '#signin-username',
     passwordInput: '#signin-password',
-    submitButton: '#root > div > div > div:nth-child(2) > div > form > div:nth-child(6) > button'
+    submitButton: '#root > div > div > div:nth-child(2) > div > form > div:nth-child(6) > button',
+    errorMessage: '#root > div > div > div:nth-child(2) > div > form > div.form-error-message.center.red-text.bold > h6'
   },
   signup: {
 

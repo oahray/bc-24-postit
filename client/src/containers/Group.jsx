@@ -17,7 +17,7 @@ import { isUserGroup } from '../helpers/groupFunctions';
 /**
  * Group component
  */
-class Group extends Component {
+export class Group extends Component {
   /**
    * constructor
    * @param {object} props

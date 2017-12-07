@@ -62,7 +62,7 @@ const setup = (user, isLoggedIn, inGroupPage) => {
 
 describe('SideNav', () => {
   test('renders without crashing when user is not unauthenticated', () => {
-    const wrapper = setup(currentUser,false, false);
+    const wrapper = setup(null, false, false);
     wrapper.find('.side-nav .my-list-item .docs-link').simulate('click');
   });
 
@@ -70,14 +70,16 @@ describe('SideNav', () => {
     const wrapper = setup(currentUser, true, false);
     expect(wrapper.find('.side-nav .my-list-item a').length).toBeGreaterThan(0);
 
-    mockServer.start();
-    mockServer.emit('Added to group', ({ user: currentUser }));
-    expect(getGroupListSpy).toBeCalled();
+    mockServer.on('connection', (socket) => {
+      socket.emit('Added to group', ({ user: currentUser }));
+      expect(getGroupListSpy).toBeCalled();
 
-    mockServer.emit('Removed from group', ({ user: currentUser }))
-    expect(getGroupListSpy).toBeCalled();
-
-    mockServer.stop();
+      socket.emit('Added to group', ({ user: currentUser }));
+      expect(getGroupListSpy).toBeCalled();
+  
+      socket.emit('Removed from group', ({ user: currentUser }))
+      expect(getGroupListSpy).toBeCalled();
+    });
   });
 
   test('renders search bar when authenticated user has a profile image', () => {

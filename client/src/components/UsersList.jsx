@@ -38,7 +38,7 @@ const UsersList = props => (
                 data-position="bottom" data-delay="50"
                 data-tooltip={`Remove ${user.username} from group`}
                 ><small>clear</small></i>}
-                modalId={`remove${user.username}`}
+                modalId={`remove-${user.username}`}
                 callback={() => props.removeUser(user.username)}
                 confirmText={`Sure you want to remove ${user.username}
                 from this group? This cannot be undone.`}
@@ -67,12 +67,12 @@ const UsersList = props => (
 );
 
 UsersList.propTypes = {
-  user: PropTypes.object.isRequired,
-  groupUsers: PropTypes.array.isRequired,
-  selectedGroup: PropTypes.object.isRequired,
+  user: PropTypes.object,
+  groupUsers: PropTypes.array,
+  selectedGroup: PropTypes.object,
   // Action Creators
-  leaveGroup: PropTypes.func.isRequired,
-  removeUser: PropTypes.func.isRequired
+  leaveGroup: PropTypes.func,
+  removeUser: PropTypes.func
 };
 
 export default UsersList;

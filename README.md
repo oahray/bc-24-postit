@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/oahray/bc-24-postit.svg?branch=develop)](https://travis-ci.org/oahray/bc-24-postit) [![Coverage Status](https://coveralls.io/repos/github/oahray/bc-24-postit/badge.svg?branch=develop)](https://coveralls.io/github/oahray/bc-24-postit?branch=develop) [![Code Climate](https://codeclimate.com/github/oahray/bc-24-postit/badges/gpa.svg)](https://codeclimate.com/github/oahray/bc-24-postit)
+[![Build Status](https://travis-ci.org/oahray/bc-24-postit.svg?branch=develop)](https://travis-ci.org/oahray/bc-24-postit) [![Coverage Status](https://coveralls.io/repos/github/oahray/bc-24-postit/badge.svg?branch=develop)](https://coveralls.io/github/oahray/bc-24-postit?branch=develop) [![Maintainability](https://api.codeclimate.com/v1/badges/fd7ec895fe92daa3d5b1/maintainability)](https://codeclimate.com/github/oahray/bc-24-postit/maintainability)
 
 # POSTIT
 Postit is a simple applicaton that helps you connect with friends. Create groups to suit your style, add friends, write messages, and post it!

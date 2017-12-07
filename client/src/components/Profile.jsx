@@ -5,7 +5,7 @@ const Profile = (props) => {
   const profilePic = (props.state.imageUrl ?
     props.state.imageUrl : '/images/no-pic.png');
   return (<div className="edit-profile-card col s12 z-depth-1">
-    <h5 className="page-header center">My Profile</h5>
+    <h5 className="page-header profile-header center">My Profile</h5>
     <br/>
     <div className="col s12 l7">
       <div className="photo-and-info center">

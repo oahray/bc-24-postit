@@ -16,7 +16,8 @@ const MessageInput = props => (
     </div>
     <div className="input-field col s8 m4">
       <Row>
-        <Input s={12} className='message-priority-select' type='select'
+        <Input s={12}
+        className='message-priority-select' type='select'
         value={props.selectValue}
         onChange={props.onSelectChange}>
           <option value='normal'>Normal</option>
@@ -26,7 +27,7 @@ const MessageInput = props => (
       </Row>
     </div>
     <div className="input-field button-container col s4 m1">
-      <button
+      <button id="message-button"
       className="btn btn-flat white main-text-color waves-effect waves-dark"
       type="submit" name="action" onClick={props.onButtonClick}>
         <i className="material-icons">send</i>

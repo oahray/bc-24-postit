@@ -23,7 +23,7 @@ if (env !== 'production') {
   dotenv.config();
 }
 
-if (env === 'development') {
+if (env === 'development' || env === 'e2e') {
   app.use(webpackDevMiddleware(compiler, {
     historyApiFallback: true,
     hot: true,

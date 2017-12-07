@@ -8,7 +8,7 @@ import ProfileEditor from '../components/ProfileEditor';
 /**
  * @class EditProfile
  */
-class EditProfile extends Component {
+export class EditProfile extends Component {
   /**
    * @constructor
    * @param {*} props
