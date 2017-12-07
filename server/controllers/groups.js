@@ -267,7 +267,7 @@ export const getUsers = (req, res) => {
       });
     })
     .catch(() => res.status(500).send({
-      error: 'Internal server errors'
+      error: 'Internal server error'
     }));
 };
 
@@ -421,10 +421,22 @@ export const editInfo = (req, res) => {
       error: 'Group name is required'
     });
   }
+  if (name.trim().length > 25) {
+    return res.status(400).send({
+      error: 'Group name too long'
+    });
+  }
+
+  if (description && description.trim().length > 70) {
+    return res.status(400).send({
+      error: 'Group description too long'
+    });
+  }
+
   const update = {
-    name,
-    description
+    name: name.trim()
   };
+
   if (!description) {
     update.description = null;
   }

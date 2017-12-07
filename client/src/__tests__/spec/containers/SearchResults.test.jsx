@@ -93,14 +93,7 @@ const setup = (user, group, grpUsers, results, failed=false) => {
       }
     },
     // Action creators
-    getGroupMessages: actionCreators.getGroupMessages,
-    inGroupPage: actionCreators.inGroupPage,
-    clearUserSearchTerm: actionCreators.clearUserSearchTerm,
-    searchUsers: actionCreators.searchUsers,
-    addUserToGroup: actionCreators.addUserToGroup,
-    removeUser: actionCreators.removeUser,
-    getGroupUsers: actionCreators.getGroupUsers,
-    leaveGroup: actionCreators.leaveGroup
+    ...actionCreators
   };
   return shallow(<SearchResult {...props} />);
 };

@@ -1,6 +1,6 @@
 import expect from 'expect';
 import request from 'supertest';
-import io from 'socket.io-client';
+import socketIo from 'socket.io-client';
 
 import app from '../app';
 import '../bin/www';
@@ -9,7 +9,7 @@ import { transporter } from '../config/nodemailer'
 import { doBeforeAll, doBeforeEach, populateUsers } from './seeders/testHooks';
 import { seedUsers, seedGroups, tokens, generateAuth } from './seeders/seed';
 
-const socket = io('http://localhost');
+const socket = socketIo('http://localhost');
 
 describe('PostIt API routes: ', () => {
   doBeforeAll();
@@ -956,6 +956,37 @@ describe('PostIt API routes: ', () => {
         })
     });
 
+    it('PATCH /api/v1/group/:groupid/info should return error if group name is longer than 25 characters', (done) => {
+      request(app)
+        .patch(`/api/v1/group/${seedGroups[0].id}/info`)
+        .set('x-auth', generateAuth(seedUsers.registered[0].id))
+        .send({ name: 'this is an extremely long group name'})
+        .expect(400)
+        .end((err, res) => {
+          if (err) {
+            return done(err);
+          }
+          expect(res.body.error).toBe('Group name too long');
+          done();
+        })
+    });
+
+    it('PATCH /api/v1/group/:groupid/info should return error if group description is longer than 70 characters', (done) => {
+      request(app)
+        .patch(`/api/v1/group/${seedGroups[0].id}/info`)
+        .set('x-auth', generateAuth(seedUsers.registered[0].id))
+        .send({ name: 'my group name',
+          description: 'This group description is just so long that it would definitely generate an error from the server'})
+        .expect(400)
+        .end((err, res) => {
+          if (err) {
+            return done(err);
+          }
+          expect(res.body.error).toBe('Group description too long');
+          done();
+        })
+    });
+
     it('PATCH /api/v1/group/:groupid/info should update group info', (done) => {
       request(app)
         .patch(`/api/v1/group/${seedGroups[0].id}/info`)
@@ -991,6 +1022,22 @@ describe('PostIt API routes: ', () => {
   });
 
   describe('Catch blocks', () => {
+    it('POST /api/v1/group/:groupid/remove should return 500 error for server failure', (done) => {
+      User.findAndCountAll = () => Promise.reject();
+      const groupId = seedGroups[1].id;
+      request(app)
+        .get(`/api/v1/group/${groupId}/users?members=false`)
+        .set('x-auth', generateAuth(seedUsers.registered[2].id))
+        .expect(500)
+        .end((err, res) => {
+          if (err) {
+            return done(err);
+          }
+          expect(res.body.error).toBe('Internal server error');
+          done();
+        })
+    });
+
     it('POST /api/v1/group/:groupid/remove should return 500 error for server failure to delete group', (done) => {
       Group.prototype.destroy = () => Promise.reject(1);
       const groupId = seedGroups[1].id;
@@ -1083,24 +1130,6 @@ describe('PostIt API routes: ', () => {
       });
     });
 
-    // it('POST /api/v1/group/:groupid/message should...', (done) => {
-    //   transporter.sendMail = () => Promise.reject(1);
-    //   const groupId = seedGroups[1].id
-    //   request(app)
-    //     .post(`/api/v1/group/${groupId}/message`)
-    //     .send({
-    //       content: 'Second message',
-    //       priority: 'urgent'
-    //     })
-    //     .set('x-auth', generateAuth(seedUsers.registered[2].id))
-    //     .end((err, res) => {
-    //       if (err) {
-    //         return done(err);
-    //       }
-    //       done();
-    //     })
-    // });
-
     it('/api/v1/group route returns error 500 when database query fails', (done) => {
       Group.findOne = () => Promise.reject(1);
       const token = generateAuth(seedUsers.registered[2].id);
@@ -1159,6 +1188,7 @@ describe('PostIt API routes: ', () => {
         .get('/api/v1/docs')
         .expect(200)
         .end((err, res) => {
+          console.log(typeof res.body);
           expect(res.body).toNotBeA('JSON');
           done();
         });

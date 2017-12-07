@@ -61,6 +61,7 @@ app.use(favicon(path.join(__dirname, '../client/public/images/favicon.ico')));
 const publicPath = path.join(__dirname, '../client/public/');
 const indexPath = path.resolve(__dirname, publicPath, 'index.html');
 const docPath = path.join(__dirname, '../docs');
+const docIndexPath = path.join(__dirname, '../docs', 'index.html');
 
 app.use('/api/v1/docs', express.static(docPath));
 
@@ -69,9 +70,9 @@ app.use('/', express.static(publicPath));
 // Require our routes
 require('./routes')(app);
 
-app.get('/api/v1/docs', (req, res) => {
-  res.sendFile(path.join(__dirname, '../docs', 'index.html'));
-});
+app.get('/api/v1/docs', (req, res) =>
+  res.sendFile(docIndexPath)
+);
 
 app.get('/api/*', (req, res) => res.status(404).send({
   error: 'Route not found',
@@ -80,8 +81,8 @@ app.post('/api/*', (req, res) => res.status(404).send({
   error: 'Route not found',
 }));
 
-app.get('*', (req, res) => {
-  res.sendFile(indexPath);
-});
+app.get('*', (req, res) =>
+  res.sendFile(indexPath)
+);
 
 export default app;

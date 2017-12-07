@@ -7,12 +7,12 @@
     "node": "6.10.2"
   },
   "scripts": {
-    "start": "babel-node server/bin/www.js",
+    "start": "babel-node server/bin/www",
     "build": "webpack --config ./webpack.deployment.config.js --progress --colors",
     "client-start": "webpack-dev-server progress --colors",
     "prod:start": "export NODE_ENV=production || SET \"NODE_ENV=production\" && npm start",
     "prod:build-start": "npm run build && npm run prod:start",
-    "dev:start": "babel-node server/bin/www.js",
+    "dev:start": "babel-node server/bin/www",
     "dev:watch": "nodemon --ignore tests/ --exec \"npm run dev:start\"",
     "dev:start-template": "nodemon -e scss -x .js --ignore template/public/js, --exec \"npm run build-css & npm run build-template-js & npm start\"",
     "dev:build-template": "nodemon -e scss --ignore template/public/js --exec \"npm run build-css & npm run build-template-js\"",
@@ -94,6 +94,7 @@
     "socket.io-client": "^2.0.3",
     "style-loader": "^0.18.2",
     "toastr": "^2.1.2",
+    "validatorjs": "^3.13.6",
     "webpack": "^3.4.1",
     "webpack-dev-middleware": "^1.12.0",
     "webpack-dev-server": "^2.6.1",
