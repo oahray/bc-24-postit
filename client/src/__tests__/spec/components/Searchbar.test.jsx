@@ -17,8 +17,6 @@ const funcs = {
   searchUsers: jest.fn(),
 }
 
-console.log(io);
-
 // Add spies for relevant functions/methods
 const searchUsersSpy = jest.spyOn(funcs, 'searchUsers');
 

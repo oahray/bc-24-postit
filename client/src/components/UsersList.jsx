@@ -11,7 +11,7 @@ import UserInfoModal from '../components/UserInfoModal';
  */
 const UsersList = props => (
   <li className="grey">
-    <ul class="collapsible" id="group-user-list" data-collapsible="accordion">
+    <ul className="collapsible" id="group-user-list" data-collapsible="accordion">
       <li>
         <div className={`collapsible-header main-background-color
         white-text valign-wrapper group-users-header`}>

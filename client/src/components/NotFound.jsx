@@ -5,16 +5,16 @@ import { connect } from 'react-redux';
 /**
  * @class
  */
-class NotFound extends Component {
+export class NotFound extends Component {
   /**
    * @returns {Object | function | null} redirects or
    * does nothing based on current route
    */
   render() {
     if (this.props.verifyAuthLoading) {
-      return null;
-    } else if (!this.props.match.path === '*') {
-      return this.props.history.goBack();
+      return <div>{null}</div>;
+    } else if (this.props.match.path !== '*') {
+      return <div>{this.props.history.goBack()}</div>;
     }
     return (<Redirect to='/' />);
   }

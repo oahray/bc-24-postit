@@ -33,30 +33,28 @@ export class EditProfile extends Component {
   }
 
   /**
-   * @function componentWillMount
-   * @description A component life-cycle method
-   * that fires before component mounts
-   * @returns {undefined}
-   */
-  componentWillMount() {
-
-  }
-
-  /**
    * @function componentDidMount
    * @description A component life-cycle method
    * that fires when component mounts
    * @returns {undefined}
    */
   componentDidMount() {
-    setTimeout(() => {
-      $('.materialboxed').materialbox();
-    }, 800);
+    $('.materialboxed').materialbox();
     this.setState({
       about: this.props.user.about,
       email: this.props.user.email,
       imageUrl: this.props.user.imageUrl
     });
+  }
+
+  /**
+   * @function componentDidUpdate
+   * @description A component life-cycle method
+   * that fires after component updates
+   * @returns {undefined}
+   */
+  componentDidUpdate() {
+    $('.materialboxed').materialbox();
   }
 
   /** @function edit

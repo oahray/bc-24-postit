@@ -68,7 +68,7 @@ export class SearchResult extends Component {
     });
     socket.on('Removed from group', ({ user, group }) => {
       if (group.id === this.groupId) {
-        if (user.id === this.props.user.id) {
+        if (this.props.user && user.id === this.props.user.id) {
           return this.props.history.push('/');
         }
         this.updateUsersList();

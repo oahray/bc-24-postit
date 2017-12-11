@@ -3,6 +3,12 @@
 # POSTIT
 Postit is a simple applicaton that helps you connect with friends. Create groups to suit your style, add friends, write messages, and post it!
 
+## TABLE OF CONTENTS
+- [API Documentation](#api-documentation)
+
+## API DOCUMENTATION
+
+The documentation for the Postit API can be found [here.](https://postit-ray.herokuapp.com/api/v1/docs)
 
 ## FEATURES
 
@@ -20,10 +26,6 @@ To use Postit, you would need:
   - [PostgreSQL](https://www.postgresql.org/). 
   - Other dependencies are listed in the package.json and should be installed with `npm install` on the command line.
   - Environment variables defined in a `.env` file. You can find a `.sample.env` file in the repository root to guide you on setting up your `.env` file.
-
-## API DOCUMENTATION
-
-The documentation for the Postit API can be found [here.](https://postit-ray.herokuapp.com/api/v1/docs)
 
 ## HOW TO CONTRIBUTE
 

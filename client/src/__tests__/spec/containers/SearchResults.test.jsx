@@ -89,7 +89,7 @@ const setup = (user, group, grpUsers, results, failed=false) => {
     },
     match: {
       params: {
-        groupid: 5
+        groupid: 7
       }
     },
     // Action creators
@@ -108,6 +108,16 @@ describe('SearchResults component', () => {
     expect(wrapper.length).toBe(1);
     expect(getMessagesSpy).toHaveBeenCalledTimes(1);
     expect(inPageSpy).toHaveBeenCalledTimes(1);
+  });
+
+  test('updates in real-time response to socket events', () => {
+    const wrapper = setup(currentUser, selectedGroup, [], []);
+    mockServer.on('connection', (socket) => {
+      socket.emit('Added to group', ({ group: selectedGroup}));
+      
+      socket.emit('Removed from group', ({ user: currentUser, group: selectedGroup }));
+    });
+    expect(getUsersSpy).toHaveBeenCalledTimes(3);
   });
 
   test('renders error when user does not belong to the group', () => {

@@ -14,6 +14,13 @@ const currentUser = {
   imageUrl: ''
 };
 
+const selectedGroup = {
+  id: 5,
+  name: 'my first group',
+  description: '',
+  type: 'public'
+};
+
 const actionCreators = {
   logout: jest.fn(),
   getGroupList: jest.fn(),
@@ -45,17 +52,10 @@ const setup = (user, isLoggedIn, inGroupPage) => {
       type: 'private'
     }],
     inGroupPage,
-    selectedGroup: {
-      id: 5,
-      name: 'my first group',
-      description: '',
-      type: 'public'
-    },
+    selectedGroup,
     history: actionCreators.history,
     // Action creators
-    logout: actionCreators.logout,
-    getGroupList: actionCreators.getGroupList,
-    searchUsers: actionCreators.searchUsers
+    ...actionCreators
   };
   return shallow(<SideNav {...props} />);
 }
@@ -68,19 +68,14 @@ describe('SideNav', () => {
 
   test('renders without crashing when authenticated user has no profile image', () => {
     const wrapper = setup(currentUser, true, false);
-    expect(wrapper.find('.side-nav .my-list-item a').length).toBeGreaterThan(0);
-
     mockServer.on('connection', (socket) => {
-      socket.emit('Added to group', ({ user: currentUser }));
-      expect(getGroupListSpy).toBeCalled();
+      socket.emit('Added to group', ({user: currentUser}));
 
-      socket.emit('Added to group', ({ user: currentUser }));
-      expect(getGroupListSpy).toBeCalled();
-  
       socket.emit('Removed from group', ({ user: currentUser }))
-      expect(getGroupListSpy).toBeCalled();
     });
+    expect(wrapper.find('.side-nav .my-list-item a').length).toBeGreaterThan(0);
   });
+
 
   test('renders search bar when authenticated user has a profile image', () => {
     currentUser.imageUrl = '/images/no-pic.png';
