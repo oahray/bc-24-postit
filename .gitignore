@@ -1,7 +1,7 @@
 .DS_Store
 .nyc_output/
 .vscode/
-bin/
+/bin/
 coverage/
 node_modules/
 playground/

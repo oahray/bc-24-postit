@@ -1,23 +1,23 @@
 import React from 'react';
 import ConfirmModal from './ConfirmModal';
 
-const ProfileEditor = (props) =>
+const ProfileEditor = props =>
   (<div className="edit-profile-card col s12 m8 offset-m2 z-depth-1">
-    <h5 className="page-header center">Edit Profile</h5>
+    <h5 className="page-header editor-header center">Edit Profile</h5>
     <form className="">
       <div className="input-field col s12"
         id="">
-        <input className="s12" autoFocus
+        <input id="edit-about" className="s12" autoFocus
           value={props.state.about} onChange={event =>
             props.onInputChange(event, 'about')} />
-        <label className="active" for="first_name2">About</label>
+        <label className="active" htmlFor="edit-about">About</label>
       </div>
 
       <div className="input-field col s12">
-        {<input className="s12" value={props.state.email}
+        {<input id="edit-email" className="s12" value={props.state.email}
           onChange={event =>
             props.onInputChange(event, 'email')} />}
-        <label className="active" for="first_name2">Email</label>
+        <label className="active" htmlFor="edit-email">Email</label>
       </div>
 
       <div className="col s12 row">
@@ -25,7 +25,7 @@ const ProfileEditor = (props) =>
           <span className="left" id="change-pic-text">
             Change your profile picture
           </span>
-          <span className=' pointer valign-wrapper'
+          <span className='pointer valign-wrapper'
           id="remove-pic-text">
             <ConfirmModal modalId="del-image-modal"
             triggerLabel="or remove it" callback={props.removeImage}

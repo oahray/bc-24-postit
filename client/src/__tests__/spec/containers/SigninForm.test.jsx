@@ -74,10 +74,9 @@ describe('Signin form', () => {
     const event = { preventDefault: jest.fn() };
     const wrapper = setup(false, false, false);
     const form = wrapper.find('.signin-form');
-
     form.simulate('submit', event);
 
-    expect(signinSpy).toBeCalled();
+    expect(signinSpy).toHaveBeenCalledTimes(1);
   });
 
   test('should disable submit button when request is processing', () => {

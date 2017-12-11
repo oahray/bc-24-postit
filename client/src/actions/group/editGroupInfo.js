@@ -70,7 +70,7 @@ export const editGroupInfo = (groupId, name, description, type, token) =>
     dispatch(getGroupList(token));
   })
   .catch((err) => {
-    toastr.info(err.response.data.error);
+    toastr.error(err.response.data.error);
     return dispatch(editGroupFailure(err.response.data.error));
   });
 };

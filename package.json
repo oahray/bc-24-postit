@@ -7,12 +7,12 @@
     "node": "6.10.2"
   },
   "scripts": {
-    "start": "babel-node server/bin/www.js",
+    "start": "babel-node server/bin/www",
     "build": "webpack --config ./webpack.deployment.config.js --progress --colors",
     "client-start": "webpack-dev-server progress --colors",
     "prod:start": "export NODE_ENV=production || SET \"NODE_ENV=production\" && npm start",
     "prod:build-start": "npm run build && npm run prod:start",
-    "dev:start": "babel-node server/bin/www.js",
+    "dev:start": "babel-node server/bin/www",
     "dev:watch": "nodemon --ignore tests/ --exec \"npm run dev:start\"",
     "dev:start-template": "nodemon -e scss -x .js --ignore template/public/js, --exec \"npm run build-css & npm run build-template-js & npm start\"",
     "dev:build-template": "nodemon -e scss --ignore template/public/js --exec \"npm run build-css & npm run build-template-js\"",
@@ -23,8 +23,9 @@
     "test-watch": "nodemon --exec \"npm test\"",
     "jest": "jest",
     "jest-coverage": "jest --coverage",
-    "jest-watch": "jest --watch --coverage",
-    "e2e-test": "nightwatch -t tests/acceptance/signin.js",
+    "jest-watch": "jest --watchAll --coverage",
+    "e2e-server": "export NODE_ENV=e2e && npm start",
+    "e2e-test": "export NODE_ENV=e2e && npm run migrate:undo:all && npm run migrate && sequelize db:seed:all && nightwatch -t tests/acceptance/",
     "e2e-watch": "nodemon --exec \"npm run e2e-test\"",
     "heroku-postbuild": "webpack --config ./webpack.deployment.config.js --progress --colors",
     "migrate": "sequelize db:migrate --config server/config/config.js",
@@ -93,6 +94,7 @@
     "socket.io-client": "^2.0.3",
     "style-loader": "^0.18.2",
     "toastr": "^2.1.2",
+    "validatorjs": "^3.13.6",
     "webpack": "^3.4.1",
     "webpack-dev-middleware": "^1.12.0",
     "webpack-dev-server": "^2.6.1",
@@ -115,7 +117,7 @@
     "jest-localstorage-mock": "^2.1.0",
     "mocha": "^3.4.2",
     "mocha-lcov-reporter": "^1.3.0",
-    "mock-socket": "^7.1.0",
+    "mock-socket.io": "^1.1.0",
     "nightwatch": "^0.9.16",
     "node-sass": "^4.5.3",
     "nodemailer-mock": "^1.3.8",
@@ -140,7 +142,10 @@
     ],
     "setupTestFrameworkScriptFile": "./client/src/__config__/setup.js",
     "collectCoverageFrom": [
-      "client/src/**/*.{js|jsx}"
+      "client/src/**/*.{js|jsx}",
+      "!client/src/index.js",
+      "!client/src/store/index.js",
+      "!client/src/__config__/setup.js"
     ],
     "moduleFileExtensions": [
       "js",

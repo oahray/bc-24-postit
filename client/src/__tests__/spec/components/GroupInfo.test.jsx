@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { mount, shallow } from 'enzyme';
-import { mock, middlewares, mockStore } from '../../../__mocks__/mockConfig';
+import { shallow } from 'enzyme';
+import { mock, mockStore } from '../../../__mocks__/mockConfig';
 import GroupInfo from '../../../components/GroupInfo';
 
 describe('GroupInfo component', () => {

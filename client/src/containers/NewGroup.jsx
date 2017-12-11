@@ -8,7 +8,7 @@ import { createNewGroup, resetCreateGroupStatus } from '../actions';
 /**
  * @class
  */
-class NewGroup extends Component {
+export class NewGroup extends Component {
   /**
    * @constructor
    * @param {Object} props
@@ -16,7 +16,7 @@ class NewGroup extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      myGroups: {},
+      // myGroups: {},
       name: '',
       description: '',
       type: 'public'
@@ -66,18 +66,18 @@ class NewGroup extends Component {
       <div className='new-group-page'>
         <h5 className='page-header center'>Create New Group</h5>
         <div className='new-group-content row'>
-          <form className='row col s10 offset-s1 m8 offset-m2'
+          <form className='new-group-form row col s10 offset-s1 m8 offset-m2'
           onSubmit={this.onFormSubmit}>
-            <Input s={12} label="Group Name" data-length="20"
+            <input className="new-group-name s12" label="Group Name" data-length="20"
             autoFocus value={this.state.name} required
             onChange={event => this.setState({ name: event.target.value })} />
 
-            <Input s={12} label="Group description" data-length="70"
+            <input className="new-group-desc s12" label="Group description" data-length="70"
             value={this.state.description} onChange={event =>
               this.setState({ description: event.target.value })} />
 
             <Row>
-              <Input s={12} type='select' label="Group Privacy Type"
+              <Input id="new-group-type" s={12} type='select' label="Group Privacy Type"
               defaultValue='public' onChange={event =>
                 this.setState({ type: event.target.value })}>
                 <option value='public'>Public</option>

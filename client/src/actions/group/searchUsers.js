@@ -110,15 +110,15 @@ export const addUserToGroup = (username, groupid,
         'x-auth': token
       }
     })
-      .then((response) => {
-        dispatch(addUserSuccess(response));
-        toastr.info(`${response.data.message}`);
-        dispatch(updateSearchResult());
-      })
-      .catch((err) => {
-        toastr.error(`${err.response.data.message}`);
-        dispatch(addUserFailure(err.response.data.error));
-      });
+    .then((response) => {
+      dispatch(addUserSuccess(response));
+      toastr.info(`${response.data.message}`);
+      updateSearchResult();
+    })
+    .catch((err) => {
+      toastr.error(`${err.response.data.message}`);
+      dispatch(addUserFailure(err.response.data.error));
+    });
   };
 
 

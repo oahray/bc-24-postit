@@ -3,6 +3,7 @@ import * as groupsController from '../controllers/groups';
 import authenticate from '../middleware/authenticate';
 import isGroupMember from '../middleware/isGroupMember';
 import isValidUsername from '../middleware/isValidUsername';
+import isValidEmail from '../middleware/isValidEmail';
 import isTaken from '../middleware/isTaken';
 
 module.exports = (app) => {
@@ -11,8 +12,8 @@ module.exports = (app) => {
   }));
 
   // User routes
-  app.post('/api/v1/user/signup', isValidUsername, isTaken,
-   usersController.signup);
+  app.post('/api/v1/user/signup', isValidUsername,
+  isValidEmail, isTaken, usersController.signup);
 
   app.post('/api/v1/user/signin', isValidUsername,
     usersController.signin);
@@ -30,9 +31,6 @@ module.exports = (app) => {
   usersController.changePassword);
 
   app.patch('/api/v1/user/me/edit', authenticate, usersController.editProfile);
-
-  // app.post('/api/user/deactivate', authenticate, isValidUsername,
-  // usersController.deactivate);
 
   // Group routes
   app.post('/api/v1/group', authenticate, groupsController.create);

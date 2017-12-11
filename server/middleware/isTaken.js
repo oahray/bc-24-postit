@@ -11,11 +11,7 @@ import { User } from '../models';
  * or undefined if next is called
  */
 const isTaken = (req, res, next) => {
-  if (!req.body.email) {
-    return res.status(400).send({
-      error: 'Email is required.'
-    });
-  } else if (!req.body.password || !req.body.password.trim()) {
+  if (!req.body.password || !req.body.password.trim()) {
     return res.status(400).send({
       error: 'Password is required.'
     });

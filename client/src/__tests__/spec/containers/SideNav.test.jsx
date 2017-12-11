@@ -14,6 +14,13 @@ const currentUser = {
   imageUrl: ''
 };
 
+const selectedGroup = {
+  id: 5,
+  name: 'my first group',
+  description: '',
+  type: 'public'
+};
+
 const actionCreators = {
   logout: jest.fn(),
   getGroupList: jest.fn(),
@@ -45,40 +52,30 @@ const setup = (user, isLoggedIn, inGroupPage) => {
       type: 'private'
     }],
     inGroupPage,
-    selectedGroup: {
-      id: 5,
-      name: 'my first group',
-      description: '',
-      type: 'public'
-    },
+    selectedGroup,
     history: actionCreators.history,
     // Action creators
-    logout: actionCreators.logout,
-    getGroupList: actionCreators.getGroupList,
-    searchUsers: actionCreators.searchUsers
+    ...actionCreators
   };
   return shallow(<SideNav {...props} />);
 }
 
 describe('SideNav', () => {
   test('renders without crashing when user is not unauthenticated', () => {
-    const wrapper = setup(currentUser,false, false);
+    const wrapper = setup(null, false, false);
     wrapper.find('.side-nav .my-list-item .docs-link').simulate('click');
   });
 
   test('renders without crashing when authenticated user has no profile image', () => {
     const wrapper = setup(currentUser, true, false);
+    mockServer.on('connection', (socket) => {
+      socket.emit('Added to group', ({user: currentUser}));
+
+      socket.emit('Removed from group', ({ user: currentUser }))
+    });
     expect(wrapper.find('.side-nav .my-list-item a').length).toBeGreaterThan(0);
-
-    mockServer.start();
-    mockServer.emit('Added to group', ({ user: currentUser }));
-    expect(getGroupListSpy).toBeCalled();
-
-    mockServer.emit('Removed from group', ({ user: currentUser }))
-    expect(getGroupListSpy).toBeCalled();
-
-    mockServer.stop();
   });
+
 
   test('renders search bar when authenticated user has a profile image', () => {
     currentUser.imageUrl = '/images/no-pic.png';

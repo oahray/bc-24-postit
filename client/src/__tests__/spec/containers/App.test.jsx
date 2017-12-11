@@ -14,6 +14,13 @@ const currentUser = {
   imageUrl: ''
 };
 
+const selectedGroup = {
+  id: 7,
+  name: 'my new group',
+  description: '',
+  type: 'public'
+};
+
 const actionCreators = {
   verifyAuth: jest.fn(),
 };
@@ -34,12 +41,30 @@ const setup = (user, authLoading, isLoggedIn) => {
 describe('App', () => {
   test('renders without crashing', () => {
     const wrapper = setup(currentUser,false, true);
+    mockServer.on('connection', (socket) => {
+      socket.emit('Added to group', ({
+        user: currentUser,
+        group: selectedGroup,
+        addedBy: 'jim'
+      }));
+
+      socket.emit('Removed from group', ({
+        user: currentUser,
+        group: selectedGroup,
+        removedBy: 'jim'
+      }))
+    });
     expect(wrapper.length).toBe(1);
   });
 
   test('renders preloader when verifying user', () => {
     localStorage.__STORE__['x-auth'] = 'hdjhdidiydiuydi';
     const wrapper = setup(currentUser, true, false);
+    mockServer.on('connection', (socket) => {
+      socket.emit('Added to group', ({user: { id: 2 }}));
+
+      socket.emit('Removed from group', ({ user: { id: 2 }}))
+    });
     expect(wrapper.length).toBe(1);
   });
 });

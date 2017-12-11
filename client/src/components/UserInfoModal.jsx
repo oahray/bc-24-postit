@@ -10,9 +10,7 @@ export default class ConfirmModal extends Component {
    * @returns {undefined}
    */
   componentDidMount() {
-    setTimeout(() => {
-      $('.materialboxed').materialbox();
-    }, 500);
+    $('.materialboxed').materialbox();
   }
 
   /**

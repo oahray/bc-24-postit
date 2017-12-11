@@ -17,7 +17,7 @@ import { isUserGroup } from '../helpers/groupFunctions';
 /**
  * Group component
  */
-class Group extends Component {
+export class Group extends Component {
   /**
    * constructor
    * @param {object} props
@@ -35,6 +35,7 @@ class Group extends Component {
     this.groupId = Number(this.props.match.params.groupid);
     this.messageList = document.querySelector('.message-list');
     this.onTypeText = this.onTypeText.bind(this);
+    this.onSelectChange = this.onSelectChange.bind(this);
     this.sendMessage = this.sendMessage.bind(this);
     this.newMessageAdded = this.newMessageAdded.bind(this);
     this.closeMessage = this.closeMessage.bind(this);
@@ -82,13 +83,14 @@ class Group extends Component {
       }
     });
     socket.on('Added to group', ({ group }) => {
-      if (this.props.selectedGroup.id &&
+      if (this.props.selectedGroup &&
         group.id === this.props.selectedGroup.id) {
         this.updateUsersList();
       }
     });
     socket.on('Removed from group', ({ user, group }) => {
-      if (group.id === this.props.selectedGroup.id) {
+      if (this.props.selectedGroup &&
+        group.id === this.props.selectedGroup.id) {
         if (user.id === this.props.user.id) {
           return this.props.history.push('/');
         }
@@ -96,7 +98,7 @@ class Group extends Component {
       }
     });
     socket.on('Left group', ({ user, group }) => {
-      if (group.id === this.props.selectedGroup.id) {
+      if (this.props.selectedGroup && group.id === this.props.selectedGroup.id) {
         if (user.id === this.props.user.id) {
           return this.props.history.push('/');
         }
@@ -170,6 +172,17 @@ class Group extends Component {
    */
   onTypeText(event) {
     this.setState({ content: event.target.value });
+  }
+
+  /**
+   * @function onSelectChange
+   * @summary fires with onchange select event
+   * as user chooses a select value
+   * @param {object} event
+   * @returns {undefined} and sets state
+   */
+  onSelectChange(event) {
+    this.setState({ priority: event.target.value });
   }
 
   /**
@@ -276,16 +289,13 @@ class Group extends Component {
    * @returns {undefined}
    */
   updateDimensions() {
-    if (window.innerWidth < 600) {
-      this.setState({
+    return window.innerWidth < 600 ?
+      (this.setState({
         smallScreen: true
-      });
-    } else {
-      this.initMaterial();
-      this.setState({
+      })) :
+      (this.setState({
         smallScreen: false
-      });
-    }
+      }, () => this.initMaterial()));
   }
 
   /**
@@ -344,7 +354,7 @@ class Group extends Component {
       inputValue={this.state.content}
       onInputChange={this.onTypeText}
       selectValue={this.state.priority}
-      onSelectChange={event => this.setState({ priority: event.target.value })}
+      onSelectChange={this.onSelectChange}
       onButtonClick={this.sendMessage} />
     );
 

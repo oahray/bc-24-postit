@@ -16,7 +16,7 @@ export default class MessageList extends Component {
         <ul id="messages-ul" className="collection">
           {this.props.groupMessages.map(message => (<li
             className='collection-item message-item truncate'
-            id={`${message.groupid}${message.id}`}
+            id={`message-${message.groupid}${message.id}`}
             key={message.id}
             onClick={() => this.props.openMessage(message)}>
             <strong> {message.sender}</strong>

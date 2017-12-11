@@ -25,7 +25,7 @@ export class SideNav extends Component {
   componentDidMount() {
     $('.button-collapse').sideNav();
     $('.collapsible').collapsible();
-    $('.side-nav .my-list-item a').on('click', () => {
+    $('.side-nav .my-list-item a').click(() => {
       const windowSize = $(window).width();
       if (windowSize < 993) {
         $('.button-colllapse').sideNav('hide');

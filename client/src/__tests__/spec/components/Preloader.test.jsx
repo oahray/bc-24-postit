@@ -5,6 +5,7 @@ import Preloader from '../../../components/Preloader'
 
 describe('Preloader component', () => {
   test('should mount', () => {
-    mount(<Preloader message="Please wait..."/>)
+    const wrapper = mount(<Preloader message="Please wait..."/>);
+    expect(wrapper.length).toBe(1);
   });
 });

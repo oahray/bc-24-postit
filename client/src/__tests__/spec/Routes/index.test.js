@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import RouteHandler from '../../routes';
+import RouteHandler from '../../../routes';
 
 let props;
 

@@ -41,6 +41,7 @@ module.exports = {
     extensions: ['.js', '.jsx']
   },
   devtool: '#eval-source-map',
+
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),

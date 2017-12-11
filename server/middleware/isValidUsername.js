@@ -1,6 +1,6 @@
 export default (req, res, next) => {
   let username = req.body.username;
-  if (!username) {
+  if (!username || !username.trim()) {
     return res.status(400).send({
       error: 'Username is required.'
     });
