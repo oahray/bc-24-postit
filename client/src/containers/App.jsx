@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-// import { Button } from 'react-materialize';
 import toastr from 'toastr';
+
 import RouteHandler from '../routes';
 import { verifyAuth } from '../actions';
 import Preloader from '../components/Preloader';
-// import Footer from '../components/Footer';
 
 /**
  * @class
@@ -46,24 +45,10 @@ export class App extends Component {
     });
   }
 
-  // showState() {
-  //   console.log('App props: ', this.props);
-  //   console.log('App state: ', this.props.store.getState());
-  // }
-
   /**
    * @returns {undefined}
    */
   render() {
-    // const stateButton = (
-    //   <div className='center'>
-    //     <a className="btn white main-color"
-    //     onClick={() => this.showState()}>
-    //       Show State
-    //     </a>
-    //   </div>
-    // );
-
     if (this.props.verifyAuthLoading) {
       return (<Preloader message='Preparing your space...'/>);
     }
@@ -73,8 +58,6 @@ export class App extends Component {
     return (
       <div class='main'>
         { appRoutes }
-        {/* { stateButton } */}
-        {/* <Footer /> */}
       </div>
     );
   }

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { resetPassword } from '../actions';
 
+
 /**
  * @class
  */

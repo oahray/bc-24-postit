@@ -20,13 +20,13 @@ const isTaken = (req, res, next) => {
   const email = req.body.email.trim().toLowerCase();
   User.findOne({ where: { username } }).then((user) => {
     if (user) {
-      return res.status(400).send({
+      return res.status(409).send({
         error: 'Username already taken.'
       });
     }
     User.findOne({ where: { email } }).then((updatedUser) => {
       if (updatedUser) {
-        return res.status(400).send({
+        return res.status(409).send({
           error: 'Email already taken.'
         });
       }

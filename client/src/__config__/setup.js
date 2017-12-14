@@ -7,6 +7,7 @@ import { mockServer } from '../__mocks__/mockConfig';
 configure({ adapter: new Adapter() });
 
 window.$ = $;
+global.jQuery = $;
 $.prototype.sideNav = () => { };
 $.prototype.material_select = () => { };
 $.prototype.modal = () => { };

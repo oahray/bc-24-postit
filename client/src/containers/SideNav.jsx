@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
+
 import { logout, getGroupList, searchUsers } from '../actions';
 import SearchBar from '../components/SearchBar';
 

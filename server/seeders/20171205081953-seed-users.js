@@ -13,7 +13,7 @@ module.exports = {
       }], {});
     */
     queryInterface.bulkInsert('Users', [{
-      id: 1,
+      id: 11,
       username: 'jon',
       email: 'jonsnow@test.com',
       password: bcrypt.hashSync('testpassword',
@@ -23,13 +23,23 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date()
     }, {
-      id: 2,
+      id: 12,
       username: 'arya',
       email: 'arya@test.com',
       password: bcrypt.hashSync('testpassword',
         bcrypt.genSaltSync(10), null),
       about: 'A girl has no name',
       imageUrl: 'https://res.cloudinary.com/oahray/image/upload/v1511999198/oubuhvhhjuxcksj70gqs.jpg',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }, {
+      id: 13,
+      username: 'bran',
+      email: 'bran@test.com',
+      password: bcrypt.hashSync('testpassword',
+        bcrypt.genSaltSync(10), null),
+      about: 'The 3-eyed raven',
+      imageUrl: '',
       createdAt: new Date(),
       updatedAt: new Date()
     }], {}),

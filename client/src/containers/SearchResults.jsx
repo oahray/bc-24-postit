@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+// import io from 'socket.io-client';
+
 import {
   getGroupMessages, inGroupPage, clearUserSearchTerm,
   searchUsers, addUserToGroup, removeUser, getGroupUsers, leaveGroup
@@ -209,7 +211,7 @@ export class SearchResult extends Component {
         to a group you do not belong to</h5>);
     }
     if (this.props.groupMessagesLoading || !this.props.selectedGroup) {
-      return (<h5>Please wait...</h5>);
+      return (<h5 className="center">Please wait...</h5>);
     }
     return (
       <div className='row search-page col s12 m8'>

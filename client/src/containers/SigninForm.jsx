@@ -60,7 +60,7 @@ export class SigninForm extends Component {
         <form className='row signin-form col s12 m10 offset-m1 z-depth-2'
         onSubmit={this.onFormSubmit}>
           <h4 className="page-header center"> Sign in </h4>
-          <div className='form-error-message center red-text bold'>
+          <div className="form-error-message center red-text bold">
             <h6>{this.props.signinFailed ? this.props.signinError : null}</h6>
           </div>
           <div className='input-field col s12'>
@@ -69,25 +69,25 @@ export class SigninForm extends Component {
             <label for="signin-username">Username</label>
           </div>
           <br/>
-          <div className='input-field col s12'>
+          <div className="input-field col s12">
             <i class="material-icons prefix">lock</i>
-            <input type="password" id='signin-password'
+            <input type="password" id="signin-password"
             value={this.state.password} required onChange={event =>
               this.setState({ password: event.target.value })} />
             <label for="signin-password">Password</label>
           </div>
-          <div className='center' >
+          <div className="center" >
             <button className={`btn signin-btn white main-text-color waves-teal 
             ${this.props.signinLoading ?
               'disabled' : ''}`}
-              type='submit'> {this.props.signinLoading
+              type="submit"> {this.props.signinLoading
               ? 'Please wait...' : 'Submit'} </button>
           </div>
           <div className='center'>
             <p className='center'> Forgot Password?
-            <Link to="/forgotpassword">Recover Password</Link></p>
+            <Link to="/forgotpassword"> Recover Password </Link></p>
             <p className='center'> New to Postit?
-            <Link to="/signup">Sign Up</Link></p>
+            <Link to="/signup"> Sign Up </Link></p>
           </div>
         </form>
       </div>

@@ -318,9 +318,7 @@ export const sendMessage = (req, res) => {
       bcc.length > 0) {
       transporter.sendMail(
         helperOptions('You', bcc, subject, html))
-        .then(() => {
-          console.log('The message email was sent: ');
-        })
+        .then(() => { })
         .catch(() => { });
     }
     const io = req.app.get('io');
@@ -434,11 +432,12 @@ export const editInfo = (req, res) => {
   }
 
   const update = {
-    name: name.trim()
+    name: name.trim(),
+    description
   };
 
   if (!description) {
-    update.description = null;
+    update.description = '';
   }
 
   if (type === 'public' || type === 'private') {
