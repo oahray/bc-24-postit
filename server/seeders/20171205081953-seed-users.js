@@ -13,7 +13,7 @@ module.exports = {
       }], {});
     */
     queryInterface.bulkInsert('Users', [{
-      id: 1,
+      id: 11,
       username: 'jon',
       email: 'jonsnow@test.com',
       password: bcrypt.hashSync('testpassword',
@@ -23,7 +23,7 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date()
     }, {
-      id: 2,
+      id: 12,
       username: 'arya',
       email: 'arya@test.com',
       password: bcrypt.hashSync('testpassword',

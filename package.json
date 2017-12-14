@@ -25,7 +25,7 @@
     "jest-coverage": "jest --coverage",
     "jest-watch": "jest --watchAll --coverage",
     "e2e-server": "export NODE_ENV=e2e && npm start",
-    "e2e-test": "export NODE_ENV=e2e && npm run migrate:undo:all && npm run migrate && sequelize db:seed:all && nightwatch -t tests/acceptance/",
+    "e2e-test": "export NODE_ENV=e2e && npm run migrate:undo:all && npm run migrate && sequelize db:seed:all && nightwatch -t tests/acceptance/04-groups.test.js",
     "e2e-watch": "nodemon --exec \"npm run e2e-test\"",
     "heroku-postbuild": "webpack --config ./webpack.deployment.config.js --progress --colors",
     "migrate": "sequelize db:migrate --config server/config/config.js",
@@ -140,6 +140,14 @@
     "setupFiles": [
       "jest-localstorage-mock"
     ],
+    "coverageThreshold": {
+      "global": {
+        "statements": 100,
+        "branches": 95,
+        "functions": 100,
+        "lines": 100
+      }
+    },
     "setupTestFrameworkScriptFile": "./client/src/__config__/setup.js",
     "collectCoverageFrom": [
       "client/src/**/*.{js|jsx}",

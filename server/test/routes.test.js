@@ -59,7 +59,7 @@ describe('PostIt API routes: ', () => {
           email: 'testuser3@example.com',
           password: 'mypassword',
         })
-        .expect(400)
+        .expect(409)
         .end((err, res) => {
           if (err) {
             return done(err);
@@ -69,7 +69,7 @@ describe('PostIt API routes: ', () => {
           done();
         });
     });
-    it('POST /api/v1/user/signup route should not create user with same username twice', (done) => {
+    it('POST /api/v1/user/signup route should not create user with same email twice', (done) => {
       request(app)
         .post('/api/v1/user/signup')
         .send({
@@ -77,7 +77,7 @@ describe('PostIt API routes: ', () => {
           email: 'testuser2@example.com',
           password: 'mypassword',
         })
-        .expect(400)
+        .expect(409)
         .end((err, res) => {
           if (err) {
             return done(err);

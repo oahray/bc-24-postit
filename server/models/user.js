@@ -78,7 +78,7 @@ export default (sequelize, DataTypes) => {
     }
   });
 
-  User.beforeBulkCreate((users, options) =>
+  User.beforeBulkCreate(users =>
     users.forEach((user) => {
       user.password = bcrypt.hashSync(user.get('password'),
       bcrypt.genSaltSync(10), null);

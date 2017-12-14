@@ -68,13 +68,21 @@ export class NewGroup extends Component {
         <div className='new-group-content row'>
           <form className='new-group-form row col s10 offset-s1 m8 offset-m2'
           onSubmit={this.onFormSubmit}>
-            <input className="new-group-name s12" label="Group Name" data-length="20"
-            autoFocus value={this.state.name} required
-            onChange={event => this.setState({ name: event.target.value })} />
+            <div className='input-field col s12'>
+              <input type="text" id="new-group-name"
+              className="new-group-name s12" data-length="20"
+              autoFocus value={this.state.name} required
+              onChange={event => this.setState({ name: event.target.value })} />
+              <label for="#new-group-name">Group Name</label>
+            </div>
 
-            <input className="new-group-desc s12" label="Group description" data-length="70"
-            value={this.state.description} onChange={event =>
-              this.setState({ description: event.target.value })} />
+            <div className='input-field col s12'>
+              <input type="text" id="new-group-desc"
+              className="new-group-desc s12" data-length="70"
+              value={this.state.description} onChange={event =>
+                this.setState({ description: event.target.value })} />
+              <label for="new-group-desc">Group Description</label>
+            </div>
 
             <Row>
               <Input id="new-group-type" s={12} type='select' label="Group Privacy Type"

@@ -225,6 +225,20 @@
             <a href="#authentication" class="toc-h1 toc-link" data-title="Authentication">Authentication</a>
           </li>
           <li>
+            <a href="#endpoints-summary" class="toc-h1 toc-link" data-title="Endpoints Summary">Endpoints Summary</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#user-routes" class="toc-h2 toc-link" data-title="Endpoints Summary">User routes</a>
+                  </li>
+                  <li>
+                    <a href="#recovery-routes" class="toc-h2 toc-link" data-title="Endpoints Summary">Recovery routes</a>
+                  </li>
+                  <li>
+                    <a href="#group-routes" class="toc-h2 toc-link" data-title="Endpoints Summary">Group routes</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
             <a href="#users" class="toc-h1 toc-link" data-title="Users">Users</a>
               <ul class="toc-list-h2">
                   <li>
@@ -244,6 +258,9 @@
                   </li>
                   <li>
                     <a href="#get-all-messages-sent-by-current-user" class="toc-h2 toc-link" data-title="Users">Get all messages sent by current user</a>
+                  </li>
+                  <li>
+                    <a href="#edit-user-profile" class="toc-h2 toc-link" data-title="Users">Edit User Profile</a>
                   </li>
                   <li>
                     <a href="#request-password-reset" class="toc-h2 toc-link" data-title="Users">Request password reset</a>
@@ -266,10 +283,7 @@
                     <a href="#remove-user-from-group" class="toc-h2 toc-link" data-title="Groups">Remove user from group</a>
                   </li>
                   <li>
-                    <a href="#get-group-users" class="toc-h2 toc-link" data-title="Groups">Get group users</a>
-                  </li>
-                  <li>
-                    <a href="#search-users-that-are-not-members-of-a-group" class="toc-h2 toc-link" data-title="Groups">Search users that are not members of a group</a>
+                    <a href="#get-users-by-group" class="toc-h2 toc-link" data-title="Groups">Get users by group</a>
                   </li>
                   <li>
                     <a href="#send-message-to-group" class="toc-h2 toc-link" data-title="Groups">Send message to group</a>
@@ -291,23 +305,32 @@
           <li>
             <a href="#errors" class="toc-h1 toc-link" data-title="Errors">Errors</a>
           </li>
+          <li>
+            <a href="#contributing" class="toc-h1 toc-link" data-title="Contributing">Contributing</a>
+          </li>
       </div>
         <ul class="toc-footer">
-            <li><a href='#'>Sign Up for a Developer Key</a></li>
-            <li><a href='https://github.com/tripit/slate'>Documentation Powered by Slate</a></li>
+            <li><a href='/'>Go to Home</a></li>
+            <li><a href='https://github.com/oahray'>©Postit API by Oare Arene</a></li>
         </ul>
     </div>
     <div class="page-wrapper">
       <div class="dark-box"></div>
       <div class="content">
         <h1 id='introduction'>Introduction</h1>
-<p>Welcome to the Postit API! You can use our API to access Postit API endpoints, with which you can create and access user and group data in our database.</p>
+<p>Welcome to the Postit v1 API! You can use our API to access Postit API endpoints, with which you can create and access user and group data in our database.</p>
+
+<p>Postit API is organized around REST and uses HTTP verbs and response codes that most clients are familiar with. All requests must be formatted as Content-Type: application/json (except where noted). All responses are also formatted JSON, encoded in the UTF-8 character encoding (Content-Type: application/json; charset=utf-8). The Accept header will be ignored for all requests.</p>
+
+<blockquote>
+<p><strong>Base API Endpoint</strong></p>
+
+<p>https://postit-ray.herokuapp.com/api/v1</p>
+</blockquote>
 
 <p>The API is implemented in Javascript(Nodejs). You can view code examples in the dark area to the right.</p>
-
-<p>This API documentation page was created with <a href="https://github.com/tripit/slate">Slate</a>.</p>
 <h1 id='authentication'>Authentication</h1>
-<p>Some endpoints (routes) in this API are protected. They require a token which you can get when you signup as a new user or login as existing user.</p>
+<p>Some endpoints (routes) in this API are protected. They require an access token (x-auth) in the request headers. You can get this token when you signup as a new user or login as existing user.</p>
 
 <blockquote>
 <p>To authorize requests to protected endpoints, set the x-auth token in the request header like this::</p>
@@ -317,15 +340,203 @@
 <span class="p">}</span>
 </code></pre>
 <aside class="notice">
-You must replace <code>YOUR_AUTH_TOKEN</code> with your personal API key.
+You must replace <code>YOUR_AUTH_TOKEN</code> with your own x-auth token, which the server sends back in the response headers when you sign up or sign in.
 </aside>
+<h1 id='endpoints-summary'>Endpoints Summary</h1>
+<p>Base Endpoint : <code>https://postit-ray.herokuapp.com/api/v1</code></p>
+
+<p>The endpoints for the listed routes should be appended to the base endpoint to get the full endpoint.</p>
+<h3 id='user-routes'>User routes</h3>
+<table><thead>
+<tr>
+<th>Feature</th>
+<th>Request type</th>
+<th>Endpoint</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Sign up</td>
+<td>POST</td>
+<td>&#39;/user/signup&#39;</td>
+</tr>
+<tr>
+<td>Sign in</td>
+<td>POST</td>
+<td>&#39;/user/signin&#39;</td>
+</tr>
+<tr>
+<td>Your Profile</td>
+<td>GET</td>
+<td>&#39;/user/me&#39;</td>
+</tr>
+<tr>
+<td>Get all Users</td>
+<td>GET</td>
+<td>&#39;/user/all&#39;</td>
+</tr>
+<tr>
+<td>Get all User Groups</td>
+<td>GET</td>
+<td>&#39;/user/me/groups&#39;</td>
+</tr>
+<tr>
+<td>Get all User Messages</td>
+<td>GET</td>
+<td>&#39;/user/me/messages&#39;</td>
+</tr>
+<tr>
+<td>Change User Password</td>
+<td>PATCH</td>
+<td>&#39;/user/me/password&#39;</td>
+</tr>
+<tr>
+<td>Edit User Profile</td>
+<td>PATCH</td>
+<td>&#39;/user/me/edit&#39;</td>
+</tr>
+</tbody></table>
+<h3 id='recovery-routes'>Recovery routes</h3>
+<table><thead>
+<tr>
+<th>Feature</th>
+<th>Request type</th>
+<th>Endpoint</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Forgot password</td>
+<td>POST</td>
+<td>&#39;/forgotpassword&#39;</td>
+</tr>
+<tr>
+<td>Reset Password</td>
+<td>POST</td>
+<td>&#39;/resetpassword&#39;</td>
+</tr>
+</tbody></table>
+<h3 id='group-routes'>Group routes</h3>
+<table><thead>
+<tr>
+<th>Feature</th>
+<th>Request type</th>
+<th>Endpoint</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Create new group</td>
+<td>POST</td>
+<td>&#39;/group&#39;</td>
+</tr>
+<tr>
+<td>Add User to Group</td>
+<td>POST</td>
+<td>&#39;/group/:groupid/user&#39;)</td>
+</tr>
+<tr>
+<td>Remove User from Group</td>
+<td>DELETE</td>
+<td>&#39;/group/:groupid/user&#39;</td>
+</tr>
+<tr>
+<td>Leave Group</td>
+<td>POST</td>
+<td>&#39;/group/:groupid/leave&#39;</td>
+</tr>
+<tr>
+<td>Get Group Users</td>
+<td>GET</td>
+<td>&#39;/group/:groupid/users&#39;</td>
+</tr>
+<tr>
+<td>Post New Message</td>
+<td>GET</td>
+<td>&#39;/group/:groupid/message&#39;,</td>
+</tr>
+<tr>
+<td>Get Group Messages</td>
+<td>GET</td>
+<td>&#39;/group/:groupid/messages&#39;</td>
+</tr>
+<tr>
+<td>Mark a message as read</td>
+<td>POST</td>
+<td>&#39;/group/:groupid/message/:messageid/read&#39;</td>
+</tr>
+<tr>
+<td>Edit group info</td>
+<td>PATCH</td>
+<td>&#39;/group/:groupid/info&#39;</td>
+</tr>
+<tr>
+<td>Delete Group</td>
+<td>POST</td>
+<td>&#39;/group/:groupid/remove&#39;</td>
+</tr>
+</tbody></table>
 <h1 id='users'>Users</h1>
-<aside class="notice">Some routes here are protected. You would need to set the x-auth token in the request header to access them</aside>
+<p>To use the API, you would have to signup as a user. Users can create groups, search other users and add them to their groups, leave groups they have beeen added to, delete groups they have created, and send messages in groups to which they belong.
+<aside class="notice">Some routes here are protected. You would need to set the x-auth token in the request header to access them</aside></p>
 <h2 id='signup-new-user'>Signup new user</h2>
-<p>Allows new users create accounts and access protected rooutes</p>
+<p>This endpoint allows new users create accounts and access protected routes. If the request is successful, the response body would contain a message that welcomes the new user, and a user object that contains user data. This user object contains:</p>
+<h3 id='request-parameters'>Request Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>username</td>
+<td>required</td>
+</tr>
+<tr>
+<td>email</td>
+<td>required</td>
+</tr>
+<tr>
+<td>password</td>
+<td>required</td>
+</tr>
+</tbody></table>
+<h3 id='response-parameters'>Response Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>A unique API generated integer that identifies the user resource on the database.</td>
+</tr>
+<tr>
+<td>username</td>
+<td>The username used to sign up.</td>
+</tr>
+<tr>
+<td>email</td>
+<td>The email used to sign up</td>
+</tr>
+<tr>
+<td>about</td>
+<td>Defaults to <code>New to Postit</code>. This can be changed later.</td>
+</tr>
+<tr>
+<td>imageUrl</td>
+<td>Defaults to an empty string.</td>
+</tr>
+<tr>
+<td>createdAt</td>
+<td>Time the user record was created in the database.</td>
+</tr>
+<tr>
+<td>updatedAt</td>
+<td>Last time the user record was modified.</td>
+</tr>
+</tbody></table>
 
 <blockquote>
-<p>Request:</p>
+<p>Sample Request:</p>
 </blockquote>
 <pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
   <span class="s2">"username"</span><span class="p">:</span> <span class="s2">"daenerys"</span>
@@ -334,7 +545,7 @@ You must replace <code>YOUR_AUTH_TOKEN</code> with your personal API key.
 <span class="p">}</span>
 </code></pre>
 <blockquote>
-<p>Response body:</p>
+<p>Sample Response Body:</p>
 </blockquote>
 <pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
   <span class="s2">"message"</span><span class="p">:</span> <span class="s2">"welcome daenerys"</span><span class="p">,</span>
@@ -343,13 +554,14 @@ You must replace <code>YOUR_AUTH_TOKEN</code> with your personal API key.
     <span class="s2">"username"</span><span class="p">:</span> <span class="s2">"daenerys"</span><span class="p">,</span>
     <span class="s2">"email"</span><span class="p">:</span> <span class="s2">"theunburnt@asoiaf.com"</span><span class="p">,</span>
     <span class="s2">"about"</span><span class="p">:</span> <span class="s2">"New to Postit"</span><span class="p">,</span>
-    <span class="s2">"createdAt"</span><span class="p">:</span> <span class="p">,</span>
-    <span class="s2">"udatedAt"</span><span class="p">:</span> <span class="p">,</span>
+    <span class="s2">"imageUrl"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+    <span class="s2">"createdAt"</span><span class="p">:</span> <span class="s2">"2017-11-16T08:45:49.906Z"</span><span class="p">,</span>
+    <span class="s2">"udatedAt"</span><span class="p">:</span> <span class="s2">"2017-11-16T08:45:49.906Z"</span><span class="p">,</span>
   <span class="p">}</span>
 <span class="p">}</span>
 </code></pre><h3 id='request'>Request</h3>
 <ul>
-<li>Endpoint: POST: <code>api/user/signup</code></li>
+<li>Endpoint: POST: <code>https://postit-ray.herokuapp.com/api/v1/user/signup</code></li>
 <li>Body <code>(application/json)</code></li>
 </ul>
 <h3 id='response'>Response</h3>
@@ -358,8 +570,29 @@ You must replace <code>YOUR_AUTH_TOKEN</code> with your personal API key.
 <li>Body <code>(application/json)</code></li>
 <li>Returns x-auth token in header</li>
 </ul>
+<h3 id='errors'>Errors</h3>
+<p>The possible errors from the signup request are:
+- 400 (Bad request)
+- 500 (Internal server error)
+See the <a href="#errors">errors</a> section for the complete list of error codes that the api server could return, and what they mean.</p>
 <h2 id='signin-user'>Signin user</h2>
-<p>Allows existing users signin</p>
+<p>This endpoint allows existing users signin with the same credentials with which they created their accounts. The signin process returns an x-auth token in the header which identifies and authorizes the user to access other endpoints that require authentication. It returns a message welcoming the user, and a user object with the same fields as in the <a href="#signup-new-user">Signup response</a>.</p>
+<h3 id='request-parameters-2'>Request Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>username</td>
+<td>required</td>
+</tr>
+<tr>
+<td>password</td>
+<td>required</td>
+</tr>
+</tbody></table>
 
 <blockquote>
 <p>Request:</p>
@@ -379,13 +612,13 @@ You must replace <code>YOUR_AUTH_TOKEN</code> with your personal API key.
     <span class="s2">"username"</span><span class="p">:</span> <span class="s2">"brandon"</span><span class="p">,</span>
     <span class="s2">"email"</span><span class="p">:</span> <span class="s2">"branstark@winterfell.com"</span><span class="p">,</span>
     <span class="s2">"about"</span><span class="p">:</span> <span class="s2">"I am the past and future"</span><span class="p">,</span>
-    <span class="s2">"createdAt"</span><span class="p">:</span> <span class="p">,</span>
-    <span class="s2">"udatedAt"</span><span class="p">:</span> <span class="p">,</span>
+    <span class="s2">"createdAt"</span><span class="p">:</span> <span class="s2">"2017-11-16T08:45:49.906Z"</span><span class="p">,</span>
+    <span class="s2">"udatedAt"</span><span class="p">:</span> <span class="s2">"2017-11-16T08:45:49.906Z"</span><span class="p">,</span>
   <span class="p">}</span>
 <span class="p">}</span>
 </code></pre><h3 id='request-2'>Request</h3>
 <ul>
-<li>Endpoint: POST: <code>api/user/signin</code></li>
+<li>Endpoint: POST: <code>https://postit-ray.herokuapp.com/api/v1/user/signin</code></li>
 <li>Body <code>(application/json)</code></li>
 </ul>
 <h3 id='response-2'>Response</h3>
@@ -395,7 +628,7 @@ You must replace <code>YOUR_AUTH_TOKEN</code> with your personal API key.
 <li>Returns x-auth token in header</li>
 </ul>
 <h2 id='current-user'>Current User</h2>
-<p>Get current user details</p>
+<p>This endpoint returns the current user details. The response is pretty much the same as in <a href="#signup-new-user">Signup</a> and Signup responses. Unlike the Signin and Signup enpoints, however, this requires authentication. Add your x-auth token to the request header.</p>
 
 <blockquote>
 <p>Sample JSON response: </p>
@@ -406,13 +639,14 @@ You must replace <code>YOUR_AUTH_TOKEN</code> with your personal API key.
     <span class="s2">"username"</span><span class="p">:</span> <span class="s2">"littlefinger"</span><span class="p">,</span>
     <span class="s2">"email"</span><span class="p">:</span> <span class="s2">"baelishpetr@thethreefingers.com"</span><span class="p">,</span>
     <span class="s2">"about"</span><span class="p">:</span> <span class="s2">"Knowledge is power"</span><span class="p">,</span>
-    <span class="s2">"createdAt"</span><span class="p">:</span> <span class="p">,</span>
-    <span class="s2">"udatedAt"</span><span class="p">:</span> <span class="p">,</span>
+    <span class="s2">"imageUrl"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+    <span class="s2">"createdAt"</span><span class="p">:</span> <span class="s2">"2017-11-16T08:45:49.906Z"</span><span class="p">,</span>
+    <span class="s2">"udatedAt"</span><span class="p">:</span> <span class="s2">"2017-11-16T08:45:49.906Z"</span><span class="p">,</span>
   <span class="p">}</span>
 <span class="p">}</span>
 </code></pre><h3 id='request-3'>Request</h3>
 <ul>
-<li>Endpoint: POST: <code>api/user/me</code></li>
+<li>Endpoint: GET: `https://postit-ray.herokuapp.com/api/v1/user/edit</li>
 <li>Requires authentication</li>
 </ul>
 <h3 id='response-3'>Response</h3>
@@ -421,42 +655,33 @@ You must replace <code>YOUR_AUTH_TOKEN</code> with your personal API key.
 <li>Body <code>(application/json)</code></li>
 </ul>
 <h2 id='get-all-users'>Get all users</h2>
-<p>Get an array of all users</p>
+<p>Get an array of all users. For privacy reasons, user details returned in this request is limited to the user <code>id</code>, <code>username</code> and <code>about</code>. Requires authentication.</p>
 
 <blockquote>
 <p>Sample JSON response:</p>
 </blockquote>
 <pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
-    <span class="s2">"users"</span><span class="p">:</span> <span class="p">[</span>
-        <span class="p">{</span>
-            <span class="s2">"id"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-            <span class="s2">"username"</span><span class="p">:</span> <span class="s2">"testuser1"</span><span class="p">,</span>
-            <span class="s2">"email"</span><span class="p">:</span> <span class="s2">"testuser1@example.com"</span><span class="p">,</span>
-            <span class="s2">"about"</span><span class="p">:</span> <span class="s2">"New to Postit"</span><span class="p">,</span>
-            <span class="s2">"createdAt"</span><span class="p">:</span> <span class="s2">"2017-09-13T13:54:21.821Z"</span><span class="p">,</span>
-            <span class="s2">"updatedAt"</span><span class="p">:</span> <span class="s2">"2017-09-13T13:54:21.821Z"</span>
-        <span class="p">},</span>
-        <span class="p">{</span>
-            <span class="s2">"id"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
-            <span class="s2">"username"</span><span class="p">:</span> <span class="s2">"testuser2"</span><span class="p">,</span>
-            <span class="s2">"email"</span><span class="p">:</span> <span class="s2">"testuser2@example.com"</span><span class="p">,</span>
-            <span class="s2">"about"</span><span class="p">:</span> <span class="s2">"New to Postit"</span><span class="p">,</span>
-            <span class="s2">"createdAt"</span><span class="p">:</span> <span class="s2">"2017-09-13T13:54:21.954Z"</span><span class="p">,</span>
-            <span class="s2">"updatedAt"</span><span class="p">:</span> <span class="s2">"2017-09-13T13:54:21.954Z"</span>
-        <span class="p">},</span>
-        <span class="p">{</span>
-            <span class="s2">"id"</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
-            <span class="s2">"username"</span><span class="p">:</span> <span class="s2">"ray"</span><span class="p">,</span>
-            <span class="s2">"email"</span><span class="p">:</span> <span class="s2">"ray@example.com"</span><span class="p">,</span>
-            <span class="s2">"about"</span><span class="p">:</span> <span class="s2">"New to Postit"</span><span class="p">,</span>
-            <span class="s2">"createdAt"</span><span class="p">:</span> <span class="s2">"2017-09-14T07:40:30.728Z"</span><span class="p">,</span>
-            <span class="s2">"updatedAt"</span><span class="p">:</span> <span class="s2">"2017-09-14T07:40:30.728Z"</span>
-        <span class="p">}</span>
-    <span class="p">]</span>
+  <span class="s2">"users"</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="s2">"id"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+      <span class="s2">"username"</span><span class="p">:</span> <span class="s2">"testuser1"</span><span class="p">,</span>
+      <span class="s2">"about"</span><span class="p">:</span> <span class="s2">"New to Postit"</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="s2">"id"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+      <span class="s2">"username"</span><span class="p">:</span> <span class="s2">"testuser2"</span><span class="p">,</span>
+      <span class="s2">"about"</span><span class="p">:</span> <span class="s2">""</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="s2">"id"</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+      <span class="s2">"username"</span><span class="p">:</span> <span class="s2">"ray"</span><span class="p">,</span>
+      <span class="s2">"about"</span><span class="p">:</span> <span class="s2">"I am awesome"</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
 <span class="p">}</span>
 </code></pre><h3 id='request-4'>Request</h3>
 <ul>
-<li>Endpoint: GET: <code>api/users/all</code></li>
+<li>Endpoint: GET: <code>https://postit-ray.herokuapp.com/api/v1/users/all</code></li>
 <li>Requires authentication</li>
 </ul>
 <h3 id='response-4'>Response</h3>
@@ -465,6 +690,8 @@ You must replace <code>YOUR_AUTH_TOKEN</code> with your personal API key.
 <li>Body <code>(application/json)</code></li>
 </ul>
 <h2 id='get-all-groups-the-current-user-belongs-to'>Get all groups the current user belongs to</h2>
+<p>This endpoint returns a list of the current user&#39;s groups for successful requests. Requires authentication.</p>
+
 <blockquote>
 <p>Sample JSON response:</p>
 </blockquote>
@@ -477,13 +704,7 @@ You must replace <code>YOUR_AUTH_TOKEN</code> with your personal API key.
       <span class="s2">"description"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
       <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"public"</span><span class="p">,</span>
       <span class="s2">"createdAt"</span><span class="p">:</span> <span class="s2">"2017-09-14T07:40:49.059Z"</span><span class="p">,</span>
-      <span class="s2">"updatedAt"</span><span class="p">:</span> <span class="s2">"2017-09-14T07:40:49.059Z"</span><span class="p">,</span>
-      <span class="s2">"UserGroup"</span><span class="p">:</span> <span class="p">{</span>
-          <span class="s2">"userId"</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
-          <span class="s2">"groupId"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-          <span class="s2">"createdAt"</span><span class="p">:</span> <span class="s2">"2017-09-14T07:40:49.502Z"</span><span class="p">,</span>
-          <span class="s2">"updatedAt"</span><span class="p">:</span> <span class="s2">"2017-09-14T07:40:49.502Z"</span>
-      <span class="p">}</span>
+      <span class="s2">"updatedAt"</span><span class="p">:</span> <span class="s2">"2017-09-14T07:40:49.059Z"</span>
     <span class="p">},</span>
     <span class="p">{</span>
       <span class="s2">"id"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
@@ -492,19 +713,13 @@ You must replace <code>YOUR_AUTH_TOKEN</code> with your personal API key.
       <span class="s2">"description"</span><span class="p">:</span> <span class="s2">"For fans of LOTR"</span><span class="p">,</span>
       <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"public"</span><span class="p">,</span>
       <span class="s2">"createdAt"</span><span class="p">:</span> <span class="s2">"2017-09-14T07:41:01.684Z"</span><span class="p">,</span>
-      <span class="s2">"updatedAt"</span><span class="p">:</span> <span class="s2">"2017-09-14T07:41:01.684Z"</span><span class="p">,</span>
-      <span class="s2">"UserGroup"</span><span class="p">:</span> <span class="p">{</span>
-          <span class="s2">"userId"</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
-          <span class="s2">"groupId"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
-          <span class="s2">"createdAt"</span><span class="p">:</span> <span class="s2">"2017-09-14T07:41:02.030Z"</span><span class="p">,</span>
-          <span class="s2">"updatedAt"</span><span class="p">:</span> <span class="s2">"2017-09-14T07:41:02.030Z"</span>
-      <span class="p">}</span>
+      <span class="s2">"updatedAt"</span><span class="p">:</span> <span class="s2">"2017-09-14T07:41:01.684Z"</span>
     <span class="p">}</span>
   <span class="p">]</span>
 <span class="p">}</span>
 </code></pre><h3 id='request-5'>Request</h3>
 <ul>
-<li>Endpoint: GET: <code>api/user/me/groups</code></li>
+<li>Endpoint: GET: <code>https://postit-ray.herokuapp.com/api/v1/user/me/groups</code></li>
 <li>Requires authentication</li>
 </ul>
 <h3 id='response-5'>Response</h3>
@@ -512,29 +727,63 @@ You must replace <code>YOUR_AUTH_TOKEN</code> with your personal API key.
 <li>Status: <code>200: OK</code></li>
 <li>Body <code>(application/json)</code></li>
 </ul>
-<h2 id='get-all-messages-sent-by-current-user'>Get all messages sent by current user</h2><pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+<h2 id='get-all-messages-sent-by-current-user'>Get all messages sent by current user</h2>
+<p>All the messages that the current user has sent can be gotten with this endpoint. This requires authentication.</p>
+<h4 id='response-parameters-2'>Response Parameters</h4>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>A unique API generated integer that identifies each message resource on the database.</td>
+</tr>
+<tr>
+<td>content</td>
+<td>Message content.</td>
+</tr>
+<tr>
+<td>priority</td>
+<td>Message priority, which is one of <code>normal</code>, <code>urgent</code> or <code>critical</code>.</td>
+</tr>
+<tr>
+<td>sender</td>
+<td>The username of the message sender</td>
+</tr>
+<tr>
+<td>readby</td>
+<td>String of usernames of users that have read the message.</td>
+</tr>
+<tr>
+<td>createdAt</td>
+<td>Time the user record was created in the database.</td>
+</tr>
+<tr>
+<td>updatedAt</td>
+<td>Last time the message record was modified.</td>
+</tr>
+</tbody></table>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
   <span class="s2">"messages"</span><span class="p">:</span> <span class="p">[</span>
     <span class="p">{</span>
       <span class="s2">"id"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
       <span class="s2">"content"</span><span class="p">:</span> <span class="s2">"Hello folks, this is important"</span><span class="p">,</span>
       <span class="s2">"priority"</span><span class="p">:</span> <span class="s2">"critical"</span><span class="p">,</span>
       <span class="s2">"sender"</span><span class="p">:</span> <span class="s2">"ray"</span><span class="p">,</span>
-      <span class="s2">"readBy"</span><span class="p">:</span> <span class="s2">"ray,sammy,tope,arya"</span><span class="p">,</span>
+      <span class="s2">"readBy"</span><span class="p">:</span> <span class="s2">"sammy,tope,arya"</span><span class="p">,</span>
       <span class="s2">"createdAt"</span><span class="p">:</span> <span class="s2">"2017-09-14T07:43:32.377Z"</span><span class="p">,</span>
-      <span class="s2">"updatedAt"</span><span class="p">:</span> <span class="s2">"2017-09-14T07:43:32.472Z"</span><span class="p">,</span>
-      <span class="s2">"groupId"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-      <span class="s2">"userId"</span><span class="p">:</span> <span class="mi">5</span>
+      <span class="s2">"groupId"</span><span class="p">:</span> <span class="mi">3</span>
     <span class="p">},</span>
     <span class="p">{</span>
       <span class="s2">"id"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
       <span class="s2">"content"</span><span class="p">:</span> <span class="s2">"hmmm"</span><span class="p">,</span>
       <span class="s2">"priority"</span><span class="p">:</span> <span class="s2">"normal"</span><span class="p">,</span>
       <span class="s2">"sender"</span><span class="p">:</span> <span class="s2">"ray"</span><span class="p">,</span>
-      <span class="s2">"readBy"</span><span class="p">:</span> <span class="s2">"ray,arya"</span><span class="p">,</span>
+      <span class="s2">"readBy"</span><span class="p">:</span> <span class="s2">"arya"</span><span class="p">,</span>
       <span class="s2">"createdAt"</span><span class="p">:</span> <span class="s2">"2017-09-14T07:50:59.679Z"</span><span class="p">,</span>
-      <span class="s2">"updatedAt"</span><span class="p">:</span> <span class="s2">"2017-09-14T07:50:59.891Z"</span><span class="p">,</span>
-      <span class="s2">"groupId"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-      <span class="s2">"userId"</span><span class="p">:</span> <span class="mi">5</span>
+      <span class="s2">"groupId"</span><span class="p">:</span> <span class="mi">3</span>
     <span class="p">}</span>
   <span class="p">]</span>
 <span class="p">}</span>
@@ -548,11 +797,57 @@ You must replace <code>YOUR_AUTH_TOKEN</code> with your personal API key.
 <li>Status: <code>200: OK</code></li>
 <li>Body <code>(application/json)</code></li>
 </ul>
+<h2 id='edit-user-profile'>Edit User Profile</h2>
+<p>This endpoint makes it possible for users to edit their profile details. Details that can be changed include <code>email</code>, <code>about</code> and <code>imageUrl</code> Currently, users cannot change their usernames.</p>
+<h3 id='request-parameters-3'>Request Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>email</td>
+<td>required</td>
+</tr>
+<tr>
+<td>about</td>
+<td>not required</td>
+</tr>
+<tr>
+<td>imageUrl</td>
+<td>not required</td>
+</tr>
+</tbody></table>
 
-<!-- ## Change user password
- -->
+<blockquote>
+<p>Sample JSON response: </p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="s2">"user"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">"id"</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
+    <span class="s2">"username"</span><span class="p">:</span> <span class="s2">"littlefinger"</span><span class="p">,</span>
+    <span class="s2">"email"</span><span class="p">:</span> <span class="s2">"baelishpetr@thethreefingers.com"</span><span class="p">,</span>
+    <span class="s2">"about"</span><span class="p">:</span> <span class="s2">"Knowledge is power"</span><span class="p">,</span>
+    <span class="s2">"imageUrl"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+    <span class="s2">"createdAt"</span><span class="p">:</span> <span class="s2">"2017-11-16T08:45:49.906Z"</span><span class="p">,</span>
+    <span class="s2">"udatedAt"</span><span class="p">:</span> <span class="s2">"2017-11-16T08:45:49.906Z"</span><span class="p">,</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre><h3 id='request-7'>Request</h3>
+<ul>
+<li>Endpoint: POST: <code>https://postit-ray.herokuapp.com/api/v1/user/me</code></li>
+<li>Requires authentication</li>
+</ul>
+<h3 id='response-7'>Response</h3>
+<ul>
+<li>Status: <code>200: OK</code></li>
+<li>Body <code>(application/json)</code></li>
+</ul>
 <h2 id='request-password-reset'>Request password reset</h2>
-<p>Existing users can request a password reset and get a reset email</p>
+<p>Existing users can request a password reset and get a reset email with a link. When clicked, the link takes the user to the react app reset page. </p>
+<h3 id='reset-link'>Reset link</h3>
+<p>The reset email contains a link that looks like <code>http://postit-ray.herokuapp.com/resetpassword?t=AjSBlpn1tmCLiRl8i8LEUMhloM5fzYM3HJua4k4pfIF0peQBQHHtMzz8z8mn</code>. The query parameter <code>t</code> represents the reset token that identifies the users when they go ahead to try to reset their passwords.</p>
 
 <blockquote>
 <p>Sample Request</p>
@@ -567,19 +862,19 @@ You must replace <code>YOUR_AUTH_TOKEN</code> with your personal API key.
 <pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
     <span class="s2">"message"</span><span class="p">:</span> <span class="s2">"An email with reset instructions has been sent to no-one@example.com"</span>
 <span class="p">}</span>
-</code></pre><h3 id='request-7'>Request</h3>
+</code></pre><h3 id='request-8'>Request</h3>
 <ul>
-<li>Endpoint: POST: <code>api/user/signup</code></li>
+<li>Endpoint: POST: <code>https://postit-ray.herokuapp.com/api/v1/resetpassword</code></li>
 <li>Body <code>(application/json)</code></li>
 </ul>
-<h3 id='response-7'>Response</h3>
+<h3 id='response-8'>Response</h3>
 <ul>
 <li>Status: <code>200: OK</code></li>
 <li>Body <code>(application/json)</code></li>
 <li>Sends recovery link to provided email if registered</li>
 </ul>
 <h2 id='reset-password'>Reset Password</h2>
-<p>Users who have already gotten a reset email, can go ahead to change their passwords, using the reset link as authentication. The reset hash expires after a few hours and can only be used once.</p>
+<p>Users who have already gotten a reset email, can go ahead to change their passwords, using the reset link as authentication. When making requests to this endpoint, simply copy the reset hash sent in the reset mail and attach to the <code>t</code>(token) request pararmeter of this endpoint. This reset hash expires after a six hours and can only be used once.</p>
 
 <blockquote>
 <p>Sample request: </p>
@@ -592,31 +887,91 @@ You must replace <code>YOUR_AUTH_TOKEN</code> with your personal API key.
 <p>Sample response:</p>
 </blockquote>
 <pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
-    <span class="s2">"message"</span><span class="p">:</span> <span class="s2">"Your password has been successfully reset."</span><span class="p">,</span>
-    <span class="s2">"user"</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">"id"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
-        <span class="s2">"username"</span><span class="p">:</span> <span class="s2">"arya"</span><span class="p">,</span>
-        <span class="s2">"email"</span><span class="p">:</span> <span class="s2">"no-one@example.com"</span><span class="p">,</span>
-        <span class="s2">"about"</span><span class="p">:</span> <span class="s2">"I am NO ONE"</span><span class="p">,</span>
-        <span class="s2">"createdAt"</span><span class="p">:</span> <span class="s2">"2017-09-08T18:26:12.944Z"</span><span class="p">,</span>
-        <span class="s2">"updatedAt"</span><span class="p">:</span> <span class="s2">"2017-09-09T22:52:30.814Z"</span>
-    <span class="p">}</span>
+  <span class="s2">"message"</span><span class="p">:</span> <span class="s2">"Your password has been successfully reset."</span><span class="p">,</span>
+  <span class="s2">"user"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">"id"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="s2">"username"</span><span class="p">:</span> <span class="s2">"arya"</span><span class="p">,</span>
+    <span class="s2">"email"</span><span class="p">:</span> <span class="s2">"no-one@example.com"</span><span class="p">,</span>
+    <span class="s2">"about"</span><span class="p">:</span> <span class="s2">"I am NO ONE"</span><span class="p">,</span>
+    <span class="s2">"createdAt"</span><span class="p">:</span> <span class="s2">"2017-09-08T18:26:12.944Z"</span><span class="p">,</span>
+    <span class="s2">"updatedAt"</span><span class="p">:</span> <span class="s2">"2017-09-09T22:52:30.814Z"</span>
+  <span class="p">}</span>
 <span class="p">}</span>
-</code></pre><h3 id='request-8'>Request</h3>
+</code></pre><h3 id='request-9'>Request</h3>
 <ul>
-<li>Endpoint: POST: <code>api/user/signup</code></li>
+<li>Endpoint: POST: <code>https://postit-ray.herokuapp.com/api/v1/resetpassword?t=&lt;RESET_HASH&gt;</code></li>
 <li>Body <code>(application/json)</code></li>
 </ul>
-<h3 id='response-8'>Response</h3>
+<h3 id='response-9'>Response</h3>
 <ul>
 <li>Status: <code>201: Created</code></li>
 <li>Body <code>(application/json)</code></li>
 <li>Returns x-auth token in header</li>
 </ul>
 <h1 id='groups'>Groups</h1>
+<p>Groups are communication channels that provide a platform for sharing messages amongst members. Groups can be either public or private. Currently, there is no difference in implementation. Expect huge updates soon.</p>
+
+<p>Besides the endpoint for creating new groups, other group endpoints require a groupid as a url parameter</p>
+
 <aside class="notice">All group routes are protected, and so require authentication. You must set the x-auth token in the header to access them</aside>
 <h2 id='create-new-group'>Create new group</h2>
-<p>A registered user can create a new group with this endpoint. The name property is required.</p>
+<p>A registered user can create a new group with this endpoint.</p>
+<h3 id='request-parameters'>Request Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>name</td>
+<td>required</td>
+</tr>
+<tr>
+<td>description</td>
+<td>not required</td>
+</tr>
+<tr>
+<td>type</td>
+<td>Groups are either public or private. This is required.</td>
+</tr>
+</tbody></table>
+<h3 id='response-parameters'>Response Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>A unique API generated integer that identifies the group resource on the database.</td>
+</tr>
+<tr>
+<td>name</td>
+<td>The name of the group.</td>
+</tr>
+<tr>
+<td>description</td>
+<td>Group description. Defaults to an empty string.</td>
+</tr>
+<tr>
+<td>type</td>
+<td>Group type. Defaults to <code>Public</code>.</td>
+</tr>
+<tr>
+<td>createdBy</td>
+<td>Username of the user that created the group.</td>
+</tr>
+<tr>
+<td>createdAt</td>
+<td>Time the group record was created in the database.</td>
+</tr>
+<tr>
+<td>updatedAt</td>
+<td>Last time the group record was modified.</td>
+</tr>
+</tbody></table>
 
 <blockquote>
 <p>Sample Request:</p>
@@ -644,7 +999,7 @@ You must replace <code>YOUR_AUTH_TOKEN</code> with your personal API key.
 <span class="p">}</span>
 </code></pre><h3 id='request'>Request</h3>
 <ul>
-<li>Endpoint: POST: <code>api/group</code></li>
+<li>Endpoint: POST: <code>https://postit-ray.herokuapp.com/api/v1/group</code></li>
 <li>Body <code>(application/json)</code></li>
 <li>Requires Authentication</li>
 </ul>
@@ -671,7 +1026,7 @@ You must replace <code>YOUR_AUTH_TOKEN</code> with your personal API key.
 <span class="p">}</span>
 </code></pre><h3 id='request-2'>Request</h3>
 <ul>
-<li>Endpoint: POST: <code>api/group/:groupid/user</code></li>
+<li>Endpoint: POST: <code>https://postit-ray.herokuapp.com/api/v1/group/:groupid/user</code></li>
 <li>Body <code>(application/json)</code></li>
 <li>Requires Authentication</li>
 </ul>
@@ -698,7 +1053,7 @@ You must replace <code>YOUR_AUTH_TOKEN</code> with your personal API key.
 <span class="p">}</span>
 </code></pre><h3 id='request-3'>Request</h3>
 <ul>
-<li>Endpoint: DELETE: <code>api/group/:groupid/user</code></li>
+<li>Endpoint: DELETE: <code>https://postit-ray.herokuapp.com/api/v1/group/:groupid/user</code></li>
 <li>Body <code>(application/json)</code></li>
 <li>Requires Authentication</li>
 <li>Only the group creator can make successfull requests to this endpoint</li>
@@ -708,8 +1063,10 @@ You must replace <code>YOUR_AUTH_TOKEN</code> with your personal API key.
 <li>Status: <code>201: Created</code></li>
 <li>Body <code>(application/json)</code></li>
 </ul>
-<h2 id='get-group-users'>Get group users</h2>
-<p>This returns a list of users that belong to a group.</p>
+<h2 id='get-users-by-group'>Get users by group</h2>
+<p>This returns a list of users based on a specified group. With this endpoint, you would get back by default a list of users in a group. If you wish to get a list of users not in a group, add <code>?members=false</code> query to the url, along with optional <code>username</code>, <code>offset</code> and <code>limit</code> parameters to further refine your search.</p>
+
+<p>The user search by group feature supports pagination.</p>
 
 <blockquote>
 <p>Sample JSON response</p>
@@ -757,18 +1114,13 @@ You must replace <code>YOUR_AUTH_TOKEN</code> with your personal API key.
 <span class="p">}</span>
 </code></pre><h3 id='request-4'>Request</h3>
 <ul>
-<li>Endpoint: GET: <code>api/group/:groupid/users</code></li>
+<li>Endpoint: 
+
+<ul>
+<li>Get group members: GET: <code>https://postit-ray.herokuapp.com/api/v1/group/:groupid/users</code></li>
+<li>Get non-members: GET: <code>https://postit-ray.herokuapp.com/api/v1/group/:groupid/users?members=false&amp;username=:username&amp;limit=:limit&amp;offset=:offset</code></li>
+</ul></li>
 <li>Requires Authentication</li>
-</ul>
-<h3 id='response-4'>Response</h3>
-<ul>
-<li>Status: <code>200: OK</code></li>
-<li>Body <code>(application/json)</code></li>
-</ul>
-<h2 id='search-users-that-are-not-members-of-a-group'>Search users that are not members of a group</h2><h3 id='request-5'>Request</h3>
-<ul>
-<li>Endpoint: GET: <code>api/group/:groupid/notmembers?username=bran&amp;limit=10&amp;offset=0</code></li>
-<li>Requires: Authentication</li>
 </ul>
 <h3 id='url-parameters'>URL parameters</h3>
 <table><thead>
@@ -783,6 +1135,8 @@ You must replace <code>YOUR_AUTH_TOKEN</code> with your personal API key.
 </tr>
 </tbody></table>
 <h3 id='query-parameters'>Query Parameters</h3>
+<p>These are the parameters expected when searching for non-members.</p>
+
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -793,20 +1147,13 @@ You must replace <code>YOUR_AUTH_TOKEN</code> with your personal API key.
 <tr>
 <td>username</td>
 <td>&quot;&quot;</td>
-<td>Search query.</td>
-</tr>
-<tr>
-<td>limit</td>
-<td></td>
-<td>Sets the number of results to return. If empty, returns the whole result.</td>
-</tr>
-<tr>
-<td>offset</td>
-<td>0</td>
-<td>Sets the number of results to skip.</td>
+<td>Search query. If empty, returns all users not in group.</td>
 </tr>
 </tbody></table>
-<h3 id='response-5'>Response</h3>
+
+<p>limit |  | Sets the number of results to return per page. If empty, returns the whole result.
+offset | 0 | Sets the number of results to skip.</p>
+<h3 id='response-4'>Response</h3>
 <ul>
 <li>Status: <code>200: OK</code></li>
 <li>Body <code>(application/json)</code></li>
@@ -818,7 +1165,8 @@ You must replace <code>YOUR_AUTH_TOKEN</code> with your personal API key.
 <p>Request:</p>
 </blockquote>
 <pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
-  <span class="s2">"content"</span><span class="p">:</span> <span class="s2">"In the beginning were the little children of the forest"</span>
+  <span class="s2">"content"</span><span class="p">:</span> <span class="s2">"In the beginning were the little children of the forest"</span><span class="p">,</span>
+  <span class="s2">"priority"</span><span class="p">:</span> <span class="s2">"normal"</span>
 <span class="p">}</span>
 
 </code></pre>
@@ -831,20 +1179,70 @@ You must replace <code>YOUR_AUTH_TOKEN</code> with your personal API key.
     <span class="s2">"content"</span><span class="p">:</span> <span class="s2">"In the beginning were the little children of the forest"</span><span class="p">,</span>
     <span class="s2">"priority"</span><span class="p">:</span> <span class="s2">"normal"</span><span class="p">,</span>
     <span class="s2">"sender"</span><span class="p">:</span> <span class="s2">"ray"</span><span class="p">,</span>
-    <span class="s2">"readBy"</span><span class="p">:</span> <span class="s2">"ray"</span><span class="p">,</span>
+    <span class="s2">"readBy"</span><span class="p">:</span> <span class="s2">"aite"</span><span class="p">,</span>
     <span class="s2">"updatedAt"</span><span class="p">:</span> <span class="s2">"2017-09-17T15:46:01.612Z"</span><span class="p">,</span>
-    <span class="s2">"createdAt"</span><span class="p">:</span> <span class="s2">"2017-09-17T15:46:00.884Z"</span><span class="p">,</span>
-    <span class="s2">"userId"</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
-    <span class="s2">"groupId"</span><span class="p">:</span> <span class="mi">1</span>
+    <span class="s2">"createdAt"</span><span class="p">:</span> <span class="s2">"2017-09-17T15:46:00.884Z"</span>
   <span class="p">}</span>
 <span class="p">}</span>
-</code></pre><h3 id='request-6'>Request</h3>
+</code></pre><h3 id='request-parameters-2'>Request Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>content</td>
+<td>required</td>
+</tr>
+<tr>
+<td>priority</td>
+<td>Should be of <code>normal</code>, <code>urgent</code> or <code>critical</code>. This parameter is not required and defaults to <code>normal</code> if not provided.</td>
+</tr>
+</tbody></table>
+<h4 id='response-parameters-2'>Response Parameters</h4>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>A unique API generated integer that identifies each message resource on the database.</td>
+</tr>
+<tr>
+<td>content</td>
+<td>Message content.</td>
+</tr>
+<tr>
+<td>priority</td>
+<td>Message priority, which is one of <code>normal</code>, <code>urgent</code> or <code>critical</code>.</td>
+</tr>
+<tr>
+<td>sender</td>
+<td>The username of the message sender</td>
+</tr>
+<tr>
+<td>readby</td>
+<td>String of usernames of users that have read the message.</td>
+</tr>
+<tr>
+<td>createdAt</td>
+<td>Time the user record was created in the database.</td>
+</tr>
+<tr>
+<td>updatedAt</td>
+<td>Last time the message record was modified.</td>
+</tr>
+</tbody></table>
+<h3 id='request-5'>Request</h3>
 <ul>
-<li>Endpoint: POST: <code>api/group/:groupid/message</code></li>
+<li>Endpoint: POST: <code>https://postit-ray.herokuapp.com/api/v1/group/:groupid/message</code></li>
 <li>Body <code>(application/json)</code></li>
 <li>Requires Authentication</li>
 </ul>
-<h3 id='response-6'>Response</h3>
+<h3 id='response-5'>Response</h3>
 <ul>
 <li>Status: <code>200: OK</code></li>
 <li>Body <code>(application/json)</code></li>
@@ -890,13 +1288,13 @@ You must replace <code>YOUR_AUTH_TOKEN</code> with your personal API key.
     <span class="p">}</span>
   <span class="p">]</span>
 <span class="p">}</span>
-</code></pre><h3 id='request-7'>Request</h3>
+</code></pre><h3 id='request-6'>Request</h3>
 <ul>
-<li>Endpoint: GET: <code>api/group/:groupid/messages</code></li>
+<li>Endpoint: GET: <code>https://postit-ray.herokuapp.com/api/v1/group/:groupid/messages</code></li>
 <li>Body <code>(application/json)</code></li>
 <li>Requires Authentication</li>
 </ul>
-<h3 id='response-7'>Response</h3>
+<h3 id='response-6'>Response</h3>
 <ul>
 <li>Status: <code>200: OK</code></li>
 <li>Body <code>(application/json)</code></li>
@@ -928,13 +1326,13 @@ If description is absent, it is set to null. If no type is specified, it is left
         <span class="s2">"updatedAt"</span><span class="p">:</span> <span class="s2">"2017-09-24T15:30:18.084Z"</span>
     <span class="p">}</span>
 <span class="p">}</span>
-</code></pre><h3 id='request-8'>Request</h3>
+</code></pre><h3 id='request-7'>Request</h3>
 <ul>
-<li>Endpoint: PATCH: <code>api/group/:groupid/info</code></li>
+<li>Endpoint: PATCH: <code>https://postit-ray.herokuapp.com/api/v1/group/:groupid/info</code></li>
 <li>Body <code>(application/json)</code></li>
 <li>Requires Authentication</li>
 </ul>
-<h3 id='response-8'>Response</h3>
+<h3 id='response-7'>Response</h3>
 <ul>
 <li>Status: <code>201: OK</code></li>
 <li>Body <code>(application/json)</code></li>
@@ -948,13 +1346,13 @@ If description is absent, it is set to null. If no type is specified, it is left
 <pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
   <span class="s2">"message"</span><span class="p">:</span> <span class="s2">"robb has left the group"</span>
 <span class="p">}</span>
-</code></pre><h3 id='request-9'>Request</h3>
+</code></pre><h3 id='request-8'>Request</h3>
 <ul>
 <li>Endpoint: POST: <code>api/group/:groupid/leave</code></li>
 <li>Body <code>(application/json)</code></li>
 <li>Requires Authentication</li>
 </ul>
-<h3 id='response-9'>Response</h3>
+<h3 id='response-8'>Response</h3>
 <ul>
 <li>Status: <code>201: OK</code></li>
 <li>Body <code>(application/json)</code></li>
@@ -969,16 +1367,18 @@ If description is absent, it is set to null. If no type is specified, it is left
 <pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
   <span class="s2">"message"</span><span class="p">:</span> <span class="s2">"Group successfully deleted"</span>
 <span class="p">}</span>
-
-<span class="err">###</span> <span class="nx">Request</span>
-<span class="o">-</span> <span class="nx">Endpoint</span><span class="p">:</span> <span class="nx">POST</span><span class="p">:</span> <span class="s2">`api/group/:groupid/remove`</span>
-<span class="o">-</span> <span class="nx">Body</span> <span class="s2">`(application/json)`</span>
-<span class="o">-</span> <span class="nx">Requires</span> <span class="nx">Authentication</span>
-
-<span class="err">###</span> <span class="nx">Response</span>
-<span class="o">-</span> <span class="nx">Status</span><span class="p">:</span> <span class="s2">`201: OK`</span>
-<span class="o">-</span> <span class="nx">Body</span> <span class="s2">`(application/json)`</span>
-</code></pre><h1 id='errors'>Errors</h1>
+</code></pre><h3 id='request-9'>Request</h3>
+<ul>
+<li>Endpoint: POST: <code>https://postit-ray.herokuapp.com/api/v1/group/:groupid/remove</code></li>
+<li>Body <code>(application/json)</code></li>
+<li>Requires Authentication</li>
+</ul>
+<h3 id='response-9'>Response</h3>
+<ul>
+<li>Status: <code>201: OK</code></li>
+<li>Body <code>(application/json)</code></li>
+</ul>
+<h1 id='errors'>Errors</h1>
 <aside class="notice">This is a list of the status codes you might see when you encounter an error</aside>
 
 <p>The Postit API uses the following error codes:</p>
@@ -1010,6 +1410,14 @@ If description is absent, it is set to null. If no type is specified, it is left
 <td>Internal Server Error -- We had a problem with our server. Try again later.</td>
 </tr>
 </tbody></table>
+<h1 id='contributing'>Contributing</h1>
+<p>Have an excellent idea that you think would add value to the Postit API? Awesome! Contributing is totally encouraged. Simply <a href="https://github.com/oahray/bc-24-postit/issues/new">create an issue</a> and let us know.
+If you are not sure what you can do to contribute, you can check out the <a href="https://github.com/oahray/bc-24-postit/issues">Issues</a> page, and if you find something you want to work on, let us know in the comments.</p>
+
+<p>We totally would love to see Pull Requests, and while we encourage it, Pull Requests should:
+  - Contain code written in ES6 for Javascript files.
+  - Lint and adhere to the <a href="https://github.com/airbnb/javascript">Airbnb javascript style guide</a>.
+  - Pass existing tests, and tests you include for your contribution.</p>
 
       </div>
       <div class="dark-box">

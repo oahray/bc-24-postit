@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-// import { Button } from 'react-materialize';
 import toastr from 'toastr';
+
 import RouteHandler from '../routes';
 import { verifyAuth } from '../actions';
 import Preloader from '../components/Preloader';
-// import Footer from '../components/Footer';
 
 /**
  * @class

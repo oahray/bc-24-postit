@@ -3,6 +3,8 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
+// import io from 'socket.io-client';
+
 import { getGroupMessages, getGroupUsers, getGroupList,
   inGroupPage, sendMessage, markAsRead,
   deleteGroup, removeUser, leaveGroup, editGroupInfo } from '../actions';
