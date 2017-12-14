@@ -38,7 +38,6 @@ export default class GroupInfoModal extends Component {
   saveChanges() {
     this.props.editInfo(this.state.name,
     this.state.description, this.state.type);
-    console.log({state: this.state});
   }
   /**
   * @returns {component} Modal

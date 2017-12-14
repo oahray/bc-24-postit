@@ -62,8 +62,6 @@ const actionCreators = {
   push: jest.fn()
 }
 
-console.log(io);
-
 // Add spies for relevant functions/methods
 const getMessagesSpy = jest.spyOn(actionCreators, 'getGroupMessages');
 const getUsersSpy = jest.spyOn(actionCreators, 'getGroupUsers');

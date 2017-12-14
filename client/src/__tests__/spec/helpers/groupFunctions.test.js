@@ -2,8 +2,6 @@ import { isUserGroup } from '../../../helpers/groupFunctions';
 
 describe('isUserGroup function', () => {
   test('should return true when groupid is in group list', () => {
-    console.log('isUserGroup function', isUserGroup);
-
     const groupList = [
       {
         id: 2,

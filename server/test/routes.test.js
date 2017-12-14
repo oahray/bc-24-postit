@@ -1188,7 +1188,6 @@ describe('PostIt API routes: ', () => {
         .get('/api/v1/docs')
         .expect(200)
         .end((err, res) => {
-          console.log(typeof res.body);
           expect(res.body).toNotBeA('JSON');
           done();
         });
