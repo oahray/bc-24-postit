@@ -85,9 +85,9 @@ export class SigninForm extends Component {
           </div>
           <div className='center'>
             <p className='center'> Forgot Password?
-            <Link to="/forgotpassword">Recover Password</Link></p>
+            <Link to="/forgotpassword"> Recover Password </Link></p>
             <p className='center'> New to Postit?
-            <Link to="/signup">Sign Up</Link></p>
+            <Link to="/signup"> Sign Up </Link></p>
           </div>
         </form>
       </div>

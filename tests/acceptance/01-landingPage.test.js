@@ -45,6 +45,20 @@ module.exports = {
       .assert.urlEquals(`${baseUrl}/forgotpassword`)
       .assert.containsText(forgot.header, 'Forgot Password')
       .pause(1000)
+      .setValue(forgot.input, 'jon@test.com')
+      .click(forgot.submit)
+      .waitForElementVisible(forgot.message, 5000)
+      .assert.containsText(forgot.message, 'Incorrect email')
+      .pause(1000)
+      .refresh()
+      .setValue(forgot.input, 'jonsnow@test.com')
+      .click(forgot.submit)
+      .waitForElementVisible(forgot.message, 5000)
+      .assert.containsText(
+        forgot.message,
+        'An email with reset instructions has been sent to jonsnow@test.com'
+      )
+      .pause(1000)
       .click(landing.nav.brand)
       .waitForElementVisible(landing.container, 1000);
   },

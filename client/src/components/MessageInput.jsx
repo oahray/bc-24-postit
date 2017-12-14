@@ -14,7 +14,7 @@ const MessageInput = props => (
       <textarea type="text" value={props.inputValue} id="textarea1"
       placeholder='Type Message Here' onChange={props.onInputChange} />
     </div>
-    <div className="input-field col s8 m4">
+    <div id="priority-div" className="input-field col s8 m4">
       <Row>
         <Input s={12}
         className='message-priority-select' type='select'

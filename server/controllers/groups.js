@@ -434,11 +434,12 @@ export const editInfo = (req, res) => {
   }
 
   const update = {
-    name: name.trim()
+    name: name.trim(),
+    description
   };
 
   if (!description) {
-    update.description = null;
+    update.description = '';
   }
 
   if (type === 'public' || type === 'private') {

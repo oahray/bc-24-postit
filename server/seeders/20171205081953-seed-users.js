@@ -32,6 +32,16 @@ module.exports = {
       imageUrl: 'https://res.cloudinary.com/oahray/image/upload/v1511999198/oubuhvhhjuxcksj70gqs.jpg',
       createdAt: new Date(),
       updatedAt: new Date()
+    }, {
+      id: 13,
+      username: 'bran',
+      email: 'bran@test.com',
+      password: bcrypt.hashSync('testpassword',
+        bcrypt.genSaltSync(10), null),
+      about: 'The 3-eyed raven',
+      imageUrl: '',
+      createdAt: new Date(),
+      updatedAt: new Date()
     }], {}),
 
   down: queryInterface =>

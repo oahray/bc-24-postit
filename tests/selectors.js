@@ -1,7 +1,7 @@
 module.exports = {
   baseUrl: 'http://localhost:8000',
-
-  // baseUrl: 'https://postit-ray.herokuapp.com',
+  toastr: '#toast-container',
+  materialOverlay: '#materialbox-overlay',
 
   landing: {
     container: '.guest-home',
@@ -53,7 +53,20 @@ module.exports = {
   },
 
   sideNav: {
-    newGroup: '#side-nav > li:nth-child(3) > a'
+    search: '#search',
+    newGroup: '#side-nav > li:nth-child(3) > a',
+  },
+
+  searchPage: {
+    done: '#root > div > div > div.main-container > div > div.search-results-container.col.s12.m9 > div:nth-child(2) > a',
+    add: {
+      arya: '#add-user12 > i',
+      bran: '#add-user13 > i'
+    }
+  },
+
+  userList: {
+    toggle: '#group-user-list > li > div.collapsible-header.main-background-color.white-text.valign-wrapper.group-users-header'
   },
 
   createGroup: {
@@ -66,6 +79,40 @@ module.exports = {
 
   groupPage: {
     mainDiv: '.group-page',
-    header: '#root > div > div > div.main-container > div > div.col.s12.z-depth-2.messages-section > h5'
+    header: '#root > div > div > div.main-container > div > div.col.s12.z-depth-2.messages-section > h5',
+    messageInput: '#textarea1',
+    prioritySelect: {
+      base: '.select-wrapper',
+      normal: '.dropdown-content li:nth-child(1)',
+      urgent: '.dropdown-content li:nth-child(2)',
+      critical: '.dropdown-content li:nth-child(3)'
+    },
+    submit: '#message-button > i',
+    infoModal: {
+      trigger: '#open-editGroup1 > i',
+      header: '#editGroup1 > div > h5',
+      name: '#group-name-input',
+      desc: '#group-desc-input',
+      type: '#editGroup1 > div > div > form > div.row > div > div > input',
+      cancel: '#editGroup1 > div > div > form > div.modal-footer > span.left > a',
+      save: '#save-group-info > a'
+    },
+    deleteModal: {
+      trigger: '#root > div > div > div.main-container > div > div:nth-child(2) > div.col.s12.m3.group-info-col > ul > li.group-info-ul > div.main-text-color.page-header > span > span.pointer.right > div > a > i',
+      text: '#deleteGroupModal > div.modal-content > h5',
+      confirm: '#deleteGroupModal > div.modal-footer > span.right > a',
+      cancel: '#deleteGroupModal > div.modal-footer > span.left > a'
+    },
+    removeModal: {
+      trigger: '#group-user-list > li > div.white.collapsible-body > ul > li:nth-child(3) > span.secondary-content.pointer > div > a > i > small',
+      text: '#remove-bran > div.modal-content > h5',
+      confirm: '#remove-bran > div.modal-footer > span.right > a'
+    },
+    userModal: {
+      trigger: '#group-user-list > li > div.white.collapsible-body > ul > li:nth-child(2) > span.col.s6 > div > a',
+      header: '#user12-modal > div.modal-content.center > h3',
+      img: '#user12-modal > div.modal-content.center > div > div > div > img',
+      close: '#user12-modal > div.modal-footer.center > a'
+    }
   }
 };
