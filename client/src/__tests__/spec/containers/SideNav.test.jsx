@@ -31,7 +31,6 @@ const actionCreators = {
 };
 
 const logoutSpy = jest.spyOn(actionCreators, 'logout');
-const getGroupListSpy = jest.spyOn(actionCreators, 'getGroupList');
 const searchUsersSpy = jest.spyOn(actionCreators, 'searchUsers');
 const historyPushSpy = jest.spyOn(actionCreators.history, 'push');
 
@@ -45,7 +44,7 @@ const setup = (user, isLoggedIn, inGroupPage) => {
       name: 'my first group',
       description: '',
       type: 'public'
-    },{
+    }, {
       id: 8,
       name: 'my secret group',
       description: 'Select eyes only',
@@ -58,7 +57,7 @@ const setup = (user, isLoggedIn, inGroupPage) => {
     ...actionCreators
   };
   return shallow(<SideNav {...props} />);
-}
+};
 
 describe('SideNav', () => {
   test('renders without crashing when user is not unauthenticated', () => {
@@ -66,12 +65,13 @@ describe('SideNav', () => {
     wrapper.find('.side-nav .my-list-item .docs-link').simulate('click');
   });
 
-  test('renders without crashing when authenticated user has no profile image', () => {
+  test('renders without crashing when authenticated user has no profile image',
+  () => {
     const wrapper = setup(currentUser, true, false);
     mockServer.on('connection', (socket) => {
-      socket.emit('Added to group', ({user: currentUser}));
+      socket.emit('Added to group', ({ user: currentUser }));
 
-      socket.emit('Removed from group', ({ user: currentUser }))
+      socket.emit('Removed from group', ({ user: currentUser }));
     });
     expect(wrapper.find('.side-nav .my-list-item a').length).toBeGreaterThan(0);
   });

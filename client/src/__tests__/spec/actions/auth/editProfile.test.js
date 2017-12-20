@@ -1,9 +1,6 @@
-import axios from 'axios';
 import dotenv from 'dotenv';
 
-dotenv.config();
-
-import { mock, middlewares, mockStore } from '../../../../__mocks__/mockConfig';
+import { mock, mockStore } from '../../../../__mocks__/mockConfig';
 
 import {
   uploadImage,
@@ -15,6 +12,8 @@ import {
   EDIT_PROFILE_SUCCESS,
   EDIT_PROFILE_FAILURE
 } from '../../../../constants';
+
+dotenv.config();
 
 describe('clearFormError action creator', () => {
   test('dispatches an action', () => {
@@ -32,24 +31,24 @@ describe('clearFormError action creator', () => {
 describe('editProfile action creator', () => {
   test('dispatches a success action when dispatched with valid details', () => {
     const store = mockStore({ user: {} });
-    const data = {
+    const responseBody = {
       user: {
         id: 2,
         username: 'ray',
         about: 'New to Postit',
         email: 'ray@example.com'
       }
-    }
+    };
 
     // mocks the post request
     mock.onPatch().replyOnce(201, {
-      data
+      data: responseBody
     });
 
     const expectedAction = {
       type: EDIT_PROFILE_SUCCESS,
-      response: { data }
-    }
+      response: { data: responseBody }
+    };
 
     store.dispatch(editProfile('validtoken')).then(() => store.getActions())
       .then((actions) => {
@@ -58,21 +57,17 @@ describe('editProfile action creator', () => {
         expect(actions[1].type).toBe('EDIT_PROFILE_SUCCESS');
         expect(actions[1].response.data).toEqual(expectedAction.response);
       });
-  })
+  });
 
-  test('dispatches a failure action when dispatched with invalid details', () => {
+  test('dispatches a failure action when dispatched with invalid details',
+  () => {
     const store = mockStore({ user: {} });
-    const data = {
+    const responseBody = {
       error: 'Email is required'
-    }
+    };
 
     // mock the post request
-    mock.onPatch().replyOnce(400, data);
-
-    const expectedAction = {
-      type: EDIT_PROFILE_FAILURE,
-      error: data.error
-    };
+    mock.onPatch().replyOnce(400, responseBody);
 
     store.dispatch(editProfile('I like movies', null, 'my image url', 'sometoken')).then(() => store.getActions())
       .then((actions) => {
@@ -80,5 +75,5 @@ describe('editProfile action creator', () => {
         expect(actions[0].type).toBe(EDIT_PROFILE_LOADING);
         expect(actions[1].type).toBe(EDIT_PROFILE_FAILURE);
       });
-  })
+  });
 });

@@ -11,9 +11,10 @@ import UserInfoModal from '../components/UserInfoModal';
  */
 const UsersList = props => (
   <li className="grey">
-    <ul className="collapsible" id="group-user-list" data-collapsible="accordion">
+    <ul className="collapsible" id="group-user-list"
+    data-collapsible="accordion">
       <li>
-        <div className={`collapsible-header main-background-color
+        <div className={`collapsible-header main-background-color active
         white-text valign-wrapper group-users-header`}>
           <i className="material-icons">group</i>
           {props.groupUsers.length} {props.groupUsers.length === 1 ?

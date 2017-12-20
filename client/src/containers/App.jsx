@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import toastr from 'toastr';
+import jwtDecode from 'jwt-decode';
 
 import RouteHandler from '../routes';
 import { verifyAuth } from '../actions';
@@ -17,7 +18,11 @@ export class App extends Component {
   componentWillMount() {
     if (localStorage && localStorage.getItem('x-auth')) {
       const token = localStorage.getItem('x-auth');
-      this.props.verifyAuth(token);
+      const decoded = jwtDecode(token);
+      const currentTime = Date.now() / 1000;
+      if (decoded.exp > currentTime) {
+        this.props.verifyAuth(token);
+      }
     }
   }
 
@@ -58,6 +63,14 @@ export class App extends Component {
     return (
       <div class='main'>
         { appRoutes }
+        <div className="footer center">
+          <span className="left">
+            <small> ©{(new Date()).getFullYear()} POSTIT</small>
+          </span>
+          <span>
+            <small> Bridging the communication gap...</small>
+          </span>
+        </div>
       </div>
     );
   }

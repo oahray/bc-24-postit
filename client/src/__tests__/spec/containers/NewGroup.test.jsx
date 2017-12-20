@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { Redirect } from 'react-router-dom';
 
-import { mockServer, mockStore } from '../../../__mocks__/mockConfig'
+import { mockStore } from '../../../__mocks__/mockConfig';
 import ConnectedNewGroup, { NewGroup } from '../../../containers/NewGroup';
 
 let props;
@@ -12,7 +12,7 @@ const user = {
   id: 12,
   username: 'arya',
   email: 'arya@test.com'
-}
+};
 
 const groupList = [];
 
@@ -26,7 +26,7 @@ const newGroup = {
 const funcs = {
   resetCreateGroupStatus: jest.fn(),
   createNewGroup: jest.fn()
-}
+};
 
 // Add spies for relevant functions/methods
 const resetStatusSpy = jest.spyOn(funcs, 'resetCreateGroupStatus');
@@ -60,7 +60,7 @@ describe('NewGroup component', () => {
     const event = { target: {}, preventDefault: jest.fn() };
     const groupName = 'New Group Name';
     const groupDesc = 'This is my first group';
-    const groupType = 'private'
+    const groupType = 'private';
 
     const wrapper = setup();
     event.target.value = groupName;

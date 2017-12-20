@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-// import io from 'socket.io-client';
+import { Redirect } from 'react-router-dom';
 
 import {
   getGroupMessages, inGroupPage, clearUserSearchTerm,
   searchUsers, addUserToGroup, removeUser, getGroupUsers, leaveGroup
 } from '../actions';
 import UsersList from '../components/UsersList';
-import UserInfoModal from '../components/UserInfoModal';
+import SearchBar from '../components/SearchBar';
 import Pagination from '../components/Pagination';
+import SearchList from '../components/SearchList';
 
 /**
  * @class SearchResult
@@ -29,8 +30,11 @@ export class SearchResult extends Component {
       limit: 7,
       lastPage: 0
     };
+
     this.groupId = Number(this.props.match.params.groupid);
     this.searchDone = this.searchDone.bind(this);
+    this.setSearchTerm = this.setSearchTerm.bind(this);
+    this.searchUsers = this.searchUsers.bind(this);
     this.addUser = this.addUser.bind(this);
     this.initMaterial = this.initMaterial.bind(this);
     this.removeUser = this.removeUser.bind(this);
@@ -51,7 +55,9 @@ export class SearchResult extends Component {
     if (!this.props.groupUsers) {
       this.props.getGroupUsers(this.groupId, this.props.token);
     }
-    this.updateSearchResult();
+    if (this.searchQuery && this.searchQuery.u.length > 0) {
+      this.updateSearchResult();
+    }
   }
 
   /**
@@ -59,9 +65,13 @@ export class SearchResult extends Component {
    */
   componentDidMount() {
     this.initMaterial();
-    const socket = io();
     this.props.inGroupPage(true);
     this.props.getGroupUsers(this.groupId, this.props.token);
+    this.setState({
+      searchTerm: this.searchQuery.u
+    });
+
+    const socket = io();
     socket.on('Added to group', ({ group }) => {
       if (group.id === this.groupId) {
         this.updateUsersList();
@@ -80,8 +90,8 @@ export class SearchResult extends Component {
   }
 
   /**
-   * @param {*} newProps
-   * @param {*} newState
+   * @param {Object} newProps
+   * @param {Object} newState
    * @returns {undefined}
    */
   componentDidUpdate(newProps, newState) {
@@ -100,7 +110,32 @@ export class SearchResult extends Component {
     $('.modal').modal();
     $('.tooltipped').tooltip({ delay: 50, html: true });
     $('.collapsible').collapsible();
-    $('#group-user-list').collapsible('open', 0);
+  }
+
+  /**
+   * @param {string} username: the username search string search
+   * @returns {undefined}
+   */
+  setSearchTerm(username) {
+    this.setState({
+      searchTerm: username
+    });
+  }
+
+
+  /**
+   * @returns {undefined}
+   * @param {string} username: the username search string
+   * @param {string} resultPath: the path to redirect to
+   */
+  searchUsers(username, resultPath) {
+    this.setState({
+      searchTerm: username
+    }, () => {
+      const { selectedGroup, token } = this.props;
+      this.props.searchUsers(selectedGroup.id, username, 0, 7, token);
+      this.props.history.push(resultPath);
+    });
   }
 
   /**
@@ -119,7 +154,6 @@ export class SearchResult extends Component {
     this.props.addUserToGroup(
       username,
       this.props.selectedGroup.id,
-      this.updateSearchResult,
       this.props.token
     );
   }
@@ -129,8 +163,11 @@ export class SearchResult extends Component {
    * @returns {undefined}
    */
   removeUser(username) {
-    this.props.removeUser(username, this.props.selectedGroup.id,
-      this.updateUsersList, this.props.token);
+    this.props.removeUser(
+      username,
+      this.props.selectedGroup.id,
+      this.props.token
+    );
   }
 
   /**
@@ -144,17 +181,19 @@ export class SearchResult extends Component {
    * @returns {undefined}
    */
   updateSearchResult() {
-    this.props.searchUsers(
-      this.props.match.params.groupid,
-      this.state.searchTerm,
-      this.state.offset,
-      this.state.limit,
-      this.props.token
-    );
+    if (this.state.searchTerm) {
+      this.props.searchUsers(
+        this.props.match.params.groupid,
+        this.state.searchTerm,
+        this.state.offset,
+        this.state.limit,
+        this.props.token
+      );
+    }
   }
 
   /**
-   * @param {*} e
+   * @param {Object} e: click event object
    * @returns {undefined}
    */
   onPageChange(e) {
@@ -180,7 +219,7 @@ export class SearchResult extends Component {
       });
       this.props.history.push(`/groups/${
         this.props.selectedGroup.id}/addusers?u=${
-        this.searchQuery.u}&p=${Number(this.state.page) - 1}`);
+        this.state.searchTerm}&p=${Number(this.state.page) - 1}`);
     }
   }
 
@@ -198,7 +237,7 @@ export class SearchResult extends Component {
         offset: this.state.offset + 7
       });
       this.props.history.push(`/groups/${this.props.selectedGroup.id
-        }/addusers?u=${this.searchQuery.u}&p=${Number(this.state.page) + 1}`);
+        }/addusers?u=${this.state.searchTerm}&p=${Number(this.state.page) + 1}`);
     }
   }
 
@@ -207,55 +246,51 @@ export class SearchResult extends Component {
    */
   render() {
     if (this.props.groupMessagesFailed) {
-      return (<h5>sorry... You cannot add users
-        to a group you do not belong to</h5>);
+      return (<Redirect to="/" />);
     }
+
     if (this.props.groupMessagesLoading || !this.props.selectedGroup) {
       return (<h5 className="center">Please wait...</h5>);
     }
+
+    const usersCount = (<h6 className="center">
+    {this.props.userSearchResults.totalCount ?
+      this.props.userSearchResults.totalCount : 'No'}
+      {this.props.userSearchResults.totalCount === 1 ?
+        ' user ' : ' users '} found</h6>);
+
     return (
       <div className='row search-page col s12 m8'>
         <div className="search-results-container col s12 m9">
           <div className='col s12'>
             <h5 className='page-header center'>
-              Add Users to '<strong>{this.props.selectedGroup.name}'</strong>
+              Search and Add Users to
+              <strong> '{this.props.selectedGroup.name}'</strong>
             </h5>
           </div>
           <div className='col s12 center'>
-            <a className='btn search-done-btn white main-text-color'
-              onClick={this.searchDone}>Done</a>
+            <div className='col s10 center'>
+              <SearchBar
+                searchUsers={this.searchUsers}
+                user={this.props.user}
+                selectedGroup=
+                {this.props.selectedGroup}
+                setSearchTerm={this.setSearchTerm}/>
+            </div>
+            <div>
+              <a className='btn search-done-btn white main-text-color'
+                onClick={this.searchDone}>Done</a>
+            </div>
           </div>
 
-          <div className={`search-list-container col s10
-            offset-s1`}>
-            <h6 className="center">{this.props.userSearchResults.totalCount ?
-              this.props.userSearchResults.totalCount : 'No'}
-              {this.props.userSearchResults.totalCount === 1 ?
-                ' user ' : ' users '} found</h6>
-            <ul className='collection list-group'>
-              {this.props.userSearchResults.users ?
-                (this.props.userSearchResults.users).map(user =>
-                  <li className="collection-item avatar grey lighten-3"
-                    key={user.id}>
-                    <img
-                      src={user.imageUrl ? user.imageUrl :
-                        '/images/no-pic.png'} className="circle" />
-                    <span className="title">
-                      <UserInfoModal user={user} />
-                    </span>
-                    <p><small>{user.about}</small></p>
-                    <span className='secondary-content'>
-                      <a id={`add-user${user.id}`}
-                        className='add-user-icon main-text-color'
-                        onClick={() => this.addUser(user.username)}>
-                        <i className='material-icons'>person_add</i>
-                      </a>
-                    </span>
-                  </li>) : null}
-            </ul>
-          </div>
+          <SearchList
+            state={this.state} usersCount={usersCount}
+            userSearchResults={this.props.userSearchResults}
+            addUser={this.addUser}
+          />
 
-          {this.props.userSearchResults ? <Pagination state={this.state}
+          {this.props.userSearchResults.totalCount > 0 ?
+          <Pagination state={this.state}
             previousPage={this.previousPage}
             userSearchResults={this.props.userSearchResults}
             onPageChange={this.onPageChange}

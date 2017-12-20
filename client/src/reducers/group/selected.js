@@ -7,6 +7,14 @@ import {
   CREATE_GROUP_SUCCESS
 } from '../../constants';
 
+/**
+   * @function messagesFailed
+   * @description reducer that sets the redux state
+   * with the selected group details
+   * @param {null} state
+   * @param {Object} action
+   * @returns {Object} true/false depending on action type
+   */
 export default (state = null, action) => {
   switch (action.type) {
     case CREATE_GROUP_SUCCESS:

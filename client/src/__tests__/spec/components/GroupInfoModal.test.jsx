@@ -14,7 +14,7 @@ const selectedGroup = {
 
 const actionCreators = {
   editInfo: jest.fn()
-}
+};
 
 const editInfoSpy = jest.spyOn(actionCreators, 'editInfo');
 
@@ -27,7 +27,7 @@ const setup = (group) => {
     editInfo: actionCreators.editInfo
   };
   return shallow(<GroupInfoModal {...props} />);
-}
+};
 
 describe('Group Info Modal', () => {
   test('should render without crashing', () => {
@@ -40,9 +40,9 @@ describe('Group Info Modal', () => {
     const newDesc = 'This is the new description';
     const newType = 'private';
     selectedGroup.description = '';
-    
+
     // For group name input
-    const event = { target: { value: newName}}
+    const event = { target: { value: newName } };
     const wrapper = setup(selectedGroup);
     expect(wrapper.instance().state.name).toBe(selectedGroup.name);
     wrapper.find('#group-name-input').simulate('change', event);

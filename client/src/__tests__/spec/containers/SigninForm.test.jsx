@@ -1,10 +1,8 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { mockServer, mockStore } from '../../../__mocks__/mockConfig'
+import { mockStore } from '../../../__mocks__/mockConfig';
 import ConnectedSignin, { SigninForm } from '../../../containers/SigninForm';
-import { Redirect } from 'react-router-dom';
-import { clearFormError } from '../../../actions/index';
 
 let props;
 let errorMessage = 'Username/Password is incorrect';
@@ -13,13 +11,12 @@ const actionCreators = {
   signinUser: jest.fn(),
   verifyAuth: jest.fn(),
   clearFormError: jest.fn()
-}
+};
 
 const signinSpy = jest.spyOn(actionCreators, 'signinUser');
-const verifySpy = jest.spyOn(actionCreators, 'verifyAuth');
 const clearErrorSpy = jest.spyOn(actionCreators, 'clearFormError');
 
-const setup = (isLoggedIn, loading, failed, errorMessage) => {
+const setup = (isLoggedIn, loading, failed) => {
   props = {
     isLoggedIn,
     signinLoading: loading,
@@ -31,7 +28,7 @@ const setup = (isLoggedIn, loading, failed, errorMessage) => {
     clearFormError: actionCreators.clearFormError
   };
   return shallow(<SigninForm {...props} />);
-}
+};
 
 describe('Signin form', () => {
   test('should render without crashing', () => {
@@ -52,7 +49,7 @@ describe('Signin form', () => {
   });
 
   test('should set state when input values changes', () => {
-    const event = {target: {value: "myname"}};
+    const event = { target: { value: 'myname' } };
     errorMessage = '';
     const wrapper = setup(false, false, false, errorMessage);
     const usernameInput = wrapper.find('#signin-username');

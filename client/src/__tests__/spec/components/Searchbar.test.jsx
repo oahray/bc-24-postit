@@ -4,7 +4,6 @@ import { shallow } from 'enzyme';
 import SearchBar from '../../../components/SearchBar';
 
 let props;
-const token = 'hjghsytudyru';
 
 const group = {
   id: 7,
@@ -15,7 +14,8 @@ const group = {
 
 const funcs = {
   searchUsers: jest.fn(),
-}
+  setSearchTerm: jest.fn()
+};
 
 // Add spies for relevant functions/methods
 const searchUsersSpy = jest.spyOn(funcs, 'searchUsers');
@@ -24,7 +24,7 @@ const setup = () => {
   props = {
     selectedGroup: group,
     // Action creators
-    searchUsers: funcs.searchUsers,
+    ...funcs
   };
   return shallow(<SearchBar {...props} />);
 };
@@ -42,7 +42,7 @@ describe('SearchBar component', () => {
       target: {
         value: 'es'
       }
-    }
+    };
     wrapper.find('#search').simulate('change', event);
     expect(wrapper.instance().state.username).toBe('es');
     expect(searchUsersSpy).toHaveBeenCalledTimes(1);
@@ -52,7 +52,7 @@ describe('SearchBar component', () => {
     expect(wrapper.instance().state.username).toBe('');
     expect(searchUsersSpy).toHaveBeenCalledTimes(1);
   });
-  
+
   test('performs search when form is submitted', () => {
     const wrapper = setup();
     const event = {
@@ -62,7 +62,7 @@ describe('SearchBar component', () => {
     wrapper.setState({
       username: 'ra'
     });
-    
+
     wrapper.find('form').simulate('submit', event);
     expect(searchUsersSpy).toHaveBeenCalledTimes(2);
   });

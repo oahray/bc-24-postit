@@ -29,6 +29,8 @@ export const uploadImage = (image) => {
 
 /**
  * @function editProfileLoading
+ * @description: function that dispatches an action
+ * with an EDIT_PROFILE_LOADING type
  * @returns {Object} editProfileLoading action
  */
 const editProfileLoading = () => ({

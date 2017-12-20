@@ -31,7 +31,7 @@ describe('authFailed reducer', () => {
     action.type = LOGOUT_USER;
     expect(authFailed(state, action))
     .toBe(true);
-    
+
     action.type = 'SOME_UNRELATED_ACTION';
     expect(authFailed(state, action))
     .toBe(state);

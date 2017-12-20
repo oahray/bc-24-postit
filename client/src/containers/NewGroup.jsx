@@ -16,7 +16,6 @@ export class NewGroup extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // myGroups: {},
       name: '',
       description: '',
       type: 'public'
@@ -85,7 +84,8 @@ export class NewGroup extends Component {
             </div>
 
             <Row>
-              <Input id="new-group-type" s={12} type='select' label="Group Privacy Type"
+              <Input id="new-group-type" s={12}
+              type='select' label="Group Privacy Type"
               defaultValue='public' onChange={event =>
                 this.setState({ type: event.target.value })}>
                 <option value='public'>Public</option>

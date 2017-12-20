@@ -13,6 +13,9 @@ import {
 } from '../../constants';
 
 /**
+ * @function requestResetLoading
+ * @description: returns an action with a
+ * REQUEST_RESET_LOADING action type
  * @returns {object} request_reset_loading action
  */
 const requestResetLoading = () => ({
@@ -20,6 +23,7 @@ const requestResetLoading = () => ({
 });
 
 /**
+ * @function requestResetSuccess
  * @param {object} response: api response
  * @returns {object} request_reset_success action
  */
@@ -29,6 +33,7 @@ const requestResetSuccess = response => ({
 });
 
 /**
+ * @function requestResetFailed
  * @param {object} error: api error response
  * @returns {object} request_reset_failure action
  */
@@ -38,6 +43,7 @@ const requestResetFailed = error => ({
 });
 
 /**
+ * @function clearResetRequestMessage
  * @returns {object} clear_request_reset_message action
  */
 export const clearResetRequestMessage = () => ({
@@ -45,6 +51,7 @@ export const clearResetRequestMessage = () => ({
 });
 
 /**
+ * @function requestReset
 * @param {string} email: the new password
 * @returns {function} dispatches action creator
 */
@@ -68,6 +75,7 @@ export const requestReset = email =>
   };
 
 /**
+ * @function resetPasswordLoading
  * @returns {object} reset_password_loading action
  */
 const resetPasswordLoading = () => ({
@@ -75,6 +83,7 @@ const resetPasswordLoading = () => ({
 });
 
 /**
+ * @function resetPasswordSuccess
  * @param {object} response: api response
  * @returns {object} reset_password_success action
  */
@@ -84,6 +93,7 @@ const resetPasswordSuccess = response => ({
 });
 
 /**
+ * @function resetPasswordFailed
  * @param {object} error: api error response
  * @returns {object} reset_password_failed action
  */
@@ -93,6 +103,7 @@ const resetPasswordFailed = error => ({
 });
 
 /**
+ * @function resetPassword
  * @param {string} password: the new password
  * @param {string} resetHash: hash from reset email
  * @returns {function} dispatches action creator

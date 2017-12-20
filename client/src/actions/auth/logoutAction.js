@@ -1,6 +1,9 @@
 import { LOGOUT_USER } from '../../constants';
 
 /**
+ * @function logout
+ * @description: action creator that dispatches
+ * action with LOGUT_USER type
  * @returns {object} logout_user action
  */
 export const logout = () => {

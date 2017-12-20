@@ -17,7 +17,6 @@ const app = express();
 const compiler = webpack(webpackConfig);
 
 const env = process.env.NODE_ENV || 'development';
-console.log('>>>>>> ENV: ', env);
 
 if (env !== 'production') {
   dotenv.config();
@@ -30,9 +29,7 @@ if (env === 'development' || env === 'e2e') {
     noInfo: true,
     publicPath: webpackConfig.output.publicPath
   }));
-  app.use(webpackHotMiddleware(compiler, {
-    log: console.log
-  }));
+  app.use(webpackHotMiddleware(compiler, {}));
 }
 
 // set morgan to log info about our requests for development use.

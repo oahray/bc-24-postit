@@ -30,7 +30,7 @@ module.exports = {
       .click(signup.submitButton)
       .waitForElementVisible(signup.errorMessage, 1000)
       .assert.containsText(signup.errorMessage,
-        'Invalid Username format.')
+        'Only alphanumeric characters allowed')
       .pause(1000);
   },
   'Signup form displays error when username is taken': (client) => {

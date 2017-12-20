@@ -1,7 +1,17 @@
 import jwt from 'jsonwebtoken';
 import { User } from '../models';
 
-// middleware function to check for logged-in users
+/**
+ * @function authenticate
+ * @description validator middleware that checks
+ * provided token in header and authenticates
+ * or rejects request based on token status
+ * @param {Object} req: request object
+ * @param {Object} res: response object
+ * @param {func} next: called to move to
+ * the next middleware/controller
+ * @returns {Object} success or error response
+ */
 export default (req, res, next) => {
   const token = req.header('x-auth');
   if (!token) {

@@ -1,12 +1,15 @@
 import React from 'react';
 import { shallow } from 'enzyme';
+import jwt from 'jsonwebtoken';
 
 import { mockServer, mockStore } from '../../../__mocks__/mockConfig';
 import ConnectedApp, { App } from '../../../containers/App';
 
 let props;
 
-const token = 'sudst56uawsytus754';
+const token = jwt.sign({ id: 5, access: 'auth' },
+  'somebuycjkcyutc', { expiresIn: 24 * 60 * 60 }).toString();
+
 const currentUser = {
   id: 5,
   username: 'stranger',
@@ -36,11 +39,12 @@ const setup = (user, authLoading, isLoggedIn) => {
     verifyAuth: actionCreators.verifyAuth,
   };
   return shallow(<App {...props} />);
-}
+};
 
 describe('App', () => {
+  localStorage.__STORE__['x-auth'] = token;
   test('renders without crashing', () => {
-    const wrapper = setup(currentUser,false, true);
+    const wrapper = setup(currentUser, false, true);
     mockServer.on('connection', (socket) => {
       socket.emit('Added to group', ({
         user: currentUser,
@@ -52,18 +56,18 @@ describe('App', () => {
         user: currentUser,
         group: selectedGroup,
         removedBy: 'jim'
-      }))
+      }));
     });
     expect(wrapper.length).toBe(1);
+    expect(verifyAuthSpy).toHaveBeenCalledTimes(1);
   });
 
   test('renders preloader when verifying user', () => {
-    localStorage.__STORE__['x-auth'] = 'hdjhdidiydiuydi';
     const wrapper = setup(currentUser, true, false);
     mockServer.on('connection', (socket) => {
-      socket.emit('Added to group', ({user: { id: 2 }}));
+      socket.emit('Added to group', ({ user: { id: 2 } }));
 
-      socket.emit('Removed from group', ({ user: { id: 2 }}))
+      socket.emit('Removed from group', ({ user: { id: 2 } }));
     });
     expect(wrapper.length).toBe(1);
   });

@@ -28,7 +28,7 @@ export default class ConfirmModal extends Component {
             <h3 className=""> {this.props.user.username}</h3>
             <div className="user-photo-div">
               <div className="full-photo-div">
-                <img className="full-photo responsive-img materialboxed center"
+                <img className="user-info-img responsive-img center"
                 src={this.props.user.imageUrl ? this.props.user.imageUrl :
                 '/images/no-pic.png'} />
               </div>

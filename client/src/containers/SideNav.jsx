@@ -5,7 +5,6 @@ import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import { logout, getGroupList, searchUsers } from '../actions';
-import SearchBar from '../components/SearchBar';
 
 /**
  * @class SideNav
@@ -21,11 +20,13 @@ export class SideNav extends Component {
   }
 
   /**
+   * @function componentDidMount
+   * @description: Component life-cycle method that
+   * is called before the component mounts
    * @returns {undefined}
    */
   componentDidMount() {
-    $('.button-collapse').sideNav();
-    $('.collapsible').collapsible();
+    this.initMaterial();
     $('.side-nav .my-list-item a').click(() => {
       const windowSize = $(window).width();
       if (windowSize < 993) {
@@ -49,6 +50,27 @@ export class SideNav extends Component {
   }
 
   /**
+   * @function componentDidUpdate
+   * @description: Component life-cycle method that
+   * is called when the component updates
+   * @returns {undefined}
+   */
+  componentDidUpdate() {
+    this.initMaterial();
+  }
+
+  /**
+   * @function initMaterial
+   * @description initializes material components
+   * @returns {undefined}
+   */
+  initMaterial() {
+    $('.button-collapse').sideNav();
+    $('.collapsible').collapsible();
+    $('.tooltipped').tooltip();
+  }
+
+  /**
    * @returns {undefined}
    * @param {string} username: the username search string
    * @param {string} resultPath: the path to redirect to on search
@@ -60,6 +82,9 @@ export class SideNav extends Component {
   }
 
   /**
+   * @function render
+   * @description component method that defines what would
+   * be rendered by returning it
    * @returns {undefined}
    */
   render() {
@@ -77,7 +102,8 @@ export class SideNav extends Component {
       <ul className='side-nav fixed hide-on-med-and-up' id='side-nav'>
         <li className='my-list-item'><NavLink to='/signin'>Signin</NavLink></li>
         <li className='my-list-item'><NavLink to='/signup'>Signup</NavLink></li>
-        <li className='my-list-item docs-link'><a href='/api/v1/docs'>Docs</a></li>
+        <li className='my-list-item docs-link'><a
+        href='/api/v1/docs'>Docs</a></li>
         <li className='my-list-item'><a target='_blank'
           href='https://github.com/oahray/bc-24-postit'>View On Github</a></li>
       </ul>
@@ -102,24 +128,25 @@ export class SideNav extends Component {
         <ul className='side-nav fixed' id='side-nav'>
           <li>
             <div className='user-view row'>
-              <span className='col'>
+              <div className='col s3'>
                 { this.props.user.imageUrl ?
-                <img className="materialboxed"
+                <img className="circle"
                 src={this.props.user.imageUrl} /> :
-                <i className='material-icons white-text center'>person</i>}
-              </span>
-              <span>
-                <a className='white-text name page-header'>
+                <i className='material-icons white-text center circle'>
+                  person
+                </i>}
+              </div>
+              <div className=" col s9 name-email">
+                <a className="white-text name page-header tooltipped"
+                data-position="right" data-delay="50"
+                data-tooltip={this.props.user.username}>
                 {this.props.user.username}</a>
-                <a className='white-text email page-header'>
+                <a className="white-text email page-header tooltipped truncate left"
+                data-position="right" data-delay="50"
+                data-tooltip={this.props.user.email}>
                 {this.props.user.email}</a>
-              </span>
+              </div>
             </div>
-          </li>
-          <li className='search'>
-            {this.props.inGroupPage ? <SearchBar searchUsers={this.searchUsers}
-              user={this.props.user} selectedGroup=
-              {this.props.selectedGroup} /> : null}
           </li>
           <li className='my-list-item'>
             <NavLink to='/groups/new'> Create New Group <i
@@ -176,6 +203,11 @@ export class SideNav extends Component {
           </nav>
         </div>
         {sideList}
+        {this.props.isLoggedIn ? <li>
+          <div className="side-footer center valign-wrapper">
+            <p><small> ©{(new Date()).getFullYear()} POSTIT</small></p>
+          </div>
+        </li> : ''}
       </div>
     );
   }

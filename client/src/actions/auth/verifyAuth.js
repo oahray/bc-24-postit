@@ -8,13 +8,16 @@ import {
 } from '../index';
 
 /**
+ * @function verifyAuthLoading
  * @returns {object} verify_auth_loading action
  */
 export const verifyAuthLoading = () => ({
   type: VERIFY_AUTH_LOADING
 });
 
-/** Action creator for auth success
+/**
+ * @function verifyAuthSuccess
+ * @description Action creator for auth success
  * @param {object} response: api response
  * @returns {object} verify_auth_success action
  */
@@ -23,7 +26,9 @@ const verifyAuthSuccess = response => ({
   response
 });
 
-/** Action creator for auth failure actions
+/**
+ * @function verifyAuthFailure
+ * @description: Action creator for auth failure actions
  * @param {object} response: api error response
  * @returns {object} verify_auth_failure action
  */
@@ -33,6 +38,8 @@ const verifyAuthFailure = response => ({
 });
 
 /**
+ * @function verifyAuth
+ * @description: function to verify user authentication
  * @param {string} token
  * @returns {function} dispatches action creator
  */

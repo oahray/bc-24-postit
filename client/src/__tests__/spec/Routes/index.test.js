@@ -5,18 +5,12 @@ import RouteHandler from '../../../routes';
 
 let props;
 
-const actionCreators = {
-  verifyAuth: jest.fn(),
-};
-
-const verifyAuthSpy = jest.spyOn(actionCreators, 'verifyAuth');
-
 const setup = (isLoggedIn) => {
   props = {
     isLoggedIn
   };
   return shallow(<RouteHandler {...props} />);
-}
+};
 
 describe('RouteHandler', () => {
   test('renders authenticated routes without crashing', () => {

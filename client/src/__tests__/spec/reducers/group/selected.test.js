@@ -35,7 +35,7 @@ describe('selectedGroup reducer', () => {
     action.type = GET_GROUP_MESSAGES_FAILURE;
     expect(selectedGroup(state, action)).toEqual(null);
 
-    action.type =DELETE_GROUP_SUCCESS;
+    action.type = DELETE_GROUP_SUCCESS;
     expect(selectedGroup(state, action)).toEqual(null);
 
     action.type = EDIT_GROUP_INFO_SUCCESS;

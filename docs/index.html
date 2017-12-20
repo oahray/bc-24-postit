@@ -310,7 +310,7 @@
           </li>
       </div>
         <ul class="toc-footer">
-            <li><a href='/'>Go to Home</a></li>
+            <li><a href='/'>Go to Application</a></li>
             <li><a href='https://github.com/oahray'>©Postit API by Oare Arene</a></li>
         </ul>
     </div>
@@ -545,7 +545,7 @@ You must replace <code>YOUR_AUTH_TOKEN</code> with your own x-auth token, which 
 <span class="p">}</span>
 </code></pre>
 <blockquote>
-<p>Sample Response Body:</p>
+<p>Sample Success Response:</p>
 </blockquote>
 <pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
   <span class="s2">"message"</span><span class="p">:</span> <span class="s2">"welcome daenerys"</span><span class="p">,</span>
@@ -559,22 +559,101 @@ You must replace <code>YOUR_AUTH_TOKEN</code> with your own x-auth token, which 
     <span class="s2">"udatedAt"</span><span class="p">:</span> <span class="s2">"2017-11-16T08:45:49.906Z"</span><span class="p">,</span>
   <span class="p">}</span>
 <span class="p">}</span>
+</code></pre>
+<blockquote>
+<p>Sample Error Responses:</p>
+
+<ul>
+<li>No username provided (status 400)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="s2">"error"</span><span class="p">:</span> <span class="s2">"Username is required"</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<ul>
+<li>No email provided (status 400)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="s2">"error"</span><span class="p">:</span> <span class="s2">"Email is required"</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<ul>
+<li>No password provided (status 400)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="s2">"error"</span><span class="p">:</span> <span class="s2">"Password is required"</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<ul>
+<li>Username is shorter than three characters (status 400)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="s2">"error"</span><span class="p">:</span> <span class="s2">"Username cannot be shorter than 3 characters"</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<ul>
+<li>Username is longer than twelve characters (status 400)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="s2">"error"</span><span class="p">:</span> <span class="s2">"Username cannot be longer than 12 characters"</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<ul>
+<li>Username is contains non-alphanumeric characters (status 400)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="s2">"error"</span><span class="p">:</span> <span class="s2">"Only alphanumeric characters allowed"</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<ul>
+<li>Username already exists in the database (status 409)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="s2">"error"</span><span class="p">:</span> <span class="s2">"Username already taken"</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<ul>
+<li>Email already exists in the database (status 409)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="s2">"error"</span><span class="p">:</span> <span class="s2">"Email already taken"</span>
+<span class="p">}</span>
 </code></pre><h3 id='request'>Request</h3>
 <ul>
 <li>Endpoint: POST: <code>https://postit-ray.herokuapp.com/api/v1/user/signup</code></li>
 <li>Body <code>(application/json)</code></li>
 </ul>
-<h3 id='response'>Response</h3>
+<h3 id='success-response'>Success Response</h3>
 <ul>
 <li>Status: <code>201: Created</code></li>
 <li>Body <code>(application/json)</code></li>
 <li>Returns x-auth token in header</li>
 </ul>
-<h3 id='errors'>Errors</h3>
-<p>The possible errors from the signup request are:
-- 400 (Bad request)
-- 500 (Internal server error)
-See the <a href="#errors">errors</a> section for the complete list of error codes that the api server could return, and what they mean.</p>
+<h3 id='error-response-codes'>Error Response Codes</h3>
+<p>The possible error status codes from the signup request are: </p>
+
+<ul>
+<li>400 (Bad request)</li>
+<li>409 (Conflict)</li>
+<li>500 (Internal server error).</li>
+</ul>
+
+<p>See the <a href="#errors">errors</a> section for the complete list of error codes that the api server could return, and what they mean.</p>
 <h2 id='signin-user'>Signin user</h2>
 <p>This endpoint allows existing users signin with the same credentials with which they created their accounts. The signin process returns an x-auth token in the header which identifies and authorizes the user to access other endpoints that require authentication. It returns a message welcoming the user, and a user object with the same fields as in the <a href="#signup-new-user">Signup response</a>.</p>
 <h3 id='request-parameters-2'>Request Parameters</h3>
@@ -595,7 +674,7 @@ See the <a href="#errors">errors</a> section for the complete list of error code
 </tbody></table>
 
 <blockquote>
-<p>Request:</p>
+<p>Sample Request:</p>
 </blockquote>
 <pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
   <span class="s2">"username"</span><span class="p">:</span> <span class="s2">"brandon"</span>
@@ -603,7 +682,7 @@ See the <a href="#errors">errors</a> section for the complete list of error code
 <span class="p">}</span>
 </code></pre>
 <blockquote>
-<p>Response body:</p>
+<p>Sample Success Response:</p>
 </blockquote>
 <pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
   <span class="s2">"message"</span><span class="p">:</span> <span class="s2">"welcome back brandon"</span><span class="p">,</span>
@@ -616,22 +695,61 @@ See the <a href="#errors">errors</a> section for the complete list of error code
     <span class="s2">"udatedAt"</span><span class="p">:</span> <span class="s2">"2017-11-16T08:45:49.906Z"</span><span class="p">,</span>
   <span class="p">}</span>
 <span class="p">}</span>
+</code></pre>
+<blockquote>
+<p>Sample Error Responses:</p>
+
+<ul>
+<li>No username provided (status 400)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="s2">"error"</span><span class="p">:</span> <span class="s2">"Username is required"</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<ul>
+<li>No password provided (status 400)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="s2">"error"</span><span class="p">:</span> <span class="s2">"Password is required"</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<ul>
+<li>Username or password is incorrect (status 401)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="nl">error</span><span class="p">:</span> <span class="s1">'Username/Password is incorrect'</span>
+<span class="p">}</span>
 </code></pre><h3 id='request-2'>Request</h3>
 <ul>
 <li>Endpoint: POST: <code>https://postit-ray.herokuapp.com/api/v1/user/signin</code></li>
 <li>Body <code>(application/json)</code></li>
 </ul>
-<h3 id='response-2'>Response</h3>
+<h3 id='success-response-2'>Success Response</h3>
 <ul>
 <li>Status: <code>200: OK</code></li>
 <li>Body <code>(application/json)</code></li>
 <li>Returns x-auth token in header</li>
 </ul>
+<h3 id='error-response-codes-2'>Error Response Codes</h3>
+<p>The possible error status codes from the signin request are: </p>
+
+<ul>
+<li>400 (Bad request)</li>
+<li>401 (Unauthorized)</li>
+<li>500 (Internal server error).</li>
+</ul>
+
+<p>See the <a href="#errors">errors</a> section for the complete list of error codes that the api server could return, and what they mean.</p>
 <h2 id='current-user'>Current User</h2>
 <p>This endpoint returns the current user details. The response is pretty much the same as in <a href="#signup-new-user">Signup</a> and Signup responses. Unlike the Signin and Signup enpoints, however, this requires authentication. Add your x-auth token to the request header.</p>
 
 <blockquote>
-<p>Sample JSON response: </p>
+<p>Sample Success Response: </p>
 </blockquote>
 <pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
   <span class="s2">"user"</span><span class="p">:</span> <span class="p">{</span>
@@ -644,21 +762,50 @@ See the <a href="#errors">errors</a> section for the complete list of error code
     <span class="s2">"udatedAt"</span><span class="p">:</span> <span class="s2">"2017-11-16T08:45:49.906Z"</span><span class="p">,</span>
   <span class="p">}</span>
 <span class="p">}</span>
+</code></pre>
+<blockquote>
+<p>Sample Error Responses:</p>
+
+<ul>
+<li>User is not authenticated (status 401)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="nl">error</span><span class="p">:</span> <span class="s1">'You need to signup or login first'</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<ul>
+<li>Server encountered a database error (status 500)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="nl">error</span><span class="p">:</span> <span class="s1">'Internal Server Error'</span>
+<span class="p">}</span>
 </code></pre><h3 id='request-3'>Request</h3>
 <ul>
 <li>Endpoint: GET: `https://postit-ray.herokuapp.com/api/v1/user/edit</li>
 <li>Requires authentication</li>
 </ul>
-<h3 id='response-3'>Response</h3>
+<h3 id='success-response-3'>Success Response</h3>
 <ul>
 <li>Status: <code>200: OK</code></li>
 <li>Body <code>(application/json)</code></li>
 </ul>
+<h3 id='error-response-codes-3'>Error Response Codes</h3>
+<p>The possible error status codes from this request are: </p>
+
+<ul>
+<li>401 (Unauthorised)</li>
+<li>500 (Internal server error).</li>
+</ul>
+
+<p>See the <a href="#errors">errors</a> section for the complete list of error codes that the api server could return, and what they mean.</p>
 <h2 id='get-all-users'>Get all users</h2>
 <p>Get an array of all users. For privacy reasons, user details returned in this request is limited to the user <code>id</code>, <code>username</code> and <code>about</code>. Requires authentication.</p>
 
 <blockquote>
-<p>Sample JSON response:</p>
+<p>Sample Success Response:</p>
 </blockquote>
 <pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
   <span class="s2">"users"</span><span class="p">:</span> <span class="p">[</span>
@@ -679,21 +826,50 @@ See the <a href="#errors">errors</a> section for the complete list of error code
     <span class="p">}</span>
   <span class="p">]</span>
 <span class="p">}</span>
+</code></pre>
+<blockquote>
+<p>Sample Error Responses:</p>
+
+<ul>
+<li>User is not authenticated (status 401)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="nl">error</span><span class="p">:</span> <span class="s1">'You need to signup or login first'</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<ul>
+<li>Server encountered a database error (status 500)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="nl">error</span><span class="p">:</span> <span class="s1">'Internal Server Error'</span>
+<span class="p">}</span>
 </code></pre><h3 id='request-4'>Request</h3>
 <ul>
 <li>Endpoint: GET: <code>https://postit-ray.herokuapp.com/api/v1/users/all</code></li>
 <li>Requires authentication</li>
 </ul>
-<h3 id='response-4'>Response</h3>
+<h3 id='success-response-4'>Success Response</h3>
 <ul>
 <li>Status: <code>200: OK</code></li>
 <li>Body <code>(application/json)</code></li>
 </ul>
+<h3 id='error-response-codes-4'>Error Response Codes</h3>
+<p>The possible error status codes from the signup request are: </p>
+
+<ul>
+<li>401 (Unauthorized)</li>
+<li>500 (Internal server error).</li>
+</ul>
+
+<p>See the <a href="#errors">errors</a> section for the complete list of error codes that the api server could return, and what they mean.</p>
 <h2 id='get-all-groups-the-current-user-belongs-to'>Get all groups the current user belongs to</h2>
 <p>This endpoint returns a list of the current user&#39;s groups for successful requests. Requires authentication.</p>
 
 <blockquote>
-<p>Sample JSON response:</p>
+<p>Sample Success Response:</p>
 </blockquote>
 <pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
   <span class="s2">"userGroups"</span><span class="p">:</span> <span class="p">[</span>
@@ -717,16 +893,45 @@ See the <a href="#errors">errors</a> section for the complete list of error code
     <span class="p">}</span>
   <span class="p">]</span>
 <span class="p">}</span>
+</code></pre>
+<blockquote>
+<p>Sample Error Responses:</p>
+
+<ul>
+<li>User is not authenticated (status 401)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="nl">error</span><span class="p">:</span> <span class="s1">'You need to signup or login first'</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<ul>
+<li>Server encountered a database error (status 500)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="nl">error</span><span class="p">:</span> <span class="s1">'Internal Server Error'</span>
+<span class="p">}</span>
 </code></pre><h3 id='request-5'>Request</h3>
 <ul>
 <li>Endpoint: GET: <code>https://postit-ray.herokuapp.com/api/v1/user/me/groups</code></li>
 <li>Requires authentication</li>
 </ul>
-<h3 id='response-5'>Response</h3>
+<h3 id='success-response-5'>Success Response</h3>
 <ul>
 <li>Status: <code>200: OK</code></li>
 <li>Body <code>(application/json)</code></li>
 </ul>
+<h3 id='error-response-codes-5'>Error Response Codes</h3>
+<p>The possible error status codes from the signup request are: </p>
+
+<ul>
+<li>401 (Unauthorized)</li>
+<li>500 (Internal server error).</li>
+</ul>
+
+<p>See the <a href="#errors">errors</a> section for the complete list of error codes that the api server could return, and what they mean.</p>
 <h2 id='get-all-messages-sent-by-current-user'>Get all messages sent by current user</h2>
 <p>All the messages that the current user has sent can be gotten with this endpoint. This requires authentication.</p>
 <h4 id='response-parameters-2'>Response Parameters</h4>
@@ -765,6 +970,10 @@ See the <a href="#errors">errors</a> section for the complete list of error code
 <td>Last time the message record was modified.</td>
 </tr>
 </tbody></table>
+
+<blockquote>
+<p>Sample Success Response:</p>
+</blockquote>
 <pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
   <span class="s2">"messages"</span><span class="p">:</span> <span class="p">[</span>
     <span class="p">{</span>
@@ -787,18 +996,47 @@ See the <a href="#errors">errors</a> section for the complete list of error code
     <span class="p">}</span>
   <span class="p">]</span>
 <span class="p">}</span>
+</code></pre>
+<blockquote>
+<p>Sample Error Responses:</p>
+
+<ul>
+<li>User is not authenticated (status 401)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="nl">error</span><span class="p">:</span> <span class="s1">'You need to signup or login first'</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<ul>
+<li>Server encountered a database error (status 500)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="nl">error</span><span class="p">:</span> <span class="s1">'Internal Server Error'</span>
+<span class="p">}</span>
 </code></pre><h3 id='request-6'>Request</h3>
 <ul>
 <li>Endpoint: GET: <code>api/user/me/messages</code></li>
 <li>Requires authentication</li>
 </ul>
-<h3 id='response-6'>Response</h3>
+<h3 id='sample-response'>Sample Response</h3>
 <ul>
 <li>Status: <code>200: OK</code></li>
 <li>Body <code>(application/json)</code></li>
 </ul>
+<h3 id='error-response-codes-6'>Error Response Codes</h3>
+<p>The possible error status codes from the signup request are: </p>
+
+<ul>
+<li>401 (Unauthorized)</li>
+<li>500 (Internal server error).</li>
+</ul>
+
+<p>See the <a href="#errors">errors</a> section for the complete list of error codes that the api server could return, and what they mean.</p>
 <h2 id='edit-user-profile'>Edit User Profile</h2>
-<p>This endpoint makes it possible for users to edit their profile details. Details that can be changed include <code>email</code>, <code>about</code> and <code>imageUrl</code> Currently, users cannot change their usernames.</p>
+<p>This endpoint makes it possible for users to edit their profile details. Details that can be changed include <code>email</code>, <code>about</code> and <code>imageUrl</code>. Note that users cannot change their usernames.</p>
 <h3 id='request-parameters-3'>Request Parameters</h3>
 <table><thead>
 <tr>
@@ -821,7 +1059,7 @@ See the <a href="#errors">errors</a> section for the complete list of error code
 </tbody></table>
 
 <blockquote>
-<p>Sample JSON response: </p>
+<p>Sample Success response: </p>
 </blockquote>
 <pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
   <span class="s2">"user"</span><span class="p">:</span> <span class="p">{</span>
@@ -834,16 +1072,46 @@ See the <a href="#errors">errors</a> section for the complete list of error code
     <span class="s2">"udatedAt"</span><span class="p">:</span> <span class="s2">"2017-11-16T08:45:49.906Z"</span><span class="p">,</span>
   <span class="p">}</span>
 <span class="p">}</span>
+</code></pre>
+<blockquote>
+<p>Sample Error Responses:</p>
+
+<ul>
+<li>User is not authenticated (status 401)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="nl">error</span><span class="p">:</span> <span class="s1">'You need to signup or login first'</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<ul>
+<li>Server encountered a database error (status 500)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="nl">error</span><span class="p">:</span> <span class="s1">'Internal Server Error'</span>
+<span class="p">}</span>
 </code></pre><h3 id='request-7'>Request</h3>
 <ul>
 <li>Endpoint: POST: <code>https://postit-ray.herokuapp.com/api/v1/user/me</code></li>
 <li>Requires authentication</li>
 </ul>
-<h3 id='response-7'>Response</h3>
+<h3 id='success-response-6'>Success Response</h3>
 <ul>
 <li>Status: <code>200: OK</code></li>
 <li>Body <code>(application/json)</code></li>
 </ul>
+<h3 id='error-response-codes-7'>Error Response Codes</h3>
+<p>The possible error status codes from the signup request are: </p>
+
+<ul>
+<li>400 (Bad request)</li>
+<li>401 (Unauthorized)</li>
+<li>500 (Internal server error).</li>
+</ul>
+
+<p>See the <a href="#errors">errors</a> section for the complete list of error codes that the api server could return, and what they mean.</p>
 <h2 id='request-password-reset'>Request password reset</h2>
 <p>Existing users can request a password reset and get a reset email with a link. When clicked, the link takes the user to the react app reset page. </p>
 <h3 id='reset-link'>Reset link</h3>
@@ -857,34 +1125,63 @@ See the <a href="#errors">errors</a> section for the complete list of error code
 <span class="p">}</span>
 </code></pre>
 <blockquote>
-<p>Sample Response</p>
+<p>Sample Success Response</p>
 </blockquote>
 <pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
     <span class="s2">"message"</span><span class="p">:</span> <span class="s2">"An email with reset instructions has been sent to no-one@example.com"</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<p>Sample Error Responses:</p>
+
+<ul>
+<li>Destination Email not provided (status 400)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="nl">error</span><span class="p">:</span> <span class="s1">'Email is required'</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<ul>
+<li>Server encountered a database error (status 500)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="nl">error</span><span class="p">:</span> <span class="s1">'Internal Server Error'</span>
 <span class="p">}</span>
 </code></pre><h3 id='request-8'>Request</h3>
 <ul>
 <li>Endpoint: POST: <code>https://postit-ray.herokuapp.com/api/v1/resetpassword</code></li>
 <li>Body <code>(application/json)</code></li>
 </ul>
-<h3 id='response-8'>Response</h3>
+<h3 id='success-response-7'>Success Response</h3>
 <ul>
 <li>Status: <code>200: OK</code></li>
 <li>Body <code>(application/json)</code></li>
 <li>Sends recovery link to provided email if registered</li>
 </ul>
+<h3 id='error-response-codes-8'>Error Response Codes</h3>
+<p>The possible error status codes from the signup request are: </p>
+
+<ul>
+<li>400 (Bad request)</li>
+<li>500 (Internal server error).</li>
+</ul>
+
+<p>See the <a href="#errors">errors</a> section for the complete list of error codes that the api server could return, and what they mean.</p>
 <h2 id='reset-password'>Reset Password</h2>
 <p>Users who have already gotten a reset email, can go ahead to change their passwords, using the reset link as authentication. When making requests to this endpoint, simply copy the reset hash sent in the reset mail and attach to the <code>t</code>(token) request pararmeter of this endpoint. This reset hash expires after a six hours and can only be used once.</p>
 
 <blockquote>
-<p>Sample request: </p>
+<p>Sample Request: </p>
 </blockquote>
 <pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
   <span class="s2">"password"</span><span class="p">:</span> <span class="s2">"iChangeFaces"</span>
 <span class="p">}</span>
 </code></pre>
 <blockquote>
-<p>Sample response:</p>
+<p>Sample Success Response:</p>
 </blockquote>
 <pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
   <span class="s2">"message"</span><span class="p">:</span> <span class="s2">"Your password has been successfully reset."</span><span class="p">,</span>
@@ -897,17 +1194,65 @@ See the <a href="#errors">errors</a> section for the complete list of error code
     <span class="s2">"updatedAt"</span><span class="p">:</span> <span class="s2">"2017-09-09T22:52:30.814Z"</span>
   <span class="p">}</span>
 <span class="p">}</span>
+</code></pre>
+<blockquote>
+<p>Sample Error Responses:</p>
+
+<ul>
+<li>No reset token provided (status 400)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="nl">error</span><span class="p">:</span> <span class="s1">'Invalid reset link'</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<ul>
+<li>New password not provided (status 400)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="nl">error</span><span class="p">:</span> <span class="s1">'Password is required!'</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<ul>
+<li>Reset token not associated with any user (status 401)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="nl">error</span><span class="p">:</span> <span class="s1">'Link cannot be validated'</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<ul>
+<li>Reset token has expired (status 401)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="nl">error</span><span class="p">:</span> <span class="s1">'Link has expired'</span>
+<span class="p">}</span>
 </code></pre><h3 id='request-9'>Request</h3>
 <ul>
 <li>Endpoint: POST: <code>https://postit-ray.herokuapp.com/api/v1/resetpassword?t=&lt;RESET_HASH&gt;</code></li>
 <li>Body <code>(application/json)</code></li>
 </ul>
-<h3 id='response-9'>Response</h3>
+<h3 id='success-response-8'>Success Response</h3>
 <ul>
 <li>Status: <code>201: Created</code></li>
 <li>Body <code>(application/json)</code></li>
 <li>Returns x-auth token in header</li>
 </ul>
+<h3 id='error-response-codes-9'>Error Response Codes</h3>
+<p>The possible error status codes from the signup request are: </p>
+
+<ul>
+<li>400 (Bad request)</li>
+<li>401 (Unauthorized)</li>
+<li>500 (Internal server error).</li>
+</ul>
+
+<p>See the <a href="#errors">errors</a> section for the complete list of error codes that the api server could return, and what they mean.</p>
 <h1 id='groups'>Groups</h1>
 <p>Groups are communication channels that provide a platform for sharing messages amongst members. Groups can be either public or private. Currently, there is no difference in implementation. Expect huge updates soon.</p>
 
@@ -983,7 +1328,7 @@ See the <a href="#errors">errors</a> section for the complete list of error code
 <span class="p">}</span>
 </code></pre>
 <blockquote>
-<p>Sample Response</p>
+<p>Sample Success Response</p>
 </blockquote>
 <pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
   <span class="s2">"message"</span><span class="p">:</span> <span class="s2">"Group created"</span><span class="p">,</span>
@@ -997,17 +1342,91 @@ See the <a href="#errors">errors</a> section for the complete list of error code
     <span class="s2">"createdAt"</span><span class="p">:</span> <span class="s2">"2017-09-17T15:07:32.369Z"</span>
   <span class="p">}</span>
 <span class="p">}</span>
+</code></pre>
+<blockquote>
+<p>Sample Error Responses:</p>
+
+<ul>
+<li>User is not authenticated (status 401)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="nl">error</span><span class="p">:</span> <span class="s1">'You need to signup or login first'</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<p>User is not a member of specified group (status 403)</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="nl">error</span><span class="p">:</span> <span class="s1">'You must belong to a group to interact with it'</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<ul>
+<li>No group name provided (status 400)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="nl">error</span><span class="p">:</span> <span class="s1">'Group name is required.'</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<ul>
+<li>Group name longer than 20 characters (status 400)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="nl">error</span><span class="p">:</span> <span class="s1">'Group name too long'</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<ul>
+<li>Group description longer than 180 characters (status 400)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="nl">error</span><span class="p">:</span> <span class="s1">'Group description too long'</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<ul>
+<li>User has a group with that same name (status 409)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="nl">error</span><span class="p">:</span> <span class="s1">'You already have a group with this name'</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<ul>
+<li>Server encountered a database error (status 500)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="nl">error</span><span class="p">:</span> <span class="s1">'Internal Server Error'</span>
+<span class="p">}</span>
 </code></pre><h3 id='request'>Request</h3>
 <ul>
 <li>Endpoint: POST: <code>https://postit-ray.herokuapp.com/api/v1/group</code></li>
 <li>Body <code>(application/json)</code></li>
 <li>Requires Authentication</li>
 </ul>
-<h3 id='response'>Response</h3>
+<h3 id='success-response'>Success Response</h3>
 <ul>
 <li>Status: <code>201: Created</code></li>
 <li>Body <code>(application/json)</code></li>
 </ul>
+<h3 id='error-response-codes'>Error Response Codes</h3>
+<p>The possible error status codes from the signup request are: </p>
+
+<ul>
+<li>400 (Bad request)</li>
+<li>401 (Unauthorized)</li>
+<li>409 (Conflict)</li>
+<li>500 (Internal server error).</li>
+</ul>
+
+<p>See the <a href="#errors">errors</a> section for the complete list of error codes that the api server could return, and what they mean.</p>
 <h2 id='add-user-to-group'>Add user to group</h2>
 <p>A group user can add another user to a group, with the username. You must belong to the group to interact with it.</p>
 
@@ -1019,10 +1438,55 @@ See the <a href="#errors">errors</a> section for the complete list of error code
 <span class="p">}</span>
 </code></pre>
 <blockquote>
-<p>Sample Response:</p>
+<p>Sample Success Response:</p>
 </blockquote>
 <pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
   <span class="s2">"message"</span><span class="p">:</span> <span class="s2">"jonsnow added to group"</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<p>Sample Error Responses:</p>
+
+<ul>
+<li>User is not authenticated (status 401)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="nl">error</span><span class="p">:</span> <span class="s1">'You need to signup or login first'</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<p>User is not a member of specified group (status 403)</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="nl">error</span><span class="p">:</span> <span class="s1">'You must belong to a group to interact with it'</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<ul>
+<li>No user with provided username (status 400)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="nl">error</span><span class="p">:</span> <span class="s1">'User does not exist with that username'</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<ul>
+<li>There is already a user with provided username in the group (status 409)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="nl">error</span><span class="p">:</span> <span class="s1">'jonsnow already in group'</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<ul>
+<li>Server encountered a database error (status 500)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="nl">error</span><span class="p">:</span> <span class="s1">'Internal Server Error'</span>
 <span class="p">}</span>
 </code></pre><h3 id='request-2'>Request</h3>
 <ul>
@@ -1030,11 +1494,22 @@ See the <a href="#errors">errors</a> section for the complete list of error code
 <li>Body <code>(application/json)</code></li>
 <li>Requires Authentication</li>
 </ul>
-<h3 id='response-2'>Response</h3>
+<h3 id='success-response-2'>Success Response</h3>
 <ul>
 <li>Status: <code>201: Created</code></li>
 <li>Body <code>(application/json)</code></li>
 </ul>
+<h3 id='error-response-codes-2'>Error Response Codes</h3>
+<p>The possible error status codes from the signup request are: </p>
+
+<ul>
+<li>400 (Bad request)</li>
+<li>401 (Unauthorized)</li>
+<li>409 (Conflict)</li>
+<li>500 (Internal server error).</li>
+</ul>
+
+<p>See the <a href="#errors">errors</a> section for the complete list of error codes that the api server could return, and what they mean.</p>
 <h2 id='remove-user-from-group'>Remove user from group</h2>
 <p>A group creator can remove users from a group.</p>
 
@@ -1046,10 +1521,55 @@ See the <a href="#errors">errors</a> section for the complete list of error code
 <span class="p">}</span>
 </code></pre>
 <blockquote>
-<p>Sample Response:</p>
+<p>Sample Success Response:</p>
 </blockquote>
 <pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
   <span class="s2">"message"</span><span class="p">:</span> <span class="s2">"sansa removed from group"</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<p>Sample Error Responses:</p>
+
+<ul>
+<li>User is not authenticated (status 401)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="nl">error</span><span class="p">:</span> <span class="s1">'You need to signup or login first'</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<p>User is not a member of specified group (status 403)</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="nl">error</span><span class="p">:</span> <span class="s1">'You must belong to a group to interact with it'</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<ul>
+<li>A user that is not the group creator tries to remove other users (status 403)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="nl">error</span><span class="p">:</span> <span class="s1">'Only a group creator can remove members'</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<ul>
+<li>There is no user with that username in the group (status 404)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="nl">error</span><span class="p">:</span> <span class="s1">'No such user in specified group'</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<ul>
+<li>Server encountered a database error (status 500)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="nl">error</span><span class="p">:</span> <span class="s1">'Internal Server Error'</span>
 <span class="p">}</span>
 </code></pre><h3 id='request-3'>Request</h3>
 <ul>
@@ -1058,18 +1578,30 @@ See the <a href="#errors">errors</a> section for the complete list of error code
 <li>Requires Authentication</li>
 <li>Only the group creator can make successfull requests to this endpoint</li>
 </ul>
-<h3 id='response-3'>Response</h3>
+<h3 id='sucess-response'>Sucess Response</h3>
 <ul>
 <li>Status: <code>201: Created</code></li>
 <li>Body <code>(application/json)</code></li>
 </ul>
+<h3 id='error-response-codes-3'>Error Response Codes</h3>
+<p>The possible error status codes from the signup request are: </p>
+
+<ul>
+<li>400 (Bad request)</li>
+<li>401 (Unauthorized)</li>
+<li>403 (Forbidden)</li>
+<li>404 (Not Found)</li>
+<li>500 (Internal server error).</li>
+</ul>
+
+<p>See the <a href="#errors">errors</a> section for the complete list of error codes that the api server could return, and what they mean.</p>
 <h2 id='get-users-by-group'>Get users by group</h2>
 <p>This returns a list of users based on a specified group. With this endpoint, you would get back by default a list of users in a group. If you wish to get a list of users not in a group, add <code>?members=false</code> query to the url, along with optional <code>username</code>, <code>offset</code> and <code>limit</code> parameters to further refine your search.</p>
 
 <p>The user search by group feature supports pagination.</p>
 
 <blockquote>
-<p>Sample JSON response</p>
+<p>Sample Success Response</p>
 </blockquote>
 <pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
   <span class="s2">"group"</span><span class="p">:</span> <span class="p">{</span>
@@ -1112,6 +1644,33 @@ See the <a href="#errors">errors</a> section for the complete list of error code
     <span class="p">}</span>
   <span class="p">]</span>
 <span class="p">}</span>
+</code></pre>
+<blockquote>
+<p>Sample Error Responses:</p>
+
+<ul>
+<li>User is not authenticated (status 401)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="nl">error</span><span class="p">:</span> <span class="s1">'You need to signup or login first'</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<p>User is not a member of specified group (status 403)</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="nl">error</span><span class="p">:</span> <span class="s1">'You must belong to a group to interact with it'</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<ul>
+<li>Server encountered a database error (status 500)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="nl">error</span><span class="p">:</span> <span class="s1">'Internal Server Error'</span>
+<span class="p">}</span>
 </code></pre><h3 id='request-4'>Request</h3>
 <ul>
 <li>Endpoint: 
@@ -1153,16 +1712,27 @@ See the <a href="#errors">errors</a> section for the complete list of error code
 
 <p>limit |  | Sets the number of results to return per page. If empty, returns the whole result.
 offset | 0 | Sets the number of results to skip.</p>
-<h3 id='response-4'>Response</h3>
+<h3 id='success-response-3'>Success Response</h3>
 <ul>
 <li>Status: <code>200: OK</code></li>
 <li>Body <code>(application/json)</code></li>
 </ul>
+<h3 id='error-response-codes-4'>Error Response Codes</h3>
+<p>The possible error status codes from the signup request are: </p>
+
+<ul>
+<li>400 (Bad request)</li>
+<li>401 (Unauthorized)</li>
+<li>403 (Forbidden)</li>
+<li>500 (Internal server error).</li>
+</ul>
+
+<p>See the <a href="#errors">errors</a> section for the complete list of error codes that the api server could return, and what they mean.</p>
 <h2 id='send-message-to-group'>Send message to group</h2>
 <p>A registered user can send messages to groups they belong to.</p>
 
 <blockquote>
-<p>Request:</p>
+<p>Sample Request:</p>
 </blockquote>
 <pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
   <span class="s2">"content"</span><span class="p">:</span> <span class="s2">"In the beginning were the little children of the forest"</span><span class="p">,</span>
@@ -1171,7 +1741,7 @@ offset | 0 | Sets the number of results to skip.</p>
 
 </code></pre>
 <blockquote>
-<p>Response:</p>
+<p>Sample Response:</p>
 </blockquote>
 <pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
   <span class="s2">"message"</span><span class="p">:</span> <span class="p">{</span>
@@ -1183,6 +1753,51 @@ offset | 0 | Sets the number of results to skip.</p>
     <span class="s2">"updatedAt"</span><span class="p">:</span> <span class="s2">"2017-09-17T15:46:01.612Z"</span><span class="p">,</span>
     <span class="s2">"createdAt"</span><span class="p">:</span> <span class="s2">"2017-09-17T15:46:00.884Z"</span>
   <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<p>Sample Error Responses:</p>
+
+<ul>
+<li>User is not authenticated (status 401)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="nl">error</span><span class="p">:</span> <span class="s1">'You need to signup or login first'</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<p>User is not a member of specified group (status 403)</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="nl">error</span><span class="p">:</span> <span class="s1">'You must belong to a group to interact with it'</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<ul>
+<li>No message content (status 400)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="nl">error</span><span class="p">:</span> <span class="s1">'Message must not be empty'</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<ul>
+<li>Incorrect priority (status 400)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="nl">error</span><span class="p">:</span> <span class="s1">'Incorrect priority option. Choose NORMAL, URGENT or CRITICAL'</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<ul>
+<li>Server encountered a database error (status 500)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="nl">error</span><span class="p">:</span> <span class="s1">'Internal Server Error'</span>
 <span class="p">}</span>
 </code></pre><h3 id='request-parameters-2'>Request Parameters</h3>
 <table><thead>
@@ -1242,16 +1857,26 @@ offset | 0 | Sets the number of results to skip.</p>
 <li>Body <code>(application/json)</code></li>
 <li>Requires Authentication</li>
 </ul>
-<h3 id='response-5'>Response</h3>
+<h3 id='success-response-4'>Success Response</h3>
 <ul>
 <li>Status: <code>200: OK</code></li>
 <li>Body <code>(application/json)</code></li>
 </ul>
+<h3 id='error-response-codes-5'>Error Response Codes</h3>
+<p>The possible error status codes from the signup request are: </p>
+
+<ul>
+<li>401 (Unauthorized)</li>
+<li>403 (Forbidden)</li>
+<li>500 (Internal server error).</li>
+</ul>
+
+<p>See the <a href="#errors">errors</a> section for the complete list of error codes that the api server could return, and what they mean.</p>
 <h2 id='get-group-messages'>Get group messages</h2>
 <p>Get an array of all messages that has been sent to the group.</p>
 
 <blockquote>
-<p>Sample JSON response</p>
+<p>Sample Success Response</p>
 </blockquote>
 <pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
   <span class="s2">"group"</span><span class="p">:</span> <span class="p">{</span>
@@ -1288,23 +1913,60 @@ offset | 0 | Sets the number of results to skip.</p>
     <span class="p">}</span>
   <span class="p">]</span>
 <span class="p">}</span>
+</code></pre>
+<blockquote>
+<p>Sample Error Responses:</p>
+
+<ul>
+<li>User is not authenticated (status 401)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="nl">error</span><span class="p">:</span> <span class="s1">'You need to signup or login first'</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<p>User is not a member of specified group (status 403)</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="nl">error</span><span class="p">:</span> <span class="s1">'You must belong to a group to interact with it'</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<ul>
+<li>Server encountered a database error (status 500)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="nl">error</span><span class="p">:</span> <span class="s1">'Internal Server Error'</span>
+<span class="p">}</span>
 </code></pre><h3 id='request-6'>Request</h3>
 <ul>
 <li>Endpoint: GET: <code>https://postit-ray.herokuapp.com/api/v1/group/:groupid/messages</code></li>
 <li>Body <code>(application/json)</code></li>
 <li>Requires Authentication</li>
 </ul>
-<h3 id='response-6'>Response</h3>
+<h3 id='success-response-5'>Success Response</h3>
 <ul>
 <li>Status: <code>200: OK</code></li>
 <li>Body <code>(application/json)</code></li>
 </ul>
+<h3 id='error-response-codes-6'>Error Response Codes</h3>
+<p>The possible error status codes from the signup request are: </p>
+
+<ul>
+<li>401 (Unauthorized)</li>
+<li>403 (Forbidden)</li>
+<li>500 (Internal server error).</li>
+</ul>
+
+<p>See the <a href="#errors">errors</a> section for the complete list of error codes that the api server could return, and what they mean.</p>
 <h2 id='change-group-info'>Change group info</h2>
 <p>Edit the info for an existing group. Group name is required.
 If description is absent, it is set to null. If no type is specified, it is left unchanged.</p>
 
 <blockquote>
-<p>Sample JSON request: </p>
+<p>Sample Request: </p>
 </blockquote>
 <pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
   <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"Beautiful intellect"</span><span class="p">,</span>
@@ -1312,7 +1974,7 @@ If description is absent, it is set to null. If no type is specified, it is left
 <span class="p">}</span>
 </code></pre>
 <blockquote>
-<p>Sample JSON response: </p>
+<p>Sample Success Response: </p>
 </blockquote>
 <pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
     <span class="s2">"message"</span><span class="p">:</span> <span class="s2">"Group info successfully updated"</span><span class="p">,</span>
@@ -1326,13 +1988,67 @@ If description is absent, it is set to null. If no type is specified, it is left
         <span class="s2">"updatedAt"</span><span class="p">:</span> <span class="s2">"2017-09-24T15:30:18.084Z"</span>
     <span class="p">}</span>
 <span class="p">}</span>
+</code></pre>
+<blockquote>
+<p>Sample Error Responses:</p>
+
+<ul>
+<li>User is not authenticated (status 401)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="nl">error</span><span class="p">:</span> <span class="s1">'You need to signup or login first'</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<p>User is not a member of specified group (status 403)</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="nl">error</span><span class="p">:</span> <span class="s1">'You must belong to a group to interact with it'</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<ul>
+<li>No group name provided (status 400)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="nl">error</span><span class="p">:</span> <span class="s1">'Group name is required.'</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<ul>
+<li>Group name longer than 20 characters (status 400)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="nl">error</span><span class="p">:</span> <span class="s1">'Group name too long'</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<ul>
+<li>Group description longer than 180 characters (status 400)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="nl">error</span><span class="p">:</span> <span class="s1">'Group description too long'</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<ul>
+<li>Server encountered a database error (status 500)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="nl">error</span><span class="p">:</span> <span class="s1">'Internal Server Error'</span>
+<span class="p">}</span>
 </code></pre><h3 id='request-7'>Request</h3>
 <ul>
 <li>Endpoint: PATCH: <code>https://postit-ray.herokuapp.com/api/v1/group/:groupid/info</code></li>
 <li>Body <code>(application/json)</code></li>
 <li>Requires Authentication</li>
 </ul>
-<h3 id='response-7'>Response</h3>
+<h3 id='success-response-6'>Success Response</h3>
 <ul>
 <li>Status: <code>201: OK</code></li>
 <li>Body <code>(application/json)</code></li>
@@ -1352,20 +2068,66 @@ If description is absent, it is set to null. If no type is specified, it is left
 <li>Body <code>(application/json)</code></li>
 <li>Requires Authentication</li>
 </ul>
-<h3 id='response-8'>Response</h3>
+<h3 id='success-response-7'>Success Response</h3>
 <ul>
 <li>Status: <code>201: OK</code></li>
 <li>Body <code>(application/json)</code></li>
 <li>Deletes the group when everyone has left</li>
 </ul>
+<h3 id='error-response-codes-7'>Error Response Codes</h3>
+<p>The possible error status codes from the signup request are: </p>
+
+<ul>
+<li>400 (Bad request)</li>
+<li>401 (Unauthorized)</li>
+<li>500 (Internal server error).</li>
+</ul>
+
+<p>See the <a href="#errors">errors</a> section for the complete list of error codes that the api server could return, and what they mean.</p>
 <h2 id='delete-group'>Delete group</h2>
 <p>This endpoint allows a group creator delete the group</p>
 
 <blockquote>
-<p>Sample response: </p>
+<p>Sample Success Response: </p>
 </blockquote>
 <pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
   <span class="s2">"message"</span><span class="p">:</span> <span class="s2">"Group successfully deleted"</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<p>Sample Error Responses:</p>
+
+<ul>
+<li>User is not authenticated (status 401)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="nl">error</span><span class="p">:</span> <span class="s1">'You need to signup or login first'</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<p>User is not a member of specified group (status 403)</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="nl">error</span><span class="p">:</span> <span class="s1">'You must belong to a group to interact with it'</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<ul>
+<li>A user tries to delete group they did not create (status 403)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="nl">error</span><span class="p">:</span> <span class="s1">'You can only delete groups created by you'</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<ul>
+<li>Server encountered a database error (status 500)</li>
+</ul>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="nl">error</span><span class="p">:</span> <span class="s1">'Internal Server Error'</span>
 <span class="p">}</span>
 </code></pre><h3 id='request-9'>Request</h3>
 <ul>
@@ -1373,11 +2135,21 @@ If description is absent, it is set to null. If no type is specified, it is left
 <li>Body <code>(application/json)</code></li>
 <li>Requires Authentication</li>
 </ul>
-<h3 id='response-9'>Response</h3>
+<h3 id='success-response-8'>Success Response</h3>
 <ul>
 <li>Status: <code>201: OK</code></li>
 <li>Body <code>(application/json)</code></li>
 </ul>
+<h3 id='error-response-codes-8'>Error Response Codes</h3>
+<p>The possible error status codes from the signup request are: </p>
+
+<ul>
+<li>400 (Bad request)</li>
+<li>401 (Unauthorized)</li>
+<li>500 (Internal server error).</li>
+</ul>
+
+<p>See the <a href="#errors">errors</a> section for the complete list of error codes that the api server could return, and what they mean.</p>
 <h1 id='errors'>Errors</h1>
 <aside class="notice">This is a list of the status codes you might see when you encounter an error</aside>
 

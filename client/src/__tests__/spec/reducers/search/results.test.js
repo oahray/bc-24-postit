@@ -35,5 +35,5 @@ describe('searchResults', () => {
 
     action.type = 'SOME_OTHER_ACTION';
     expect(searchResults(undefined, action)).toEqual(state);
-  })
-})
+  });
+});

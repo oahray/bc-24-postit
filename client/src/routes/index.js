@@ -14,6 +14,13 @@ import ForgotPassword from '../containers/ForgotPassword';
 import ResetPassword from '../containers/ResetPassword';
 import NotFound from '../components/NotFound';
 
+/**
+ * @function RouteHandler
+ * @description: Higher order component that determines
+ * what routes a user can access based on authentication status
+ * @param {Object} props
+ * @returns {Object} RouteHandler component
+ */
 const RouteHandler = (props) => {
   const unauthRoutes = (
     <div>

@@ -2,8 +2,8 @@ import { User } from '../models';
 
 /**
  * @function isTaken
- * @summary middleware that checks if username or email is taken
- * when a user tries to sign up
+ * @summary middleware that checks if username or email
+ * is taken when a user tries to sign up
  * @param {Object} req
  * @param {Object} res
  * @param {function} next

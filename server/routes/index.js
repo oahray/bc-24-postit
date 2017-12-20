@@ -15,7 +15,7 @@ module.exports = (app) => {
   app.post('/api/v1/user/signup', isValidUsername,
   isValidEmail, isTaken, usersController.signup);
 
-  app.post('/api/v1/user/signin', isValidUsername,
+  app.post('/api/v1/user/signin',
     usersController.signin);
 
   app.get('/api/v1/user/me', authenticate, usersController.getMe);

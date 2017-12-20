@@ -20,12 +20,12 @@ export const create = (req, res) => {
       error: 'Group name is required.'
     });
   }
-  if (name.length > 25) {
+  if (name.length > 30) {
     return res.status(400).send({
       error: 'Group name too long'
     });
   }
-  if (description.length > 70) {
+  if (description.length > 180) {
     return res.status(400).send({
       error: 'Group description too long'
     });
@@ -36,7 +36,7 @@ export const create = (req, res) => {
   Group.findOne({ where: { name } })
     .then((result) => {
       if (result) {
-        return res.status(400).send({
+        return res.status(409).send({
           error: 'You already have a group with this name'
         });
       }
@@ -91,7 +91,7 @@ export const addUser = (req, res) => {
       group.getUsers({ where: { username } }).then((users) => {
         const io = req.app.get('io');
         if (users.length > 0) {
-          return res.status(400).send({
+          return res.status(409).send({
             error: `${user.username} already in group`
           });
         }
@@ -127,12 +127,12 @@ export const removeUser = (req, res) => {
   const io = req.app.get('io');
   const group = req.group;
   if (group.createdBy !== req.currentUser.username) {
-    return res.status(401).send({
+    return res.status(403).send({
       error: 'Only a group creator can remove members'
     });
   }
   if (groupUsernames && groupUsernames.indexOf(username) === -1) {
-    return res.status(400).send({
+    return res.status(404).send({
       error: 'No such user in specified group'
     });
   }
@@ -419,13 +419,13 @@ export const editInfo = (req, res) => {
       error: 'Group name is required'
     });
   }
-  if (name.trim().length > 25) {
+  if (name.trim().length > 30) {
     return res.status(400).send({
       error: 'Group name too long'
     });
   }
 
-  if (description && description.trim().length > 70) {
+  if (description && description.trim().length > 180) {
     return res.status(400).send({
       error: 'Group description too long'
     });
@@ -464,7 +464,7 @@ export const editInfo = (req, res) => {
 export const deleteGroup = (req, res) => {
   // Group.findById(req.params.groupid).then((group) => {
   if (req.currentUser.username !== req.group.createdBy) {
-    return res.status(401).send({
+    return res.status(403).send({
       error: 'You can only delete groups created by you'
     });
   }

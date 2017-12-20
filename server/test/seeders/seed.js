@@ -64,21 +64,21 @@ export const seedUsers = {
 
 export const seedGroups = [
   {
-    id: 11,
+    id: 111,
     name: 'Winterfell',
     type: 'private',
     description: 'Winter is coming',
     createdBy: seedUsers.registered[2].username
   },
   {
-    id: 12,
+    id: 112,
     name: 'Dorne',
     type: 'public',
     description: 'Unbroken, unbowed, unbent',
     createdBy: seedUsers.registered[2].username
   },
   {
-    id: 13,
+    id: 113,
     name: 'Dragonstone',
     type: 'private',
     description: 'Once home to Targaryens',

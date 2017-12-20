@@ -1,10 +1,9 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { mockServer, mockStore } from '../../../__mocks__/mockConfig'
+import { mockServer, mockStore } from '../../../__mocks__/mockConfig';
 import ConnectedGroup, { Group } from '../../../containers/Group';
 import Preloader from '../../../components/Preloader';
-import { editGroupInfo, deleteGroup } from '../../../actions/index';
 
 let props;
 const currentUser = {
@@ -45,13 +44,7 @@ const groupList = [{
   description: 'Group for test purposes',
   type: 'public',
   createdBy: 'testuser'
-}, {
-  id: 5,
-  name: 'New Test group',
-  description: 'Group for tests',
-  type: 'private',
-  createdBy: 'testuser'
-}];
+}, otherGroup];
 
 const match = {
   params: {
@@ -88,7 +81,7 @@ const actionCreators = {
   inGroupPage: jest.fn(),
   sendMessage: jest.fn(),
   push: jest.fn()
-}
+};
 
 const getMessagesSpy = jest.spyOn(actionCreators, 'getGroupMessages');
 const pushSpy = jest.spyOn(actionCreators, 'push');
@@ -114,7 +107,7 @@ const setup = (user, selectedGroup, loading) => {
     ...actionCreators
   };
   return shallow(<Group {...props} />);
-}
+};
 
 describe('Group component', () => {
   test('should render without crashing', () => {
@@ -122,7 +115,7 @@ describe('Group component', () => {
     expect(wrapper.length).toBe(1);
     mockServer.on('connection', (socket) => {
       socket.emit('Added to group', { group });
-      socket.emit('Message posted', { message: message1, group});
+      socket.emit('Message posted', { message: message1, group });
       socket.emit('Removed from group', { user: currentUser, group });
       socket.emit('Left group', { user: currentUser, group });
     });
@@ -134,7 +127,7 @@ describe('Group component', () => {
     expect(wrapper.length).toBe(1);
     mockServer.on('connection', (socket) => {
       socket.emit('Added to group', { group });
-      socket.emit('Message posted', { message: message1, group});
+      socket.emit('Message posted', { message: message1, group });
       socket.emit('Removed from group', { user: currentUser, group });
       socket.emit('Left group', { user: currentUser, group });
     });
@@ -173,7 +166,7 @@ describe('Group component', () => {
 
   test('allows user type and send messages', () => {
     const wrapper = setup(otherUser, group);
-    const event = { target : { value: 'Some message' }}
+    const event = { target: { value: 'Some message' } };
     wrapper.instance().onTypeText(event);
     expect(wrapper.instance().state.content).toBe('Some message');
 
@@ -188,6 +181,14 @@ describe('Group component', () => {
     // Try to send message again, should not call spy again
     wrapper.instance().sendMessage();
     expect(sendMessageSpy).toHaveBeenCalledTimes(1);
+  });
+
+  test('redirects to search page when startSearch method is called', () => {
+    const wrapper = setup(otherUser, group);
+    wrapper.instance().startSearch();
+    expect(pushSpy).toHaveBeenCalledWith(`/groups/${
+      group.id
+    }/addusers?u=&p=1`);
   });
 
   test('can dispatch action to edit group', () => {

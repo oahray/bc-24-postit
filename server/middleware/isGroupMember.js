@@ -1,5 +1,21 @@
 import { Group } from '../models';
 
+/**
+ * @function isGroupMember
+ *
+ * @description middleware that checks
+ * if the current user is a  member of a group
+ * specified by the groupid parameter.
+ * The request is rejected or allowed if user
+ * does not belong to group, or allowed to proceed
+ * to endpoint controller if it is.
+ *
+ * @param {Object} req: request object
+ * @param {Object} res: response object
+ * @param {func} next: called to move to
+ * the next middleware/controller
+ * @returns {Object} success or error response
+ */
 export default (req, res, next) => {
   const groupId = req.params.groupid;
   if (!Number.isInteger(Number(groupId))) {
