@@ -13,12 +13,12 @@ export default class GuestHome extends Component {
   render() {
     return (
       <div className='guest-home center'>
-        <div>
+        <div id="guest-home-info">
           <h5 className="guest-home-header">Welcome to Postit!</h5>
-          <p className="guest-home-info">
+          <h6 className="guest-info-text">
             Postit is a communication-driven community
             that provides a platform with which you can:
-          </p>
+          </h6>
         </div>
          <GuestCarousel />
         <div className="guest-home-text">

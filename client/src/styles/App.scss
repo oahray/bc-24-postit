@@ -532,11 +532,14 @@ ul.side-nav.fixed:hover {
     font-size: 5em;
     font-family: $header-font
   }
-  .guest-home-text, {
+  .guest-home-text {
     font-size: 1.4em;
     color: $secondary-color;
   }
-
+  .guest-info-text {
+    font-size: 1.4em;
+    color: $main-color;
+  }
   #guest-carousel {
     padding: 0 auto;
     height: 270px !important;

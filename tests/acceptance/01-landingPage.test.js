@@ -16,7 +16,7 @@ module.exports = {
     client
       .waitForElementVisible(landing.joinText, 1000)
       .click(landing.signup)
-      .waitForElementVisible(signup.formDiv, 1000)
+      .waitForElementVisible(signup.formDiv, 2000)
       .assert.urlEquals(`${baseUrl}/signup`)
       .assert.containsText(signup.formHeader, 'Sign up')
       .pause(1000);

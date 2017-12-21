@@ -7,12 +7,12 @@ module.exports = {
     container: '.guest-home',
     nav: {
       brand: '.navbar-div > div > nav > div > a.brand-logo',
-      signin: '.#root > div > div.main > div:nth-child(2) > div > div.guest-home-text > a:nth-child(3)',
+      signin: '#root > div > div.main > div:nth-child(2) > div > div.guest-home-text > a:nth-child(3)',
       signup: '#root > div > div.main > div:nth-child(2) > div > div.guest-home-text > a:nth-child(2)',
       docs: '#root > div > div > div.navbar-div > div > nav > div > ul > li.my-list-item.docs-link > a'
     },
     welcomeHeader: '.guest-home-header',
-    joinText: '.guest-home-text',
+    joinText: '#root > div > div.main > div:nth-child(2) > div > div.guest-home-text',
     signin: '#landing-signin',
     signup: '#landing-signup'
   },
