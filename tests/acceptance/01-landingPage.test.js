@@ -7,7 +7,7 @@ module.exports = {
     client
       .url(baseUrl)
       .waitForElementVisible('body', 1000)
-      .assert.title('Postit | Anytime')
+      .assert.title('Postit | Bridging the communication gap')
       .waitForElementVisible(landing.container, 1000)
       .assert.containsText(landing.welcomeHeader, 'Welcome to Postit')
       .pause(1000);
@@ -66,7 +66,6 @@ module.exports = {
     client
       .click(landing.nav.docs)
       .pause(2000)
-      // .waitForElementVisible(landing.container, 1000)
       .end();
   }
 };

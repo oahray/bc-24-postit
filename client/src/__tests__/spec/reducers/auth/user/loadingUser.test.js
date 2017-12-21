@@ -11,7 +11,7 @@ describe('loadingUser reducer', () => {
     action.type = SIGNIN_LOADING;
     expect(loadingUser(state, action))
     .toBe(true);
-    
+
     action.type = SIGNIN_SUCCESS;
     expect(loadingUser(state, action))
     .toBe(false);
@@ -31,7 +31,7 @@ describe('loadingUser reducer', () => {
     action.type = SIGNUP_FAILURE;
     expect(loadingUser(state, action))
     .toBe(false);
-    
+
     action.type = 'SOME_UNRELATED_ACTION';
     expect(loadingUser(state, action))
     .toBe(state);

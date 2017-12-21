@@ -3,7 +3,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
-// import io from 'socket.io-client';
 
 import { getGroupMessages, getGroupUsers, getGroupList,
   inGroupPage, sendMessage, markAsRead,
@@ -45,6 +44,7 @@ export class Group extends Component {
     this.updateUsersList = this.updateUsersList.bind(this);
     this.toggleInfo = this.toggleInfo.bind(this);
     this.deleteGroup = this.deleteGroup.bind(this);
+    this.startSearch = this.startSearch.bind(this);
     this.removeUser = this.removeUser.bind(this);
     this.leaveGroup = this.leaveGroup.bind(this);
     this.editInfo = this.editInfo.bind(this);
@@ -100,7 +100,8 @@ export class Group extends Component {
       }
     });
     socket.on('Left group', ({ user, group }) => {
-      if (this.props.selectedGroup && group.id === this.props.selectedGroup.id) {
+      if (this.props.selectedGroup &&
+        group.id === this.props.selectedGroup.id) {
         if (user.id === this.props.user.id) {
           return this.props.history.push('/');
         }
@@ -137,6 +138,7 @@ export class Group extends Component {
    * @returns {undefined}
    */
   componentDidUpdate(prevProps) {
+    this.initMaterial();
     if (prevProps.groupMessages.length !== this.props.groupMessages.length) {
       this.smartScroll();
     }
@@ -158,11 +160,9 @@ export class Group extends Component {
    * @returns {undefined}
    */
   initMaterial() {
-    setTimeout(() => {
-      $('.tooltipped').tooltip({ delay: 50, html: true });
-      $('.modal').modal();
-      $('.collapsible').collapsible();
-    }, 800);
+    $('.tooltipped').tooltip({ delay: 50, html: true });
+    $('.modal').modal();
+    $('.collapsible').collapsible();
   }
 
   /**
@@ -254,6 +254,7 @@ export class Group extends Component {
   }
 
   /**
+   * @function editInfo
    * @returns {undefined} and sets content state
    * @param {string} name: the new group name
    * @param {string} description: the new group name
@@ -265,6 +266,7 @@ export class Group extends Component {
   }
 
   /**
+   * @function updateUsersList
    * @returns {undefined} and sets content state
    */
   updateUsersList() {
@@ -272,12 +274,21 @@ export class Group extends Component {
   }
 
   /**
+   * @function startSearch
+   * @returns {undefined}
+   */
+  startSearch() {
+    this.props.history.push(`/groups/${
+      this.props.selectedGroup.id
+    }/addusers?u=&p=1`);
+  }
+
+  /**
    * @param {string} username: the new group name
    * @returns {undefined} and sets content state
    */
   removeUser(username) {
-    this.props.removeUser(username, this.props.selectedGroup.id,
-    this.updateUsersList, this.props.token);
+    this.props.removeUser(username, this.props.selectedGroup.id, this.props.token);
   }
 
   /**
@@ -413,6 +424,10 @@ export class Group extends Component {
               {infoTab}
               <hr/>
               {usersList}
+              <li className="center invite-users pointer"
+              onClick={this.startSearch}>
+                <a>Add more users...</a>
+              </li>
             </ul>
           </div>}
         </div>

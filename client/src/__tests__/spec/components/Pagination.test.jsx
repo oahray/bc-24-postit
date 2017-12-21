@@ -1,29 +1,23 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
-import { mock, mockStore } from '../../../__mocks__/mockConfig';
+import { shallow } from 'enzyme';
 import Pagination from '../../../components/Pagination';
 
 const state = {
   page: 1,
   offset: 0,
   limit: 5
-}
+};
 
 const results = {
   totalCount: 13
-}
+};
 
 const funcs = {
   previousPage: jest.fn(),
   nextPage: jest.fn(),
   onPageChange: jest.fn(),
   removeImage: jest.fn()
-}
-
-const previousPageSpy = jest.spyOn(funcs, 'previousPage');
-const nextPageSpy = jest.spyOn(funcs, 'nextPage');
-const pageChangeSpy = jest.spyOn(funcs, 'onPageChange');
-const removeImageSpy = jest.spyOn(funcs, 'removeImage');
+};
 
 describe('Pagination component', () => {
   const wrapperFn = () => shallow(<Pagination
@@ -41,8 +35,8 @@ describe('Pagination component', () => {
     expect(wrapperFn().find('#next-page').hasClass('disabled')).toEqual(false);
 
     state.page = 3;
-    const wrapper = wrapperFn();
-    expect(wrapperFn().find('#previous-page').hasClass('disabled')).toEqual(false);
+    expect(wrapperFn().find('#previous-page')
+    .hasClass('disabled')).toEqual(false);
     expect(wrapperFn().find('#next-page').hasClass('disabled')).toEqual(true);
   });
 });

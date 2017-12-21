@@ -43,7 +43,13 @@ export const signup = (req, res) => {
  */
 export const signin = (req, res) => {
   const body = _.pick(req.body, ['username', 'password']);
-  const username = body.username.trim().toLowerCase();
+  let username = body.username;
+  if (!username || !username.trim()) {
+    return res.status(400).send({
+      error: 'Username is required.'
+    });
+  }
+  username = body.username.trim().toLowerCase();
   if (!body.password) {
     return res.status(400).send({
       error: 'Password must not be empty'
@@ -68,11 +74,25 @@ export const signin = (req, res) => {
   });
 };
 
+/**
+ * @function getMe
+ * @description returns the profile of the user making the request
+ * @param {Object} req: request object
+ * @param {Object} res: response object
+ * @returns {Object} success or error response
+ */
 export const getMe = (req, res) => {
   const currentUser = req.currentUser;
   return res.status(200).send({ currentUser });
 };
 
+/**
+ * @function getAllUsers
+ * @description returns an array of all users
+ * @param {Object} req: request object
+ * @param {Object} res: response object
+ * @returns {Object} success or error response
+ */
 export const getAllUsers = (req, res) => {
   User.findAll().then((result) => {
     const users = result.map(user => ({
@@ -85,6 +105,13 @@ export const getAllUsers = (req, res) => {
   });
 };
 
+/**
+ * @function getMySentMessages
+ * @description returns an array of all messages the current user has sent
+ * @param {Object} req: request object
+ * @param {Object} res: response object
+ * @returns {Object} success or error response
+ */
 export const getMySentMessages = (req, res) => {
   const userId = req.currentUser.id;
   Message.findAll({ where: { userId } }).then(messages =>
@@ -92,6 +119,13 @@ export const getMySentMessages = (req, res) => {
   );
 };
 
+/**
+ * @function getMyGroups
+ * @description returns an array of groups the current user belongs to
+ * @param {Object} req: request object
+ * @param {Object} res: response object
+ * @returns {Object} success or error response
+ */
 export const getMyGroups = (req, res) => {
   User.findById(req.currentUser.id).then((user) => {
     user.getGroups().then((userGroups) => {
@@ -100,6 +134,13 @@ export const getMyGroups = (req, res) => {
   });
 };
 
+/**
+ * @function changePassword
+ * @description allows user change their password
+ * @param {Object} req: request object
+ * @param {Object} res: response object
+ * @returns {Object} success or error response
+ */
 export const changePassword = (req, res) => {
   const current = req.body.currentpassword;
   const newPassword = req.body.newpassword;
@@ -135,6 +176,13 @@ export const changePassword = (req, res) => {
   });
 };
 
+/**
+ * @function forgotPassword
+ * @description allows user request a password reset
+ * @param {Object} req: request object
+ * @param {Object} res: response object
+ * @returns {Object} success or error response
+ */
 export const forgotPassword = (req, res) => {
   const email = req.body.email;
   if (!email) {
@@ -180,6 +228,14 @@ export const forgotPassword = (req, res) => {
   });
 };
 
+/**
+ * @function resetPassword
+ * @description allows user reset their password with token
+ * gotten from the reset mail
+ * @param {Object} req: request object
+ * @param {Object} res: response object
+ * @returns {Object} success or error response
+ */
 export const resetPassword = (req, res) => {
   const resetHash = req.query.t;
   const password = req.body.password;
@@ -223,6 +279,13 @@ export const resetPassword = (req, res) => {
   });
 };
 
+/**
+ * @function editProfile
+ * @description allows user edit their profile
+ * @param {Object} req: request object
+ * @param {Object} res: response object
+ * @returns {Object} success or error response
+ */
 export const editProfile = (req, res) => {
   const { email } = req.body;
   let { about, imageUrl } = req.body;

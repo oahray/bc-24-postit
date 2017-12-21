@@ -1,19 +1,20 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { mockServer, mockStore } from '../../../__mocks__/mockConfig'
-import ConnectResetPassword, { ResetPassword } from '../../../containers/ResetPassword';
+import { mockStore } from '../../../__mocks__/mockConfig';
+import ConnectResetPassword, {
+  ResetPassword
+} from '../../../containers/ResetPassword';
 
-let props;
-const error = 'Recovery link has expired'
+const error = 'Recovery link has expired';
 
 const actionCreators = {
   resetPassword: jest.fn()
-}
+};
 
 const resetSpy = jest.spyOn(actionCreators, 'resetPassword');
 
-const setup = (error, loading) => {
+const setup = (loading) => {
   const props = {
     resetPasswordError: error,
     resetPasswordLoading: loading,
@@ -42,6 +43,7 @@ describe('ResetPassword component', () => {
     form.simulate('submit', { preventDefault: jest.fn() });
 
     const errorMessage = wrapper.find('.reset-password-message');
+    expect(errorMessage.length).toBe(1);
     expect(resetSpy).not.toBeCalled();
 
     wrapper.unmount();
@@ -77,7 +79,7 @@ describe('Connected ResetPassword', () => {
         resetPasswordMesssage: ''
       }
     });
-    
+
     const wrapper = shallow(<ConnectResetPassword store={store} />);
     expect(wrapper.length).toBe(1);
   });

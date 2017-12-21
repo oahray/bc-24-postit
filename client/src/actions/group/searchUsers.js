@@ -96,8 +96,8 @@ const addUserFailure = error => ({
   error
 });
 
-export const addUserToGroup = (username, groupid,
-  updateSearchResult, token) => (dispatch) => {
+export const addUserToGroup = (username, groupid, token) => 
+  (dispatch) => {
     dispatch(addUserLoading());
     const FETCH_URL = `${BASE_URL}/group/${groupid}/user`;
     return axios({
@@ -113,7 +113,6 @@ export const addUserToGroup = (username, groupid,
     .then((response) => {
       dispatch(addUserSuccess(response));
       toastr.info(`${response.data.message}`);
-      updateSearchResult();
     })
     .catch((err) => {
       toastr.error(`${err.response.data.message}`);
@@ -137,7 +136,7 @@ const removeUserFailure = error => ({
   error
 });
 
-export const removeUser = (username, groupId, updateUsersList, token) =>
+export const removeUser = (username, groupId, token) =>
   (dispatch) => {
     dispatch(removeUserLoading());
     const FETCH_URL = `${BASE_URL}/group/${groupId}/user`;
@@ -153,7 +152,6 @@ export const removeUser = (username, groupId, updateUsersList, token) =>
     })
       .then((response) => {
         dispatch(removeUserSuccess(response));
-        updateUsersList();
         toastr.info(response.data.message);
       })
       .catch((err) => {

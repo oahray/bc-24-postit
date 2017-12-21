@@ -8,32 +8,15 @@
   },
   "scripts": {
     "start": "babel-node server/bin/www",
-    "build": "webpack --config ./webpack.deployment.config.js --progress --colors",
-    "client-start": "webpack-dev-server progress --colors",
-    "prod:start": "export NODE_ENV=production || SET \"NODE_ENV=production\" && npm start",
-    "prod:build-start": "npm run build && npm run prod:start",
-    "dev:start": "babel-node server/bin/www",
-    "dev:watch": "nodemon --ignore tests/ --exec \"npm run dev:start\"",
-    "dev:start-template": "nodemon -e scss -x .js --ignore template/public/js, --exec \"npm run build-css & npm run build-template-js & npm start\"",
-    "dev:build-template": "nodemon -e scss --ignore template/public/js --exec \"npm run build-css & npm run build-template-js\"",
-    "build-template-js": "babel template/es6 -d template/public/js --presets es2015,stage-2",
-    "build-css": "node-sass --include-path scss template/scss/main.scss template/public/css/main.css && node-sass --include-path scss template/scss/message.scss template/public/css/message.css",
-    "watch-css": "nodemon -e scss -x \"npm run build-css\"",
-    "test": "export NODE_ENV=test || SET \"NODE_ENV=test\" && nyc --reporter=html --reporter=text mocha --compilers js:babel-register server/test/*.test.js --exclude server/bin",
-    "test-watch": "nodemon --exec \"npm test\"",
+    "test": "export NODE_ENV=test || SET \"NODE_ENV=test\" && nyc --reporter=html --reporter=text mocha --compilers js:babel-register server/test/**/*.test.js --exclude server/bin",
     "jest": "jest",
     "jest-coverage": "jest --coverage",
-    "jest-watch": "jest --watchAll --coverage",
     "e2e-server": "export NODE_ENV=e2e && npm start",
     "e2e-test": "export NODE_ENV=e2e && npm run migrate:undo:all && npm run migrate && sequelize db:seed:all && nightwatch tests/acceptance/",
-    "e2e-watch": "nodemon --exec \"npm run e2e-test\"",
     "heroku-postbuild": "webpack --config ./webpack.deployment.config.js --progress --colors",
     "migrate": "sequelize db:migrate --config server/config/config.js",
-    "migrate:undo": "sequelize db:migrate:undo --config server/config/config.js",
     "migrate:undo:all": "sequelize db:migrate:undo:all --config server/config/config.js",
-    "webpack": "webpack",
-    "coveralls": "nyc --reporter=lcov --reporter=text-lcov npm test | coveralls",
-    "coverage": "nyc report --reporter=text-lcov | coveralls"
+    "coveralls": "nyc --reporter=lcov --reporter=text-lcov npm test | coveralls"
   },
   "repository": {
     "type": "git",
@@ -66,10 +49,9 @@
     "css-loader": "^0.28.4",
     "dotenv": "^4.0.0",
     "express": "^4.15.3",
-    "express-session": "^1.15.3",
-    "extract-text-webpack-plugin": "^3.0.0",
     "jquery": "^2.2.4",
     "jsonwebtoken": "^7.4.1",
+    "jwt-decode": "^2.2.0",
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
     "morgan": "^1.8.2",
@@ -142,10 +124,10 @@
     ],
     "coverageThreshold": {
       "global": {
-        "statements": 100,
-        "branches": 95,
-        "functions": 100,
-        "lines": 100
+        "statements": 80,
+        "branches": 80,
+        "functions": 80,
+        "lines": 80
       }
     },
     "setupTestFrameworkScriptFile": "./client/src/__config__/setup.js",

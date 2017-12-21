@@ -4,13 +4,13 @@ import moment from 'moment';
 const Profile = (props) => {
   const profilePic = (props.state.imageUrl ?
     props.state.imageUrl : '/images/no-pic.png');
-  return (<div className="edit-profile-card col s12 z-depth-1">
+  return (<div className="edit-profile-card col s10 offset-s1 z-depth-1">
     <h5 className="page-header profile-header center">My Profile</h5>
     <br/>
     <div className="col s12 l7">
       <div className="photo-and-info center">
         <div className="full-photo-div">
-          <img className="full-photo responsive-img materialboxed center"
+          <img className="full-photo responsive-img center"
           src={props.user.photo ?
             props.user.photo : profilePic}
             alt="profile photo" />

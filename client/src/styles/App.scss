@@ -1,6 +1,5 @@
 $main-color: #0C6C85;
 $secondary-color: #0C6C85;
-// $main-color: 
 $grey1: #E0E0E0;
 $grey2: #E6E7E8;
 $body-background: #f8f8f8;
@@ -21,6 +20,7 @@ body {
 
 .main {
   height: 100vh;
+  flex: 1 0 auto;
 }
 
 .page-footer {
@@ -28,7 +28,7 @@ body {
 }
 
 .main-text-color {
-  color: $main-color;
+  color: $main-color !important;
 }
 
 .main-background-color {
@@ -87,7 +87,6 @@ nav, .nav-wrapper {
 
 .reset-form-message {
   font-size: 18px;
-  // padding: 1px 5px 1px 5px !important;
   margin: 0 auto !important;
   border-radius: 25px;
 }
@@ -122,7 +121,8 @@ ul.side-nav.fixed:hover {
 }
 
 .group-users-header {
-  padding-left: 10px;
+  padding: 10px 10px;
+  margin: 0 !important;
 }
 
 .side-nav.fixed {
@@ -134,10 +134,9 @@ ul.side-nav.fixed:hover {
     margin: 0px;
     vertical-align: middle;
     i {
-      // border-radius: 100%;
       border: 2px solid white;
       margin: 0px !important;
-      font-size: 70px;
+      font-size: 60px;
     }
     a, a:hover {
       margin-top: 0px !important;
@@ -146,12 +145,28 @@ ul.side-nav.fixed:hover {
       background-color: $main-color;
     }
     img {
-      width: 80px;
+      border-radius: 100px;
+      max-width: 70px;
+      max-height: 70px;
     }
     .name {
-      margin: 0px;
-      font-size: 24px;
+      width:190px;
+      padding: 0 !important;
+      margin: 0;
+      font-size: 1.3em;
+      font-weight: 1000;
     }
+    .email {
+      font-size: 0.8em;
+      max-width: 190px;
+      margin: 0;
+      padding: 0 !important;
+    }
+  }
+  .truncate {
+    overflow: hidden;
+    text-overflow:ellipsis;
+    display:inline-block;
   }
   a {
   padding-left: 10px !important;
@@ -174,32 +189,48 @@ ul.side-nav.fixed:hover {
     }
     font-size: 12px !important;
   }
-  .search-wrapper {
-    padding: 0px 0px 0px 15px;
+}
+
+.search-wrapper {
+  padding: 0px 0px 0px 15px;
+  margin: 0px;
+  height: 40px;
+  a {
+    padding: 5px 0px;
+    width: 40px;
+    i {
+    font-size: 30px;
     margin: 0px;
-    height: 50px;
-    a {
-      padding: 0px;
-      width: 40px;
-      i {
-      font-size: 32px;
-      margin: 0px;
-      padding: 0px;
-      }
-    }
-    .search-input {
-      height: 50px;
-      padding: 0px;
-      input {
-      padding: 0px;
-      margin: 0px;
-      }
-      input, input:focus {
-        border-bottom: none!important;
-        box-shadow: none!important;
-      }
+    padding: 0px;
     }
   }
+  .search-input {
+    height: 50px;
+    padding: 0px;
+    input {
+    padding: 0px;
+    margin: 0px;
+    }
+    input, input:focus {
+      border-bottom: none!important;
+      box-shadow: none!important;
+    }
+  }
+}
+
+
+.side-footer, .footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  height: 45px;
+  width: 300px;
+  background-color: $main-color;
+  font-family: $header-font;
+  color: white;
+  padding: 0px 20px;
+  z-index: 1000;
+  border-top: 1px solid rgba(0,0,0,0.14);
 }
 
 .user-home-content {
@@ -242,7 +273,7 @@ ul.side-nav.fixed:hover {
     position: relative;
     padding: 0px;
     min-height: 100px;
-    height: calc(100vh - 180px);
+    height: calc(100vh - 190px);
   }
   .no-messages {
     margin: 30px;
@@ -258,7 +289,7 @@ ul.side-nav.fixed:hover {
     bottom: 0;
     height: 60px;
     width: calc(100% - 35px);
-    margin: 0px !important;
+    margin: 0px 0px 10px 0px !important;
     padding: 0px !important;
     border: 2px solid grey;
     background-color: white;
@@ -329,7 +360,7 @@ ul.side-nav.fixed:hover {
   background-color: white;
   border-radius: 10px;
   margin: 10px 0px;
-  height: calc(100vh - 250px);
+  height: calc(100vh - 270px);
   overflow-y: scroll;
   .message-item {
     padding: 5px 20px !important;
@@ -345,6 +376,16 @@ ul.side-nav.fixed:hover {
   color: rgb(216, 78, 78);
   :hover {
     cursor: pointer;
+  }
+}
+
+.invite-users {
+  margin: 0 !important;
+  font-family: $header-font;
+  color: $main-color !important;
+  border: 1px solid $main-color;
+  a {
+    color: $main-color !important;
   }
 }
 
@@ -376,6 +417,12 @@ ul.side-nav.fixed:hover {
       font-weight: bold;
     }
     min-height: 10px !important;
+  }
+  .btn {
+    height: 40px;
+  }
+  .users-list {
+    margin-top: 32px;
   }
 }
 
@@ -426,8 +473,8 @@ ul.side-nav.fixed:hover {
     margin: 0 auto;
     max-width: 300px;
     .user-info-img {
+      max-height: 400px !important;
       display: inline-block;
-      // max-height: 300px !important;
     }
   }
 }
@@ -464,22 +511,19 @@ ul.side-nav.fixed:hover {
   }
   .full-photo-div {
     padding: 0px 5px 0px 0px !important;
-    max-height: 500px;
+    max-height: 600px;
     img {
       max-width: 100%;
+      max-height: 500px;
       border: 1px solid $grey1;
       border-radius: 10px;
     }
   }
 }
 
-.materialboxed {
-  display: inline-block;
-}
-
 .guest-home {
   background-color: transparent !important;
-  padding-bottom: 20px;
+  padding-bottom: 60px;
   .guest-home-header {
     color: $main-color;
     font-weight: bold;
@@ -488,7 +532,7 @@ ul.side-nav.fixed:hover {
     font-size: 5em;
     font-family: $header-font
   }
-  .guest-home-text {
+  .guest-home-text, {
     font-size: 1.4em;
     color: $secondary-color;
   }
@@ -520,4 +564,18 @@ ul.side-nav.fixed:hover {
       }
     }
   }
+}
+
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  height: 45px;
+  width: 100%;
+  background-color: $main-color;
+  font-family: $header-font;
+  color: white;
+  padding: 10px 20px 0px;
+  z-index: 0;
+  border-top: 1px solid rgba(0,0,0,0.14);
 }

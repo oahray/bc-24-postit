@@ -39,7 +39,7 @@ export class EditProfile extends Component {
    * @returns {undefined}
    */
   componentDidMount() {
-    $('.materialboxed').materialbox();
+    $('.modal').modal();
     this.setState({
       about: this.props.user.about,
       email: this.props.user.email,
@@ -54,7 +54,7 @@ export class EditProfile extends Component {
    * @returns {undefined}
    */
   componentDidUpdate() {
-    $('.materialboxed').materialbox();
+    $('.modal').modal();
   }
 
   /** @function edit
@@ -142,8 +142,7 @@ export class EditProfile extends Component {
     });
     uploadImage(this.state.imageFile)
       .then((response) => {
-        const data = response.data;
-        const fileURL = data.secure_url;
+        const fileURL = response.data.secure_url;
         this.setState({
           imageUrl: fileURL
         }, () => this.setState({
@@ -174,11 +173,24 @@ export class EditProfile extends Component {
   }
 }
 
+/**
+ * @function mapStateToProps
+ * @description: make state available to component
+ * as props
+ * @param {Object} state
+ * @returns {Object} state mapped as props
+ */
 const mapStateToProps = state => ({
   user: state.user,
   token: state.token
 });
 
+/**
+ * @function mapDispatchToProps
+ * @description: make state available to component
+ * @param {Object} dispatch
+ * @returns {Object} action creators mapped as props
+ */
 const mapDispatchToProps = dispatch => bindActionCreators({
   editProfile
 }, dispatch);

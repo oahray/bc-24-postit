@@ -7,6 +7,14 @@ import {
   EDIT_PROFILE_SUCCESS
 } from '../../../constants';
 
+/**
+   * @function setUser
+   * @description reducer that sets the redux state
+   * with the current user object
+   * @param {Boolean} state
+   * @param {Object} action
+   * @returns {Boolean} true/false depending on action type
+   */
 export default (state = null, action) => {
   switch (action.type) {
     case SIGNIN_SUCCESS:

@@ -1,7 +1,6 @@
 const {
   baseUrl, landing, signin, dashboard, sideNav,
-  createGroup, groupPage, toastr, searchPage,
-  userList, materialOverlay
+  createGroup, groupPage, toastr, searchPage
 } = require('../selectors');
 
 module.exports = {
@@ -27,6 +26,7 @@ module.exports = {
       .assert.urlEquals(`${baseUrl}/groups/new`)
       .assert.containsText(createGroup.header, 'Create New Group');
   },
+
   'Create Group form lets user create new group': (client) => {
     client
       .click(createGroup.submit)
@@ -50,7 +50,8 @@ module.exports = {
       .click(groupPage.prioritySelect.urgent)
       .pause(1000)
       .click(groupPage.submit)
-      .setValue(groupPage.messageInput, '*sigh* Hopefully, someone would read this someday')
+      .setValue(groupPage.messageInput,
+        '*sigh* Hopefully, someone would read this someday')
       .pause(1000)
       .click(groupPage.submit)
       .pause(1000);
@@ -63,7 +64,8 @@ module.exports = {
       .waitForElementVisible(groupPage.infoModal.header, 1000)
       .assert.containsText(groupPage.infoModal.header, 'Edit group info')
       .clearValue(groupPage.infoModal.name)
-      .setValue(groupPage.infoModal.name, 'This new group name is just so unnecesarily long')
+      .setValue(groupPage.infoModal.name,
+        'This new group name is just so unnecesarily long')
       .pause(1000)
       .clearValue(groupPage.infoModal.desc)
       .setValue(groupPage.infoModal.desc, 'This group has been renamed')
@@ -87,7 +89,7 @@ module.exports = {
       .setValue(groupPage.infoModal.name, 'Renamed group')
       .pause(1000)
       .clearValue(groupPage.infoModal.desc)
-      .setValue(groupPage.infoModal.desc, 'This group description is so long that it would take several wasted minutes to even read it')
+      .setValue(groupPage.infoModal.desc, 'This group description is so long that it would take several wasted minutes to even read it, and, yeah... This group description is so long that it would take several wasted minutes to even read it')
       .pause(1000)
       .click(groupPage.infoModal.save)
       .waitForElementVisible(toastr, 1000)
@@ -118,14 +120,22 @@ module.exports = {
 
   'Creator can add other users': (client) => {
     client
-      .setValue(sideNav.search, 'a')
+      .click(groupPage.goToSearch)
+      .waitForElementVisible(searchPage.search, 1000)
+      .setValue(searchPage.search, 'a')
       .pause(1000)
       .waitForElementVisible(searchPage.add.arya, 1000)
       .click(searchPage.add.arya)
+      .waitForElementVisible(searchPage.confirm.arya, 1000)
+      .pause(500)
+      .click(searchPage.confirm.arya)
       .pause(1000)
       .refresh()
       .waitForElementVisible(searchPage.add.bran, 1000)
+      .pause(500)
       .click(searchPage.add.bran)
+      .waitForElementVisible(searchPage.confirm.bran, 1000)
+      .click(searchPage.confirm.bran)
       .pause(1000)
       .click(searchPage.done)
       .waitForElementVisible(groupPage.mainDiv, 1000)
@@ -134,7 +144,6 @@ module.exports = {
 
   'Group creator can remove other users': (client) => {
     client
-      .click(userList.toggle)
       .waitForElementVisible(groupPage.userModal.trigger, 1000)
       .pause(1000)
       .click(groupPage.userModal.trigger)

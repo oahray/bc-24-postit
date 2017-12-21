@@ -9,6 +9,9 @@ import {
 } from '../../constants';
 
 /**
+ * @function signinLoading
+ * @description: dispatched when request
+ * to sign in is made
  * @returns {object} signin_loading action
  */
 export const signinLoading = () => ({
@@ -16,6 +19,7 @@ export const signinLoading = () => ({
 });
 
 /**
+ * @function signinSuccess
  * @param {object} response: api response
  * @returns {object} signin_success action
  */
@@ -25,6 +29,7 @@ const signinSuccess = response => ({
 });
 
 /**
+ * @function signinFailure
  * @param {object} error: api error response
  * @returns {object} signin_failure action
  */
@@ -34,6 +39,10 @@ const signinFailure = error => ({
 });
 
 /**
+ * @function signinUser
+ * @description: function that makes an API request
+ * to and dispatches action creators
+ * based on API response
  * @param {string} username
  * @param {string} password
  * @returns {function} dispatches action creator

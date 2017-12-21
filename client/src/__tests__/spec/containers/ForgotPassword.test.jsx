@@ -1,15 +1,13 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { mockServer, mockStore } from '../../../__mocks__/mockConfig'
+import { mockStore } from '../../../__mocks__/mockConfig';
 import ConnectForgotPassword, { ForgotPassword } from '../../../containers/ForgotPassword';
-
-let props;
 
 const actionCreators = {
   requestReset: jest.fn(),
   clearResetRequestMessage: jest.fn()
-}
+};
 
 const requestSpy = jest.spyOn(actionCreators, 'requestReset');
 const clearMessageSpy = jest.spyOn(actionCreators, 'clearResetRequestMessage');
@@ -64,7 +62,7 @@ describe('Connected ForgotPassword', () => {
         requestResetMesssage: ''
       }
     });
-    
+
     const wrapper = shallow(<ConnectForgotPassword store={store} />);
     expect(wrapper.length).toBe(1);
   });

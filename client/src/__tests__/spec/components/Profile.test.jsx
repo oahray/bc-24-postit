@@ -1,6 +1,5 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
-import { mock, mockStore } from '../../../__mocks__/mockConfig';
+import { mount } from 'enzyme';
 import Profile from '../../../components/Profile';
 
 const user = {
@@ -13,13 +12,11 @@ const user = {
 
 const state = {
   imageUrl: '/pics/profile.png'
-}
+};
 
 const funcs = {
   edit: jest.fn()
-}
-
-const editSpy = jest.spyOn(funcs, 'edit');
+};
 
 describe('Profile component', () => {
   test('should mount without crashing', () => { 

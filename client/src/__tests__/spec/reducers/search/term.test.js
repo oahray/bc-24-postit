@@ -17,5 +17,5 @@ describe('searchTerm reducer', () => {
 
     action.type = 'SOME_OTHER_ACTION';
     expect(searchTerm(undefined, action)).toEqual(state);
-  })
-})
+  });
+});

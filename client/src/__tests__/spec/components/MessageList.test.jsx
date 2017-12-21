@@ -30,9 +30,6 @@ const selectedGroup = {
   type: 'public',
   createdBy: 'ray'
 };
-
-const leaveSpy = jest.spyOn(mockFn, 'leave');
-const removeSpy = jest.spyOn(mockFn, 'remove');
 const openSpy = jest.spyOn(mockFn, 'open');
 
 describe('MessageList component', () => {

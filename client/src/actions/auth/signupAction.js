@@ -9,6 +9,7 @@ import {
 } from '../index';
 
 /**
+ * @function signupLoading
  * @returns {object} signup_loading action
  */
 export const signupLoading = () => ({
@@ -16,6 +17,7 @@ export const signupLoading = () => ({
 });
 
 /**
+ * @function signupSuccess
  * @param {object} response: api response
  * @returns {object} signup_success action
  */
@@ -25,6 +27,7 @@ const signupSuccess = response => ({
 });
 
 /**
+ * @function signupFailure
  * @param {object} error: api error response
  * @returns {object} signin_failure action
  */
@@ -34,6 +37,10 @@ const signupFailure = error => ({
 });
 
 /**
+ * @function signupUser
+ * @description: function that makes an API request to
+ * create a new user account.
+ * On success or failure, an action creator is dispatched
  * @param {string} username
  * @param {string} password
  * @param {string} email

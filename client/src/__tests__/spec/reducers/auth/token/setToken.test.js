@@ -15,7 +15,8 @@ describe('setToken reducer', () => {
         'x-auth': newToken
       },
     }
-  }
+  };
+
   test('should handle different action types correctly', () => {
     action.type = SIGNIN_SUCCESS;
     expect(setToken(oldToken, action))
@@ -36,9 +37,9 @@ describe('setToken reducer', () => {
     action.type = LOGOUT_USER;
     expect(setToken(oldToken, action))
       .toBe(null);
-      
+
     action.type = 'SOME_OTHER_CASE';
     expect(setToken(oldToken, action))
       .toBe(oldToken);
   });
-})
+});

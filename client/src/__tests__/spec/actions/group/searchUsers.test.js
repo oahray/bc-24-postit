@@ -1,6 +1,4 @@
-import axios from 'axios';
-
-import { mock, middlewares, mockStore } from '../../../../__mocks__/mockConfig';
+import { mock, mockStore } from '../../../../__mocks__/mockConfig';
 
 import {
   searchUsers,
@@ -28,7 +26,7 @@ describe('clearUserSearchTerm action creator', () => {
     const clearTerm = clearUserSearchTerm();
     const expectedAction = {
       type: CLEAR_SEARCH_TERM
-    }
+    };
     expect(clearTerm).toEqual(expectedAction);
   });
 });
@@ -36,7 +34,7 @@ describe('clearUserSearchTerm action creator', () => {
 describe('searchUsers action creator', () => {
   test('dispatches a success action when dispatched with valid token', () => {
     const store = mockStore({ user: {} });
-    const data = {
+    const responseBody = {
       users: [{
         id: 2,
         username: 'ray',
@@ -46,13 +44,13 @@ describe('searchUsers action creator', () => {
     };
 
     mock.onGet().replyOnce(200, {
-      data
+      data: responseBody
     });
 
     const expectedAction = {
       type: SEARCH_USERS_SUCCESS,
-      response: { data }
-    }
+      response: { data: responseBody }
+    };
 
     store.dispatch(searchUsers(3, 'somename', 0, 7, 'validtoken')).then(() => store.getActions())
       .then((actions) => {
@@ -62,37 +60,33 @@ describe('searchUsers action creator', () => {
         expect(actions[2].type).toBe(SEARCH_USERS_SUCCESS);
         expect(actions[2].response.data).toEqual(expectedAction.response);
       });
-  })
+  });
 
   test('dispatches a failure action when dispatched with invalid token', () => {
     const store = mockStore({ user: {} });
-    const data = {
+    const responseBody = {
       error: 'Specified group does not exist'
-    }
-
-    // mock the post request
-    mock.onGet().replyOnce(400, data);
-
-    const expectedAction = {
-      type: SEARCH_USERS_FAILURE,
-      error: data.error
     };
 
-    store.dispatch(searchUsers(99, 'invalidtoken')).then(() => store.getActions())
+    // mock the post request
+    mock.onGet().replyOnce(400, responseBody);
+
+    store.dispatch(searchUsers(99, 'invalidtoken'))
+    .then(() => store.getActions())
       .then((actions) => {
         expect(actions.length).toBe(3);
         expect(actions[0].type).toBe(SET_SEARCH_TERM);
         expect(actions[1].type).toBe(SEARCH_USERS_LOADING);
         expect(actions[2].type).toBe(SEARCH_USERS_FAILURE);
       });
-  })
+  });
 });
 
 describe('addUserToGroup action creator', () => {
   test('dispatches a success action when dispatched with valid token', () => {
     const store = mockStore({ user: {} });
-    const data = {
-      messages: "somename has been added to the group"
+    const responseBody = {
+      messages: 'somename has been added to the group'
     };
 
     const mockFn = {
@@ -103,28 +97,31 @@ describe('addUserToGroup action creator', () => {
 
     // mocks the post request
     mock.onPost().replyOnce(201, {
-      data
+      data: responseBody
     });
 
     const expectedAction = {
       type: ADD_USER_SUCCESS,
-      response: { data }
-    }
+      response: { data: responseBody }
+    };
 
-    store.dispatch(addUserToGroup('somename', 3, mockFn.updateResults, 'validtoken')).then(() => store.getActions())
+    store.dispatch(addUserToGroup(
+      'somename', 3, mockFn.updateResults, 'validtoken'
+    ))
+    .then(() => store.getActions())
       .then((actions) => {
         expect(actions[0].type).toBe(ADD_USER_LOADING);
         expect(actions[1].type).toBe(ADD_USER_SUCCESS);
         expect(actions[1].response.data).toEqual(expectedAction.response);
         expect(spiedFn).toBeCalled();
       });
-  })
+  });
 
   test('dispatches a failure action when dispatched with invalid token', () => {
     const store = mockStore({ user: {} });
-    const data = {
+    const responseBody = {
       error: 'Specified group does not exist'
-    }
+    };
 
     const mockFn = {
       updateResults: jest.fn(() => ({}))
@@ -133,12 +130,7 @@ describe('addUserToGroup action creator', () => {
     const spiedFn = jest.spyOn(mockFn, 'updateResults');
 
     // mock the post request
-    mock.onPost().replyOnce(400, data);
-
-    const expectedAction = {
-      type: SEARCH_USERS_FAILURE,
-      error: data.error
-    };
+    mock.onPost().replyOnce(400, responseBody);
 
     store.dispatch(addUserToGroup('ausername', 99, mockFn.updateResults, 'invalidtoken')).then(() => store.getActions())
       .then((actions) => {
@@ -147,14 +139,14 @@ describe('addUserToGroup action creator', () => {
         expect(actions[1].type).toBe(ADD_USER_FAILURE);
         expect(spiedFn).not.toBeCalled();
       });
-  })
+  });
 });
 
 describe('removeUser action creator', () => {
   test('dispatches a success action when dispatched with valid token', () => {
     const store = mockStore({ user: {} });
-    const data = {
-      messages: "Ray has been removed from the group"
+    const responseBody = {
+      messages: 'Ray has been removed from the group'
     };
 
     const mockFn = {
@@ -165,13 +157,13 @@ describe('removeUser action creator', () => {
 
     // mocks the post request
     mock.onDelete().replyOnce(201, {
-      data
+      data: responseBody
     });
 
     const expectedAction = {
       type: SEARCH_USERS_SUCCESS,
-      response: { data }
-    }
+      response: { data: responseBody }
+    };
 
     store.dispatch(removeUser('somename', 3, mockFn.updateResults, 'validtoken')).then(() => store.getActions())
       .then((actions) => {
@@ -181,13 +173,13 @@ describe('removeUser action creator', () => {
         expect(actions[1].response.data).toEqual(expectedAction.response);
         expect(spiedFn).toBeCalled();
       });
-  })
+  });
 
   test('dispatches a failure action when dispatched with invalid token', () => {
     const store = mockStore({ user: {} });
-    const data = {
+    const responseBody = {
       error: 'Specified group does not exist'
-    }
+    };
 
     const mockFn = {
       updateResults: jest.fn(() => ({}))
@@ -196,19 +188,16 @@ describe('removeUser action creator', () => {
     const spiedFn = jest.spyOn(mockFn, 'updateResults');
 
     // mock the post request
-    mock.onDelete().replyOnce(400, data);
+    mock.onDelete().replyOnce(400, responseBody);
 
-    const expectedAction = {
-      type: SEARCH_USERS_FAILURE,
-      error: data.error
-    };
-
-    store.dispatch(removeUser('ausername', 99, mockFn.updateResults, 'invalidtoken')).then(() => store.getActions())
+    store.dispatch(
+      removeUser('ausername', 99, mockFn.updateResults, 'invalidtoken')
+    ).then(() => store.getActions())
       .then((actions) => {
         expect(actions.length).toBe(2);
         expect(actions[0].type).toBe(REMOVE_USER_LOADING);
         expect(actions[1].type).toBe(REMOVE_USER_FAILURE);
         expect(spiedFn).not.toBeCalled();
       });
-  })
+  });
 });

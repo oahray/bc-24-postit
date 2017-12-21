@@ -50,8 +50,7 @@ describe('setUser reducer', () => {
     action.type = LOGOUT_USER;
     expect(setUser(state, action)).toEqual(null);
 
-    action.type = 'UNKNOWN_ACTION'
+    action.type = 'UNKNOWN_ACTION';
     expect(setUser({}, action)).toEqual({});
-
-  })
-})
+  });
+});

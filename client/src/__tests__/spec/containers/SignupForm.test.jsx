@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { mockServer, mockStore } from '../../../__mocks__/mockConfig'
+import { mockStore } from '../../../__mocks__/mockConfig';
 import ConnectedSignup, { SignupForm } from '../../../containers/SignupForm';
 
 let props;
@@ -11,13 +11,12 @@ const actionCreators = {
   signupUser: jest.fn(),
   verifyAuth: jest.fn(),
   clearFormError: jest.fn()
-}
+};
 
 const signupSpy = jest.spyOn(actionCreators, 'signupUser');
-const verifySpy = jest.spyOn(actionCreators, 'verifyAuth');
 const clearErrorSpy = jest.spyOn(actionCreators, 'clearFormError');
 
-const setup = (isLoggedIn, loading, failed, errorMessage) => {
+const setup = (isLoggedIn, loading, failed) => {
   props = {
     isLoggedIn,
     signupLoading: loading,
@@ -29,7 +28,7 @@ const setup = (isLoggedIn, loading, failed, errorMessage) => {
     clearFormError: actionCreators.clearFormError
   };
   return shallow(<SignupForm {...props} />);
-}
+};
 
 describe('Signup form', () => {
   test('should render without crashing', () => {
@@ -50,7 +49,7 @@ describe('Signup form', () => {
   });
 
   test('should set state when input values changes', () => {
-    const event = {target: {value: "myname"}};
+    const event = { target: { value: 'myname' } };
     errorMessage = '';
     const wrapper = setup(false, false, false, errorMessage);
     const form = wrapper.find('.signup-form');

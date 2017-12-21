@@ -15,7 +15,7 @@ export default class GuestHome extends Component {
       <div className='guest-home center'>
         <div>
           <h5 className="guest-home-header">Welcome to Postit!</h5>
-          <p className="guest-home-text">
+          <p className="guest-home-info">
             Postit is a communication-driven community
             that provides a platform with which you can:
           </p>
@@ -23,9 +23,9 @@ export default class GuestHome extends Component {
          <GuestCarousel />
         <div className="guest-home-text">
           <p> To dive right into the experience,</p>
-          <Link to='/signup'> Signup </Link>
+          <Link id="landing-signup" to='/signup'> Signup </Link>
           or
-          <Link to='/signin'> Signin </Link>
+          <Link id="landing-signin" to='/signin'> Signin </Link>
         </div>
       </div>
     );

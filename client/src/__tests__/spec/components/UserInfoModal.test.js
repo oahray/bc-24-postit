@@ -1,6 +1,5 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
-import { mock, mockStore } from '../../../__mocks__/mockConfig';
+import { shallow } from 'enzyme';
 import UserInfoModal from '../../../components/UserInfoModal';
 
 const user = {

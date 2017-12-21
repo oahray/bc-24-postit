@@ -1,9 +1,8 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { mockServer, mockStore } from '../../../__mocks__/mockConfig'
+import { mockStore } from '../../../__mocks__/mockConfig';
 import ConnectedEditProfile, { EditProfile } from '../../../containers/EditProfile';
-import { Redirect } from 'react-router-dom';
 import * as editOptions from '../../../actions/auth/editProfile';
 
 let props;
@@ -13,12 +12,13 @@ const currentUser = {
   email: 'testuser@test.com',
   about: '',
   imageUrl: ''
-}
+};
+
 const token = 'ds65e89ut976yyre';
 
 const actionCreators = {
   editProfile: jest.fn()
-}
+};
 
 const editProfileSpy = jest.spyOn(actionCreators, 'editProfile');
 
@@ -30,7 +30,7 @@ const setup = (user) => {
     ...actionCreators
   };
   return shallow(<EditProfile {...props} />);
-}
+};
 
 describe('Edit Profile component', () => {
   test('should render without crashing', () => {
@@ -47,7 +47,7 @@ describe('Edit Profile component', () => {
     const event = {
       target: {
         value: 'new_name',
-        files: ['1',' 2']
+        files: ['1', ' 2']
       }
     };
 
@@ -67,7 +67,7 @@ describe('Edit Profile component', () => {
     wrapper.instance().setState({ imageUrl });
     expect(wrapper.instance().state.imageUrl).toBe(imageUrl);
     wrapper.instance().removeImage();
-    expect(wrapper.instance().state.imageUrl).toBe("");
+    expect(wrapper.instance().state.imageUrl).toBe('');
 
     wrapper.instance().save();
     expect(editProfileSpy).toHaveBeenCalledTimes(1);

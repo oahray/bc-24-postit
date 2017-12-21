@@ -7,41 +7,41 @@ module.exports = {
     container: '.guest-home',
     nav: {
       brand: '.navbar-div > div > nav > div > a.brand-logo',
-      signin: '.navbar-div > div > nav > div > ul > li:nth-child(1) > a',
-      signup: '.navbar-div > div > nav > div > ul > li:nth-child(2) > a',
+      signin: '.#root > div > div.main > div:nth-child(2) > div > div.guest-home-text > a:nth-child(3)',
+      signup: '#root > div > div.main > div:nth-child(2) > div > div.guest-home-text > a:nth-child(2)',
       docs: '#root > div > div > div.navbar-div > div > nav > div > ul > li.my-list-item.docs-link > a'
     },
     welcomeHeader: '.guest-home-header',
     joinText: '.guest-home-text',
-    signin: '.guest-home-text a:nth-child(3)',
-    signup: '.guest-home-text > a:nth-child(2)'
+    signin: '#landing-signin',
+    signup: '#landing-signup'
   },
 
   signin: {
-    formDiv: '#root > div > div > div:nth-child(2) > div',
-    formHeader: '#root > div > div > div:nth-child(2) > div > form > h4',
+    formDiv: '#root > div > div.main > div:nth-child(2) > div > form',
+    formHeader: '#root > div > div.main > div:nth-child(2) > div > form > h4',
     usernameInput: '#signin-username',
     passwordInput: '#signin-password',
-    submitButton: '#root > div > div > div:nth-child(2) > div > form > div:nth-child(6) > button',
-    errorMessage: '#root > div > div > div:nth-child(2) > div > form > div.form-error-message.center.red-text.bold > h6',
-    forgotPassword: '#root > div > div > div:nth-child(2) > div > form > div:nth-child(7) > p:nth-child(1) > a',
-    signup: '#root > div > div > div:nth-child(2) > div > form > div:nth-child(7) > p:nth-child(2) > a'
+    submitButton: '#root > div > div.main > div:nth-child(2) > div > form > div:nth-child(6) > button',
+    errorMessage: '#root > div > div.main > div:nth-child(2) > div > form > div.form-error-message.center.red-text.bold > h6',
+    forgotPassword: '#root > div > div.main > div:nth-child(2) > div > form > div:nth-child(7) > p:nth-child(1) > a',
+    signup: '#root > div > div.main > div:nth-child(2) > div > form > div:nth-child(7) > p:nth-child(2) > a'
   },
 
   signup: {
-    formDiv: '.signup-form',
-    formHeader: '.signup-form > h4',
+    formDiv: '#root > div > div.main > div:nth-child(2) > div > div',
+    formHeader: '#root > div > div.main > div:nth-child(2) > div > div > form > h4',
     usernameInput: '#signup-username',
     emailInput: '#signup-email',
     passwordInput: '#signup-password1',
     confirmPassword: '#signup-password2',
-    errorMessage: '#root > div > div > div:nth-child(2) > div > div > form > div.form-error.center.red-text.bold > h6',
-    submitButton: '#root > div > div > div:nth-child(2) > div > div > form > div:nth-child(7) > button',
-    signin: '#root > div > div > div:nth-child(2) > div > div > form > div.main-text-color > p > a'
+    errorMessage: '#root > div > div.main > div:nth-child(2) > div > div > form > div.form-error.center.red-text.bold > h6',
+    submitButton: '#root > div > div.main > div:nth-child(2) > div > div > form > div:nth-child(7) > button',
+    signin: '#root > div > div.main > div:nth-child(2) > div > div > form > div.main-text-color > p > a'
   },
 
   forgot: {
-    header: '#root > div > div > div:nth-child(2) > form > h5',
+    header: '#root > div > div.main > div:nth-child(2) > form > h5',
     input: '#root > div > div > div:nth-child(2) > form > div > input',
     submit: '#request-reset-btn',
     message: '#root > div > div > div:nth-child(2) > form > div > div:nth-child(3) > div > p'
@@ -53,15 +53,19 @@ module.exports = {
   },
 
   sideNav: {
-    search: '#search',
-    newGroup: '#side-nav > li:nth-child(3) > a',
+    newGroup: '#side-nav > li:nth-child(2) > a',
   },
 
   searchPage: {
-    done: '#root > div > div > div.main-container > div > div.search-results-container.col.s12.m9 > div:nth-child(2) > a',
+    search: '#search',
+    done: '#root > div > div > div.main-container > div > div.search-results-container.col.s12.m9 > div.col.s12.center > div:nth-child(2) > a',
     add: {
-      arya: '#add-user12 > i',
-      bran: '#add-user13 > i'
+      arya: '#root > div > div > div.main-container > div > div.search-results-container.col.s12.m9 > div.search-list-container.col.s10.offset-s1 > ul > li:nth-child(1) > span.secondary-content > div > a > i',
+      bran: '#root > div > div > div.main-container > div > div.search-results-container.col.s12.m9 > div.search-list-container.col.s10.offset-s1 > ul > li > span.secondary-content > div > a > i'
+    },
+    confirm: {
+      arya: '#add-user12 > div.modal-footer > span.right > a',
+      bran: '#add-user13 > div.modal-footer > span.right > a'
     }
   },
 
@@ -88,6 +92,7 @@ module.exports = {
       critical: '.dropdown-content li:nth-child(3)'
     },
     submit: '#message-button > i',
+    goToSearch: '#root > div > div > div.main-container > div > div:nth-child(2) > div.col.s12.m3.group-info-col > ul > li.center.invite-users.pointer > a',
     infoModal: {
       trigger: '#open-editGroup1 > i',
       header: '#editGroup1 > div > h5',

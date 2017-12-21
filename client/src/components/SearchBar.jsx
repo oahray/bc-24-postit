@@ -30,6 +30,7 @@ export default class SearchBar extends Component {
    * @returns {undefined}
    */
   searchUser(username) {
+    this.props.setSearchTerm(username);
     if (username) {
       const nextPath = `/groups/${
         this.props.selectedGroup.id
@@ -46,7 +47,7 @@ export default class SearchBar extends Component {
       <form className='search-wrapper card row'
       onSubmit={this.onFormSubmit}>
         <div className="search-input col s10">
-          <input id="search"
+          <input id="search" autoFocus
           placeholder='Search Username' value={this.state.username} type="text"
           onChange={(event) => {
             this.setState({

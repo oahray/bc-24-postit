@@ -21,7 +21,7 @@ const user = {
 
 const funcs = {
   closeMessage: jest.fn()
-}
+};
 
 const closeMessageSpy = jest.spyOn(funcs, 'closeMessage');
 
@@ -33,7 +33,7 @@ describe('Message Component', () => {
   });
 
   test('should call the close function when close icon is clicked', () => {
-    message.readBy = 'user1,bran'
+    message.readBy = 'user1,bran';
     const wrapper = shallow(<Message user={user} message={message} closeMessage={funcs.closeMessage} />);
     wrapper.find('.close-icon').simulate('click');
     expect(closeMessageSpy).toHaveBeenCalledTimes(1);

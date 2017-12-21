@@ -18,7 +18,7 @@ describe('authLoading reducer', () => {
     action.type = VERIFY_AUTH_FAILURE;
     expect(authLoading(state, action))
     .toBe(false);
-    
+
     action.type = 'SOME_UNRELATED_ACTION';
     expect(authLoading(state, action))
     .toBe(state);

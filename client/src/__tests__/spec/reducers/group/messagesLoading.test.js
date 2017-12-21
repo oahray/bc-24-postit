@@ -2,7 +2,6 @@ import {
   GET_GROUP_MESSAGES_LOADING,
   GET_GROUP_MESSAGES_SUCCESS,
   GET_GROUP_MESSAGES_FAILURE,
-  LOGOUT_USER
 } from '../../../../constants';
 
 import messagesLoading from '../../../../reducers/group/messagesLoading';

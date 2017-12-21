@@ -1,10 +1,3 @@
-import axios from 'axios';
-import dotenv from 'dotenv';
-
-dotenv.config();
-
-import { mock, middlewares, mockStore } from'../../../../__mocks__/mockConfig';
-
 import {
   inGroupPage
 } from '../../../../actions';

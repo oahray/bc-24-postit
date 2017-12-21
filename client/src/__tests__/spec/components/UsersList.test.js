@@ -1,6 +1,5 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
-import { mock, mockStore } from '../../../__mocks__/mockConfig';
+import { mount } from 'enzyme';
 import UsersList from '../../../components/UsersList';
 import ConfirmModal from '../../../components/ConfirmModal';
 
@@ -21,7 +20,7 @@ describe('UsersList component', () => {
     }, {
       id: 5,
       username: 'jon'
-    }]
+    }];
     const selectedGroup = {
       id: 3,
       name: 'Test group',
@@ -29,9 +28,9 @@ describe('UsersList component', () => {
       type: 'public',
       createdBy: 'ray'
     };
-    const leaveSpy = jest.spyOn(mockFn, 'leave');
+
     const removeSpy = jest.spyOn(mockFn, 'remove');
-    
+
     const wrapper = mount(<UsersList
       user={user} groupUsers={groupUsers}
       selectedGroup={selectedGroup}
