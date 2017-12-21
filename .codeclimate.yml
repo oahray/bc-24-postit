@@ -1,0 +1,26 @@
+engines:
+  duplication:
+    enabled: true
+    config:
+      languages:
+        javascript:
+          mass_threshold: 500
+
+checks: 
+  method-complexity:
+    config:
+      threshold: 10
+  method-lines:
+    config:
+      threshold: 50
+ratings:
+  paths:
+  - server/**/*.js
+  - server/*.js
+  - client/src/
+exclude_paths:
+- node_modules/
+- server/test/
+- server/config
+- docs/
+- client/public/

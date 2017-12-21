@@ -1,0 +1,24 @@
+language: node_js
+node_js:
+  - "stable"
+branches:
+  only:
+    - /.*/
+install:
+  - npm install
+script:
+  - npm test
+cache:
+  -npm install
+services:
+  - postgresql
+before_script:
+  - createdb postit-test --username=postgres
+  - npm run migrate
+after_success:
+  - npm run coveralls
+env:
+  global:
+    - MY_SUPER_SECRET=rgfiwa7t4873qr7tr87r8
+    - DB_USER=postgres
+    - NODE_ENV=test
