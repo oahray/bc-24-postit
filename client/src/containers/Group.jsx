@@ -13,7 +13,7 @@ import MessageList from '../components/MessageList';
 import UsersList from '../components/UsersList';
 import GroupInfo from '../components/GroupInfo';
 import MessageInput from '../components/MessageInput';
-import { isUserGroup } from '../helpers/groupFunctions';
+import isUserGroup from '../helpers/isUserGroup';
 
 /**
  * Group component

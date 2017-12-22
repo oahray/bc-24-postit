@@ -1,5 +1,5 @@
 $main-color: #0C6C85;
-$secondary-color: #0C6C85;
+$secondary-color: rgb(55, 94, 104);
 $grey1: #E0E0E0;
 $grey2: #E6E7E8;
 $body-background: #f8f8f8;
@@ -168,18 +168,49 @@ ul.side-nav.fixed:hover {
     text-overflow:ellipsis;
     display:inline-block;
   }
+
   a {
   padding-left: 10px !important;
   }
+
+  .my-list-item {
+    >a, >ul>li>a {
+      color: $secondary-color;
+
+      > i {
+        color: inherit;
+      }
+    }
+  }
+
+  .my-list-item:hover {
+    >a, >ul>li>a {
+      font-size: 16px !important;
+      font-weight: bold;
+    }
+  }
+
+  .active-side-nav {
+    background-color: $secondary-color !important;
+    > a, >ul > li > a {
+      color: white;
+      font-weight: bolder;
+      
+      > i {
+        color: inherit;
+      }
+    }
+  }
+
   .sidebar-grouplist {
     background-color: $grey2 !important;
     max-height: 200px;
     width: 100%;
-    padding: 0px;
+    padding: 0;
     overflow-y: auto;
     
     li {
-      padding: 0px 10px;
+      // padding: 0 10px;
       a {
         vertical-align: top;
         padding: 0px;
@@ -249,6 +280,7 @@ ul.side-nav.fixed:hover {
   margin: 5px;
   padding: 10px;
   background-color: white;
+  cursor: pointer;
 }
 
 .toast-error {

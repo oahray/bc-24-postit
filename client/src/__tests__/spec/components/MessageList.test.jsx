@@ -33,28 +33,22 @@ const selectedGroup = {
 const openSpy = jest.spyOn(mockFn, 'open');
 
 describe('MessageList component', () => {
-  test('should mount without crashing', () => {
-    const wrapper = shallow(<MessageList
-      groupMessages={groupMessages}
-      selectedGroup={selectedGroup}
-      leaveGroup={mockFn.leave}
-      removeUser={mockFn.remove}
-      openMessage={mockFn.open}/>);
+  const wrapper = () => shallow(<MessageList
+    groupMessages={groupMessages}
+    selectedGroup={selectedGroup}
+    leaveGroup={mockFn.leave}
+    removeUser={mockFn.remove}
+    openMessage={mockFn.open}/>);
 
-    wrapper.find(`#message-${groupMessages[0].groupid}${groupMessages[0].id}`).simulate('click');
+  test('should mount without crashing', () => {
+    wrapper().find(`#message-${groupMessages[0]
+      .groupid}${groupMessages[0].id}`).simulate('click');
     expect(openSpy).toHaveBeenCalledTimes(1);
   });
 
   test('should render alternate message when there are no messages', () => {
     groupMessages = [];
-    const wrapper = shallow(<MessageList
-      groupMessages={groupMessages}
-      selectedGroup={selectedGroup}
-      leaveGroup={mockFn.leave}
-      removeUser={mockFn.remove}
-      openMessage={mockFn.open}/>);
-
-    expect(wrapper.find('#message-list h6').text()).toBe('This group does not contain any messages');
+    expect(wrapper().find('#message-list h6').text())
+    .toBe('This group does not contain any messages');
   });
 });
-

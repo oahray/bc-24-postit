@@ -11,6 +11,9 @@ import {
 } from '../../constants';
 
 /**
+ * @function createGroupLoading
+ * @description: Action creator dispatched when
+ * a request is made to create a new group
  * @returns {object} client_group_loading action
  */
 const createGroupLoading = () => ({
@@ -19,6 +22,8 @@ const createGroupLoading = () => ({
 
 /**
  * @param {object} response: api response
+ * @description: Action creator dispatched when
+ * the request to create a new group succeeds
  * @returns {object} create_group_success action
  */
 const createGroupSuccess = response => ({
@@ -28,6 +33,8 @@ const createGroupSuccess = response => ({
 
 /**
  * @param {object} error: api error response
+ * @description: Action creator dispatched when
+ * request to create new group fails
  * @returns {object} create_group_failure action
  */
 const createGroupFailure = error => ({
@@ -36,6 +43,10 @@ const createGroupFailure = error => ({
 });
 
 /**
+ * @function resetCreatedGroupStatus
+ * @description: Action creator that dispatches action
+ * to clear created group from the redux store when user
+ * leaves the create group page
  * @returns {object} reset_create_group status action
  */
 export const resetCreateGroupStatus = () => ({

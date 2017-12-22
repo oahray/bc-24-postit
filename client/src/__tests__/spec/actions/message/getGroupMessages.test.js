@@ -4,13 +4,13 @@ import {
 } from '../../../../actions';
 
 import {
-  GET_GROUP_MESSAGES_LOADING,
   GET_GROUP_MESSAGES_SUCCESS,
   GET_GROUP_MESSAGES_FAILURE
 } from '../../../../constants';
 
 describe('getGroupMessages action creator', () => {
-  test('dispatches a signin success action when dispatched with valid details', () => {
+  test(`dispatches action with type "GET_GROUP_MESSAGES_SUCCESS"
+  when api request is successful`, () => {
     const store = mockStore({ user: {} });
     const groupId = 2;
     const responseBody = {
@@ -32,12 +32,12 @@ describe('getGroupMessages action creator', () => {
     .then(() => store.getActions())
       .then((actions) => {
         expect(actions.length).toBe(2);
-        expect(actions[0].type).toBe(GET_GROUP_MESSAGES_LOADING);
         expect(actions[1].type).toBe(GET_GROUP_MESSAGES_SUCCESS);
       });
   });
 
-  test('dispatches a signin failure action when dispatched with invalid details',
+  test(`dispatches action with type "GET_GROUP_MESSAGES_FAILURE"
+  when api request fails`,
   () => {
     const store = mockStore({ user: {} });
     const responseBody = {
@@ -51,7 +51,6 @@ describe('getGroupMessages action creator', () => {
     .then(() => store.getActions())
       .then((actions) => {
         expect(actions.length).toBe(2);
-        expect(actions[0].type).toBe(GET_GROUP_MESSAGES_LOADING);
         expect(actions[1].type).toBe(GET_GROUP_MESSAGES_FAILURE);
       });
   });

@@ -7,5 +7,7 @@
  * @returns {Boolean} true if the groupId belongs
  * to a group in the users group list
  */
-export const isUserGroup = (userGroupList, groupId) =>
+const isUserGroup = (userGroupList, groupId) =>
   userGroupList.map(group => group.id).indexOf(groupId) !== -1;
+
+export default isUserGroup;

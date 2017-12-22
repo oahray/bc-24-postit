@@ -11,7 +11,9 @@ import {
 } from '../../../../constants';
 
 describe('verifyAuth action creator', () => {
-  test('dispatches a success action when dispatched with valid token', () => {
+  test(`dispatches an action with type VERIFY_AUTH_SUCCESS
+  when api request succeeds`,
+  () => {
     const store = mockStore({ user: {} });
     const responseBody = {
       user: {
@@ -41,7 +43,8 @@ describe('verifyAuth action creator', () => {
       });
   });
 
-  test('dispatches a failure action when dispatched with invalid token', () => {
+  test(`dispatches an action with type VERIFY_AUTH_FAILURE
+  when api request succeeds`, () => {
     const store = mockStore({ user: {} });
     const responseBody = {
       error: 'Invalid authentication'

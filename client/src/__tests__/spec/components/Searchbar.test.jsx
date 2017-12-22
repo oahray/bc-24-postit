@@ -67,4 +67,3 @@ describe('SearchBar component', () => {
     expect(searchUsersSpy).toHaveBeenCalledTimes(2);
   });
 });
-

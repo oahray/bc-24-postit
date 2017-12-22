@@ -27,6 +27,7 @@ const setUserSearchTerm = term => ({
 });
 
 /**
+ * @function clearUserSearchTerm
  * @returns {object} action
  */
 export const clearUserSearchTerm = () => ({
@@ -34,6 +35,7 @@ export const clearUserSearchTerm = () => ({
 });
 
 /**
+ * @function searchUsersLoading
  * @returns {object} action
  */
 const searchUsersLoading = () => ({
@@ -41,6 +43,7 @@ const searchUsersLoading = () => ({
 });
 
 /**
+ * @function searchUsersSuccess
  * @param {object} response
  * @returns {object} action
  */
@@ -50,6 +53,7 @@ const searchUsersSuccess = response => ({
 });
 
 /**
+ * @function searchUsersFailure
  * @param {object} error
  * @returns {object} action
  */
@@ -58,6 +62,17 @@ const searchUsersFailure = error => ({
   error
 });
 
+/**
+ * @function searchUsers
+ * @description: Action creator searches users and dispatches
+ * other action creators based on status of request.
+ * @param {string} groupId
+ * @param {string} username
+ * @param {string} offset
+ * @param {string} limit
+ * @param {string} token
+ * @returns {Object} action with type GET_GROUP_MESSAGES_SUCCESS
+ */
 export const searchUsers = (groupId, username, offset, limit, token) =>
   (dispatch) => {
     dispatch(setUserSearchTerm(username));
@@ -81,22 +96,50 @@ export const searchUsers = (groupId, username, offset, limit, token) =>
   };
 
 
-// ADD USER FROM SEARCH RESUKTS
+/**
+ * @function addUserLoading
+ * @description: Action creator that is dispatched when
+ * the request to add user is successful.
+ * @returns {Object} action with type ADD_USER_LOADING
+ */
 const addUserLoading = () => ({
   type: ADD_USER_LOADING
 });
 
+/**
+ * @function addUserSuccess
+ * @description: Action creator that is dispatched when
+ * the request to add user is loading.
+ * @param {Object} response
+ * @returns {Object} action with type ADD_USER_SUCCESS
+ */
 const addUserSuccess = response => ({
   type: ADD_USER_SUCCESS,
   response
 });
 
+/**
+ * @function addUserFailure
+ * @description: Action creator that is dispatched when
+ * the request to send message is loading.
+ * @param {string} error
+ * @returns {Object} action with type ADD_USER_FAILURE
+ */
 const addUserFailure = error => ({
   type: ADD_USER_FAILURE,
   error
 });
 
-export const addUserToGroup = (username, groupid, token) => 
+/**
+ * @function addUserToGroup
+ * @description: Action creator searches users and dispatches
+ * other action creators based on status of request.
+ * @param {string} username
+ * @param {string} groupid
+ * @param {string} token
+ * @returns {Object} action based on api response
+ */
+export const addUserToGroup = (username, groupid, token) =>
   (dispatch) => {
     dispatch(addUserLoading());
     const FETCH_URL = `${BASE_URL}/group/${groupid}/user`;
@@ -121,21 +164,49 @@ export const addUserToGroup = (username, groupid, token) =>
   };
 
 
-// Remove from group
+/**
+ * @function removeUserLoading
+ * @description: Action creator that is dispatched when
+ * the request to user is successful.
+ * @returns {Object} action with type REMOVE_USER_LOADING
+ */
 const removeUserLoading = () => ({
   type: REMOVE_USER_LOADING
 });
 
+/**
+ * @function removeUserSuccess
+ * @description: Action creator that is dispatched when
+ * the request to remove user succeeds.
+ * @param {Object} response
+ * @returns {Object} action with type REMOVE_USER_SUCCESS
+ */
 const removeUserSuccess = response => ({
   type: REMOVE_USER_SUCCESS,
   response
 });
 
+/**
+ * @function removeUserFailure
+ * @description: Action creator that is dispatched when
+ * the request remove user fails.
+ * @param {string} error
+ * @returns {Object} action with type GET_GROUP_MESSAGES_SUCCESS
+ */
 const removeUserFailure = error => ({
   type: REMOVE_USER_FAILURE,
   error
 });
 
+/**
+ * @function removeUser
+ * @description: Action creator searches users and dispatches
+ * other action creators based on status of request.
+ * @param {string} username
+ * @param {string} groupId
+ * @param {string} token
+ * @returns {Object} action based on api response
+ */
 export const removeUser = (username, groupId, token) =>
   (dispatch) => {
     dispatch(removeUserLoading());

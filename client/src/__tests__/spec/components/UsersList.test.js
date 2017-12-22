@@ -4,7 +4,7 @@ import UsersList from '../../../components/UsersList';
 import ConfirmModal from '../../../components/ConfirmModal';
 
 describe('UsersList component', () => {
-  test('should mount without crashing', () => {
+  test('should let group creator remove users', () => {
     const mockFn = {
       leave: jest.fn(),
       remove: jest.fn()

@@ -49,7 +49,8 @@ describe('ResetPassword component', () => {
     wrapper.unmount();
   });
 
-  test('displays message when request finishes', () => {
+  test('makes request to reset password when form is submitted',
+  () => {
     const wrapper = setup(error, false);
     const form = wrapper.find('.reset-password-form');
     const passwordInput = wrapper.find('#reset-password1');
@@ -66,7 +67,6 @@ describe('ResetPassword component', () => {
     const wrapper = setup(error, true);
     const btn = wrapper.find('.reset-password-btn');
     expect(btn.text()).toBe('Saving your changes...');
-    wrapper.unmount();
   });
 });
 

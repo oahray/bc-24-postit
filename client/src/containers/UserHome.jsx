@@ -37,9 +37,13 @@ export class UserHome extends Component {
       this.props.groupList.length > 0 ? this.props.groupList.map(group => (
         <li className='col s12 m6 l4'
           key={group.id}>
-          <div className="group-card z-depth-2">
-            <span className='title'><Link to={`/groups/${group.id}/messages`}>
-              {group.name} </Link></span>
+          <div className="group-card z-depth-2"
+          onClick={() => this.props.history.push(`/groups/${group.id}/messages`)}>
+            <span className='title'>
+              <Link to={`/groups/${group.id}/messages`}>
+                {group.name}
+              </Link>
+            </span>
             <br />
             <span className="user-home-group-desc truncate">
               <small> Description: {group.description ?

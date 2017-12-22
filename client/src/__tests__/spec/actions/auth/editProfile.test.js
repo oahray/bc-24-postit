@@ -8,15 +8,14 @@ import {
 } from '../../../../actions/index.js';
 
 import {
-  EDIT_PROFILE_LOADING,
   EDIT_PROFILE_SUCCESS,
   EDIT_PROFILE_FAILURE
 } from '../../../../constants';
 
 dotenv.config();
 
-describe('clearFormError action creator', () => {
-  test('dispatches an action', () => {
+describe('clearFormError function', () => {
+  test('returns a promise object', () => {
     // mocks the post request
     mock.onPost().replyOnce(201, {
       data: {
@@ -25,6 +24,7 @@ describe('clearFormError action creator', () => {
     });
     const upload = uploadImage({});
     expect(typeof upload).toBe('object');
+    expect(typeof upload.then).toBe('function');
   });
 });
 
@@ -53,7 +53,6 @@ describe('editProfile action creator', () => {
     store.dispatch(editProfile('validtoken')).then(() => store.getActions())
       .then((actions) => {
         expect(actions.length).toBe(2);
-        expect(actions[0].type).toBe('EDIT_PROFILE_LOADING');
         expect(actions[1].type).toBe('EDIT_PROFILE_SUCCESS');
         expect(actions[1].response.data).toEqual(expectedAction.response);
       });
@@ -69,10 +68,10 @@ describe('editProfile action creator', () => {
     // mock the post request
     mock.onPatch().replyOnce(400, responseBody);
 
-    store.dispatch(editProfile('I like movies', null, 'my image url', 'sometoken')).then(() => store.getActions())
+    store.dispatch(editProfile('I like movies', null,
+    'my image url', 'sometoken')).then(() => store.getActions())
       .then((actions) => {
         expect(actions.length).toBe(2);
-        expect(actions[0].type).toBe(EDIT_PROFILE_LOADING);
         expect(actions[1].type).toBe(EDIT_PROFILE_FAILURE);
       });
   });

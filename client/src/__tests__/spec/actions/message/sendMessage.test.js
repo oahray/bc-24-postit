@@ -5,13 +5,13 @@ import {
 } from '../../../../actions/index.js';
 
 import {
-  SEND_MESSAGE_LOADING,
   SEND_MESSAGE_SUCCESS,
   SEND_MESSAGE_FAILURE
 } from '../../../../constants';
 
 describe('sendMessage action creator', () => {
-  test('dispatches a success action when dispatched with valid token', () => {
+  test(`dispatches action with type "SEND_MESSAGE_SUCCESS"
+  when api request is successful`, () => {
     const store = mockStore({ user: {} });
     const responseBody = {
       user: {
@@ -35,16 +35,18 @@ describe('sendMessage action creator', () => {
       response: { data: responseBody }
     };
 
-    store.dispatch(sendMessage('validtoken')).then(() => store.getActions())
+    store.dispatch(sendMessage('validtoken'))
+    .then(() => store.getActions())
       .then((actions) => {
         expect(actions.length).toBe(3);
-        expect(actions[0].type).toBe('SEND_MESSAGE_LOADING');
-        expect(actions[1].type).toBe('SEND_MESSAGE_SUCCESS');
-        expect(actions[1].response.data).toEqual(expectedAction.response);
+        expect(actions[1].type).toBe(SEND_MESSAGE_SUCCESS);
+        expect(actions[1].response.data)
+          .toEqual(expectedAction.response);
       });
   });
 
-  test('dispatches a failure action when dispatched with invalid token', () => {
+  test(`dispatches action with type "SEND_MESSAGE_FAILURE"
+  when api request fails`, () => {
     const store = mockStore({ user: {} });
     const responseBody = {
       error: 'Invalid authentication'
@@ -53,10 +55,10 @@ describe('sendMessage action creator', () => {
     // mock the post request
     mock.onPost().replyOnce(400, responseBody);
 
-    store.dispatch(sendMessage('invalidtoken')).then(() => store.getActions())
+    store.dispatch(sendMessage('invalidtoken'))
+    .then(() => store.getActions())
       .then((actions) => {
         expect(actions.length).toBe(2);
-        expect(actions[0].type).toBe(SEND_MESSAGE_LOADING);
         expect(actions[1].type).toBe(SEND_MESSAGE_FAILURE);
       });
   });
