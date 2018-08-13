@@ -33,27 +33,36 @@ const setup = (user) => {
 };
 
 describe('Edit Profile component', () => {
+  const event = {
+    target: {
+      value: 'new_name',
+      files: ['1', ' 2']
+    }
+  };
+
   test('should render without crashing', () => {
     const wrapper = setup(currentUser);
     expect(wrapper.find('.edit-profile-page').length).toBe(1);
   });
 
-  test('should let user edit profile', () => {
+  test(`should set editingInfo state to true when
+  edit method is called`, () => {
     const wrapper = setup(currentUser);
 
     wrapper.instance().edit();
     expect(wrapper.instance().state.editingInfo).toBe(true);
+  });
 
-    const event = {
-      target: {
-        value: 'new_name',
-        files: ['1', ' 2']
-      }
-    };
+  test(`should set name property of component state
+  to true when edit method is called`, () => {
+    const wrapper = setup(currentUser);
 
     wrapper.instance().onInputChange(event, 'name');
     expect(wrapper.instance().state.name).toBe('new_name');
+  });
 
+  test('should allow user upload and remove files', () => {
+    const wrapper = setup(currentUser);
     editOptions.uploadImage = () => Promise.resolve({
       data: {
         fileUrl: '/my-photo.png'
@@ -68,8 +77,10 @@ describe('Edit Profile component', () => {
     expect(wrapper.instance().state.imageUrl).toBe(imageUrl);
     wrapper.instance().removeImage();
     expect(wrapper.instance().state.imageUrl).toBe('');
+  });
 
-    wrapper.instance().save();
+  test('should allow user save profile', () => {
+    setup(currentUser).instance().save();
     expect(editProfileSpy).toHaveBeenCalledTimes(1);
   });
 });

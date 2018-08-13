@@ -1,11 +1,13 @@
 import { mock, mockStore } from '../../../../__mocks__/mockConfig';
 import {
-  signinUser,
+  signinUser, SIGNIN_SUCCESS,
   SIGNIN_LOADING, SIGNIN_FAILURE
 } from '../../../../actions/index.js';
 
 describe('signinUser action creator', () => {
-  test('dispatches a signin success action when dispatched with valid details', () => {
+  test(`dispatches an action with type SIGNIN_SUCCESS
+  when api request is successful`,
+  () => {
     const store = mockStore({ user: {} });
     const responseBody = {
       message: 'Welcome back ray',
@@ -22,16 +24,18 @@ describe('signinUser action creator', () => {
       data: responseBody
     });
 
-    store.dispatch(signinUser(responseBody.user.username, 'mypassword'))
-    .then(() => store.getActions())
+    store.dispatch(
+      signinUser(responseBody.user.username, 'mypassword')
+    ).then(() => store.getActions())
       .then((actions) => {
         expect(actions.length).toBe(2);
-        expect(actions[0].type).toBe('SIGNIN_LOADING');
-        expect(actions[1].type).toBe('SIGNIN_SUCCESS');
+        expect(actions[0].type).toBe(SIGNIN_LOADING);
+        expect(actions[1].type).toBe(SIGNIN_SUCCESS);
       });
   });
 
-  test('dispatches a signin failure action when dispatched with invalid details',
+  test(`dispatches an action with type 
+  SIGNIN_FAILURE when api request fails`,
   () => {
     const store = mockStore({ user: {} });
     const responseBody = {
@@ -45,7 +49,6 @@ describe('signinUser action creator', () => {
     .then(() => store.getActions())
       .then((actions) => {
         expect(actions.length).toBe(2);
-        expect(actions[0].type).toBe(SIGNIN_LOADING);
         expect(actions[1].type).toBe(SIGNIN_FAILURE);
       });
   });

@@ -33,6 +33,7 @@ const actionCreators = {
 const logoutSpy = jest.spyOn(actionCreators, 'logout');
 const searchUsersSpy = jest.spyOn(actionCreators, 'searchUsers');
 const historyPushSpy = jest.spyOn(actionCreators.history, 'push');
+const getListSpy = jest.spyOn(actionCreators, 'getGroupList');
 
 const setup = (user, isLoggedIn, inGroupPage) => {
   props = {
@@ -65,15 +66,26 @@ describe('SideNav', () => {
     wrapper.find('.side-nav .my-list-item .docs-link').simulate('click');
   });
 
+  test('updates', () => {
+    const wrapper = setup(null, false, false);
+    wrapper.setProps({ groups: [] });
+  });
+
   test('renders without crashing when authenticated user has no profile image',
   () => {
     const wrapper = setup(currentUser, true, false);
+    expect(wrapper.length).toBe(1);
+  });
+
+  test('fetches groups list when user is added or removed from group',
+  () => {
+    setup(currentUser, true, false);
     mockServer.on('connection', (socket) => {
       socket.emit('Added to group', ({ user: currentUser }));
 
       socket.emit('Removed from group', ({ user: currentUser }));
     });
-    expect(wrapper.find('.side-nav .my-list-item a').length).toBeGreaterThan(0);
+    expect(getListSpy).toHaveBeenCalledTimes(2);
   });
 
 

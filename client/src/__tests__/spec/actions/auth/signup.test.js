@@ -5,7 +5,8 @@ import {
 } from '../../../../actions/index.js';
 
 describe('signupUser action creator', () => {
-  test('dispatches a signup success action when dispatched with valid details',
+  test(`dispatches an action with type SIGNUP_SUCCESS
+  when api request is successful`,
   () => {
     const store = mockStore({ user: {} });
     const responseBody = {
@@ -34,7 +35,8 @@ describe('signupUser action creator', () => {
       });
   });
 
-  test('dispatches a signup failure action when dispatched with invalid details',
+  test(`dispatches an action with type SIGNUP_FAILURE
+  when api request fails`,
   () => {
     const store = mockStore({ user: {} });
     const responseBody = {

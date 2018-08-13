@@ -14,12 +14,13 @@ module.exports = {
       { test: /\.(js|jsx)$/,
         loader: 'babel-loader',
         exclude: /node_modules\//,
-        query: {
+        options: {
           presets: ['react', 'es2015'],
           plugins: [
             'react-html-attrs',
             'transform-decorators-legacy',
-            'transform-class-properties'],
+            'transform-class-properties'
+          ],
         }
       },
       { test: /\.css$/,

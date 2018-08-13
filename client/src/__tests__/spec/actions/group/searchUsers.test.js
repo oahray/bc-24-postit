@@ -10,19 +10,16 @@ import {
 import {
   SET_SEARCH_TERM,
   CLEAR_SEARCH_TERM,
-  SEARCH_USERS_LOADING,
   SEARCH_USERS_SUCCESS,
   SEARCH_USERS_FAILURE,
-  ADD_USER_LOADING,
   ADD_USER_SUCCESS,
   ADD_USER_FAILURE,
-  REMOVE_USER_LOADING,
   REMOVE_USER_SUCCESS,
   REMOVE_USER_FAILURE
 } from '../../../../constants';
 
 describe('clearUserSearchTerm action creator', () => {
-  test('dispatches an action', () => {
+  test('dispatches an action with type "CLEAR_SEARCH_TERM"', () => {
     const clearTerm = clearUserSearchTerm();
     const expectedAction = {
       type: CLEAR_SEARCH_TERM
@@ -32,7 +29,9 @@ describe('clearUserSearchTerm action creator', () => {
 });
 
 describe('searchUsers action creator', () => {
-  test('dispatches a success action when dispatched with valid token', () => {
+  test(`dispatches action with type "SEARCH_USERS_SUCCESS"
+  when api request is successful`,
+  () => {
     const store = mockStore({ user: {} });
     const responseBody = {
       users: [{
@@ -52,17 +51,19 @@ describe('searchUsers action creator', () => {
       response: { data: responseBody }
     };
 
-    store.dispatch(searchUsers(3, 'somename', 0, 7, 'validtoken')).then(() => store.getActions())
+    store.dispatch(searchUsers(3, 'somename', 0, 7, 'validtoken'))
+    .then(() => store.getActions())
       .then((actions) => {
         expect(actions.length).toBe(3);
         expect(actions[0].type).toBe(SET_SEARCH_TERM);
-        expect(actions[1].type).toBe(SEARCH_USERS_LOADING);
         expect(actions[2].type).toBe(SEARCH_USERS_SUCCESS);
         expect(actions[2].response.data).toEqual(expectedAction.response);
       });
   });
 
-  test('dispatches a failure action when dispatched with invalid token', () => {
+  test(`dispatches action with type "LEAVE_GROUP_FAILURE"
+  when api request fails`,
+  () => {
     const store = mockStore({ user: {} });
     const responseBody = {
       error: 'Specified group does not exist'
@@ -76,14 +77,15 @@ describe('searchUsers action creator', () => {
       .then((actions) => {
         expect(actions.length).toBe(3);
         expect(actions[0].type).toBe(SET_SEARCH_TERM);
-        expect(actions[1].type).toBe(SEARCH_USERS_LOADING);
         expect(actions[2].type).toBe(SEARCH_USERS_FAILURE);
       });
   });
 });
 
 describe('addUserToGroup action creator', () => {
-  test('dispatches a success action when dispatched with valid token', () => {
+  test(`dispatches action with type "ADD_USER_SUCCESS"
+  when api request is successful`,
+  () => {
     const store = mockStore({ user: {} });
     const responseBody = {
       messages: 'somename has been added to the group'
@@ -110,14 +112,15 @@ describe('addUserToGroup action creator', () => {
     ))
     .then(() => store.getActions())
       .then((actions) => {
-        expect(actions[0].type).toBe(ADD_USER_LOADING);
         expect(actions[1].type).toBe(ADD_USER_SUCCESS);
         expect(actions[1].response.data).toEqual(expectedAction.response);
         expect(spiedFn).toBeCalled();
       });
   });
 
-  test('dispatches a failure action when dispatched with invalid token', () => {
+  test(`dispatches action with type "ADD_USER_FAILURE"
+  when api request fails`,
+  () => {
     const store = mockStore({ user: {} });
     const responseBody = {
       error: 'Specified group does not exist'
@@ -132,10 +135,11 @@ describe('addUserToGroup action creator', () => {
     // mock the post request
     mock.onPost().replyOnce(400, responseBody);
 
-    store.dispatch(addUserToGroup('ausername', 99, mockFn.updateResults, 'invalidtoken')).then(() => store.getActions())
+    store.dispatch(addUserToGroup(
+      'ausername', 99, mockFn.updateResults, 'invalidtoken'
+    )).then(() => store.getActions())
       .then((actions) => {
         expect(actions.length).toBe(2);
-        expect(actions[0].type).toBe(ADD_USER_LOADING);
         expect(actions[1].type).toBe(ADD_USER_FAILURE);
         expect(spiedFn).not.toBeCalled();
       });
@@ -143,7 +147,8 @@ describe('addUserToGroup action creator', () => {
 });
 
 describe('removeUser action creator', () => {
-  test('dispatches a success action when dispatched with valid token', () => {
+  test(`dispatches action with type "REMOVE_USER_SUCCESS"
+  when api request is successful`, () => {
     const store = mockStore({ user: {} });
     const responseBody = {
       messages: 'Ray has been removed from the group'
@@ -168,14 +173,14 @@ describe('removeUser action creator', () => {
     store.dispatch(removeUser('somename', 3, mockFn.updateResults, 'validtoken')).then(() => store.getActions())
       .then((actions) => {
         expect(actions.length).toBe(2);
-        expect(actions[0].type).toBe(REMOVE_USER_LOADING);
         expect(actions[1].type).toBe(REMOVE_USER_SUCCESS);
         expect(actions[1].response.data).toEqual(expectedAction.response);
         expect(spiedFn).toBeCalled();
       });
   });
 
-  test('dispatches a failure action when dispatched with invalid token', () => {
+  test(`dispatches action with type "REMOVE_USER_FAILURE"
+  when api request fails`, () => {
     const store = mockStore({ user: {} });
     const responseBody = {
       error: 'Specified group does not exist'
@@ -195,7 +200,6 @@ describe('removeUser action creator', () => {
     ).then(() => store.getActions())
       .then((actions) => {
         expect(actions.length).toBe(2);
-        expect(actions[0].type).toBe(REMOVE_USER_LOADING);
         expect(actions[1].type).toBe(REMOVE_USER_FAILURE);
         expect(spiedFn).not.toBeCalled();
       });

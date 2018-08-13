@@ -30,13 +30,18 @@ describe('ForgotPassword component', () => {
     expect(wrapper.find('.request-reset-form').length).toBe(1);
   });
 
-  test('displays message when request finishes', () => {
+  test('does not submit when email input is empty', () => {
     const wrapper = setup(false, null, null);
     const form = wrapper.find('.request-reset-form');
-    const input = wrapper.find('.forgot-password-input');
 
     form.simulate('submit', { preventDefault: jest.fn() });
     expect(requestSpy).not.toBeCalled();
+  });
+
+  test('allows user submit email', () => {
+    const wrapper = setup(false, null, null);
+    const form = wrapper.find('.request-reset-form');
+    const input = wrapper.find('.forgot-password-input');
 
     input.simulate('change', { target: { value: 'stranger@example.com' } });
 

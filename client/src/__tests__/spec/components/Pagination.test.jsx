@@ -30,10 +30,18 @@ describe('Pagination component', () => {
     expect(wrapper.find('.pagination').length).toBe(1);
   });
 
-  test('should disable navigation icons when necessary', () => {
-    expect(wrapperFn().find('#previous-page').hasClass('disabled')).toEqual(true);
-    expect(wrapperFn().find('#next-page').hasClass('disabled')).toEqual(false);
+  test(`should disable previous page navigation
+  when user is in the first page`,
+  () => {
+    expect(wrapperFn().find('#previous-page')
+    .hasClass('disabled')).toEqual(true);
+    expect(wrapperFn().find('#next-page')
+    .hasClass('disabled')).toEqual(false);
+  });
 
+  test(`should disable next page navigation
+  when user is in the last page`,
+  () => {
     state.page = 3;
     expect(wrapperFn().find('#previous-page')
     .hasClass('disabled')).toEqual(false);

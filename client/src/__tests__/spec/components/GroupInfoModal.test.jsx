@@ -35,33 +35,36 @@ describe('Group Info Modal', () => {
     expect(wrapper.find('#group3-modal').length).toBe(1);
   });
 
-  test('should allow user input new group details and save', () => {
-    const newName = 'New Group Name';
-    const newDesc = 'This is the new description';
-    const newType = 'private';
-    selectedGroup.description = '';
+  const newName = 'New Group Name';
+  const newDesc = 'This is the new description';
+  const newType = 'private';
+  selectedGroup.description = '';
 
-    // For group name input
-    const event = { target: { value: newName } };
-    const wrapper = setup(selectedGroup);
+  // For group name input
+  const event = { target: { value: newName } };
+  const wrapper = setup(selectedGroup);
+
+  test('should allow user change group name', () => {
     expect(wrapper.instance().state.name).toBe(selectedGroup.name);
     wrapper.find('#group-name-input').simulate('change', event);
     expect(wrapper.instance().state.name).toBe(newName);
+  });
 
-    // For group description input
+  test('should allow user change group description', () => {
     event.target.value = newDesc;
     expect(wrapper.instance().state.description).toBe(selectedGroup.description);
     wrapper.find('#group-desc-input').simulate('change', event);
     expect(wrapper.instance().state.description).toBe(newDesc);
+  });
 
-
-    // For group type select
+  test('should allow user change group type', () => {
     event.target.value = newType;
     expect(wrapper.instance().state.type).toBe(selectedGroup.type);
     wrapper.find('#group-privacy-select').simulate('change', event);
     expect(wrapper.instance().state.type).toBe(newType);
+  });
 
-    // Save
+  test('should allow user save group details', () => {
     wrapper.find('#save-group-info a').simulate('click');
     expect(editInfoSpy).toHaveBeenCalledTimes(1);
   });

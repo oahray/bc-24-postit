@@ -1,6 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import jwt from 'jsonwebtoken';
+import toastr from 'toastr';
 
 import { mockServer, mockStore } from '../../../__mocks__/mockConfig';
 import ConnectedApp, { App } from '../../../containers/App';
@@ -41,9 +42,33 @@ const setup = (user, authLoading, isLoggedIn) => {
   return shallow(<App {...props} />);
 };
 
+toastr.info = jest.fn();
+
 describe('App', () => {
   localStorage.__STORE__['x-auth'] = token;
   test('renders without crashing', () => {
+    const wrapper = setup(currentUser, false, true);
+    expect(wrapper.length).toBe(1);
+  });
+
+  test('verifies token before component mounts', () => {
+    setup(currentUser, false, true);
+    expect(verifyAuthSpy).toHaveBeenCalledTimes(2);
+  });
+
+  test('shows toast when user is added to a group', () => {
+    const wrapper = setup(currentUser, false, true);
+    mockServer.on('connection', (socket) => {
+      socket.emit('Added to group', ({
+        user: currentUser,
+        group: selectedGroup,
+        addedBy: 'jim'
+      }));
+    });
+    expect(wrapper.length).toBe(1);
+  });
+
+  test('shows toast when user is removed from a group', () => {
     const wrapper = setup(currentUser, false, true);
     mockServer.on('connection', (socket) => {
       socket.emit('Added to group', ({
@@ -59,7 +84,6 @@ describe('App', () => {
       }));
     });
     expect(wrapper.length).toBe(1);
-    expect(verifyAuthSpy).toHaveBeenCalledTimes(1);
   });
 
   test('renders preloader when verifying user', () => {

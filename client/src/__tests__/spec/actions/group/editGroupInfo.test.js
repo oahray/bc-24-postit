@@ -16,7 +16,8 @@ dotenv.config();
 
 
 describe('editGroupInfo action creator', () => {
-  test('dispatches a success action when request is successful', () => {
+  test(`dispatches an action with type EDIT_GROUP_INFO_SUCCESS,
+  and the group details, when api request is successful`, () => {
     const store = mockStore({ user: {} });
     const responseBody = {
       message: 'Group info successfully updated',
@@ -42,16 +43,20 @@ describe('editGroupInfo action creator', () => {
       response: { data: responseBody }
     };
 
-    store.dispatch(editGroupInfo(responseBody.group.name, responseBody.group.description, responseBody.group.type, 'validtoken')).then(() => store.getActions())
+    store.dispatch(editGroupInfo(
+      responseBody.group.name, responseBody.group.description,
+      responseBody.group.type, 'validtoken'
+    )).then(() => store.getActions())
       .then((actions) => {
         expect(actions.length).toBe(3);
-        expect(actions[0].type).toBe('EDIT_GROUP_INFO_LOADING');
-        expect(actions[1].type).toBe('EDIT_GROUP_INFO_SUCCESS');
+        expect(actions[0].type).toBe(EDIT_GROUP_INFO_LOADING);
+        expect(actions[1].type).toBe(EDIT_GROUP_INFO_SUCCESS);
         expect(actions[1].response.data).toEqual(expectedAction.response);
       });
   });
 
-  test('dispatches a failure action when dispatched with invalid details',
+  test(`dispatches an action with type "CREATE_GROUP_FAILURE",
+  when api request fails`,
   () => {
     const store = mockStore({ user: {} });
     const responseBody = {
@@ -61,10 +66,12 @@ describe('editGroupInfo action creator', () => {
     // mock the post request
     mock.onPatch().replyOnce(400, responseBody);
 
-    store.dispatch(editGroupInfo('The name of this group is just so long that it would raise an error', 'no description', 'public', 'sometoken')).then(() => store.getActions())
+    store.dispatch(editGroupInfo(
+      'The name of this group is just so long that it would raise an error',
+      'no description', 'public', 'sometoken'
+    )).then(() => store.getActions())
       .then((actions) => {
         expect(actions.length).toBe(2);
-        expect(actions[0].type).toBe(EDIT_GROUP_INFO_LOADING);
         expect(actions[1].type).toBe(EDIT_GROUP_INFO_FAILURE);
       });
   });

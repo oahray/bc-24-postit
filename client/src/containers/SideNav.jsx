@@ -148,11 +148,11 @@ export class SideNav extends Component {
               </div>
             </div>
           </li>
-          <li className='my-list-item'>
+          <li className={`my-list-item ${window.location.pathname === '/groups/new' ? 'active-side-nav z-depth-2' : ''}`}>
             <NavLink to='/groups/new'> Create New Group <i
             className="material-icons left">group_add</i></NavLink>
           </li>
-          <li className=''>
+          <li className={`my-list-item ${window.location.pathname === '/' || window.location.pathname.match(/\/groups\/[0-9]+\/messages/) ? 'active-side-nav z-depth-4' : ''}`}>
             <ul className='collapsible collapsible-accordion'>
               <li className=''>
                 <a className='collapsible-header'>
@@ -165,7 +165,7 @@ export class SideNav extends Component {
                     </li>
                     {this.props.groups.map(group =>
                       <li key={group.id}
-                      className='my-list-item collection-item'>
+                      className={`my-list-item collection-item ${window.location.pathname.match(`/groups/${group.id}/messages`) ? 'active-side-nav z-depth-4' : ''}`}>
                         <NavLink to={`/groups/${group.id}/messages`}>
                           <div>
                             {group.name}
@@ -178,7 +178,7 @@ export class SideNav extends Component {
               </li>
             </ul>
           </li>
-          <li className='my-list-item'>
+          <li className={`my-list-item ${window.location.pathname === '/edit' ? 'active-side-nav z-depth-4' : ''}`}>
             <NavLink to="/edit"> My Account
               <i className="material-icons left">settings</i>
             </NavLink>

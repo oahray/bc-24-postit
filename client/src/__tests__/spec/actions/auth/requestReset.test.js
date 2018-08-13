@@ -5,18 +5,17 @@ import {
 } from '../../../../actions';
 
 import {
-  REQUEST_RESET_LOADING,
   REQUEST_RESET_SUCCESS,
   REQUEST_RESET_FAILURE,
   CLEAR_REQUEST_RESET_MESSAGE,
-  RESET_PASSWORD_LOADING,
   RESET_PASSWORD_SUCCESS,
   RESET_PASSWORD_FAILED
 } from '../../../../constants';
 
 
 describe('clearResetRequestMessage action creator', () => {
-  test('dispatches an action', () => {
+  test('dispatches an action with type CLEAR_REQUEST_RESET_MESSAGE',
+  () => {
     const clearMessage = clearResetRequestMessage();
     const expectedAction = {
       type: CLEAR_REQUEST_RESET_MESSAGE
@@ -26,7 +25,8 @@ describe('clearResetRequestMessage action creator', () => {
 });
 
 describe('requestReset action creator', () => {
-  test('dispatches a success action when dispatched with valid email', () => {
+  test('dispatches a success action when request to api is successful',
+  () => {
     const store = mockStore({ user: {} });
     const responseBody = {
       message: 'An email with reset instructions has been sent'
@@ -45,13 +45,12 @@ describe('requestReset action creator', () => {
     store.dispatch(requestReset('validtoken')).then(() => store.getActions())
       .then((actions) => {
         expect(actions.length).toBe(2);
-        expect(actions[0].type).toBe('REQUEST_RESET_LOADING');
         expect(actions[1].type).toBe('REQUEST_RESET_SUCCESS');
         expect(actions[1].response.data).toEqual(expectedAction.response);
       });
   });
 
-  test('dispatches a failure action when dispatched with invalid token', () => {
+  test('dispatches a failure action when request to api fails', () => {
     const store = mockStore({ user: {} });
     const responseBody = {
       error: 'Invalid authentication'
@@ -63,14 +62,13 @@ describe('requestReset action creator', () => {
     store.dispatch(requestReset('invalidtoken')).then(() => store.getActions())
       .then((actions) => {
         expect(actions.length).toBe(2);
-        expect(actions[0].type).toBe(REQUEST_RESET_LOADING);
         expect(actions[1].type).toBe(REQUEST_RESET_FAILURE);
       });
   });
 });
 
 describe('resetPassword action creator', () => {
-  test('dispatches a success action when dispatched with valid email', () => {
+  test('dispatches a success action when request to api is successful', () => {
     const store = mockStore({ user: {} });
     const responseBody = {
       message: 'Password reset successful',
@@ -96,12 +94,12 @@ describe('resetPassword action creator', () => {
       .then((actions) => {
         expect(actions.length).toBe(2);
         expect(actions[0].type).toBe('RESET_PASSWORD_LOADING');
-        expect(actions[1].type).toBe('RESET_PASSWORD_SUCCESS');
+        expect(actions[1].type).toBe(RESET_PASSWORD_SUCCESS);
         expect(actions[1].response.data).toEqual(expectedAction.response);
       });
   });
 
-  test('dispatches a failure action when dispatched with invalid token', () => {
+  test('dispatches a success action when request to api fails', () => {
     const store = mockStore({ user: {} });
     const responseBody = {
       error: 'Invalid authentication'
@@ -113,7 +111,6 @@ describe('resetPassword action creator', () => {
     store.dispatch(resetPassword('invalidtoken')).then(() => store.getActions())
       .then((actions) => {
         expect(actions.length).toBe(2);
-        expect(actions[0].type).toBe(RESET_PASSWORD_LOADING);
         expect(actions[1].type).toBe(RESET_PASSWORD_FAILED);
       });
   });

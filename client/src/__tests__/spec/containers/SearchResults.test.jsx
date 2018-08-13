@@ -106,7 +106,7 @@ describe('SearchResults component', () => {
     expect(inPageSpy).toHaveBeenCalledTimes(1);
   });
 
-  test('updates in real-time response to socket events', () => {
+  test('fetches users list in response to socket events', () => {
     const wrapper = setup(currentUser, selectedGroup, [], []);
     expect(wrapper.length).toBe(1);
     mockServer.on('connection', (socket) => {
@@ -119,24 +119,31 @@ describe('SearchResults component', () => {
     expect(getUsersSpy).toHaveBeenCalledTimes(3);
   });
 
-  test('renders error when user does not belong to the group', () => {
+  test('redirects when user does not belong to the group', () => {
     const wrapper = setup(null, null, null, [], true);
     expect(wrapper.find(Redirect).length)
     .toBe(1);
   });
 
-  test('renders search results and rerenders when props change', () => {
+  test('updates search results when props change', () => {
     const wrapper = setup(currentUser, selectedGroup, [], []);
-    expect(wrapper.length).toBe(1);
+
     wrapper.instance().setState({
       page: 1
     });
+    expect(searchSpy).toHaveBeenCalledTimes(4);
+
+
     wrapper.instance().setState({
       searchTerm: 'e'
     });
+    expect(searchSpy).toHaveBeenCalledTimes(4);
+
     wrapper.instance().setState({
       page: 2
     });
+
+    expect(searchSpy).toHaveBeenCalledTimes(5);
   });
 
   test('performs a search when the search method is called', () => {
@@ -149,7 +156,8 @@ describe('SearchResults component', () => {
     expect(searchSpy).toHaveBeenCalledTimes(7);
   });
 
-  test('calls the addUser prop when the method is called', () => {
+  test('calls the addUser prop when the addUser method is called',
+  () => {
     const wrapper = setup(currentUser, selectedGroup, groupUsers, results);
     expect(wrapper.find('.search-results-container').length).toBe(1);
     wrapper.instance().addUser(results.users[1].username);
@@ -218,6 +226,8 @@ describe('SearchResults component', () => {
 
     // call next page method again
     wrapper.instance().nextPage();
+
+    // does not navigate
     expect(wrapper.instance().state.page).toBe(2);
   });
 

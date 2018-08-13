@@ -1,5 +1,5 @@
 import models from '../../models';
-import { seedUsers , seedGroups } from './seed'
+import { seedUsers, seedGroups } from './seed';
 
 export const populateUsers = () => {
   models.User.bulkCreate(seedUsers.registered).then(() => {
@@ -12,8 +12,8 @@ export const populateGroups = () => {
     groups.forEach((group) => {
       group.addUser(seedUsers.registered[2].id);
     });
-  })
-}
+  });
+};
 
 export const doBeforeAll = () => {
   before((done) => {

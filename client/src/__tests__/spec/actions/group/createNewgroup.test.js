@@ -17,7 +17,7 @@ import {
 dotenv.config();
 
 describe('resetCreateGroupStatus action creator', () => {
-  test('dispatches an action', () => {
+  test('dispatches an action with type "RESET_CREATE_GROUP_STATUS"', () => {
     // mocks the post request
     const resetStatus = resetCreateGroupStatus();
     expect(resetStatus.type).toBe(RESET_CREATE_GROUP_STATUS);
@@ -25,7 +25,9 @@ describe('resetCreateGroupStatus action creator', () => {
 });
 
 describe('createNewGroup action creator', () => {
-  test('dispatches a success action when dispatched with valid details', () => {
+  test(`dispatches an action with type "CREATE_GROUP_SUCCESS",
+  and the group details, when api request is successful`,
+  () => {
     const store = mockStore({ user: {} });
     const responseBody = {
       message: 'Group successfully created',
@@ -47,7 +49,11 @@ describe('createNewGroup action creator', () => {
       response: { data: responseBody }
     };
 
-    store.dispatch(createNewGroup(responseBody.group.name, responseBody.group.description, responseBody.group.type, 'validtoken')).then(() => store.getActions())
+    store.dispatch(createNewGroup(
+      responseBody.group.name,
+      responseBody.group.description,
+      responseBody.group.type, 'validtoken'
+    )).then(() => store.getActions())
       .then((actions) => {
         expect(actions.length).toBe(3);
         expect(actions[0].type).toBe('CREATE_GROUP_LOADING');
@@ -56,7 +62,8 @@ describe('createNewGroup action creator', () => {
       });
   });
 
-  test('dispatches a failure action when dispatched with invalid details',
+  test(`dispatches an action with type "CREATE_GROUP_FAILURE",
+  when api request fails`,
   () => {
     const store = mockStore({ user: {} });
     const responseBody = {
@@ -66,7 +73,9 @@ describe('createNewGroup action creator', () => {
     // mock the post request
     mock.onPost().replyOnce(400, responseBody);
 
-    store.dispatch(createNewGroup('The name of this group is just so long that it would raise an error', 'no description', 'public', 'sometoken')).then(() => store.getActions())
+    store.dispatch(createNewGroup(
+      'The name of this group is just so long that it would raise an error',
+      'no description', 'public', 'sometoken')).then(() => store.getActions())
       .then((actions) => {
         expect(actions.length).toBe(2);
         expect(actions[0].type).toBe(CREATE_GROUP_LOADING);

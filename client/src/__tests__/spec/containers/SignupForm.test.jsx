@@ -79,6 +79,7 @@ describe('Signup form', () => {
 
     event.preventDefault = jest.fn();
     form.simulate('submit', event);
+    expect(signupSpy).not.toHaveBeenCalled();
 
     wrapper.unmount();
   });

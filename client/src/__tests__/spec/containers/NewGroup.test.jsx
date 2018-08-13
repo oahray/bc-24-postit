@@ -45,6 +45,8 @@ const setup = (group) => {
 };
 
 describe('NewGroup component', () => {
+  const event = { target: {}, preventDefault: jest.fn() };
+
   test('renders without crashing', () => {
     const wrapper = setup();
     expect(wrapper.length).toBe(1);
@@ -56,8 +58,7 @@ describe('NewGroup component', () => {
     expect(wrapper.find(Redirect).length).toBe(1);
   });
 
-  test('allows user write group details and submit', () => {
-    const event = { target: {}, preventDefault: jest.fn() };
+  test('save input values to state when they are typed', () => {
     const groupName = 'New Group Name';
     const groupDesc = 'This is my first group';
     const groupType = 'private';
@@ -75,7 +76,10 @@ describe('NewGroup component', () => {
     expect(wrapper.instance().state.name).toBe(groupName);
     expect(wrapper.instance().state.description).toBe(groupDesc);
     expect(wrapper.instance().state.type).toBe(groupType);
+  });
 
+  test('allows user submit form', () => {
+    const wrapper = setup();
     wrapper.find('.new-group-form').simulate('submit', event);
     expect(createGroupSpy).toHaveBeenCalledTimes(1);
 

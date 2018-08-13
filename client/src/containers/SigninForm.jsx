@@ -28,7 +28,9 @@ export class SigninForm extends Component {
    * @returns {undefined}
    */
   componentWillUnmount() {
+    console.log('error', typeof this.props.signinError);
     if (this.props.signinError) {
+      console.log('clearing form error');
       this.props.clearFormError();
     }
   }

@@ -10,7 +10,7 @@ import {
  * @returns {object} actions
  */
 export function inGroupPage(inPage) {
-  if (inPage) {
+  if (inPage === true) {
     return {
       type: IN_GROUP_TRUE
     };

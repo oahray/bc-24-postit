@@ -16,12 +16,12 @@ const actionCreators = {
 const signinSpy = jest.spyOn(actionCreators, 'signinUser');
 const clearErrorSpy = jest.spyOn(actionCreators, 'clearFormError');
 
-const setup = (isLoggedIn, loading, failed) => {
+const setup = (isLoggedIn, loading, failed, signinError) => {
   props = {
     isLoggedIn,
     signinLoading: loading,
     signinFailed: failed,
-    signinError: errorMessage,
+    signinError,
     // Action creators
     signinUser: actionCreators.signinUser,
     verifyAuth: actionCreators.verifyAuth,
@@ -43,9 +43,8 @@ describe('Signin form', () => {
 
   test('should display error message when there is an error', () => {
     const wrapper = setup(false, false, true, errorMessage);
-    expect(wrapper.find('.form-error-message').text()).toBe('Username/Password is incorrect');
-    wrapper.unmount();
-    expect(clearErrorSpy).toBeCalled();
+    expect(wrapper.find('.form-error-message').text())
+      .toBe('Username/Password is incorrect');
   });
 
   test('should set state when input values changes', () => {
@@ -64,7 +63,6 @@ describe('Signin form', () => {
 
     expect(wrapper.instance().state.username).toBe('myname');
     expect(wrapper.instance().state.password).toBe('mypassword');
-    wrapper.unmount();
   });
 
   test('should call the onSubmit method when form is submitted', () => {
@@ -79,6 +77,10 @@ describe('Signin form', () => {
   test('should disable submit button when request is processing', () => {
     const wrapper = setup(false, true, false, errorMessage);
     expect(wrapper.find('.signin-btn').text()).toBe(' Please wait... ');
+  });
+
+  test('should clear error when component unmounts', () => {
+    const wrapper = setup(false, true, false, 'username incorrect');
     wrapper.unmount();
     expect(clearErrorSpy).toBeCalled();
   });

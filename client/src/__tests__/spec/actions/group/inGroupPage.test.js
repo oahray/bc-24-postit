@@ -8,13 +8,17 @@ import {
 } from '../../../../constants';
 
 describe('inGroupPage action creator', () => {
-  test('returns an action with type IN_GROUP_FALSE when inPage param is not true', () => {
+  test(`returns an action with type IN_GROUP_FALSE
+  when not called with anything that is not the boolean true`,
+  () => {
     // mocks the post request
-    const resetStatus = inGroupPage();
-    expect(resetStatus.type).toBe(IN_GROUP_FALSE);
+    expect(inGroupPage().type).toBe(IN_GROUP_FALSE);
+    expect(inGroupPage(2).type).toBe(IN_GROUP_FALSE);
+    expect(inGroupPage('true').type).toBe(IN_GROUP_FALSE);
   });
 
-  test('returns an action with type IN_GROUP_FALSE when inPage param is not true', () => {
+  test(`returns an action with type IN_GROUP_FALSE
+  when called with the boolean true`, () => {
     // mocks the post request
     const resetStatus = inGroupPage(true);
     expect(resetStatus.type).toBe(IN_GROUP_TRUE);
