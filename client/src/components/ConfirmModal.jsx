@@ -10,7 +10,7 @@ export default class ConfirmModal extends Component {
   render() {
     return (
       <div>
-        <a className="waves-effect waves-grey modal-trigger pointer"
+        <a className="waves-effect waves-grey modal-trigger"
         href={`#${this.props.modalId}`}>{this.props.triggerLabel}</a>
         <div id={`${this.props.modalId}`} className="modal confirm-modal">
           <div className="modal-content">
