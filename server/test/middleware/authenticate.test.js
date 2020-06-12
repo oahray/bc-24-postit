@@ -8,7 +8,7 @@ import { seedUsers, seedGroups, generateAuth, tokens } from '../seeders/seed';
 
 describe('Authenticate Middleware: ', () => {
   doBeforeAll();
-  
+
   it('POST /api/v1/signup route should be accessible to unauthenticated users', (done) => {
     request(app)
     .post('/api/v1/user/signup')
@@ -28,6 +28,7 @@ describe('Authenticate Middleware: ', () => {
       done();
     });
   });
+
   it('POST /api/v1/user/me route should not be accessible to unauthenticated users', (done) => {
     request(app)
     .get('/api/v1/user/me')
@@ -41,6 +42,7 @@ describe('Authenticate Middleware: ', () => {
       done();
     });
   });
+  
   it('POST /api/v1/user/me route should not be accessible to users with incorrect token', (done) => {
     const token = generateAuth(99);
     request(app)

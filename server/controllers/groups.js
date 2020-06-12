@@ -75,7 +75,6 @@ export const addUser = (req, res) => {
   // Grab group instance from request object.
   // It has been set in the isGroupMember middleware.
   const group = req.group;
-  // Group.findById(groupId).then((group) => {
   // Find a user with that username from request body
   User.findOne({
     where: {
@@ -462,7 +461,6 @@ export const editInfo = (req, res) => {
  * confirmation or failure
  */
 export const deleteGroup = (req, res) => {
-  // Group.findById(req.params.groupid).then((group) => {
   if (req.currentUser.username !== req.group.createdBy) {
     return res.status(403).send({
       error: 'You can only delete groups created by you'

@@ -5,7 +5,7 @@ import app from '../../app';
 import '../../bin/www';
 import { Group, User } from '../../models';
 import { transporter } from '../../config/nodemailer';
-import { doBeforeAll } from '../seeders/testHooks';
+import { doBeforeAll, createPopulatedGroups } from '../seeders/testHooks';
 import { seedUsers, seedGroups, generateAuth } from '../seeders/seed';
 
 describe('POST /api/v1/user/signup route', () => {
@@ -218,11 +218,15 @@ describe('GET /api/v1/users route', () => {
 describe('GET /api/v1/user/me/groups route', () => {
   it('GET /api/v1/user/me/groups should get user groups', (done) => {
     const token = generateAuth(seedUsers.registered[2].id);
+
     request(app)
       .get('/api/v1/user/me/groups')
       .set('x-auth', token)
       .expect(200)
       .end((err, res) => {
+        if (err) {
+          done(err);
+        }
         expect(res.body.userGroups.length).toBe(3);
         done();
       });
@@ -381,7 +385,7 @@ describe('POST /api/v1/forgotpassword route', () => {
       .send({
         email: 'some email'
       })
-      .expect(400)
+      .expect(404)
       .end((err, res) => {
         expect(res.body.error).toBe('Incorrect email');
         done();

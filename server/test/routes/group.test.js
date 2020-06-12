@@ -58,10 +58,10 @@ describe('/api/v1/group route', () => {
       .set('x-auth', token)
       .send({
         name: 'sample group',
-        description: `This group description is just so long 
-        that it would definitely generate an error from the 
-        server. It is obviously longer than 180 characters 
-        and should fail the lenght validation. This is the 
+        description: `This group description is just so long
+        that it would definitely generate an error from the
+        server. It is obviously longer than 180 characters
+        and should fail the lenght validation. This is the
         reason it is being used here at all.`,
         type: 'public'
       })
@@ -382,7 +382,7 @@ describe('POST /api/v1/group/:groupid/message', () => {
       });
   });
 
-  it(`should send message to group, and set priority 
+  it(`should send message to group, and set priority
   to normal if none supplied`,
   (done) => {
     const groupId = seedGroups[0].id;
@@ -524,10 +524,10 @@ describe('PATCH /api/v1/group/:groupid/info', () => {
       .patch(`/api/v1/group/${seedGroups[0].id}/info`)
       .set('x-auth', generateAuth(seedUsers.registered[2].id))
       .send({ name: 'my group name',
-        description: `This group description is just so long 
-        that it would definitely generate an error from the 
-        server. It is obviously longer than 180 characters 
-        and should fail the lenght validation. This is the 
+        description: `This group description is just so long
+        that it would definitely generate an error from the
+        server. It is obviously longer than 180 characters
+        and should fail the lenght validation. This is the
         reason it is being used here at all. ` })
       .expect(400)
       .end((err, res) => {

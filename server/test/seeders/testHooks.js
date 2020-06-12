@@ -7,7 +7,7 @@ export const populateUsers = () => {
   });
 };
 
-export const populateGroups = () => {
+export const createPopulatedGroups = () => {
   models.Group.bulkCreate(seedGroups).then((groups) => {
     groups.forEach((group) => {
       group.addUser(seedUsers.registered[2].id);
@@ -42,7 +42,7 @@ export const doBeforeAll = () => {
     });
 
     populateUsers();
-    populateGroups();
+    createPopulatedGroups();
 
     done();
   });
