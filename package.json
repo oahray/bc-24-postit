@@ -29,7 +29,7 @@
   },
   "homepage": "https://github.com/oahray/bc-24-postit#readme",
   "dependencies": {
-    "axios": "^0.16.2",
+    "axios": "^0.19.2",
     "babel-cli": "^6.24.1",
     "babel-core": "^6.25.0",
     "babel-loader": "^7.1.1",
