@@ -2,14 +2,13 @@ import expect from 'expect';
 import request from 'supertest';
 
 import app from '../../app';
-import { seedUsers, seedGroups, generateAuth } from '../seeders/seed';
+import { seedUsers, seedGroups, generateAuth, tokens } from '../seeders/seed';
 
 describe('isGroupMember middleware', () => {
   it('returns error if group id is not provided', (done) => {
-    const token = generateAuth(seedUsers.registered[0].id);
     request(app)
     .get(`/api/v1/group/${null}/users`)
-    .set('x-auth', token)
+    .set('x-auth', tokens[0])
     .expect(400)
     .end((err, res) => {
       if (err) {
@@ -21,10 +20,9 @@ describe('isGroupMember middleware', () => {
   });
 
   it('returns error if group does not exist', (done) => {
-    const token = generateAuth(seedUsers.registered[0].id);
     request(app)
     .get(`/api/v1/group/32/users`)
-    .set('x-auth', token)
+    .set('x-auth', tokens[0])
     .expect(404)
     .end((err, res) => {
       if (err) {
@@ -36,10 +34,9 @@ describe('isGroupMember middleware', () => {
   });
 
   it('returns error if user does not belong to the group', (done) => {
-    const token = generateAuth(seedUsers.registered[0].id);
     request(app)
     .get(`/api/v1/group/${seedGroups[1].id}/users`)
-    .set('x-auth', token)
+    .set('x-auth', tokens[0])
     .expect(401)
     .end((err, res) => {
       if (err) {

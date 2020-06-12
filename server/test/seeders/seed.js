@@ -87,5 +87,7 @@ export const seedGroups = [
 export const tokens = [
   generateAuth(seedUsers.registered[0].id),
   generateAuth(seedUsers.registered[1].id),
-  generateAuth(seedUsers.registered[2].id)
+  generateAuth(seedUsers.registered[2].id),
+  generateAuth(seedUsers.registered[3].id),
+  generateAuth(seedUsers.registered[4].id)
 ];

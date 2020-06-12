@@ -6,16 +6,15 @@ import app from '../../app';
 import '../../bin/www';
 import { Group } from '../../models';
 import { transporter } from '../../config/nodemailer';
-import { seedUsers, seedGroups, generateAuth } from '../seeders/seed';
+import { seedUsers, seedGroups, tokens } from '../seeders/seed';
 
 const socket = socketIo('http://localhost');
 
 describe('/api/v1/group route', () => {
   it('requires group name', (done) => {
-    const token = generateAuth(seedUsers.registered[0].id);
     request(app)
       .post('/api/v1/group')
-      .set('x-auth', token)
+      .set('x-auth', tokens[0])
       .send({
         description: 'This group has no name',
         type: 'public'
@@ -31,10 +30,9 @@ describe('/api/v1/group route', () => {
   });
 
   it('returns error for group name longer than 20 characters', (done) => {
-    const token = generateAuth(seedUsers.registered[0].id);
     request(app)
       .post('/api/v1/group')
-      .set('x-auth', token)
+      .set('x-auth', tokens[0])
       .send({
         name: 'This is an extremely long group name',
         description: 'This group has no name',
@@ -52,10 +50,9 @@ describe('/api/v1/group route', () => {
 
   it('returns error for group description longer than 180 characters',
   (done) => {
-    const token = generateAuth(seedUsers.registered[0].id);
     request(app)
       .post('/api/v1/group')
-      .set('x-auth', token)
+      .set('x-auth', tokens[0])
       .send({
         name: 'sample group',
         description: `This group description is just so long
@@ -76,10 +73,9 @@ describe('/api/v1/group route', () => {
   });
 
   it('sets group type to public if private is not specified', (done) => {
-    const token = generateAuth(seedUsers.registered[2].id);
     request(app)
       .post('/api/v1/group')
-      .set('x-auth', token)
+      .set('x-auth', tokens[2])
       .send({
         name: 'This group is named',
         description: 'But that is the name',
@@ -95,10 +91,9 @@ describe('/api/v1/group route', () => {
   });
 
   it('returns error for duplicate group name', (done) => {
-    const token = generateAuth(seedUsers.registered[2].id);
     request(app)
       .post('/api/v1/group')
-      .set('x-auth', token)
+      .set('x-auth', tokens[2])
       .send({
         name: 'This group is named',
         description: 'Just so you know',
@@ -118,12 +113,11 @@ describe('/api/v1/group route', () => {
 
 describe('POST /api/v1/:groupid/user', () => {
   it('should allow users add other users to groups', (done) => {
-    const token = generateAuth(seedUsers.registered[2].id);
     const usernameToAdd = seedUsers.registered[0].username;
     const groupId = seedGroups[0].id;
     request(app)
       .post(`/api/v1/group/${groupId}/user`)
-      .set('x-auth', token)
+      .set('x-auth', tokens[2])
       .send({
         username: usernameToAdd
       })
@@ -139,7 +133,7 @@ describe('POST /api/v1/:groupid/user', () => {
         expect(res.body.message).toBe(`${usernameToAdd} added to group`);
         request(app)
           .delete(`/api/v1/group/${groupId}/user`)
-          .set('x-auth', token)
+          .set('x-auth', tokens[2])
           .send({
             username: usernameToAdd
           })
@@ -153,12 +147,11 @@ describe('POST /api/v1/:groupid/user', () => {
   });
 
   it('returns 400 on non-existent username', (done) => {
-    const token = generateAuth(seedUsers.registered[2].id);
     const usernameToAdd = '123';
     const groupId = seedGroups[0].id;
     request(app)
       .post(`/api/v1/group/${groupId}/user`)
-      .set('x-auth', token)
+      .set('x-auth', tokens[2])
       .send({
         username: usernameToAdd
       })
@@ -173,12 +166,11 @@ describe('POST /api/v1/:groupid/user', () => {
   });
 
   it('returns 409 on user already in group', (done) => {
-    const token = generateAuth(seedUsers.registered[2].id);
     const usernameToAdd = seedUsers.registered[2].username;
     const groupId = seedGroups[0].id;
     request(app)
       .post(`/api/v1/group/${groupId}/user`)
-      .set('x-auth', token)
+      .set('x-auth', tokens[2])
       .send({
         username: usernameToAdd
       })
@@ -196,8 +188,8 @@ describe('POST /api/v1/:groupid/user', () => {
 describe('DELETE /api/v1/group/:groupid/user route', () => {
   it('does not allow a user who is not the group creator, remove users',
   (done) => {
-    const user3Token = generateAuth(seedUsers.registered[2].id);
-    const user1Token = generateAuth(seedUsers.registered[0].id);
+    const user3Token = tokens[2];
+    const user1Token = tokens[0];
     const groupId = seedGroups[2].id;
     request(app)
       .post(`/api/v1/group/${seedGroups[2].id}/user`)
@@ -224,7 +216,7 @@ describe('DELETE /api/v1/group/:groupid/user route', () => {
 
   it('returns error when the user to be removed is not a member of the group',
   (done) => {
-    const user3Token = generateAuth(seedUsers.registered[2].id);
+    const user3Token = tokens[2];
     const groupId = seedGroups[2].id;
     request(app)
       .post(`/api/v1/group/${seedGroups[2].id}/user`)
@@ -249,7 +241,7 @@ describe('DELETE /api/v1/group/:groupid/user route', () => {
   });
 
   it('does not remove current user', (done) => {
-    const user3Token = generateAuth(seedUsers.registered[2].id);
+    const user3Token = tokens[2];
     const groupId = seedGroups[2].id;
     request(app)
       .delete(`/api/v1/group/${groupId}/user`)
@@ -269,8 +261,8 @@ describe('DELETE /api/v1/group/:groupid/user route', () => {
 
 describe('POST /api/v1/group/:groupid/leave', () => {
   it('allows a user leave group', (done) => {
-    const user3Token = generateAuth(seedUsers.registered[2].id);
-    const user1Token = generateAuth(seedUsers.registered[0].id);
+    const user3Token = tokens[2];
+    const user1Token = tokens[0];
     const groupId = seedGroups[2].id;
     request(app)
       .post(`/api/v1/group/${seedGroups[2].id}/user`)
@@ -308,7 +300,7 @@ describe('GET /api/v1/group/:groupid/users', () => {
     const groupId = seedGroups[0].id;
     request(app)
       .get(`/api/v1/group/${groupId}/users`)
-      .set('x-auth', generateAuth(seedUsers.registered[2].id))
+      .set('x-auth', tokens[2])
       .expect(200)
       .end((err, res) => {
         expect(res.body.groupUsers).toExist;
@@ -321,7 +313,7 @@ describe('GET /api/v1/group/:groupid/users', () => {
     const groupId = seedGroups[0].id;
     request(app)
       .get(`/api/v1/group/${groupId}/users?members=false`)
-      .set('x-auth', generateAuth(seedUsers.registered[2].id))
+      .set('x-auth', tokens[2])
       .expect(200)
       .end((err, res) => {
         expect(res.body.page).toBe(1);
@@ -338,7 +330,7 @@ describe('GET /api/v1/group/:groupid/users', () => {
     const groupId = seedGroups[0].id;
     request(app)
       .get(`/api/v1/group/${groupId}/users?members=false&u=u&limit=10&offset=1`)
-      .set('x-auth', generateAuth(seedUsers.registered[2].id))
+      .set('x-auth', tokens[2])
       .expect(200)
       .end((err, res) => {
         expect(res.body.page).toBe(2);
@@ -356,7 +348,7 @@ describe('POST /api/v1/group/:groupid/message', () => {
     const groupId = seedGroups[0].id;
     request(app)
       .post(`/api/v1/group/${groupId}/message`)
-      .set('x-auth', generateAuth(seedUsers.registered[2].id))
+      .set('x-auth', tokens[2])
       .expect(400)
       .end((err, res) => {
         expect(res.body.error).toBe('Message must not be empty');
@@ -372,7 +364,7 @@ describe('POST /api/v1/group/:groupid/message', () => {
         content: 'First message',
         priority: 'dunno'
       })
-      .set('x-auth', generateAuth(seedUsers.registered[2].id))
+      .set('x-auth', tokens[2])
       .expect(400)
       .end((err, res) => {
         expect(res.body.error).toBe(
@@ -391,7 +383,7 @@ describe('POST /api/v1/group/:groupid/message', () => {
       .send({
         content: 'First message'
       })
-      .set('x-auth', generateAuth(seedUsers.registered[2].id))
+      .set('x-auth', tokens[2])
       .expect(201)
       .end((err, res) => {
         if (err) {
@@ -422,7 +414,7 @@ describe('POST /api/v1/group/:groupid/message', () => {
                 content: 'Second message',
                 priority: 'urgent'
               })
-              .set('x-auth', generateAuth(seedUsers.registered[2].id))
+              .set('x-auth', tokens[2])
               .expect(201)
               .end((err, res) => {
                 if (err) {
@@ -447,7 +439,7 @@ describe('GET /api/v1/group/:groupid/messages', () => {
     const groupId = seedGroups[0].id;
     request(app)
       .get(`/api/v1/group/${groupId}/messages`)
-      .set('x-auth', generateAuth(seedUsers.registered[2].id))
+      .set('x-auth', tokens[2])
       .expect(200)
       .end((err, res) => {
         expect(res.body.messages).toExist();
@@ -462,7 +454,7 @@ describe('GET /api/v1/group/:groupid/messages/read', () => {
     const groupId = seedGroups[0].id;
     request(app)
       .post(`/api/v1/group/${groupId}/message/hey/read`)
-      .set('x-auth', generateAuth(seedUsers.registered[2].id))
+      .set('x-auth', tokens[2])
       .expect(400)
       .end((err, res) => {
         expect(res.body.error).toExist();
@@ -475,7 +467,7 @@ describe('GET /api/v1/group/:groupid/messages/read', () => {
     const groupId = seedGroups[0].id;
     request(app)
       .post(`/api/v1/group/${groupId}/message/1/read`)
-      .set('x-auth', generateAuth(seedUsers.registered[2].id))
+      .set('x-auth', tokens[2])
       .expect(201)
       .end((err, res) => {
         if (err) done(err);
@@ -491,7 +483,7 @@ describe('PATCH /api/v1/group/:groupid/info', () => {
   it('should return error if group name not supplied', (done) => {
     request(app)
       .patch(`/api/v1/group/${seedGroups[0].id}/info`)
-      .set('x-auth', generateAuth(seedUsers.registered[2].id))
+      .set('x-auth', tokens[2])
       .expect(400)
       .end((err, res) => {
         if (err) {
@@ -506,7 +498,7 @@ describe('PATCH /api/v1/group/:groupid/info', () => {
   (done) => {
     request(app)
       .patch(`/api/v1/group/${seedGroups[0].id}/info`)
-      .set('x-auth', generateAuth(seedUsers.registered[2].id))
+      .set('x-auth', tokens[2])
       .send({ name: 'this is an extremely long group name' })
       .expect(400)
       .end((err, res) => {
@@ -522,7 +514,7 @@ describe('PATCH /api/v1/group/:groupid/info', () => {
   (done) => {
     request(app)
       .patch(`/api/v1/group/${seedGroups[0].id}/info`)
-      .set('x-auth', generateAuth(seedUsers.registered[2].id))
+      .set('x-auth', tokens[2])
       .send({ name: 'my group name',
         description: `This group description is just so long
         that it would definitely generate an error from the
@@ -542,7 +534,7 @@ describe('PATCH /api/v1/group/:groupid/info', () => {
   it('should update group info', (done) => {
     request(app)
       .patch(`/api/v1/group/${seedGroups[0].id}/info`)
-      .set('x-auth', generateAuth(seedUsers.registered[2].id))
+      .set('x-auth', tokens[2])
       .send({
         name: 'Better name for group',
         type: 'private'
@@ -560,12 +552,11 @@ describe('PATCH /api/v1/group/:groupid/info', () => {
 
 describe('POST /api/v1/group/:groupid/remove', () => {
   it('should not let non-creator user delete group', (done) => {
-    const token = generateAuth(seedUsers.registered[2].id);
     const usernameToAdd = seedUsers.registered[0].username;
     const groupId = seedGroups[0].id;
     request(app)
       .post(`/api/v1/group/${groupId}/user`)
-      .set('x-auth', token)
+      .set('x-auth', tokens[2])
       .send({
         username: usernameToAdd
       })
@@ -577,7 +568,7 @@ describe('POST /api/v1/group/:groupid/remove', () => {
         expect(res.body.message).toBe(`${usernameToAdd} added to group`);
         request(app)
           .post(`/api/v1/group/${groupId}/remove`)
-          .set('x-auth', generateAuth(seedUsers.registered[0].id))
+          .set('x-auth', tokens[0])
           .expect(403)
           .end((err, res) => {
             expect(res.body.error)
@@ -591,7 +582,7 @@ describe('POST /api/v1/group/:groupid/remove', () => {
     const groupId = seedGroups[0].id;
     request(app)
       .post(`/api/v1/group/${groupId}/remove`)
-      .set('x-auth', generateAuth(seedUsers.registered[2].id))
+      .set('x-auth', tokens[2])
       .expect(201)
       .end((err, res) => {
         if (err) {
