@@ -412,7 +412,7 @@ describe('POST /api/v1/group/:groupid/message', () => {
   (done) => {
     transporter.sendMail = () => Promise.resolve(1);
     const groupId = seedGroups[0].id;
-    Group.findByPk(groupId)
+    Group.findById(groupId)
       .then((group) => {
         group.addUser(seedUsers.registered[1].id)
           .then(() => {
