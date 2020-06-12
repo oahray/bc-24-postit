@@ -589,7 +589,7 @@ describe('Catch block in', () => {
 
   describe('isGroupMember middleware', () => {
     it('should send 500 error when server fails', (done) => {
-      Group.findById = () => Promise.reject(1);
+      Group.findByPk = () => Promise.reject(1);
       request(app)
         .patch(`/api/v1/group/${seedGroups[0].id}/info`)
         .set('x-auth', generateAuth(seedUsers.registered[0].id))
@@ -632,7 +632,7 @@ describe('Catch block in', () => {
 
   describe('PATCH /api/v1/group/:groupid/info route', () => {
     it('should send 500 error when server fails', (done) => {
-      Group.findById = () => Promise.reject(1);
+      Group.findByPk = () => Promise.reject(1);
       request(app)
         .patch(`/api/v1/group/${seedGroups[0].id}/info`)
         .set('x-auth', generateAuth(seedUsers.registered[0].id))

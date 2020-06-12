@@ -23,7 +23,7 @@ export default (req, res, next) => {
       error: 'Valid group ID must be provided'
     });
   }
-  return Group.findById(groupId).then((group) => {
+  return Group.findByPk(groupId).then((group) => {
     if (!group) {
       return res.status(404).send({
         error: 'Specified group does not exist'

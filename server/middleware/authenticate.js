@@ -25,7 +25,7 @@ export default (req, res, next) => {
         error: 'Invalid authentication. Please signin or signup'
       });
     }
-    User.findById(decoded.id).then((user) => {
+    User.findByPk(decoded.id).then((user) => {
       if (!user) {
         return res.status(401).send({
           error: 'User could not be verifed. Signup or login first'
