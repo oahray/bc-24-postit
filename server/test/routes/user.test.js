@@ -179,7 +179,7 @@ describe('POST /api/v1/user/signin route', () => {
 });
 
 describe('GET /api/v1/user/me route', () => {
-  const token = generateAuth(103);
+  const token = generateAuth(seedUsers.registered[2].id);
   it('should return current user', (done) => {
     request(app)
       .get('/api/v1/user/me')
@@ -200,7 +200,7 @@ describe('GET /api/v1/users route', () => {
   it('GET /api/v1/users route should get a list of all users', (done) => {
     request(app)
       .get('/api/v1/user/all')
-      .set('x-auth', generateAuth(103))
+      .set('x-auth', generateAuth(seedUsers.registered[2].id))
       .expect(200)
       .end((err, res) => {
         if (err) {
@@ -498,7 +498,7 @@ describe('POST /api/v1/resetpassword route', () => {
 describe('Catch block in', () => {
   describe('POST /api/v1/group/:groupid/remove route', () => {
     it('should return 500 error for server failure', (done) => {
-      User.findAndCountAll = () => Promise.reject();
+      User.findAndCountAll = () => Promise.reject(1);
       const groupId = seedGroups[1].id;
       request(app)
         .get(`/api/v1/group/${groupId}/users?members=false`)
