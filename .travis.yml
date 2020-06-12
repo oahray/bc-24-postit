@@ -8,8 +8,7 @@ install:
   - npm install
 script:
   - npm test
-cache:
-  -npm install
+cache: npm
 services:
   - postgresql
 before_script:

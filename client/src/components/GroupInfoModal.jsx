@@ -46,7 +46,7 @@ export default class GroupInfoModal extends Component {
     return (
       <div>
         <a id={`open-${this.props.modalId}`}
-        className="waves-effect waves-grey modal-trigger pointer"
+        className="waves-effect waves-grey modal-trigger"
         href={`#${this.props.modalId}`}>{this.props.triggerLabel}</a>
 
         <div id={`${this.props.modalId}`} className="modal form-modal">
