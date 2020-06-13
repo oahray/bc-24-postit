@@ -1,29 +1,20 @@
 import models from '../../models';
 import { seedUsers, seedGroups } from './seed';
 
-export const populateUsers = () => {
-  models.User.bulkCreate(seedUsers.registered).then(() => {
-    return
-  });
-};
+export const populateUsers = () => models.User.bulkCreate(seedUsers.registered)
 
-export const createPopulatedGroups = () => {
+
+export const createPopulatedGroups = (users) => {
   models.Group.bulkCreate(seedGroups).then((groups) => {
     groups.forEach((group) => {
-      group.addUser(seedUsers.registered[2].id);
+      group.addUser(users[2].id);
     });
   });
 };
 
 export const doBeforeAll = () => {
   before((done) => {
-    models.User.destroy({
-      cascade: true,
-      truncate: true,
-      restartIdentity: true
-    });
-
-    models.Group.destroy({
+    models.Message.destroy({
       cascade: true,
       truncate: true,
       restartIdentity: true
@@ -35,14 +26,19 @@ export const doBeforeAll = () => {
       restartIdentity: true
     });
 
-    models.Message.destroy({
+    models.Group.destroy({
       cascade: true,
       truncate: true,
       restartIdentity: true
     });
 
-    populateUsers();
-    createPopulatedGroups();
+    models.User.destroy({
+      cascade: true,
+      truncate: true,
+      restartIdentity: true
+    });
+
+    populateUsers().then(users => createPopulatedGroups(users))
 
     done();
   });

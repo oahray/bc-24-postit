@@ -93,9 +93,7 @@ export class SideNav extends Component {
         <li className='my-list-item'><NavLink to='/signin'>Signin</NavLink></li>
         <li className='my-list-item'><NavLink to='/signup'>Signup</NavLink></li>
         <li className='my-list-item docs-link'>
-         <a href='/api/v1/docs'>Docs</a></li>
-        <li className='my-list-item'><a target='_blank'
-          href='https://github.com/oahray/bc-24-postit'>View On Github</a></li>
+         <a href='/api/v1/docs'>API Docs</a></li>
       </ul>
     );
     let sideList = (
@@ -103,9 +101,7 @@ export class SideNav extends Component {
         <li className='my-list-item'><NavLink to='/signin'>Signin</NavLink></li>
         <li className='my-list-item'><NavLink to='/signup'>Signup</NavLink></li>
         <li className='my-list-item docs-link'><a
-        href='/api/v1/docs'>Docs</a></li>
-        <li className='my-list-item'><a target='_blank'
-          href='https://github.com/oahray/bc-24-postit'>View On Github</a></li>
+        href='/api/v1/docs'>API Docs</a></li>
       </ul>
     );
 

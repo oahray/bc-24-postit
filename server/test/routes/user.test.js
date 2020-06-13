@@ -6,7 +6,7 @@ import '../../bin/www';
 import { Group, User } from '../../models';
 import { transporter } from '../../config/nodemailer';
 import { doBeforeAll, createPopulatedGroups } from '../seeders/testHooks';
-import { seedUsers, seedGroups, generateAuth } from '../seeders/seed';
+import { seedUsers, seedGroups, tokens } from '../seeders/seed';
 
 describe('POST /api/v1/user/signup route', () => {
   doBeforeAll();
@@ -179,11 +179,10 @@ describe('POST /api/v1/user/signin route', () => {
 });
 
 describe('GET /api/v1/user/me route', () => {
-  const token = generateAuth(103);
   it('should return current user', (done) => {
     request(app)
       .get('/api/v1/user/me')
-      .set('x-auth', token)
+      .set('x-auth', tokens[2])
       .expect(200)
       .end((err, res) => {
         if (err) {
@@ -200,7 +199,7 @@ describe('GET /api/v1/users route', () => {
   it('GET /api/v1/users route should get a list of all users', (done) => {
     request(app)
       .get('/api/v1/user/all')
-      .set('x-auth', generateAuth(103))
+      .set('x-auth', tokens[2])
       .expect(200)
       .end((err, res) => {
         if (err) {
@@ -217,11 +216,9 @@ describe('GET /api/v1/users route', () => {
 
 describe('GET /api/v1/user/me/groups route', () => {
   it('GET /api/v1/user/me/groups should get user groups', (done) => {
-    const token = generateAuth(seedUsers.registered[2].id);
-
     request(app)
       .get('/api/v1/user/me/groups')
-      .set('x-auth', token)
+      .set('x-auth', tokens[2])
       .expect(200)
       .end((err, res) => {
         if (err) {
@@ -235,12 +232,14 @@ describe('GET /api/v1/user/me/groups route', () => {
 
 describe('GET /api/v1/user/me route', () => {
   it('GET /api/v1/user/me/messages should get user messages', (done) => {
-    const token = generateAuth(seedUsers.registered[2].id);
     request(app)
       .get('/api/v1/user/me/messages')
-      .set('x-auth', token)
+      .set('x-auth', tokens[2])
       .expect(200)
       .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
         expect(res.body.messages).toExist();
         done();
       });
@@ -249,78 +248,88 @@ describe('GET /api/v1/user/me route', () => {
 
 describe('PATCH /api/v1/user/me/password route', () => {
   it('PATCH /api/v1/user/me/password route should return 400 if current password is not supplied', (done) => {
-    const token = generateAuth(seedUsers.registered[1].id);
     request(app)
       .patch('/api/v1/user/me/password')
-      .set('x-auth', token)
+      .set('x-auth', tokens[1])
       .send({
         newpassword: 'changedThis'
       })
       .expect(400)
       .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
         expect(res.body.error).toBe('Current password required');
         done();
       });
   });
 
   it('should return 400 if new password is not supplied', (done) => {
-    const token = generateAuth(seedUsers.registered[1].id);
     request(app)
       .patch('/api/v1/user/me/password')
-      .set('x-auth', token)
+      .set('x-auth', tokens[1])
       .send({
         currentpassword: seedUsers.registered[1].password
       })
       .expect(400)
       .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
         expect(res.body.error).toBe('New password required');
         done();
       });
   });
 
   it('should return 400 if current password is incorrect', (done) => {
-    const token = generateAuth(seedUsers.registered[1].id);
     request(app)
       .patch('/api/v1/user/me/password')
-      .set('x-auth', token)
+      .set('x-auth', tokens[1])
       .send({
         currentpassword: 'cannotRemember',
         newpassword: 'changedThis'
       })
       .expect(400)
       .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
         expect(res.body.error).toBe('Password is incorrect');
         done();
       });
   });
 
   it('should return 400 if new password is the same as current', (done) => {
-    const token = generateAuth(seedUsers.registered[1].id);
     request(app)
       .patch('/api/v1/user/me/password')
-      .set('x-auth', token)
+      .set('x-auth', tokens[1])
       .send({
         currentpassword: seedUsers.registered[1].password,
         newpassword: seedUsers.registered[1].password,
       })
       .expect(400)
       .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
         expect(res.body.error).toBe('New password is the same as current');
         done();
       });
   });
 
   it('should successfully update password', (done) => {
-    const token = generateAuth(seedUsers.registered[1].id);
     request(app)
       .patch('/api/v1/user/me/password')
-      .set('x-auth', token)
+      .set('x-auth', tokens[1])
       .send({
         currentpassword: seedUsers.registered[1].password,
         newpassword: 'changedThis'
       })
       .expect(201)
       .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
         expect(res.body.message).toBe('Password successfully updated');
         done();
       });
@@ -329,10 +338,9 @@ describe('PATCH /api/v1/user/me/password route', () => {
 
 describe('GET /api/v1/user/me/edit route', () => {
   it('should return error when email is empty', (done) => {
-    const token = generateAuth(seedUsers.registered[1].id);
     request(app)
       .patch('/api/v1/user/me/edit')
-      .set('x-auth', token)
+      .set('x-auth', tokens[1])
       .send({
         about: 'Awesome me'
       })
@@ -347,11 +355,10 @@ describe('GET /api/v1/user/me/edit route', () => {
   });
 
   it('PATCH /api/v1/user/me/edit route should successfully update profile', (done) => {
-    const token = generateAuth(seedUsers.registered[1].id);
     const email = 'updatedemail@example.com';
     request(app)
       .patch('/api/v1/user/me/edit')
-      .set('x-auth', token)
+      .set('x-auth', tokens[1])
       .send({
         email
       })
@@ -374,6 +381,9 @@ describe('POST /api/v1/forgotpassword route', () => {
       .post('/api/v1/forgotpassword')
       .expect(400)
       .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
         expect(res.body.error).toBe('Email is required for password recovery');
         done();
       });
@@ -387,6 +397,9 @@ describe('POST /api/v1/forgotpassword route', () => {
       })
       .expect(404)
       .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
         expect(res.body.error).toBe('Incorrect email');
         done();
       });
@@ -498,11 +511,11 @@ describe('POST /api/v1/resetpassword route', () => {
 describe('Catch block in', () => {
   describe('POST /api/v1/group/:groupid/remove route', () => {
     it('should return 500 error for server failure', (done) => {
-      User.findAndCountAll = () => Promise.reject();
+      User.findAndCountAll = () => Promise.reject(1);
       const groupId = seedGroups[1].id;
       request(app)
         .get(`/api/v1/group/${groupId}/users?members=false`)
-        .set('x-auth', generateAuth(seedUsers.registered[2].id))
+        .set('x-auth', tokens[2])
         .expect(500)
         .end((err, res) => {
           if (err) {
@@ -518,7 +531,7 @@ describe('Catch block in', () => {
       const groupId = seedGroups[1].id;
       request(app)
         .post(`/api/v1/group/${groupId}/remove`)
-        .set('x-auth', generateAuth(seedUsers.registered[2].id))
+        .set('x-auth', tokens[2])
         .expect(500)
         .end((err, res) => {
           if (err) {
@@ -593,10 +606,10 @@ describe('Catch block in', () => {
 
   describe('isGroupMember middleware', () => {
     it('should send 500 error when server fails', (done) => {
-      Group.findById = () => Promise.reject(1);
+      Group.findByPk = () => Promise.reject(1);
       request(app)
         .patch(`/api/v1/group/${seedGroups[0].id}/info`)
-        .set('x-auth', generateAuth(seedUsers.registered[0].id))
+        .set('x-auth', tokens[0])
         .send({
           name: 'Better name for group',
           type: 'private'
@@ -615,10 +628,9 @@ describe('Catch block in', () => {
   describe('POST /api/v1/group route', () => {
     it('returns error 500 when database query fails', (done) => {
       Group.findOne = () => Promise.reject(1);
-      const token = generateAuth(seedUsers.registered[2].id);
       request(app)
         .post('/api/v1/group')
-        .set('x-auth', token)
+        .set('x-auth', tokens[2])
         .send({
           name: 'Testing group',
           description: 'What it says on the cover',
@@ -636,10 +648,10 @@ describe('Catch block in', () => {
 
   describe('PATCH /api/v1/group/:groupid/info route', () => {
     it('should send 500 error when server fails', (done) => {
-      Group.findById = () => Promise.reject(1);
+      Group.findByPk = () => Promise.reject(1);
       request(app)
         .patch(`/api/v1/group/${seedGroups[0].id}/info`)
-        .set('x-auth', generateAuth(seedUsers.registered[0].id))
+        .set('x-auth', tokens[0])
         .send({
           name: 'Better name for group',
           type: 'private'
