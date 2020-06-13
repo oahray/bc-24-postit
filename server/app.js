@@ -60,14 +60,14 @@ const indexPath = path.resolve(__dirname, publicPath, 'index.html');
 const docPath = path.join(__dirname, '../docs');
 const docIndexPath = path.join(__dirname, '../docs', 'index.html');
 
-app.use('/api/v1/docs', express.static(docPath));
+app.use('/api/v1/docs/', express.static(docPath));
 
 app.use('/', express.static(publicPath));
 
 // Require our routes
 require('./routes')(app);
 
-app.get('/api/v1/docs', (req, res) =>
+app.get('/api/v1/docs/', (req, res) =>
   res.sendFile(docIndexPath)
 );
 

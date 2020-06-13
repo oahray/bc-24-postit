@@ -127,7 +127,7 @@ export const getMySentMessages = (req, res) => {
  * @returns {Object} success or error response
  */
 export const getMyGroups = (req, res) => {
-  User.findById(req.currentUser.id).then((user) => {
+  User.findByPk(req.currentUser.id).then((user) => {
     user.getGroups().then((userGroups) => {
       res.status(200).send({ userGroups });
     });
@@ -154,7 +154,7 @@ export const changePassword = (req, res) => {
       error: 'New password required'
     });
   }
-  User.findById(req.currentUser.id).then((user) => {
+  User.findByPk(req.currentUser.id).then((user) => {
     if (!user.validPassword(current)) {
       return res.status(400).send({
         error: 'Password is incorrect'

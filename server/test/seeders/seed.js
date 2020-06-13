@@ -1,9 +1,13 @@
 import jwt from 'jsonwebtoken';
 import randomstring from 'randomstring';
 
-export const generateAuth = id =>
-  jwt.sign({ id, access: 'auth' },
-    process.env.MY_SUPER_SECRET, { expiresIn: 24 * 60 * 60 }).toString();
+export const generateAuth = id => {
+  const access = 'auth';
+  const token = jwt.sign({ id, access }, process.env.MY_SUPER_SECRET,
+    { expiresIn: 24 * 60 * 60 }).toString();
+
+  return token;
+};
 
 const resetHash1 = randomstring.generate(60);
 const resetHash2 = randomstring.generate(60);
@@ -60,6 +64,14 @@ export const seedUsers = {
   ]
 };
 
+export const tokens = [
+  generateAuth(seedUsers.registered[0].id),
+  generateAuth(seedUsers.registered[1].id),
+  generateAuth(seedUsers.registered[2].id),
+  generateAuth(seedUsers.registered[3].id),
+  generateAuth(seedUsers.registered[4].id)
+];
+
 export const seedGroups = [
   {
     id: 1011,
@@ -82,12 +94,4 @@ export const seedGroups = [
     description: 'Once home to Targaryens',
     createdBy: seedUsers.registered[2].username
   }
-];
-
-export const tokens = [
-  generateAuth(seedUsers.registered[0].id),
-  generateAuth(seedUsers.registered[1].id),
-  generateAuth(seedUsers.registered[2].id),
-  generateAuth(seedUsers.registered[3].id),
-  generateAuth(seedUsers.registered[4].id)
 ];

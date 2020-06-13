@@ -237,6 +237,9 @@ describe('GET /api/v1/user/me route', () => {
       .set('x-auth', tokens[2])
       .expect(200)
       .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
         expect(res.body.messages).toExist();
         done();
       });
@@ -253,6 +256,9 @@ describe('PATCH /api/v1/user/me/password route', () => {
       })
       .expect(400)
       .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
         expect(res.body.error).toBe('Current password required');
         done();
       });
@@ -267,6 +273,9 @@ describe('PATCH /api/v1/user/me/password route', () => {
       })
       .expect(400)
       .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
         expect(res.body.error).toBe('New password required');
         done();
       });
@@ -282,6 +291,9 @@ describe('PATCH /api/v1/user/me/password route', () => {
       })
       .expect(400)
       .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
         expect(res.body.error).toBe('Password is incorrect');
         done();
       });
@@ -297,6 +309,9 @@ describe('PATCH /api/v1/user/me/password route', () => {
       })
       .expect(400)
       .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
         expect(res.body.error).toBe('New password is the same as current');
         done();
       });
@@ -312,6 +327,9 @@ describe('PATCH /api/v1/user/me/password route', () => {
       })
       .expect(201)
       .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
         expect(res.body.message).toBe('Password successfully updated');
         done();
       });
@@ -363,6 +381,9 @@ describe('POST /api/v1/forgotpassword route', () => {
       .post('/api/v1/forgotpassword')
       .expect(400)
       .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
         expect(res.body.error).toBe('Email is required for password recovery');
         done();
       });
@@ -376,6 +397,9 @@ describe('POST /api/v1/forgotpassword route', () => {
       })
       .expect(404)
       .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
         expect(res.body.error).toBe('Incorrect email');
         done();
       });
@@ -582,7 +606,7 @@ describe('Catch block in', () => {
 
   describe('isGroupMember middleware', () => {
     it('should send 500 error when server fails', (done) => {
-      Group.findById = () => Promise.reject(1);
+      Group.findByPk = () => Promise.reject(1);
       request(app)
         .patch(`/api/v1/group/${seedGroups[0].id}/info`)
         .set('x-auth', tokens[0])
@@ -624,7 +648,7 @@ describe('Catch block in', () => {
 
   describe('PATCH /api/v1/group/:groupid/info route', () => {
     it('should send 500 error when server fails', (done) => {
-      Group.findById = () => Promise.reject(1);
+      Group.findByPk = () => Promise.reject(1);
       request(app)
         .patch(`/api/v1/group/${seedGroups[0].id}/info`)
         .set('x-auth', tokens[0])

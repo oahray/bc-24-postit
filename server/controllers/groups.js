@@ -47,7 +47,7 @@ export const create = (req, res) => {
         type
       })
         .then((group) => {
-          User.findById(req.currentUser.id).then((user) => {
+          User.findByPk(req.currentUser.id).then((user) => {
             group.addUser(user.id);
             return res.status(201).send({
               message: 'Group created',
@@ -382,7 +382,7 @@ export const markRead = (req, res) => {
       error: 'Valid message id is required'
     });
   }
-  Message.findById(messageId)
+  Message.findByPk(messageId)
     .then((message) => {
       const readers = message.readBy.split(',');
       let readMessage = message;

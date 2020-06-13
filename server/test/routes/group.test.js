@@ -207,6 +207,9 @@ describe('DELETE /api/v1/group/:groupid/user route', () => {
           })
           .expect(403)
           .end((err, res) => {
+            if (err) {
+              return done(err);
+            }
             expect(res.body.error)
               .toBe('Only a group creator can remove members');
             done();
@@ -234,6 +237,9 @@ describe('DELETE /api/v1/group/:groupid/user route', () => {
           })
           .expect(404)
           .end((err, res) => {
+            if (err) {
+              return done(err);
+            }
             expect(res.body.error).toBe('No such user in specified group');
             done();
           });
@@ -249,8 +255,11 @@ describe('DELETE /api/v1/group/:groupid/user route', () => {
       .send({
         username: seedUsers.registered[2].username
       })
-      .expect(401)
+      .expect(400)
       .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
         expect(res.body.error).toBe(
           'You cannot remove yourself from a group. Leave instead'
         );
@@ -284,6 +293,9 @@ describe('POST /api/v1/group/:groupid/leave', () => {
               .set('x-auth', user3Token)
               .expect(201)
               .end((err, res) => {
+                if (err) {
+                  return done(err);
+                }
                 expect(res.body.message)
                   .toBe(`You left, and ${seedGroups[2]
                     .name.toUpperCase()} has been deleted`);
@@ -303,6 +315,9 @@ describe('GET /api/v1/group/:groupid/users', () => {
       .set('x-auth', tokens[2])
       .expect(200)
       .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
         expect(res.body.groupUsers).toExist;
         done();
       });
@@ -316,6 +331,9 @@ describe('GET /api/v1/group/:groupid/users', () => {
       .set('x-auth', tokens[2])
       .expect(200)
       .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
         expect(res.body.page).toBe(1);
         expect(res.body.pageCount).toExist();
         expect(res.body.pageSize).toExist();
@@ -333,6 +351,9 @@ describe('GET /api/v1/group/:groupid/users', () => {
       .set('x-auth', tokens[2])
       .expect(200)
       .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
         expect(res.body.page).toBe(2);
         expect(res.body.pageCount).toExist();
         expect(res.body.pageSize).toExist();
@@ -351,6 +372,9 @@ describe('POST /api/v1/group/:groupid/message', () => {
       .set('x-auth', tokens[2])
       .expect(400)
       .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
         expect(res.body.error).toBe('Message must not be empty');
         done();
       });
@@ -367,6 +391,9 @@ describe('POST /api/v1/group/:groupid/message', () => {
       .set('x-auth', tokens[2])
       .expect(400)
       .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
         expect(res.body.error).toBe(
           'Incorrect priority option. Choose NORMAL, URGENT or CRITICAL.'
         );
@@ -404,7 +431,7 @@ describe('POST /api/v1/group/:groupid/message', () => {
   (done) => {
     transporter.sendMail = () => Promise.resolve(1);
     const groupId = seedGroups[0].id;
-    Group.findById(groupId)
+    Group.findByPk(groupId)
       .then((group) => {
         group.addUser(seedUsers.registered[1].id)
           .then(() => {
@@ -442,6 +469,9 @@ describe('GET /api/v1/group/:groupid/messages', () => {
       .set('x-auth', tokens[2])
       .expect(200)
       .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
         expect(res.body.messages).toExist();
         expect(res.body.messages.length).toBe(2);
         done();
@@ -457,6 +487,9 @@ describe('GET /api/v1/group/:groupid/messages/read', () => {
       .set('x-auth', tokens[2])
       .expect(400)
       .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
         expect(res.body.error).toExist();
         expect(res.body.error).toBe('Valid message id is required');
         done();
@@ -470,7 +503,9 @@ describe('GET /api/v1/group/:groupid/messages/read', () => {
       .set('x-auth', tokens[2])
       .expect(201)
       .end((err, res) => {
-        if (err) done(err);
+        if (err) {
+          return done(err);
+        }
         expect(res.body.update).toExist();
         expect(res.body.update.readBy.split(','))
           .toInclude(seedUsers.registered[2].username);

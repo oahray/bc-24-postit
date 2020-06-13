@@ -18,12 +18,12 @@ import { Group } from '../models';
  */
 export default (req, res, next) => {
   const groupId = req.params.groupid;
-  if (!Number.isInteger(Number(groupId))) {
+  if (!groupId || !Number.isInteger(Number(groupId))) {
     return res.status(400).send({
       error: 'Valid group ID must be provided'
     });
   }
-  return Group.findById(groupId).then((group) => {
+  return Group.findByPk(groupId).then((group) => {
     if (!group) {
       return res.status(404).send({
         error: 'Specified group does not exist'
@@ -51,7 +51,7 @@ export default (req, res, next) => {
       const groupUserIds = groupUsers.map(user => user.id);
 
       if (groupUserIds.indexOf(req.currentUser.id) === -1) {
-        return res.status(401).send({
+        return res.status(403).send({
           error: 'You must belong to a group to interact with it'
         });
       }
